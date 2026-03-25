@@ -124,8 +124,8 @@ img {
 }
 
 .logo-img {
-    width: 150px;
-    max-width: 160px;
+    width: 140px;
+    max-width: 150px;
     height: auto;
     display: block;
     object-fit: contain;
