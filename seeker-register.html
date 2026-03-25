@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>إنشاء حساب باحث عن عمل | منصة ماهر</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+    <header class="main-header">
+        <div class="container header-inner">
+            <div class="header-main-group">
+                <a href="index.html" class="logo">
+                    <img src="assets/images/logo.png" alt="شعار ماهر" class="logo-img">
+                </a>
+                <nav class="main-nav" id="mainNav">
+                    <a href="index.html" class="nav-link" data-i18n="nav.home"></a>
+                    <a href="seeker-login.html" class="nav-link" data-i18n="nav.seekers"></a>
+                    <a href="employer-login.html" class="nav-link" data-i18n="nav.employers"></a>
+                    <a href="jobs.html" class="nav-link" data-i18n="nav.jobs"></a>
+                    <a href="course-access.html" class="nav-link" data-i18n="nav.courses"></a>
+                </nav>
+            </div>
+
+            <div class="lang-switch">
+                <button class="lang-btn" data-lang="ar" data-i18n="header.langAr">العربية</button>
+                <button class="lang-btn" data-lang="en" data-i18n="header.langEn">English</button>
+            </div>
+
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <main class="auth-page register-page">
+        <div class="container">
+            <div class="auth-card register-card">
+                <h1 class="auth-title" data-i18n="page.register.seeker.title">إنشاء حساب باحث عن عمل</h1>
+                <p class="auth-subtitle" data-i18n="page.register.seeker.subtitle">أكمل بياناتك لإنشاء حساب كباحث عن عمل في منصة ماهر.</p>
+
+                <form id="seekerOnlyRegisterForm" class="register-form">
+                    <div class="auth-form-group">
+                        <label for="seekerFullName" data-i18n="register.seeker.fullName.label">الاسم الكامل</label>
+                        <input id="seekerFullName" type="text" data-i18n-placeholder="register.seeker.fullName.placeholder" placeholder="الاسم الثلاثي" />
+                    </div>
+                    <div class="auth-form-group">
+                        <label for="seekerEmail" data-i18n="form.email.label">البريد الإلكتروني</label>
+                        <input id="seekerEmail" type="email" data-i18n-placeholder="form.email.placeholder" placeholder="example@domain.com" />
+                    </div>
+                    <div class="auth-form-group">
+                        <label for="seekerPhone" data-i18n="register.common.phone.label">رقم الجوال</label>
+                        <input id="seekerPhone" type="tel" data-i18n-placeholder="register.common.phone.placeholder" placeholder="مثال: 05XXXXXXXX" />
+                    </div>
+                    <div class="auth-form-group">
+                        <label for="seekerCity" data-i18n="register.common.city.label">المدينة</label>
+                        <input id="seekerCity" type="text" data-i18n-placeholder="register.common.city.placeholder" placeholder="مثال: الرياض" />
+                    </div>
+                    <div class="auth-form-group">
+                        <label for="seekerPassword" data-i18n="form.password.label">كلمة المرور</label>
+                        <input id="seekerPassword" type="password" data-i18n-placeholder="form.password.placeholder" placeholder="••••••••" />
+                    </div>
+                    <div class="auth-form-group">
+                        <label for="seekerPasswordConfirm" data-i18n="register.common.confirmPassword.label">تأكيد كلمة المرور</label>
+                        <input id="seekerPasswordConfirm" type="password" data-i18n-placeholder="register.common.confirmPassword.placeholder" placeholder="أعد إدخال كلمة المرور" />
+                    </div>
+
+                    <div class="auth-submit">
+                        <button type="submit" class="btn btn-primary btn-full" data-i18n="register.submit">إنشاء الحساب</button>
+                    </div>
+
+                    <p class="auth-footer-text">
+                        <span data-i18n="register.haveAccount">لديك حساب بالفعل؟</span>
+                        <a href="seeker-login.html" data-i18n="register.login">تسجيل الدخول</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container footer-inner">
+            <div>
+                <h3 class="footer-logo" data-i18n="footer.logo">ماهر</h3>
+                <p data-i18n="footer.about">منصة عربية للتوظيف والتدريب وتطوير المهارات.</p>
+            </div>
+            <div class="footer-links">
+                <a href="jobs.html" data-i18n="footer.jobs">الوظائف</a>
+                <a href="course-access.html" data-i18n="footer.courses">الدورات</a>
+                <a href="contact.html" data-i18n="footer.contact">تواصل معنا</a>
+            </div>
+            <div class="footer-copy">
+                <span data-i18n="footer.copy">© <span id="year"></span> ماهر. جميع الحقوق محفوظة.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

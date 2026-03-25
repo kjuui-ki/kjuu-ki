@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ماهر | منصة التوظيف والتدريب</title>
+    <meta name="description" content="ماهر - منصة عربية للتوظيف والتدريب وتطوير المهارات.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+    <header class="main-header">
+        <div class="container header-inner">
+            <div class="header-main-group">
+                <a href="index.html" class="logo">
+                    <img src="assets/images/logo.png" alt="ماهر - منصة التوظيف والتدريب" class="logo-img">
+                </a>
+
+                <nav class="main-nav" id="mainNav">
+                    <a href="index.html" class="nav-link" data-i18n="nav.home"></a>
+                    <a href="seeker-login.html" class="nav-link" data-i18n="nav.seekers"></a>
+                    <a href="employer-login.html" class="nav-link" data-i18n="nav.employers"></a>
+                    <a href="jobs.html" class="nav-link" data-i18n="nav.jobs"></a>
+                    <a href="course-access.html" class="nav-link" data-i18n="nav.courses"></a>
+                </nav>
+            </div>
+
+            <div class="lang-switch">
+                <button class="lang-btn" data-lang="ar" data-i18n="header.langAr">العربية</button>
+                <button class="lang-btn" data-lang="en" data-i18n="header.langEn">English</button>
+            </div>
+
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container hero-inner">
+                <div class="hero-content">
+                    <h1 data-i18n="hero.title">طوّر مهاراتك، وابنِ مسارك المهني مع <span>ماهر</span></h1>
+                    <p data-i18n="hero.subtitle">
+                        منصة ماهر تجمع بين فرص التوظيف والدورات التدريبية لمساعدتك على بناء
+                        مستقبل مهني أقوى.
+                    </p>
+
+                    <form class="search-form" id="heroSearchForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="keyword" data-i18n="hero.search.keywordLabel">ابحث عن وظيفة</label>
+                                <input type="text" id="keyword" placeholder="المسمى الوظيفي، المهارة، الشركة" data-i18n-placeholder="hero.search.keywordPlaceholder" />
+                            </div>
+                            <div class="form-group">
+                                <label for="city" data-i18n="hero.search.cityLabel">المدينة</label>
+                                <select id="city">
+                                    <option value="" data-i18n="hero.search.city.any">كل المدن</option>
+                                    <option value="الرياض" data-i18n="hero.search.city.riyadh">الرياض</option>
+                                    <option value="جدة" data-i18n="hero.search.city.jeddah">جدة</option>
+                                    <option value="الدمام" data-i18n="hero.search.city.dammam">الدمام</option>
+                                    <option value="مكة" data-i18n="hero.search.city.mecca">مكة</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="category" data-i18n="hero.search.categoryLabel">التخصص</label>
+                                <select id="category">
+                                    <option value="" data-i18n="hero.search.category.any">كل التخصصات</option>
+                                    <option value="تقنية" data-i18n="hero.search.category.it">تقنية المعلومات</option>
+                                    <option value="إدارة" data-i18n="hero.search.category.business">إدارة وأعمال</option>
+                                    <option value="محاسبة" data-i18n="hero.search.category.accounting">محاسبة ومالية</option>
+                                    <option value="هندسة" data-i18n="hero.search.category.engineering">هندسة</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-full" data-i18n="hero.search.submit">بحث عن وظائف</button>
+                    </form>
+
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <span class="stat-number">+120</span>
+                            <span class="stat-label" data-i18n="hero.stats.jobs">وظيفة متاحة</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">+40</span>
+                            <span class="stat-label" data-i18n="hero.stats.companies">شركة مسجّلة</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">+60</span>
+                            <span class="stat-label" data-i18n="hero.stats.courses">دورة تدريبية</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="section" id="features">
+            <div class="container">
+                <div class="section-header">
+                    <h2 data-i18n="section.why.title">لماذا <span>ماهر</span>؟</h2>
+                    <p data-i18n="section.why.subtitle">منصة متكاملة تساعدك في كل مراحل رحلتك المهنية.</p>
+                </div>
+                <div class="grid grid-3">
+                    <div class="feature-card">
+                        <h3 data-i18n="section.why.card1.title">فرص وظيفية مميزة</h3>
+                        <p data-i18n="section.why.card1.text">اكتشف وظائف من شركات وشركاء موثوقين في مختلف المدن.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3 data-i18n="section.why.card2.title">دورات تدريبية عملية</h3>
+                        <p data-i18n="section.why.card2.text">تعلّم مهارات جديدة من خلال دورات مجانية ومدفوعة.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3 data-i18n="section.why.card3.title">ملف مهني احترافي</h3>
+                        <p data-i18n="section.why.card3.text">ابنِ ملفك المهني وشارك سيرتك الذاتية مع الشركات.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Latest Jobs Section (static placeholder for now) -->
+        <section class="section section-alt" id="latest-jobs">
+            <div class="container">
+                <div class="section-header">
+                    <h2 data-i18n="section.latestJobs.title">أحدث الوظائف</h2>
+                    <p data-i18n="section.latestJobs.subtitle">بعض الأمثلة على الوظائف التي يمكن أن تظهر في المنصة.</p>
+                </div>
+                <div class="grid grid-3">
+                    <article class="job-card">
+                        <h3 data-i18n="latestJobs.card1.title">مطوّر واجهات أمامية</h3>
+                        <p class="job-meta" data-i18n="latestJobs.card1.meta">شركة تقنية • الرياض • دوام كامل</p>
+                        <p class="job-text" data-i18n="latestJobs.card1.text">تطوير واجهات ويب تفاعلية باستخدام HTML و CSS و JavaScript.</p>
+                        <a href="jobs.html" class="job-link" data-i18n="latestJobs.card.link">استعراض الوظائف</a>
+                    </article>
+                    <article class="job-card">
+                        <h3 data-i18n="latestJobs.card2.title">محاسب مالي</h3>
+                        <p class="job-meta" data-i18n="latestJobs.card2.meta">شركة استثمار • جدة • دوام كامل</p>
+                        <p class="job-text" data-i18n="latestJobs.card2.text">إعداد التقارير المالية ومتابعة العمليات المحاسبية.</p>
+                        <a href="jobs.html" class="job-link" data-i18n="latestJobs.card.link">استعراض الوظائف</a>
+                    </article>
+                    <article class="job-card">
+                        <h3 data-i18n="latestJobs.card3.title">أخصائي موارد بشرية</h3>
+                        <p class="job-meta" data-i18n="latestJobs.card3.meta">شركة خدمات • الدمام • دوام جزئي</p>
+                        <p class="job-text" data-i18n="latestJobs.card3.text">المساهمة في توظيف الكفاءات وإدارة شؤون الموظفين.</p>
+                        <a href="jobs.html" class="job-link" data-i18n="latestJobs.card.link">استعراض الوظائف</a>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Courses Section -->
+        <section class="section" id="courses">
+            <div class="container">
+                <div class="section-header">
+                    <h2 data-i18n="section.courses.title">الدورات التدريبية</h2>
+                    <p data-i18n="section.courses.subtitle">طوّر مهاراتك من خلال دورات متخصصة تناسب مستواك.</p>
+                </div>
+                <div class="grid grid-3">
+                    <div class="course-card">
+                        <span class="badge badge-free" data-i18n="badge.free">مجانية</span>
+                        <h3 data-i18n="courses.card1.title">أساسيات تطوير الويب</h3>
+                        <p data-i18n="courses.card1.text">تعرف على أساسيات HTML و CSS و JavaScript.</p>
+                        <p class="course-meta" data-i18n="courses.card1.meta">مستوى: مبتدئ</p>
+                    </div>
+                    <div class="course-card">
+                        <span class="badge badge-paid" data-i18n="badge.paid">مدفوعة</span>
+                        <h3 data-i18n="courses.card2.title">مسار مطوّر واجهات أمامية</h3>
+                        <p data-i18n="courses.card2.text">مسار متكامل لبناء واجهات احترافية.</p>
+                        <p class="course-meta" data-i18n="courses.card2.meta">مستوى: متوسط</p>
+                    </div>
+                    <div class="course-card">
+                        <span class="badge badge-paid" data-i18n="badge.paid">مدفوعة</span>
+                        <h3 data-i18n="courses.card3.title">مهارات التقديم على الوظائف</h3>
+                        <p data-i18n="courses.card3.text">تعلّم كيف تكتب سيرة ذاتية وخطاب تعريفي احترافي.</p>
+                        <p class="course-meta" data-i18n="courses.card3.meta">مستوى: لجميع المستويات</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section class="section section-alt" id="how-it-works">
+            <div class="container">
+                <div class="section-header">
+                    <h2 data-i18n="section.howItWorks.title">كيف تعمل منصة ماهر؟</h2>
+                </div>
+                <div class="grid grid-3 steps-grid">
+                    <div class="step-card">
+                        <span class="step-number">1</span>
+                        <h3 data-i18n="how.step1.title">إنشاء حساب</h3>
+                        <p data-i18n="how.step1.text">قم بإنشاء حساب كباحث عن عمل أو كمسؤول شركة.</p>
+                    </div>
+                    <div class="step-card">
+                        <span class="step-number">2</span>
+                        <h3 data-i18n="how.step2.title">استعراض الفرص</h3>
+                        <p data-i18n="how.step2.text">تصفّح الوظائف أو الدورات التدريبية المناسبة لك.</p>
+                    </div>
+                    <div class="step-card">
+                        <span class="step-number">3</span>
+                        <h3 data-i18n="how.step3.title">ابدأ رحلتك</h3>
+                        <p data-i18n="how.step3.text">قدّم على الوظائف أو التحق بالدورات وابدأ التطوير.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Career Banner Section -->
+        <section class="career-banner">
+            <div class="container career-banner-inner">
+                <h2 data-i18n="section.careerBanner.title">ابدأ رحلتك المهنية مع ماهر</h2>
+                <p data-i18n="section.careerBanner.text">
+                    انضم إلى منصة ماهر لبناء ملف مهني قوي، استكشف فرص التوظيف والدورات التدريبية
+                    التي تناسب طموحاتك، وابدأ اليوم أول خطوة في مسارك المهني.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container footer-inner">
+            <div>
+				<h3 class="footer-logo" data-i18n="footer.logo">ماهر</h3>
+				<p data-i18n="footer.about">منصة عربية للتوظيف والتدريب وتطوير المهارات.</p>
+            </div>
+            <div class="footer-links">
+                <a href="jobs.html" data-i18n="footer.jobs">الوظائف</a>
+                <a href="course-access.html" data-i18n="footer.courses">الدورات</a>
+                <a href="contact.html" data-i18n="footer.contact">تواصل معنا</a>
+            </div>
+            <div class="footer-copy">
+                <span data-i18n="footer.copy">© <span id="year"></span> ماهر. جميع الحقوق محفوظة.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
