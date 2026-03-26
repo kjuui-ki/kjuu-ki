@@ -129,6 +129,7 @@ img {
     height: auto;
     display: block;
     object-fit: contain;
+    background-color: transparent;
     transition: transform 0.18s ease;
 }
 
