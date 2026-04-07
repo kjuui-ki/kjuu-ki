@@ -123,6 +123,8 @@ const maherTranslations = {
 
         "page.apply.title": "التقديم على وظيفة",
         "page.apply.text": "سيتم إنشاء نموذج التقديم وربطه بقاعدة البيانات في خطوة مخصصة.",
+        "page.myApplications.title": "طلباتي",
+        "page.myApplications.text": "ستظهر هنا جميع الوظائف التي قدّمت عليها كباحث عن عمل.",
         "page.dashboard.title": "لوحة التحكم (المسؤول)",
         "page.dashboard.text": "سيتم عرض الوظائف والمتقدمين وإدارة المحتوى هنا في خطوة لاحقة.",
         "page.jobDetails.title": "تفاصيل الوظيفة",
@@ -282,6 +284,8 @@ const maherTranslations = {
 
         "page.apply.title": "Apply for a Job",
         "page.apply.text": "An application form linked to the database will be created in a dedicated step.",
+        "page.myApplications.title": "My Applications",
+        "page.myApplications.text": "All jobs you applied to as a job seeker will appear here.",
         "page.dashboard.title": "Admin Dashboard",
         "page.dashboard.text": "Jobs, applicants, and content management will be shown here later.",
         "page.jobDetails.title": "Job Details",
@@ -376,14 +380,6 @@ document.addEventListener("DOMContentLoaded", function () {
     if (navToggle && mainNav) {
         navToggle.addEventListener("click", function () {
             mainNav.classList.toggle("open");
-        });
-    }
-
-    var heroSearchForm = document.getElementById("heroSearchForm");
-    if (heroSearchForm) {
-        heroSearchForm.addEventListener("submit", function (e) {
-            e.preventDefault();
-            window.location.href = "jobs.html";
         });
     }
 

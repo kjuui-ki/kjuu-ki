@@ -36,9 +36,54 @@
     </header>
 
     <main class="section">
-        <div class="container">
-            <h1 data-i18n="page.apply.title">التقديم على وظيفة</h1>
-            <p data-i18n="page.apply.text">سيتم إنشاء نموذج التقديم وربطه بقاعدة البيانات في خطوة مخصصة.</p>
+        <div class="container apply-page">
+            <div class="apply-shell">
+                <div class="apply-card">
+                    <div class="apply-job-summary" id="applyJobSummary">
+                        <h1 data-i18n="page.apply.title">التقديم على وظيفة</h1>
+                        <p data-i18n="page.apply.text">سيتم عرض تفاصيل الوظيفة هنا ثم يمكنك إرسال طلبك مباشرة.</p>
+                    </div>
+
+                    <form id="jobApplyForm">
+                        <div class="apply-form-grid">
+                            <div class="apply-form-group full-width">
+                                <label for="fullName">الاسم الكامل</label>
+                                <input id="fullName" type="text" placeholder="اكتب اسمك الكامل" autocomplete="name" />
+                            </div>
+
+                            <div class="apply-form-group">
+                                <label for="phone">رقم الجوال</label>
+                                <input id="phone" type="tel" placeholder="05XXXXXXXX" autocomplete="tel" />
+                            </div>
+
+                            <div class="apply-form-group">
+                                <label for="specialization">التخصص</label>
+                                <input id="specialization" type="text" placeholder="مثال: تقنية المعلومات" />
+                            </div>
+
+                            <div class="apply-form-group full-width">
+                                <label for="skills">المهارات</label>
+                                <textarea id="skills" placeholder="اذكر أهم مهاراتك وخبراتك بشكل مختصر"></textarea>
+                            </div>
+
+                            <div class="apply-form-group full-width">
+                                <label for="cvFile">رفع ملف CV</label>
+                                <div class="file-input-box">
+                                    <input id="cvFile" type="file" accept=".pdf,.doc,.docx" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="applyFormStatus" class="form-status" style="display: none;"></div>
+
+                        <div class="apply-actions">
+                            <button type="submit" id="submitApplicationBtn" class="btn btn-primary apply-submit">إرسال الطلب</button>
+                        </div>
+                    </form>
+
+                    <p class="page-note">يُسمح بطلب واحد فقط لكل وظيفة، وسيتم حفظه بحالة pending.</p>
+                </div>
+            </div>
         </div>
     </main>
 
@@ -56,5 +101,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="assets/js/supabaseClient.js"></script>
     <script src="assets/js/main.js"></script>
+    <script src="assets/js/apply-page.js"></script>
 </body>
 </html>

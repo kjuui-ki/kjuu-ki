@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>الوظائف | منصة ماهر</title>
+    <title>طلباتي | منصة ماهر</title>
     <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body>
@@ -37,13 +37,13 @@
 
     <main class="section">
         <div class="container">
-            <div class="jobs-page-hero">
-                <h1 data-i18n="page.jobs.title">الوظائف</h1>
-                <p data-i18n="page.jobs.text">استعرض الوظائف المتاحة، واطّلع على تفاصيل كل فرصة، ثم انتقل إلى صفحة التقديم لإكمال الطلب.</p>
+            <div style="margin-bottom: 1.5rem;">
+                <h1 data-i18n="page.myApplications.title">طلباتي</h1>
+                <p data-i18n="page.myApplications.text">ستظهر هنا جميع الوظائف التي قدّمت عليها كباحث عن عمل.</p>
             </div>
 
-            <div id="jobsCardsGrid" class="jobs-grid">
-                <!-- قائمة الوظائف ستظهر هنا -->
+            <div id="myApplicationsList" class="applications-list" style="margin-top: 1.5rem;">
+                <!-- الطلبات ستظهر هنا -->
             </div>
         </div>
     </main>
@@ -62,6 +62,5 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="assets/js/supabaseClient.js"></script>
     <script src="assets/js/main.js"></script>
-    <script src="assets/js/jobs-page.js"></script>
 </body>
 </html>

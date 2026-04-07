@@ -88,12 +88,13 @@ img {
 }
 
 .main-header {
-    background: linear-gradient(135deg, #000000, #020b3a 45%, #061b63);
-    border-bottom: 1px solid rgba(15, 23, 42, 0.9);
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.92), rgba(2, 11, 58, 0.92) 45%, rgba(6, 27, 99, 0.92));
+    border-bottom: 1px solid rgba(148, 163, 184, 0.22);
     position: sticky;
     top: 0;
     z-index: 50;
-    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.8);
+    box-shadow: 0 10px 30px rgba(2, 6, 23, 0.35);
+    backdrop-filter: blur(8px);
 }
 
 .header-inner {
@@ -144,43 +145,31 @@ img {
 .main-nav {
     display: flex;
     align-items: center;
-    gap: 1.2rem;
+    gap: 0.55rem;
+    padding: 0.3rem;
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.04);
 }
 
 .nav-link {
-    font-size: 0.95rem;
-    color: var(--color-white);
-    font-weight: 600;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 700;
     position: relative;
-    padding-bottom: 0.2rem;
-    transition: color 0.2s ease;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    transition: color 0.2s ease, background-color 0.2s ease;
 }
 
 .nav-link::after {
-    content: "";
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    height: 2px;
-    width: 0;
-    background: linear-gradient(135deg, var(--color-primary-light), var(--color-accent));
-    border-radius: 999px;
-    transition: width 0.2s ease;
-}
-
-html[dir="ltr"] .nav-link::after {
-    left: 0;
-    right: auto;
-}
-
-.nav-link:hover::after,
-.nav-link.active::after {
-    width: 100%;
+    display: none;
 }
 
 .nav-link:hover,
 .nav-link.active {
-    color: var(--color-accent);
+    color: #ffffff;
+    background: rgba(79, 209, 255, 0.16);
 }
 
 html[dir="rtl"] .logo {
@@ -199,6 +188,43 @@ html[dir="ltr"] .logo {
 
 .auth-actions {
     display: none;
+}
+
+.user-menu {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-inline-start: auto;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(148, 163, 184, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #e5e7eb;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.8rem;
+    color: #e5e7eb;
+}
+
+.user-name {
+    font-weight: 600;
+}
+
+.user-role {
+    font-size: 0.75rem;
+    color: #a5b4fc;
 }
 
 .lang-switch {
@@ -500,6 +526,196 @@ html[dir="ltr"] .logo {
     color: var(--color-primary);
 }
 
+.jobs-page-hero {
+    margin-bottom: 1.6rem;
+}
+
+.jobs-page-hero h1 {
+    font-size: 2rem;
+    margin-bottom: 0.45rem;
+}
+
+.jobs-page-hero p {
+    color: var(--color-muted);
+    max-width: 42rem;
+}
+
+.jobs-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.job-card-modern {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(245, 249, 255, 0.98));
+    border-radius: 20px;
+    padding: 1.25rem;
+    box-shadow: 0 14px 32px rgba(10, 51, 184, 0.12);
+    border: 1px solid rgba(10, 51, 184, 0.1);
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+
+.job-card-modern:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 42px rgba(10, 51, 184, 0.2);
+    border-color: rgba(10, 51, 184, 0.22);
+}
+
+.job-card-topline {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.75rem;
+    align-items: flex-start;
+    margin-bottom: 0.85rem;
+}
+
+.job-company {
+    font-size: 0.85rem;
+    color: var(--color-primary);
+    font-weight: 700;
+}
+
+.job-excerpt {
+    color: var(--color-muted);
+    font-size: 0.92rem;
+    margin-top: 0.55rem;
+    line-height: 1.8;
+}
+
+.job-card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin-top: 0.9rem;
+}
+
+.job-card-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
+.job-apply-link {
+    min-width: 128px;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+    color: var(--color-white);
+    box-shadow: 0 10px 22px rgba(10, 51, 184, 0.28);
+}
+
+.job-apply-link:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 14px 28px rgba(10, 51, 184, 0.34);
+}
+
+.job-apply-link.is-disabled {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.apply-page {
+    min-height: calc(100vh - 160px);
+    display: grid;
+    place-items: center;
+}
+
+.apply-shell {
+    width: 100%;
+    max-width: 760px;
+}
+
+.apply-card {
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: 24px;
+    padding: 1.5rem;
+    box-shadow: 0 16px 36px rgba(10, 51, 184, 0.14);
+    border: 1px solid rgba(10, 51, 184, 0.1);
+}
+
+.apply-job-summary {
+    margin-bottom: 1.2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.22);
+}
+
+.apply-job-summary h1 {
+    font-size: 1.6rem;
+    margin-bottom: 0.35rem;
+}
+
+.apply-job-summary p {
+    color: var(--color-muted);
+}
+
+.apply-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.9rem;
+}
+
+.apply-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.apply-form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.apply-form-group label {
+    font-size: 0.82rem;
+    color: var(--color-muted);
+    font-weight: 600;
+}
+
+.apply-form-group input,
+.apply-form-group textarea {
+    width: 100%;
+    border-radius: 14px;
+    border: 1px solid rgba(10, 51, 184, 0.16);
+    padding: 0.75rem 0.85rem;
+    font: inherit;
+    outline: none;
+    background: #f9fbff;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.apply-form-group textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.apply-form-group input:focus,
+.apply-form-group textarea:focus {
+    border-color: var(--color-primary);
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(10, 51, 184, 0.14);
+}
+
+.file-input-box {
+    padding: 0.9rem 1rem;
+    border-radius: 14px;
+    border: 1px dashed rgba(10, 51, 184, 0.24);
+    background: rgba(10, 51, 184, 0.04);
+}
+
+.apply-actions {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 1.1rem;
+}
+
+.apply-submit {
+    min-width: 180px;
+}
+
+.page-note {
+    color: var(--color-muted);
+    font-size: 0.88rem;
+    margin-top: 0.9rem;
+}
+
 .badge {
     display: inline-flex;
     align-items: center;
@@ -517,6 +733,43 @@ html[dir="ltr"] .logo {
 .badge-paid {
     background: rgba(245, 158, 11, 0.1);
     color: #d97706;
+}
+
+.badge-pending {
+    background: rgba(59, 130, 246, 0.1);
+    color: #2563eb;
+}
+
+.badge-success {
+    background: rgba(34, 197, 94, 0.1);
+    color: #15803d;
+}
+
+.badge-danger {
+    background: rgba(239, 68, 68, 0.1);
+    color: #b91c1c;
+}
+
+.applications-list {
+    display: grid;
+    gap: 1rem;
+}
+
+.application-card {
+    display: block;
+}
+
+.application-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    align-items: center;
+    margin-top: 0.9rem;
+}
+
+.application-date {
+    font-size: 0.85rem;
+    color: var(--color-muted);
 }
 
 .steps-grid {
@@ -700,8 +953,37 @@ html[dir="ltr"] .logo {
     color: var(--color-primary);
 }
 
-/* Register page */
-.register-page {}
+.form-status {
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
+    border-radius: var(--radius-sm);
+    padding: 0.5rem 0.75rem;
+    display: none;
+}
+
+.form-status-error {
+    display: block;
+    background: rgba(239, 68, 68, 0.08);
+    color: #b91c1c;
+    border: 1px solid rgba(248, 113, 113, 0.8);
+}
+
+.form-status-success {
+    display: block;
+    background: rgba(34, 197, 94, 0.08);
+    color: #15803d;
+    border: 1px solid rgba(52, 211, 153, 0.8);
+}
+
+.btn-loading {
+    opacity: 0.7;
+    cursor: default;
+}
+
+.btn-loading:hover {
+    transform: none;
+    box-shadow: inherit;
+}
 
 .register-card {
     max-width: 540px;
@@ -881,6 +1163,182 @@ html[dir="ltr"] .logo {
     }
 
     .grid-3 {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* Role-based experience */
+.role-quick-nav {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    background: linear-gradient(90deg, rgba(2, 11, 58, 0.95), rgba(6, 27, 99, 0.95));
+    backdrop-filter: blur(4px);
+}
+
+.role-quick-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.65rem 1.5rem;
+}
+
+.role-quick-title {
+    color: #dbeafe;
+    font-weight: 700;
+    font-size: 0.95rem;
+    white-space: nowrap;
+}
+
+.role-quick-links {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    flex-wrap: wrap;
+}
+
+.role-quick-link {
+    border: 1px solid rgba(191, 219, 254, 0.35);
+    background: rgba(255, 255, 255, 0.08);
+    color: #eff6ff;
+    border-radius: 999px;
+    padding: 0.32rem 0.82rem;
+    font-size: 0.82rem;
+    transition: 0.2s ease;
+}
+
+.role-quick-link:hover {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(191, 219, 254, 0.75);
+}
+
+.role-home {
+    padding: 3rem 0 3.2rem;
+}
+
+.role-home-hero {
+    border-radius: 22px;
+    padding: 1.8rem 1.6rem;
+    margin-bottom: 1rem;
+    color: #ffffff;
+    box-shadow: 0 20px 40px rgba(2, 6, 23, 0.28);
+}
+
+.role-home-hero-admin {
+    background: linear-gradient(135deg, #111827, #334155);
+}
+
+.role-home-welcome {
+    opacity: 0.85;
+    margin-bottom: 0.3rem;
+    font-size: 0.92rem;
+}
+
+.role-home-hero h1 {
+    font-size: 1.9rem;
+    margin-bottom: 0.45rem;
+}
+
+.role-home-hero p {
+    max-width: 760px;
+}
+
+.role-home-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.role-home-card {
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: 16px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    padding: 1.05rem 1rem;
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.role-home-card h3 {
+    font-size: 1rem;
+    margin-bottom: 0.3rem;
+}
+
+.role-home-card p {
+    color: #475569;
+    font-size: 0.88rem;
+}
+
+.role-home-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 30px rgba(15, 23, 42, 0.2);
+}
+
+.role-home-grid-admin .role-home-card {
+    min-height: 140px;
+    border-left: 4px solid var(--color-primary);
+}
+
+body.role-job-seeker {
+    background: linear-gradient(to bottom, #00183f, #054c94 38%, #eaf4ff 100%);
+}
+
+body.role-job-seeker .main-header {
+    background: linear-gradient(135deg, #00122f, #023b78);
+}
+
+body.role-job-seeker .role-home-hero {
+    background: linear-gradient(135deg, #00366b, #0a78c2);
+}
+
+body.role-company {
+    background: linear-gradient(to bottom, #122600, #264d00 38%, #f3fbe8 100%);
+}
+
+body.role-company .main-header {
+    background: linear-gradient(135deg, #102300, #2e5f00);
+}
+
+body.role-company .role-quick-nav {
+    background: linear-gradient(90deg, rgba(16, 35, 0, 0.95), rgba(46, 95, 0, 0.95));
+}
+
+body.role-company .role-home-hero {
+    background: linear-gradient(135deg, #2a5600, #4d8f00);
+}
+
+body.role-super-admin {
+    background: linear-gradient(to bottom, #111827, #0f172a 42%, #edf2f7 100%);
+}
+
+body.role-super-admin .main-header {
+    background: linear-gradient(135deg, #111827, #1f2937);
+}
+
+body.role-super-admin .role-home-hero-admin {
+    background: linear-gradient(135deg, #0f172a, #475569);
+}
+
+@media (max-width: 900px) {
+    .role-home-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 720px) {
+    .role-quick-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0.7rem 1rem;
+    }
+
+    .role-home {
+        padding-top: 2rem;
+    }
+
+    .role-home-hero h1 {
+        font-size: 1.45rem;
+    }
+
+    .role-home-grid {
         grid-template-columns: minmax(0, 1fr);
     }
 }

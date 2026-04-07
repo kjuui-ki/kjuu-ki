@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>الوظائف | منصة ماهر</title>
+    <title>ملف الشركة | منصة ماهر</title>
     <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body>
@@ -35,15 +35,34 @@
         </div>
     </header>
 
-    <main class="section">
+    <main class="section profile-page">
         <div class="container">
-            <div class="jobs-page-hero">
-                <h1 data-i18n="page.jobs.title">الوظائف</h1>
-                <p data-i18n="page.jobs.text">استعرض الوظائف المتاحة، واطّلع على تفاصيل كل فرصة، ثم انتقل إلى صفحة التقديم لإكمال الطلب.</p>
-            </div>
+            <h1>ملف الشركة</h1>
+            <p class="section-intro">قم بتحديث بيانات شركتك الأساسية.</p>
 
-            <div id="jobsCardsGrid" class="jobs-grid">
-                <!-- قائمة الوظائف ستظهر هنا -->
+            <div class="auth-card">
+                <form id="companyProfileForm" class="profile-form">
+                    <div class="auth-form-group">
+                        <label for="companyName">اسم الشركة</label>
+                        <input id="companyName" type="text" placeholder="اسم الشركة" />
+                    </div>
+                    <div class="auth-form-group">
+                        <label for="companyPhone">رقم التواصل</label>
+                        <input id="companyPhone" type="tel" placeholder="مثال: 05XXXXXXXX" />
+                    </div>
+                    <div class="auth-form-group">
+                        <label for="companySpecialization">مجال العمل / التخصص</label>
+                        <input id="companySpecialization" type="text" placeholder="مثال: تقنية، تعليم، خدمات" />
+                    </div>
+                    <div class="auth-form-group">
+                        <label for="companyServices">نبذة وخدمات الشركة</label>
+                        <textarea id="companyServices" rows="3" placeholder="اكتب وصفًا مختصرًا عن الشركة والخدمات"></textarea>
+                    </div>
+
+                    <div class="auth-submit">
+                        <button type="submit" class="btn btn-primary btn-full">حفظ</button>
+                    </div>
+                </form>
             </div>
         </div>
     </main>
@@ -52,6 +71,12 @@
         <div class="container footer-inner">
             <div>
                 <h3 class="footer-logo" data-i18n="footer.logo">ماهر</h3>
+                <p data-i18n="footer.about">منصة عربية للتوظيف والتدريب وتطوير المهارات.</p>
+            </div>
+            <div class="footer-links">
+                <a href="jobs.html" data-i18n="footer.jobs">الوظائف</a>
+                <a href="course-access.html" data-i18n="footer.courses">الدورات</a>
+                <a href="contact.html" data-i18n="footer.contact">تواصل معنا</a>
             </div>
             <div class="footer-copy">
                 <span data-i18n="footer.copy">© <span id="year"></span> ماهر. جميع الحقوق محفوظة.</span>
@@ -62,6 +87,5 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="assets/js/supabaseClient.js"></script>
     <script src="assets/js/main.js"></script>
-    <script src="assets/js/jobs-page.js"></script>
 </body>
 </html>

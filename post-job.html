@@ -38,7 +38,121 @@
     <main class="section">
         <div class="container">
             <h1 data-i18n="page.postJob.title">نشر وظيفة</h1>
-            <p data-i18n="page.postJob.text">سيتم إنشاء نموذج نشر الوظائف وربطه بصلاحيات المسؤول في الخطوات القادمة.</p>
+            
+            <form id="postJobForm" class="form-box" style="max-width: 700px; margin: 2rem auto;">
+                <div class="form-group">
+                    <label for="jobTitle" data-i18n="form.jobTitle">اسم الوظيفة *</label>
+                    <input 
+                        type="text" 
+                        id="jobTitle" 
+                        name="jobTitle" 
+                        required 
+                        placeholder="مثال: مهندس البرمجيات"
+                        style="width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;"
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label for="jobDescription" data-i18n="form.jobDescription">وصف الوظيفة *</label>
+                    <textarea 
+                        id="jobDescription" 
+                        name="jobDescription" 
+                        required 
+                        rows="6"
+                        placeholder="اكتب وصفاً تفصيلياً للوظيفة"
+                        style="width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; font-family: inherit;"
+                    ></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="jobRequirements" data-i18n="form.jobRequirements">المتطلبات *</label>
+                    <textarea 
+                        id="jobRequirements" 
+                        name="jobRequirements" 
+                        required 
+                        rows="4"
+                        placeholder="حدد المتطلبات والمهارات المطلوبة"
+                        style="width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; font-family: inherit;"
+                    ></textarea>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label for="jobSalary" data-i18n="form.jobSalary">الراتب المتوقع</label>
+                        <input 
+                            type="text" 
+                            id="jobSalary" 
+                            name="jobSalary" 
+                            placeholder="مثال: 5000 - 8000 ريال"
+                            style="width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;"
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="jobLocation" data-i18n="form.jobLocation">الموقع *</label>
+                        <input 
+                            type="text" 
+                            id="jobLocation" 
+                            name="jobLocation" 
+                            required
+                            placeholder="مثال: الرياض"
+                            style="width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;"
+                        />
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label for="jobType" data-i18n="form.jobType">نوع التوظيف *</label>
+                        <select 
+                            id="jobType" 
+                            name="jobType" 
+                            required
+                            style="width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;"
+                        >
+                            <option value="">اختر نوع التوظيف</option>
+                            <option value="دوام كامل">دوام كامل</option>
+                            <option value="دوام جزئي">دوام جزئي</option>
+                            <option value="عقد مؤقت">عقد مؤقت</option>
+                            <option value="تدريب">تدريب</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="jobCategory" data-i18n="form.jobCategory">المجال *</label>
+                        <select 
+                            id="jobCategory" 
+                            name="jobCategory" 
+                            required
+                            style="width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;"
+                        >
+                            <option value="">اختر المجال</option>
+                            <option value="تقنية المعلومات">تقنية المعلومات</option>
+                            <option value="التسويق">التسويق</option>
+                            <option value="المبيعات">المبيعات</option>
+                            <option value="الموارد البشرية">الموارد البشرية</option>
+                            <option value="التصميم">التصميم</option>
+                            <option value="الهندسة">الهندسة</option>
+                            <option value="التعليم">التعليم</option>
+                            <option value="أخرى">أخرى</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="jobDeadline" data-i18n="form.jobDeadline">آخر موعد للتقديم</label>
+                    <input 
+                        type="date" 
+                        id="jobDeadline" 
+                        name="jobDeadline"
+                        style="width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;"
+                    />
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1.5rem; padding: 14px;">
+                    نشر الوظيفة
+                </button>
+            </form>
         </div>
     </main>
 
