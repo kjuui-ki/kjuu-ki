@@ -35,10 +35,107 @@
         </div>
     </header>
 
-    <main class="section">
+    <main class="section" id="adminDashboardApp">
         <div class="container">
-            <h1 data-i18n="page.dashboard.title">لوحة التحكم (المسؤول)</h1>
-            <p data-i18n="page.dashboard.text">سيتم عرض الوظائف والمتقدمين وإدارة المحتوى هنا في خطوة لاحقة.</p>
+            <div class="dashboard-head">
+                <div>
+                    <h1>لوحة تحكم الأدمن</h1>
+                    <p class="section-intro">عرض كامل للباحثين، الشركات، الوظائف، والمتقدمين مع صلاحيات الإدارة.</p>
+                </div>
+                <div class="dashboard-admin-meta" id="adminIdentityBox">الأدمن: -</div>
+            </div>
+
+            <section id="stats" class="dashboard-section">
+                <h2>المؤشرات العامة</h2>
+                <div class="dashboard-stats-grid">
+                    <article class="dashboard-stat-card">
+                        <span class="dashboard-stat-label">عدد الباحثين عن عمل</span>
+                        <strong id="statSeekers">0</strong>
+                    </article>
+                    <article class="dashboard-stat-card">
+                        <span class="dashboard-stat-label">عدد الشركات</span>
+                        <strong id="statCompanies">0</strong>
+                    </article>
+                    <article class="dashboard-stat-card">
+                        <span class="dashboard-stat-label">عدد الوظائف المنشورة</span>
+                        <strong id="statJobs">0</strong>
+                    </article>
+                    <article class="dashboard-stat-card">
+                        <span class="dashboard-stat-label">عدد الطلبات / المتقدمين</span>
+                        <strong id="statApplications">0</strong>
+                    </article>
+                </div>
+            </section>
+
+            <section id="seekers" class="dashboard-section">
+                <h2>الباحثون عن عمل</h2>
+                <div class="dashboard-table-wrap">
+                    <table class="dashboard-table">
+                        <thead>
+                            <tr>
+                                <th>الاسم</th>
+                                <th>البريد</th>
+                                <th>رقم الجوال</th>
+                                <th>التخصص</th>
+                                <th>رابط CV</th>
+                            </tr>
+                        </thead>
+                        <tbody id="seekersTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="companies" class="dashboard-section">
+                <h2>الشركات</h2>
+                <div class="dashboard-table-wrap">
+                    <table class="dashboard-table">
+                        <thead>
+                            <tr>
+                                <th>اسم الشركة</th>
+                                <th>البريد</th>
+                                <th>رقم الجوال</th>
+                                <th>المجال / الخدمات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="companiesTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="jobs" class="dashboard-section">
+                <h2>الوظائف المنشورة</h2>
+                <div class="dashboard-table-wrap">
+                    <table class="dashboard-table">
+                        <thead>
+                            <tr>
+                                <th>عنوان الوظيفة</th>
+                                <th>الشركة</th>
+                                <th>تاريخ النشر</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="jobsTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="applications" class="dashboard-section">
+                <h2>المتقدمون</h2>
+                <div class="dashboard-table-wrap">
+                    <table class="dashboard-table">
+                        <thead>
+                            <tr>
+                                <th>اسم المتقدم</th>
+                                <th>الوظيفة</th>
+                                <th>تاريخ التقديم</th>
+                                <th>الحالة</th>
+                                <th>رابط CV</th>
+                            </tr>
+                        </thead>
+                        <tbody id="applicationsTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
         </div>
     </main>
 
@@ -56,5 +153,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="assets/js/supabaseClient.js"></script>
     <script src="assets/js/main.js"></script>
+    <script src="assets/js/dashboard.js"></script>
 </body>
 </html>

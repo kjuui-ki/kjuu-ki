@@ -33,10 +33,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         return params.get("job_id") || "";
     }
 
-    function sanitizeFileName(name) {
-        return String(name || "cv").replace(/[^a-zA-Z0-9._-]+/g, "_");
-    }
-
     function escapeText(value) {
         return String(value || "")
             .replace(/&/g, "&amp;")
@@ -47,8 +43,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     async function getUserRole(user) {
-        const metadataRole = user && user.user_metadata && user.user_metadata.role;
-        if (metadataRole) return metadataRole;
         if (!user) return null;
         try {
             const { data } = await supabaseClient
@@ -91,6 +85,24 @@ document.addEventListener("DOMContentLoaded", async function () {
         };
     }
 
+    async function loadSeekerProfile(userId) {
+        try {
+            const { data, error } = await supabaseClient
+                .from("profiles")
+                .select("full_name, phone, specialization, skills, cv_url")
+                .eq("id", userId)
+                .single();
+
+            if (error) {
+                return null;
+            }
+
+            return data || null;
+        } catch (error) {
+            return null;
+        }
+    }
+
     try {
         if (typeof supabaseClient === "undefined" || !supabaseClient) {
             summary.innerHTML = '<h1>التقديم على وظيفة</h1><p>تعذر الاتصال بقاعدة البيانات.</p>';
@@ -105,14 +117,13 @@ document.addEventListener("DOMContentLoaded", async function () {
             return;
         }
 
-        const { data: sessionData } = await supabaseClient.auth.getSession();
-        const session = sessionData && sessionData.session;
-        if (!session || !session.user) {
+        const { data: userData } = await supabaseClient.auth.getUser();
+        const user = userData && userData.user ? userData.user : null;
+        if (!user) {
             window.location.href = "course-access.html";
             return;
         }
 
-        const user = session.user;
         const role = await getUserRole(user);
 
         if (role === "company") {
@@ -145,8 +156,40 @@ document.addEventListener("DOMContentLoaded", async function () {
         const skillsInput = document.getElementById("skills");
         const cvInput = document.getElementById("cvFile");
 
-        if (fullNameInput && user.user_metadata && user.user_metadata.full_name) {
-            fullNameInput.value = user.user_metadata.full_name;
+        const profileData = await loadSeekerProfile(user.id);
+        let profileCvUrl = profileData && profileData.cv_url ? profileData.cv_url : "";
+
+        if (fullNameInput) {
+            fullNameInput.value =
+                (profileData && profileData.full_name) ||
+                (user.user_metadata && user.user_metadata.full_name) ||
+                "";
+        }
+        if (phoneInput) {
+            phoneInput.value = (profileData && profileData.phone) || "";
+        }
+        if (specializationInput) {
+            specializationInput.value = (profileData && profileData.specialization) || "";
+        }
+        if (skillsInput) {
+            skillsInput.value = (profileData && profileData.skills) || "";
+        }
+
+        if (cvInput) {
+            cvInput.required = false;
+            cvInput.disabled = true;
+            cvInput.title = "يتم استخدام السيرة الذاتية المحفوظة في الملف الشخصي";
+        }
+
+        if (profileCvUrl) {
+            var cvNote = document.createElement("p");
+            cvNote.className = "page-note";
+            cvNote.innerHTML = 'تم إرفاق السيرة الذاتية تلقائيًا: <a href="' + escapeText(profileCvUrl) + '" target="_blank" rel="noopener noreferrer">عرض CV</a>';
+            form.appendChild(cvNote);
+        } else {
+            setStatus("error", "لا يوجد CV مرفوع في ملفك الشخصي. يرجى رفع السيرة الذاتية من صفحة الملف الشخصي أولاً.");
+            submitBtn.disabled = true;
+            submitBtn.textContent = "ارفع CV من الملف الشخصي";
         }
 
         const duplicateCheck = await supabaseClient
@@ -171,10 +214,14 @@ document.addEventListener("DOMContentLoaded", async function () {
             const phone = phoneInput ? phoneInput.value.trim() : "";
             const specialization = specializationInput ? specializationInput.value.trim() : "";
             const skills = skillsInput ? skillsInput.value.trim() : "";
-            const file = cvInput && cvInput.files ? cvInput.files[0] : null;
 
-            if (!fullName || !phone || !specialization || !skills || !file) {
-                setStatus("error", "يرجى تعبئة جميع الحقول وإرفاق ملف CV.");
+            if (!fullName || !phone || !specialization || !skills) {
+                setStatus("error", "يرجى تعبئة جميع الحقول المطلوبة.");
+                return;
+            }
+
+            if (!profileCvUrl) {
+                setStatus("error", "يجب رفع السيرة الذاتية من صفحة الملف الشخصي قبل التقديم.");
                 return;
             }
 
@@ -194,21 +241,19 @@ document.addEventListener("DOMContentLoaded", async function () {
                     return;
                 }
 
-                const fileName = sanitizeFileName(file.name);
-                const storagePath = user.id + "/" + Date.now() + "-" + fileName;
-                const uploadResult = await supabaseClient.storage
-                    .from("cvs")
-                    .upload(storagePath, file, {
-                        contentType: file.type || "application/octet-stream",
-                        upsert: false
-                    });
+                const profileUpdate = await supabaseClient
+                    .from("profiles")
+                    .update({
+                        full_name: fullName,
+                        phone: phone,
+                        specialization: specialization,
+                        skills: skills
+                    })
+                    .eq("id", user.id);
 
-                if (uploadResult.error) {
-                    throw uploadResult.error;
+                if (profileUpdate.error) {
+                    console.warn("Profile quick update failed", profileUpdate.error);
                 }
-
-                const publicUrlData = supabaseClient.storage.from("cvs").getPublicUrl(storagePath);
-                const cvUrl = publicUrlData && publicUrlData.data ? publicUrlData.data.publicUrl : storagePath;
 
                 const insertResult = await supabaseClient.from("applications").insert([
                     {
@@ -218,7 +263,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                         phone: phone,
                         specialization: specialization,
                         skills: skills,
-                        cv_url: cvUrl,
+                        cv_url: profileCvUrl,
                         status: "pending",
                         created_at: new Date().toISOString()
                     }
@@ -239,8 +284,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 if (rawMessage.indexOf("already exists") !== -1 || rawMessage.indexOf("duplicate") !== -1) {
                     message = "لقد قدّمت على هذه الوظيفة مسبقاً.";
                 }
-                if (rawMessage.indexOf("storage") !== -1) {
-                    message = "تعذر رفع ملف CV. تأكد من أن bucket cvs موجود ومتاح للرفع.";
+                if (rawMessage.indexOf("cv") !== -1) {
+                    message = "تأكد من رفع السيرة الذاتية في الملف الشخصي قبل التقديم.";
                 }
                 setStatus("error", message);
                 setLoading(false);

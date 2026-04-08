@@ -20,6 +20,28 @@ if (typeof supabase !== "undefined") {
 	});
 }
 
+async function maherResolveUserRole(user) {
+	if (!user) return null;
+	let role = null;
+
+	if (!supabaseClient) return null;
+	try {
+		const { data: profile, error: profileError } = await supabaseClient
+			.from("profiles")
+			.select("role")
+			.eq("id", user.id)
+			.single();
+
+		if (!profileError && profile && profile.role) {
+			role = profile.role;
+		}
+	} catch (e) {
+		role = null;
+	}
+
+	return role || null;
+}
+
 async function maherEnsureAuthOrRedirect(redirectPath) {
 	if (!supabaseClient) return;
 	try {
@@ -37,13 +59,10 @@ async function maherEnsureAuthOrRedirect(redirectPath) {
 
 function maherRedirectAfterLogin(role) {
 	if (role === "job_seeker") {
-		// الباحث عن عمل → الصفحة الرئيسية المخصصة له
-		window.location.href = "index.html";
+		window.location.href = "profile.html";
 	} else if (role === "company") {
-		// الشركة → الصفحة الرئيسية المخصصة لها
-		window.location.href = "index.html";
+		window.location.href = "post-job.html";
 	} else if (role === "super_admin") {
-		// السوبر أدمن → لوحة التحكم
 		window.location.href = "dashboard.html";
 	} else {
 		window.location.href = "index.html";
@@ -86,20 +105,10 @@ async function maherHandleLogin(email, password) {
 		return { error };
 	}
 
-	const user = data.user;
-	let role = user && user.user_metadata && user.user_metadata.role;
-
-	if (!role && user) {
-		const { data: profile, error: profileError } = await supabaseClient
-			.from("profiles")
-			.select("role")
-			.eq("id", user.id)
-			.single();
-
-		if (!profileError && profile) {
-			role = profile.role;
-		}
-	}
+	const { data: sessionData } = await supabaseClient.auth.getSession();
+	const session = sessionData && sessionData.session;
+	const user = session && session.user ? session.user : data.user;
+	let role = await maherResolveUserRole(user);
 
 	if (role) {
 		try {
@@ -108,6 +117,21 @@ async function maherHandleLogin(email, password) {
 	}
 
 	return { data, role };
+}
+
+async function maherHandleForgotPassword(email) {
+	if (!supabaseClient) return { error: new Error("Supabase not initialized") };
+
+	const redirectTo = window.location.origin + "/reset-password.html";
+	const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+		redirectTo: redirectTo
+	});
+
+	if (error) {
+		return { error };
+	}
+
+	return { error: null };
 }
 
 function maherGetLang() {
@@ -531,6 +555,7 @@ function maherRenderRoleHome(role, displayName) {
 function maherRenderAdminDashboard(displayName) {
 	const path = window.location.pathname.split("/").pop() || "index.html";
 	if (path !== "dashboard.html") return;
+	if (document.getElementById("adminDashboardApp")) return;
 	const main = document.querySelector("main");
 	if (!main) return;
 
@@ -590,6 +615,8 @@ function maherClearRoleExperience() {
 function maherInitSeekerProfilePage(user) {
 	const form = document.getElementById("seekerProfileForm");
 	if (!form || !user) return;
+	if (form.dataset.initialized === "true") return;
+	form.dataset.initialized = "true";
 
 	const fullNameInput = document.getElementById("profileFullName");
 	const phoneInput = document.getElementById("profilePhone");
@@ -695,6 +722,8 @@ function maherInitSeekerProfilePage(user) {
 function maherInitCompanyProfilePage(user) {
 	const form = document.getElementById("companyProfileForm");
 	if (!form || !user) return;
+	if (form.dataset.initialized === "true") return;
+	form.dataset.initialized = "true";
 
 	const nameInput = document.getElementById("companyName");
 	const phoneInput = document.getElementById("companyPhone");
@@ -761,8 +790,11 @@ document.addEventListener("DOMContentLoaded", function () {
 	maherUpdateHeaderLinks(false, null);
 
 	// حماية بسيطة: بعض الصفحات تحتاج تسجيل دخول
-	if (path === "courses.html" || path === "dashboard.html") {
+	if (path === "courses.html") {
 		maherEnsureAuthOrRedirect("course-access.html");
+	}
+	if (path === "dashboard.html") {
+		maherEnsureAuthOrRedirect("login.html");
 	}
 
 	// نماذج التسجيل المجمّعة
@@ -1011,6 +1043,31 @@ document.addEventListener("DOMContentLoaded", function () {
 		(path === "employer-login.html" ? document.querySelector("main.auth-page form") : null);
 
 	if (seekerLoginForm && path === "seeker-login.html") {
+		const seekerForgotBtn = seekerLoginForm.querySelector(".auth-forgot");
+		if (seekerForgotBtn) {
+			seekerForgotBtn.addEventListener("click", async function (event) {
+				event.preventDefault();
+				const typedEmail = window.prompt("أدخل بريدك الإلكتروني لاستعادة كلمة المرور") || "";
+				const email = typedEmail.trim();
+				if (!email) {
+					window.alert("يرجى إدخال البريد الإلكتروني.");
+					return;
+				}
+				if (!maherIsEmailValid(email)) {
+					window.alert("صيغة البريد الإلكتروني غير صحيحة.");
+					return;
+				}
+
+				const result = await maherHandleForgotPassword(email);
+				if (result.error) {
+					window.alert(maherBuildErrorMessage(result.error));
+					return;
+				}
+
+				window.alert("تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني.");
+			});
+		}
+
 		seekerLoginForm.addEventListener("submit", async function (e) {
 			e.preventDefault();
 			const email = document.getElementById("seekerEmail").value.trim();
@@ -1037,7 +1094,11 @@ document.addEventListener("DOMContentLoaded", function () {
 				if (res.error) {
 					maherShowFormStatus(seekerLoginForm, "error", maherBuildErrorMessage(res.error));
 				} else {
-					maherRedirectAfterLogin(res.role || "job_seeker");
+					if (!res.role) {
+						maherShowFormStatus(seekerLoginForm, "error", "تعذر تحديد نوع الحساب. تواصل مع الدعم.");
+						return;
+					}
+					maherRedirectAfterLogin(res.role);
 				}
 			} finally {
 				maherSetButtonLoading(submitBtn, false, "login");
@@ -1046,6 +1107,31 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	if (employerLoginForm && path === "employer-login.html") {
+		const employerForgotBtn = employerLoginForm.querySelector(".auth-forgot");
+		if (employerForgotBtn) {
+			employerForgotBtn.addEventListener("click", async function (event) {
+				event.preventDefault();
+				const typedEmail = window.prompt("أدخل بريدك الإلكتروني لاستعادة كلمة المرور") || "";
+				const email = typedEmail.trim();
+				if (!email) {
+					window.alert("يرجى إدخال البريد الإلكتروني.");
+					return;
+				}
+				if (!maherIsEmailValid(email)) {
+					window.alert("صيغة البريد الإلكتروني غير صحيحة.");
+					return;
+				}
+
+				const result = await maherHandleForgotPassword(email);
+				if (result.error) {
+					window.alert(maherBuildErrorMessage(result.error));
+					return;
+				}
+
+				window.alert("تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني.");
+			});
+		}
+
 		employerLoginForm.addEventListener("submit", async function (e) {
 			e.preventDefault();
 			const email = document.getElementById("employerEmail").value.trim();
@@ -1072,7 +1158,11 @@ document.addEventListener("DOMContentLoaded", function () {
 				if (res.error) {
 					maherShowFormStatus(employerLoginForm, "error", maherBuildErrorMessage(res.error));
 				} else {
-					maherRedirectAfterLogin(res.role || "company");
+					if (!res.role) {
+						maherShowFormStatus(employerLoginForm, "error", "تعذر تحديد نوع الحساب. تواصل مع الدعم.");
+						return;
+					}
+					maherRedirectAfterLogin(res.role);
 				}
 			} finally {
 				maherSetButtonLoading(submitBtn, false, "login");
@@ -1085,22 +1175,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		const session = data && data.session;
 		if (session && session.user) {
 			const user = session.user;
-			let role = (user && user.user_metadata && user.user_metadata.role) || null;
-			// إذا لم نجد role في metadata نحاول من profiles
-			if (!role) {
-				try {
-					const { data: profile } = await supabaseClient
-						.from("profiles")
-						.select("role")
-						.eq("id", user.id)
-						.single();
-					if (profile && profile.role) {
-						role = profile.role;
-					}
-				} catch (e) {
-					role = role || null;
-				}
-			}
+			let role = await maherResolveUserRole(user);
 
 			if (role) {
 				try {
@@ -1108,6 +1183,12 @@ document.addEventListener("DOMContentLoaded", function () {
 				} catch (e) {}
 			}
 			const displayName = (user && user.user_metadata && user.user_metadata.full_name) || user.email;
+			if (path === "profile.html" && role === "job_seeker") {
+				maherInitSeekerProfilePage(user);
+			}
+			if (path === "company-profile.html" && role === "company") {
+				maherInitCompanyProfilePage(user);
+			}
 			maherRenderUserHeader(displayName, role || null);
 			try {
 				window.localStorage.setItem("maherIsLoggedIn", "true");
@@ -1125,15 +1206,23 @@ document.addEventListener("DOMContentLoaded", function () {
 				"employer-register.html"
 			];
 			if (authPages.indexOf(path) !== -1) {
-				maherRedirectAfterLogin(role || "job_seeker");
+				if (role) {
+					maherRedirectAfterLogin(role);
+				} else {
+					window.location.href = "course-access.html";
+				}
 			}
 
-			// لوحة التحكم الحالية متاحة فقط للسوبر أدمن
+			// لوحة التحكم متاحة فقط للسوبر أدمن
 			if (path === "dashboard.html" && role !== "super_admin") {
-				maherRedirectAfterLogin(role || null);
+				window.location.href = "index.html";
 			}
 		} else {
 			// لا توجد جلسة: نعامل المستخدم كزائر
+			if (path === "dashboard.html") {
+				window.location.href = "login.html";
+				return;
+			}
 			try {
 				window.localStorage.setItem("maherIsLoggedIn", "false");
 			} catch (e) {}
@@ -1145,28 +1234,20 @@ document.addEventListener("DOMContentLoaded", function () {
 	supabaseClient.auth.onAuthStateChange(async function (event, session) {
 		if (event === "SIGNED_IN" || event === "TOKEN_REFRESHED") {
 			const user = session && session.user;
-			let role = (user && user.user_metadata && user.user_metadata.role) || null;
-			// إذا لم نجد role في metadata نحاول من profiles
-			if (!role && user) {
-				try {
-					const { data: profile } = await supabaseClient
-						.from("profiles")
-						.select("role")
-						.eq("id", user.id)
-						.single();
-					if (profile && profile.role) {
-						role = profile.role;
-					}
-				} catch (e) {
-					role = role || null;
-				}
-			}
+			let role = await maherResolveUserRole(user);
 			if (role) {
 				try {
 					window.localStorage.setItem("maherUserRole", role);
 				} catch (e) {}
 			}
 			const displayName = (user && user.user_metadata && user.user_metadata.full_name) || (user && user.email) || "";
+			const currentPath = window.location.pathname.split("/").pop() || "index.html";
+			if (currentPath === "profile.html" && role === "job_seeker") {
+				maherInitSeekerProfilePage(user);
+			}
+			if (currentPath === "company-profile.html" && role === "company") {
+				maherInitCompanyProfilePage(user);
+			}
 			maherRenderUserHeader(displayName, role || null);
 			try {
 				window.localStorage.setItem("maherIsLoggedIn", "true");
@@ -1183,8 +1264,16 @@ document.addEventListener("DOMContentLoaded", function () {
 				"seeker-register.html",
 				"employer-register.html"
 			];
-			if (authPages.indexOf(window.location.pathname.split("/").pop() || "index.html") !== -1) {
-				maherRedirectAfterLogin(role || "job_seeker");
+			const authPath = window.location.pathname.split("/").pop() || "index.html";
+			if (authPages.indexOf(authPath) !== -1) {
+				if (role) {
+					maherRedirectAfterLogin(role);
+				} else {
+					window.location.href = "course-access.html";
+				}
+			}
+			if (authPath === "dashboard.html" && role !== "super_admin") {
+				window.location.href = "index.html";
 			}
 		}
 		if (event === "SIGNED_OUT") {
@@ -1224,19 +1313,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 			}
 
 			const user = data.session.user;
-			let role = user && user.user_metadata && user.user_metadata.role;
-
-			// إذا لم نجد الدور في metadata فقط اطلب من قاعدة البيانات
-			if (!role && user) {
-				const { data: profile } = await supabaseClient
-					.from("profiles")
-					.select("role")
-					.eq("id", user.id)
-					.single();
-				if (profile && profile.role) {
-					role = profile.role;
-				}
-			}
+			let role = await maherResolveUserRole(user);
 
 			// السماح فقط للشركات بنشر الوظائف
 			if (role !== "company") {
@@ -1321,20 +1398,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 	}
 
 	async function maherGetUserRole(user) {
-		let role = (user && user.user_metadata && user.user_metadata.role) || null;
-		if (!role && user) {
-			try {
-				const { data: profile } = await supabaseClient
-					.from("profiles")
-					.select("role")
-					.eq("id", user.id)
-					.single();
-				if (profile && profile.role) role = profile.role;
-			} catch (e) {
-				role = null;
-			}
-		}
-		return role;
+		return await maherResolveUserRole(user);
 	}
 
 	async function maherHasApplied(jobId, userId) {
@@ -1543,20 +1607,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 		}
 
 		async function maherGetUserRole(user) {
-			let role = (user && user.user_metadata && user.user_metadata.role) || null;
-			if (!role && user) {
-				try {
-					const { data: profile } = await supabaseClient
-						.from("profiles")
-						.select("role")
-						.eq("id", user.id)
-						.single();
-					if (profile && profile.role) role = profile.role;
-				} catch (e) {
-					role = null;
-				}
-			}
-			return role;
+			return await maherResolveUserRole(user);
 		}
 
 		try {

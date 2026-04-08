@@ -7,14 +7,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         return;
     }
 
-    function getRoleFromUser(user) {
-        return (user && user.user_metadata && user.user_metadata.role) || null;
-    }
-
     async function getProfileRole(user) {
-        const metadataRole = getRoleFromUser(user);
-        if (metadataRole) return metadataRole;
-
         if (!user) return null;
 
         try {
@@ -45,9 +38,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     try {
-        const { data: sessionData } = await supabaseClient.auth.getSession();
-        const session = sessionData && sessionData.session;
-        const user = session && session.user ? session.user : null;
+        const { data: userData } = await supabaseClient.auth.getUser();
+        const user = userData && userData.user ? userData.user : null;
         const role = await getProfileRole(user);
 
         const { data: jobs, error: jobsError } = await supabaseClient

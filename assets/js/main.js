@@ -410,6 +410,39 @@ document.addEventListener("DOMContentLoaded", function () {
 
     var seekerChoice = document.getElementById("courseAccessSeeker");
     var employerChoice = document.getElementById("courseAccessEmployer");
+
+    if ((seekerChoice || employerChoice) && typeof supabaseClient !== "undefined" && supabaseClient) {
+        (async function () {
+            try {
+                var userRes = await supabaseClient.auth.getUser();
+                var user = userRes && userRes.data ? userRes.data.user : null;
+                if (!user) return;
+
+                var profileRes = await supabaseClient
+                    .from("profiles")
+                    .select("role")
+                    .eq("id", user.id)
+                    .single();
+                var profile = profileRes && profileRes.data ? profileRes.data : null;
+                var role = profile && profile.role ? profile.role : null;
+
+                if (role === "job_seeker") {
+                    window.location.href = "courses.html";
+                    return;
+                }
+
+                if (role === "company") {
+                    window.location.href = "courses.html?type=company";
+                    return;
+                }
+
+                if (role === "super_admin") {
+                    window.location.href = "dashboard.html";
+                }
+            } catch (e) {}
+        })();
+    }
+
     if (seekerChoice) {
         seekerChoice.addEventListener("click", function () {
             window.location.href = "seeker-login.html";
