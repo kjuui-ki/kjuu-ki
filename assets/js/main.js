@@ -328,9 +328,6 @@ function maherApplyLanguage(lang) {
     var currentLang = lang === "en" ? "en" : "ar";
     root.lang = currentLang;
     root.dir = currentLang === "ar" ? "rtl" : "ltr";
-    try {
-        window.localStorage.setItem("maherLang", currentLang);
-    } catch (e) {}
 
     var dict = maherTranslations[currentLang] || {};
 
@@ -383,13 +380,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    var langFromStorage = "ar";
-    try {
-        var stored = window.localStorage.getItem("maherLang");
-        if (stored === "en" || stored === "ar") {
-            langFromStorage = stored;
-        }
-    } catch (e) {}
+    var langFromStorage = document.documentElement.lang === "en" ? "en" : "ar";
 
     maherApplyLanguage(langFromStorage);
 
@@ -407,52 +398,6 @@ document.addEventListener("DOMContentLoaded", function () {
             link.classList.add("active");
         }
     });
-
-    var seekerChoice = document.getElementById("courseAccessSeeker");
-    var employerChoice = document.getElementById("courseAccessEmployer");
-
-    if ((seekerChoice || employerChoice) && typeof supabaseClient !== "undefined" && supabaseClient) {
-        (async function () {
-            try {
-                var userRes = await supabaseClient.auth.getUser();
-                var user = userRes && userRes.data ? userRes.data.user : null;
-                if (!user) return;
-
-                var profileRes = await supabaseClient
-                    .from("profiles")
-                    .select("role")
-                    .eq("id", user.id)
-                    .single();
-                var profile = profileRes && profileRes.data ? profileRes.data : null;
-                var role = profile && profile.role ? profile.role : null;
-
-                if (role === "job_seeker") {
-                    window.location.href = "courses.html";
-                    return;
-                }
-
-                if (role === "company") {
-                    window.location.href = "courses.html?type=company";
-                    return;
-                }
-
-                if (role === "super_admin") {
-                    window.location.href = "dashboard.html";
-                }
-            } catch (e) {}
-        })();
-    }
-
-    if (seekerChoice) {
-        seekerChoice.addEventListener("click", function () {
-            window.location.href = "seeker-login.html";
-        });
-    }
-    if (employerChoice) {
-        employerChoice.addEventListener("click", function () {
-            window.location.href = "employer-login.html";
-        });
-    }
 
     var seekerTypeBtn = document.getElementById("registerTypeSeeker");
     var employerTypeBtn = document.getElementById("registerTypeEmployer");

@@ -41,14 +41,14 @@
                 <h1 class="auth-title" data-i18n="page.login.seeker.title">تسجيل دخول الباحثين عن العمل</h1>
                 <p class="auth-subtitle" data-i18n="page.login.seeker.subtitle">سجّل دخولك للوصول إلى الوظائف والدورات المناسبة لك.</p>
 
-                <form>
+                <form id="seekerLoginForm" novalidate>
                     <div class="auth-form-group">
                         <label for="seekerEmail" data-i18n="form.email.label">البريد الإلكتروني</label>
-                        <input id="seekerEmail" type="email" data-i18n-placeholder="form.email.placeholder" placeholder="example@domain.com" />
+                        <input id="seekerEmail" type="email" autocomplete="email" required data-i18n-placeholder="form.email.placeholder" placeholder="example@domain.com" />
                     </div>
                     <div class="auth-form-group">
                         <label for="seekerPassword" data-i18n="form.password.label">كلمة المرور</label>
-                        <input id="seekerPassword" type="password" data-i18n-placeholder="form.password.placeholder" placeholder="••••••••" />
+                        <input id="seekerPassword" type="password" autocomplete="current-password" required data-i18n-placeholder="form.password.placeholder" placeholder="••••••••" />
                     </div>
 
                     <div class="auth-actions-row">
@@ -86,7 +86,8 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="assets/js/supabaseClient.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/login-page.js"></script>
     <script src="assets/js/main.js"></script>
 </body>
 </html>

@@ -35,10 +35,27 @@
         </div>
     </header>
 
-    <main class="section">
+    <main class="auth-page">
         <div class="container">
-            <h1 data-i18n="page.generic.login.title">تسجيل الدخول</h1>
-            <p data-i18n="page.generic.login.text">سيتم ربط هذه الصفحة بنظام Supabase Auth في الخطوات القادمة.</p>
+            <div class="auth-card">
+                <h1 class="auth-title" data-i18n="page.generic.login.title">تسجيل الدخول</h1>
+                <p class="auth-subtitle">ادخل بياناتك وسيتم تحويلك تلقائيًا حسب نوع الحساب.</p>
+
+                <form id="genericLoginForm" novalidate>
+                    <div class="auth-form-group">
+                        <label for="loginEmail" data-i18n="form.email.label">البريد الإلكتروني</label>
+                        <input id="loginEmail" type="email" autocomplete="email" required data-i18n-placeholder="form.email.placeholder" placeholder="example@domain.com" />
+                    </div>
+                    <div class="auth-form-group">
+                        <label for="loginPassword" data-i18n="form.password.label">كلمة المرور</label>
+                        <input id="loginPassword" type="password" autocomplete="current-password" required data-i18n-placeholder="form.password.placeholder" placeholder="••••••••" />
+                    </div>
+
+                    <div class="auth-submit">
+                        <button type="submit" class="btn btn-primary btn-full" data-i18n="form.login.submit">تسجيل الدخول</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </main>
 
@@ -54,7 +71,8 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="assets/js/supabaseClient.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/login-page.js"></script>
     <script src="assets/js/main.js"></script>
 </body>
 </html>

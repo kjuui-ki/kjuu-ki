@@ -7,13 +7,7 @@ const SUPABASE_ANON_KEY = "sb_publishable_ieBSqzdn_nZJk4t-n8cNlw_ZjMwsgjY";
 // إنشاء عميل Supabase خاص بصفحة التسجيل
 const registerSupabaseClient = window.supabase.createClient(
     SUPABASE_URL,
-    SUPABASE_ANON_KEY,
-    {
-        auth: {
-            persistSession: true,
-            storage: window.localStorage
-        }
-    }
+    SUPABASE_ANON_KEY
 );
 
 // دالة عامة لتسجيل مستخدم جديد
@@ -67,8 +61,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const res = await registerUser(email, password, fullName, "job_seeker");
             if (!res.error) {
-                // توجيه بسيط بعد النجاح
-                window.location.href = "jobs.html";
+                if (window.authApi && typeof window.authApi.navigate === "function") {
+                    window.authApi.navigate("jobs.html");
+                }
             }
         });
     }
@@ -99,8 +94,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const res = await registerUser(email, password, companyName, "company");
             if (!res.error) {
-                // توجيه بسيط بعد النجاح
-                window.location.href = "dashboard.html";
+                if (window.authApi && typeof window.authApi.navigate === "function") {
+                    window.authApi.navigate("dashboard.html");
+                }
             }
         });
     }

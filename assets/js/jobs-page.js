@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 .select("role")
                 .eq("id", user.id)
                 .single();
-            return data && data.role ? data.role : null;
+            return data && data.role ? String(data.role).trim().toLowerCase() : null;
         } catch (error) {
             return null;
         }

@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     if (!appRoot) return;
 
     if (typeof supabaseClient === "undefined" || !supabaseClient) {
-        window.location.href = "login.html";
         return;
     }
 
@@ -48,7 +47,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 .select("role")
                 .eq("id", user.id)
                 .single();
-            return data && data.role ? data.role : null;
+            return data && data.role ? String(data.role).trim().toLowerCase() : null;
         } catch (error) {
             return null;
         }
@@ -66,16 +65,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             '<a href="#applications" class="nav-link">المتقدمين</a>' +
             '<span class="admin-nav-name">' + htmlEscape(displayName || "Admin") + '</span>' +
             '<button type="button" class="admin-nav-logout" id="adminHeaderLogout">تسجيل الخروج</button>';
-
-        const logoutBtn = document.getElementById("adminHeaderLogout");
-        if (logoutBtn) {
-            logoutBtn.addEventListener("click", async function () {
-                try {
-                    await supabaseClient.auth.signOut();
-                } catch (error) {}
-                window.location.href = "login.html";
-            });
-        }
     }
 
     function renderRows(container, rowsHtml, emptyText, colspan) {
@@ -133,8 +122,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         const applications = await loadApplications();
 
-        const seekers = profiles.filter(function (profile) { return profile.role === "job_seeker"; });
-        const companies = profiles.filter(function (profile) { return profile.role === "company"; });
+        const seekers = profiles.filter(function (profile) {
+            return String(profile.role || "").trim().toLowerCase() === "job_seeker";
+        });
+        const companies = profiles.filter(function (profile) {
+            return String(profile.role || "").trim().toLowerCase() === "company";
+        });
 
         if (statSeekers) statSeekers.textContent = String(seekers.length);
         if (statCompanies) statCompanies.textContent = String(companies.length);
@@ -280,29 +273,16 @@ document.addEventListener("DOMContentLoaded", async function () {
         const user = userResult && userResult.data ? userResult.data.user : null;
 
         if (!user) {
-            window.location.href = "login.html";
             return;
         }
 
         const role = await resolveRole(user);
 
-        if (role === "company") {
-            window.location.href = "post-job.html";
-            return;
-        }
-
-        if (role === "job_seeker") {
-            window.location.href = "profile.html";
-            return;
-        }
-
         if (role !== "super_admin") {
-            window.location.href = "login.html";
             return;
         }
 
         const displayName =
-            (user.user_metadata && user.user_metadata.full_name) ||
             user.email ||
             "Admin";
 
@@ -314,6 +294,5 @@ document.addEventListener("DOMContentLoaded", async function () {
         await refreshDashboardData();
     } catch (error) {
         console.error("Dashboard loading error", error);
-        window.location.href = "login.html";
     }
 });

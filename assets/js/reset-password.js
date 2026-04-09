@@ -31,19 +31,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         return;
     }
 
-    try {
-        const { data: sessionData } = await supabaseClient.auth.getSession();
-        const session = sessionData && sessionData.session;
-        if (!session) {
-            setStatus("error", "رابط إعادة التعيين غير صالح أو منتهي. أعد طلب رابط جديد.");
-            setLoading(true);
-            return;
-        }
-    } catch (error) {
-        setStatus("error", "تعذر التحقق من الجلسة. حاول مرة أخرى.");
-        return;
-    }
-
     form.addEventListener("submit", async function (event) {
         event.preventDefault();
         setStatus(null, "");
@@ -84,7 +71,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             setStatus("success", "تم تغيير كلمة المرور");
             setTimeout(function () {
-                window.location.href = "login.html";
+                if (window.authApi && typeof window.authApi.navigate === "function") {
+                    window.authApi.navigate("login.html");
+                }
             }, 1200);
         } catch (error) {
             setStatus("error", "حدث خطأ أثناء تغيير كلمة المرور.");

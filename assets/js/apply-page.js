@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 .select("role")
                 .eq("id", user.id)
                 .single();
-            return data && data.role ? data.role : null;
+            return data && data.role ? String(data.role).trim().toLowerCase() : null;
         } catch (error) {
             return null;
         }
@@ -120,22 +120,12 @@ document.addEventListener("DOMContentLoaded", async function () {
         const { data: userData } = await supabaseClient.auth.getUser();
         const user = userData && userData.user ? userData.user : null;
         if (!user) {
-            window.location.href = "course-access.html";
+            // Central auth guard in auth.js handles redirect decisions.
             return;
         }
 
         const role = await getUserRole(user);
-
-        if (role === "company") {
-            window.location.href = "index.html";
-            return;
-        }
-        if (role === "super_admin") {
-            window.location.href = "dashboard.html";
-            return;
-        }
         if (role !== "job_seeker") {
-            window.location.href = "course-access.html";
             return;
         }
 
@@ -162,7 +152,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (fullNameInput) {
             fullNameInput.value =
                 (profileData && profileData.full_name) ||
-                (user.user_metadata && user.user_metadata.full_name) ||
+                (user && user.email) ||
                 "";
         }
         if (phoneInput) {
@@ -275,7 +265,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
                 setStatus("success", "تم إرسال طلبك بنجاح");
                 setTimeout(function () {
-                    window.location.href = "my-applications.html";
+                    if (window.authApi && typeof window.authApi.navigate === "function") {
+                        window.authApi.navigate("my-applications.html");
+                    }
                 }, 1400);
             } catch (error) {
                 console.error("Error submitting application", error);
