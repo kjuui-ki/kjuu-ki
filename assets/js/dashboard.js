@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         var results = await Promise.all([
             sb.from("profiles").select("id, full_name, email, role, phone, specialization, cv_url, created_at").order("created_at", { ascending: false }),
             sb.from("jobs").select("id, title, location, job_type, company_id, created_at").order("created_at", { ascending: false }),
-            sb.from("applications").select("id, user_id, job_id, full_name, status, cv_url, created_at").order("created_at", { ascending: false })
+            sb.from("applications").select("id, user_id, job_id, full_name, phone, specialization, status, cv_url, created_at").order("created_at", { ascending: false })
         ]);
         allProfiles = results[0].data || [];
         allJobs     = results[1].data || [];
@@ -76,7 +76,8 @@ document.addEventListener("DOMContentLoaded", async function () {
         renderStats();
         renderUsers(allProfiles);
         renderJobs(allJobs);
-        renderApps(allApps);
+        populateJobFilter();
+        filterApps();
     }
 
     /* stats */
@@ -196,22 +197,52 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     /* applications */
-    var appsBody  = document.getElementById("applicationsTableBody");
-    var appFilter = document.getElementById("appStatusFilter");
+    var appsBody      = document.getElementById("applicationsTableBody");
+    var appFilter     = document.getElementById("appStatusFilter");
+    var appJobFilter  = document.getElementById("appJobFilter");
+
+    function populateJobFilter() {
+        if (!appJobFilter) return;
+        /* keep the first blank option, replace everything after it */
+        appJobFilter.innerHTML = '<option value="">' +
+            '\u0643\u0644 \u0627\u0644\u0648\u0638\u0627\u0626\u0641 \u25be</option>';
+        allJobs.forEach(function (j) {
+            var opt = document.createElement("option");
+            opt.value = j.id;
+            opt.textContent = j.title || j.id;
+            appJobFilter.appendChild(opt);
+        });
+    }
+
+    function filterApps() {
+        var statusVal = appFilter    ? appFilter.value    : "";
+        var jobVal    = appJobFilter ? appJobFilter.value : "";
+        var filtered  = allApps.filter(function (a) {
+            var matchStatus = !statusVal || (a.status || "pending") === statusVal;
+            var matchJob    = !jobVal    || a.job_id === jobVal;
+            return matchStatus && matchJob;
+        });
+        renderApps(filtered);
+    }
+
     function renderApps(list) {
         if (!appsBody) return;
-        if (!list.length) { appsBody.innerHTML = '<tr><td colspan="7" class="no-data-msg">\u0644\u0627 \u062a\u0648\u062c\u062f \u0637\u0644\u0628\u0627\u062a.</td></tr>'; return; }
+        if (!list.length) { appsBody.innerHTML = '<tr><td colspan="9" class="no-data-msg">\u0644\u0627 \u062a\u0648\u062c\u062f \u0637\u0644\u0628\u0627\u062a.</td></tr>'; return; }
         appsBody.innerHTML = list.map(function (a) {
-            var seeker   = profileMap[a.user_id] || {};
-            var job      = jobMap[a.job_id] || {};
-            var name     = a.full_name || seeker.full_name || "\u2014";
-            var email    = seeker.email || "\u2014";
-            var jobTitle = job.title || "\u2014";
-            var cvUrl    = a.cv_url || seeker.cv_url;
-            var cv       = cvUrl ? '<a href="' + esc(cvUrl) + '" target="_blank" class="btn-link">\u0639\u0631\u0636 CV</a>' : "\u2014";
+            var seeker       = profileMap[a.user_id] || {};
+            var job          = jobMap[a.job_id] || {};
+            var name         = a.full_name      || seeker.full_name      || "\u2014";
+            var email        = seeker.email     || "\u2014";
+            var phone        = a.phone          || seeker.phone          || "\u2014";
+            var specialization = a.specialization || seeker.specialization || "\u2014";
+            var jobTitle     = job.title        || "\u2014";
+            var cvUrl        = a.cv_url         || seeker.cv_url;
+            var cv           = cvUrl ? '<a href="' + esc(cvUrl) + '" target="_blank" class="btn-link">\u0639\u0631\u0636 CV</a>' : "\u2014";
             return '<tr>' +
                 '<td>' + esc(name) + '</td>' +
                 '<td>' + esc(email) + '</td>' +
+                '<td>' + esc(phone) + '</td>' +
+                '<td>' + esc(specialization) + '</td>' +
                 '<td>' + esc(jobTitle) + '</td>' +
                 '<td>' + fmtDate(a.created_at) + '</td>' +
                 '<td>' + statusLabel(a.status || "pending") + '</td>' +
@@ -223,10 +254,82 @@ document.addEventListener("DOMContentLoaded", async function () {
             '</tr>';
         }).join("");
     }
-    if (appFilter) {
-        appFilter.addEventListener("change", function () {
-            var val = this.value;
-            renderApps(val ? allApps.filter(function (a) { return (a.status || "pending") === val; }) : allApps);
+    if (appFilter)    appFilter.addEventListener("change",    filterApps);
+    if (appJobFilter) appJobFilter.addEventListener("change", filterApps);
+
+    /* export applications to CSV */
+    var exportBtn = document.getElementById("exportAppsBtn");
+    if (exportBtn) {
+        exportBtn.addEventListener("click", function () {
+
+            /* determine which rows to export (same filter as table) */
+            var statusVal = appFilter    ? appFilter.value    : "";
+            var jobVal    = appJobFilter ? appJobFilter.value : "";
+            var rows = allApps.filter(function (a) {
+                var matchStatus = !statusVal || (a.status || "pending") === statusVal;
+                var matchJob    = !jobVal    || a.job_id === jobVal;
+                return matchStatus && matchJob;
+            });
+
+            if (!rows.length) { alert("\u0644\u0627 \u062a\u0648\u062c\u062f \u0628\u064a\u0627\u0646\u0627\u062a \u0644\u0644\u062a\u0635\u062f\u064a\u0631."); return; }
+
+            /* wrap cell in quotes to protect semicolons/newlines inside values */
+            function cell(v) {
+                var s = String(v == null ? "" : v).trim();
+                return '"' + s.replace(/"/g, '""') + '"';
+            }
+
+            var statusText = {
+                accepted: "\u0645\u0642\u0628\u0648\u0644",
+                rejected: "\u0645\u0631\u0641\u0648\u0636",
+                pending:  "\u0642\u064a\u062f \u0627\u0644\u0645\u0631\u0627\u062c\u0639\u0629"
+            };
+
+            /* headers — 8 columns, semicolon separator for Arabic Excel */
+            var SEP   = ";";
+            var lines = [];
+            lines.push([
+                "\u0627\u0644\u0627\u0633\u0645",
+                "\u0627\u0644\u0628\u0631\u064a\u062f",
+                "\u0631\u0642\u0645 \u0627\u0644\u062c\u0648\u0627\u0644",
+                "\u0627\u0644\u062a\u062e\u0635\u0635",
+                "\u0627\u0644\u0648\u0638\u064a\u0641\u0629",
+                "\u0627\u0644\u062d\u0627\u0644\u0629",
+                "\u062a\u0627\u0631\u064a\u062e \u0627\u0644\u062a\u0642\u062f\u064a\u0645",
+                "\u0631\u0627\u0628\u0637 \u0627\u0644\u0633\u064a\u0631\u0629 \u0627\u0644\u0630\u0627\u062a\u064a\u0629"
+            ].map(cell).join(SEP));
+
+            rows.forEach(function (a) {
+                var seeker         = profileMap[a.user_id] || {};
+                var job            = jobMap[a.job_id]      || {};
+                var name           = a.full_name       || seeker.full_name       || "";
+                var email          = seeker.email      || "";
+                var phone          = a.phone           || seeker.phone           || "";
+                var specialization = a.specialization  || seeker.specialization  || "";
+                var jobTitle       = job.title         || "";
+                var status         = statusText[a.status] || a.status || "";
+                var date           = a.created_at ? new Date(a.created_at).toLocaleDateString("ar-SA") : "";
+                var cv             = a.cv_url          || seeker.cv_url          || "";
+                lines.push([name, email, phone, specialization, jobTitle, status, date, cv].map(cell).join(SEP));
+            });
+
+            /* dynamic filename: reflects selected job if filtered */
+            var selectedJobTitle = jobVal && jobMap[jobVal] ? jobMap[jobVal].title : "";
+            var filename = selectedJobTitle
+                ? "\u0645\u062a\u0642\u062f\u0645\u0648_" + selectedJobTitle.replace(/[\\/:*?"<>|]/g, "_") + ".csv"
+                : "applications.csv";
+
+            /* UTF-8 BOM (\uFEFF) makes Excel open Arabic correctly */
+            var csv  = "\uFEFF" + lines.join("\r\n");
+            var blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+            var url  = URL.createObjectURL(blob);
+            var link = document.createElement("a");
+            link.href     = url;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
         });
     }
     if (appsBody) {
@@ -238,7 +341,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             if (res.error) { alert("\u062a\u0639\u0630\u0631 \u062a\u062d\u062f\u064a\u062b \u0627\u0644\u062d\u0627\u0644\u0629."); return; }
             var app = allApps.find(function (a) { return a.id === btn.dataset.aid; });
             if (app) app.status = newStatus;
-            renderApps(appFilter && appFilter.value ? allApps.filter(function (a) { return (a.status || "pending") === appFilter.value; }) : allApps);
+            filterApps();
         });
     }
 

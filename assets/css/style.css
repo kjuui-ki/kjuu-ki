@@ -1240,6 +1240,13 @@ html[dir="ltr"] .logo {
     color: #b91c1c;
 }
 
+.dashboard-btn-export {
+    background: rgba(10, 51, 184, 0.1);
+    color: #0a33b8;
+    border: 1px solid rgba(10, 51, 184, 0.25);
+    font-weight: 600;
+}
+
 /* admin badge roles & statuses */
 .badge-role-seeker  { background: rgba(79,209,255,0.15); color: #0a33b8; padding: 0.2rem 0.65rem; border-radius: 999px; font-size: 0.78rem; white-space: nowrap; }
 .badge-role-company { background: rgba(10,51,184,0.13);  color: #0a33b8; padding: 0.2rem 0.65rem; border-radius: 999px; font-size: 0.78rem; white-space: nowrap; }
