@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>نشر وظيفة | منصة ماهر</title>
+    <title>لوحة الشركة | منصة ماهر</title>
     <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body>
@@ -13,13 +13,7 @@
                 <a href="index.html" class="logo">
                     <img src="assets/images/ksu1.png" alt="شعار المنصة" class="logo-img">
                 </a>
-                <nav class="main-nav" id="mainNav">
-                    <a href="index.html" class="nav-link" data-i18n="nav.home"></a>
-                    <a href="seeker-login.html" class="nav-link" data-i18n="nav.seekers"></a>
-                    <a href="employer-login.html" class="nav-link" data-i18n="nav.employers"></a>
-                    <a href="jobs.html" class="nav-link" data-i18n="nav.jobs"></a>
-                    <a href="course-access.html" class="nav-link" data-i18n="nav.courses"></a>
-                </nav>
+                <nav class="main-nav" id="mainNav"></nav>
             </div>
 
             <div class="lang-switch">
@@ -35,125 +29,195 @@
         </div>
     </header>
 
-    <main class="section">
+    <main>
+        <section class="section">
         <div class="container">
-            <h1 data-i18n="page.postJob.title">نشر وظيفة</h1>
-            
-            <form id="postJobForm" class="form-box" style="max-width: 700px; margin: 2rem auto;">
-                <div class="form-group">
-                    <label for="jobTitle" data-i18n="form.jobTitle">اسم الوظيفة *</label>
-                    <input 
-                        type="text" 
-                        id="jobTitle" 
-                        name="jobTitle" 
-                        required 
-                        placeholder="مثال: مهندس البرمجيات"
-                        style="width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;"
-                    />
+
+            <div class="company-dash-hero">
+                <div class="company-dash-hero-content">
+                    <p class="company-dash-welcome">مرحباً بك في لوحة التحكم</p>
+                    <h1 id="companyDashName">شركتك</h1>
+                    <p class="company-dash-sub">إدارة الوظائف وفرص التوظيف ومعلومات شركتك</p>
                 </div>
-
-                <div class="form-group">
-                    <label for="jobDescription" data-i18n="form.jobDescription">وصف الوظيفة *</label>
-                    <textarea 
-                        id="jobDescription" 
-                        name="jobDescription" 
-                        required 
-                        rows="6"
-                        placeholder="اكتب وصفاً تفصيلياً للوظيفة"
-                        style="width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; font-family: inherit;"
-                    ></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="jobRequirements" data-i18n="form.jobRequirements">المتطلبات *</label>
-                    <textarea 
-                        id="jobRequirements" 
-                        name="jobRequirements" 
-                        required 
-                        rows="4"
-                        placeholder="حدد المتطلبات والمهارات المطلوبة"
-                        style="width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; font-family: inherit;"
-                    ></textarea>
-                </div>
-
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                    <div class="form-group">
-                        <label for="jobSalary" data-i18n="form.jobSalary">الراتب المتوقع</label>
-                        <input 
-                            type="text" 
-                            id="jobSalary" 
-                            name="jobSalary" 
-                            placeholder="مثال: 5000 - 8000 ريال"
-                            style="width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;"
-                        />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="jobLocation" data-i18n="form.jobLocation">الموقع *</label>
-                        <input 
-                            type="text" 
-                            id="jobLocation" 
-                            name="jobLocation" 
-                            required
-                            placeholder="مثال: الرياض"
-                            style="width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;"
-                        />
+                <div class="company-dash-stats" id="companyDashStats">
+                    <div class="company-dash-stat">
+                        <span class="company-dash-stat-num" id="statJobCount">—</span>
+                        <span class="company-dash-stat-label">وظيفة منشورة</span>
                     </div>
                 </div>
+            </div>
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                    <div class="form-group">
-                        <label for="jobType" data-i18n="form.jobType">نوع التوظيف *</label>
-                        <select 
-                            id="jobType" 
-                            name="jobType" 
-                            required
-                            style="width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;"
-                        >
-                            <option value="">اختر نوع التوظيف</option>
-                            <option value="دوام كامل">دوام كامل</option>
-                            <option value="دوام جزئي">دوام جزئي</option>
-                            <option value="عقد مؤقت">عقد مؤقت</option>
-                            <option value="تدريب">تدريب</option>
-                        </select>
+            <div class="dash-tabs">
+                <button class="dash-tab active" data-tab="post-job">نشر وظيفة جديدة</button>
+                <button class="dash-tab" data-tab="my-jobs">وظائفي</button>
+                <button class="dash-tab" data-tab="request-staff">طلب موظفين</button>
+                <button class="dash-tab" data-tab="company-info">معلومات الشركة</button>
+            </div>
+
+            <!-- Post Job Tab -->
+            <div class="dash-tab-content" id="tab-post-job">
+                <div class="dash-card">
+                    <h2 class="dash-card-title">نشر وظيفة جديدة</h2>
+                    <form id="companyPostJobForm" class="post-job-form">
+                        <div class="pjf-grid">
+                            <div class="auth-form-group pjf-full">
+                                <label for="cdJobTitle">اسم الوظيفة *</label>
+                                <input id="cdJobTitle" type="text" placeholder="مثال: مهندس البرمجيات" required />
+                            </div>
+                            <div class="auth-form-group pjf-full">
+                                <label for="cdJobDescription">وصف الوظيفة *</label>
+                                <textarea id="cdJobDescription" rows="5" placeholder="اكتب وصفاً تفصيلياً للوظيفة ومهام العمل" required></textarea>
+                            </div>
+                            <div class="auth-form-group pjf-full">
+                                <label for="cdJobRequirements">المتطلبات *</label>
+                                <textarea id="cdJobRequirements" rows="4" placeholder="حدد المتطلبات والمهارات المطلوبة" required></textarea>
+                            </div>
+                            <div class="auth-form-group">
+                                <label for="cdJobSalary">الراتب المتوقع</label>
+                                <input id="cdJobSalary" type="text" placeholder="مثال: 5000 - 8000 ريال" />
+                            </div>
+                            <div class="auth-form-group">
+                                <label for="cdJobLocation">الموقع *</label>
+                                <input id="cdJobLocation" type="text" placeholder="مثال: الرياض" required />
+                            </div>
+                            <div class="auth-form-group">
+                                <label for="cdJobType">نوع التوظيف *</label>
+                                <select id="cdJobType" required>
+                                    <option value="">اختر نوع التوظيف</option>
+                                    <option value="دوام كامل">دوام كامل</option>
+                                    <option value="دوام جزئي">دوام جزئي</option>
+                                    <option value="عقد مؤقت">عقد مؤقت</option>
+                                    <option value="تدريب">تدريب</option>
+                                </select>
+                            </div>
+                            <div class="auth-form-group">
+                                <label for="cdJobCategory">المجال *</label>
+                                <select id="cdJobCategory" required>
+                                    <option value="">اختر المجال</option>
+                                    <option value="تقنية المعلومات">تقنية المعلومات</option>
+                                    <option value="التسويق">التسويق</option>
+                                    <option value="المبيعات">المبيعات</option>
+                                    <option value="الموارد البشرية">الموارد البشرية</option>
+                                    <option value="التصميم">التصميم</option>
+                                    <option value="الهندسة">الهندسة</option>
+                                    <option value="التعليم">التعليم</option>
+                                    <option value="أخرى">أخرى</option>
+                                </select>
+                            </div>
+                            <div class="auth-form-group pjf-full">
+                                <label for="cdJobDeadline">آخر موعد للتقديم</label>
+                                <input id="cdJobDeadline" type="date" />
+                            </div>
+                        </div>
+                        <div id="postJobStatus" class="form-status" style="display:none;"></div>
+                        <div class="auth-submit" style="margin-top:1rem;">
+                            <button type="submit" class="btn btn-primary">نشر الوظيفة</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- My Jobs Tab -->
+            <div class="dash-tab-content" id="tab-my-jobs" style="display:none;">
+                <div class="dash-card">
+                    <div class="dash-card-header">
+                        <h2 class="dash-card-title">الوظائف المنشورة</h2>
+                        <button type="button" class="btn btn-primary btn-sm" id="btnGoPostJob">+ نشر وظيفة جديدة</button>
                     </div>
+                    <div id="companyJobsList"><p class="no-data-msg">جاري التحميل...</p></div>
+                </div>
+            </div>
 
-                    <div class="form-group">
-                        <label for="jobCategory" data-i18n="form.jobCategory">المجال *</label>
-                        <select 
-                            id="jobCategory" 
-                            name="jobCategory" 
-                            required
-                            style="width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;"
-                        >
-                            <option value="">اختر المجال</option>
-                            <option value="تقنية المعلومات">تقنية المعلومات</option>
-                            <option value="التسويق">التسويق</option>
-                            <option value="المبيعات">المبيعات</option>
-                            <option value="الموارد البشرية">الموارد البشرية</option>
-                            <option value="التصميم">التصميم</option>
-                            <option value="الهندسة">الهندسة</option>
-                            <option value="التعليم">التعليم</option>
-                            <option value="أخرى">أخرى</option>
-                        </select>
+            <!-- Request Staff Tab -->
+            <div class="dash-tab-content" id="tab-request-staff" style="display:none;">
+                <div class="dash-card">
+                    <h2 class="dash-card-title">طلب موظفين</h2>
+                    <p class="company-dash-sub" style="margin-bottom:1.2rem;">أرسل طلبك لإدارة المنصة للحصول على موظفين مناسبين — يطّلع على هذه الطلبات فريق الإدارة فقط.</p>
+                    <form id="requestStaffForm" class="post-job-form">
+                        <div class="pjf-grid">
+                            <div class="auth-form-group">
+                                <label for="rsJobTitle">المسمى الوظيفي المطلوب *</label>
+                                <input id="rsJobTitle" type="text" placeholder="مثال: محاسب، مبرمج، مدير مبيعات" required />
+                            </div>
+                            <div class="auth-form-group">
+                                <label for="rsCount">عدد الموظفين المطلوبين *</label>
+                                <input id="rsCount" type="number" min="1" placeholder="مثال: 3" required />
+                            </div>
+                            <div class="auth-form-group">
+                                <label for="rsSpecialization">التخصص المطلوب *</label>
+                                <input id="rsSpecialization" type="text" placeholder="مثال: تقنية المعلومات، المحاسبة" required />
+                            </div>
+                            <div class="auth-form-group">
+                                <label for="rsWorkType">نوع العمل</label>
+                                <select id="rsWorkType">
+                                    <option value="">اختر</option>
+                                    <option value="دوام كامل">دوام كامل</option>
+                                    <option value="دوام جزئي">دوام جزئي</option>
+                                    <option value="عقد مؤقت">عقد مؤقت</option>
+                                    <option value="تدريب">تدريب</option>
+                                </select>
+                            </div>
+                            <div class="auth-form-group">
+                                <label for="rsSalary">الراتب المتوقع</label>
+                                <input id="rsSalary" type="text" placeholder="مثال: 5000 - 8000 ريال" />
+                            </div>
+                            <div class="auth-form-group">
+                                <label for="rsDeadline">آخر موعد للحاجة</label>
+                                <input id="rsDeadline" type="date" />
+                            </div>
+                            <div class="auth-form-group pjf-full">
+                                <label for="rsSkills">المهارات والمتطلبات *</label>
+                                <textarea id="rsSkills" rows="4" placeholder="اذكر المهارات والخبرات المطلوبة في الموظف" required></textarea>
+                            </div>
+                            <div class="auth-form-group pjf-full">
+                                <label for="rsNotes">ملاحظات إضافية</label>
+                                <textarea id="rsNotes" rows="3" placeholder="أي معلومات إضافية ترغب في إيصالها للإدارة"></textarea>
+                            </div>
+                        </div>
+                        <div id="requestStaffStatus" class="form-status" style="display:none;"></div>
+                        <div class="auth-submit" style="margin-top:1rem;">
+                            <button type="submit" class="btn btn-primary">إرسال الطلب</button>
+                        </div>
+                    </form>
+
+                    <!-- My requests list -->
+                    <div style="margin-top:2rem;">
+                        <h3 class="dash-card-title" style="font-size:1rem;margin-bottom:0.8rem;">طلباتي السابقة</h3>
+                        <div id="myStaffRequestsList"><p class="no-data-msg">جاري التحميل...</p></div>
                     </div>
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <label for="jobDeadline" data-i18n="form.jobDeadline">آخر موعد للتقديم</label>
-                    <input 
-                        type="date" 
-                        id="jobDeadline" 
-                        name="jobDeadline"
-                        style="width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;"
-                    />
+            <!-- Company Info Tab -->
+            <div class="dash-tab-content" id="tab-company-info" style="display:none;">
+                <div class="dash-card">
+                    <h2 class="dash-card-title">معلومات الشركة</h2>
+                    <form id="companyDashProfileForm" class="company-info-form">
+                        <div class="auth-form-group">
+                            <label for="cdCompanyName">اسم الشركة</label>
+                            <input id="cdCompanyName" type="text" placeholder="اسم الشركة" />
+                        </div>
+                        <div class="auth-form-group">
+                            <label for="cdCompanyPhone">رقم الجوال</label>
+                            <input id="cdCompanyPhone" type="tel" placeholder="مثال: 05XXXXXXXX" />
+                        </div>
+                        <div class="auth-form-group">
+                            <label for="cdCompanySpec">التخصص / القطاع</label>
+                            <input id="cdCompanySpec" type="text" placeholder="مثال: تقنية المعلومات" />
+                        </div>
+                        <div class="auth-form-group">
+                            <label for="cdCompanyServices">وصف الشركة / الخدمات</label>
+                            <textarea id="cdCompanyServices" rows="4" placeholder="اكتب وصفاً عن الشركة وخدماتها"></textarea>
+                        </div>
+                        <div id="profileStatus" class="form-status" style="display:none;"></div>
+                        <div class="auth-submit" style="margin-top:1rem;">
+                            <button type="submit" class="btn btn-primary">حفظ البيانات</button>
+                        </div>
+                    </form>
                 </div>
-
-                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1.5rem; padding: 14px;">
-                    نشر الوظيفة
-                </button>
-            </form>
+            </div>
         </div>
+        </section>
     </main>
 
     <footer class="main-footer">
@@ -170,5 +234,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="assets/js/auth.js"></script>
     <script src="assets/js/main.js"></script>
+    <script src="assets/js/company-dashboard.js"></script>
 </body>
 </html>

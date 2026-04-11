@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>لوحة التحكم | منصة ماهر</title>
+    <title>&#x644;&#x648;&#x62d;&#x629; &#x627;&#x644;&#x62a;&#x62d;&#x643;&#x645; | &#x645;&#x646;&#x635;&#x629; &#x645;&#x627;&#x647;&#x631;</title>
     <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body>
@@ -11,146 +11,179 @@
         <div class="container header-inner">
             <div class="header-main-group">
                 <a href="index.html" class="logo">
-                    <img src="assets/images/ksu1.png" alt="شعار المنصة" class="logo-img">
+                    <img src="assets/images/ksu1.png" alt="&#x634;&#x639;&#x627;&#x631; &#x627;&#x644;&#x645;&#x646;&#x635;&#x629;" class="logo-img">
                 </a>
-                <nav class="main-nav" id="mainNav">
-                    <a href="index.html" class="nav-link" data-i18n="nav.home"></a>
-                    <a href="seeker-login.html" class="nav-link" data-i18n="nav.seekers"></a>
-                    <a href="employer-login.html" class="nav-link" data-i18n="nav.employers"></a>
-                    <a href="jobs.html" class="nav-link" data-i18n="nav.jobs"></a>
-                    <a href="course-access.html" class="nav-link" data-i18n="nav.courses"></a>
-                </nav>
+                <nav class="main-nav" id="mainNav"></nav>
             </div>
-
             <div class="lang-switch">
-                <button class="lang-btn" data-lang="ar" data-i18n="header.langAr">العربية</button>
-                <button class="lang-btn" data-lang="en" data-i18n="header.langEn">English</button>
+                <button class="lang-btn" data-lang="ar">&#x627;&#x644;&#x639;&#x631;&#x628;&#x64a;&#x629;</button>
+                <button class="lang-btn" data-lang="en">English</button>
             </div>
-
-            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
         </div>
     </header>
 
-    <main class="section" id="adminDashboardApp">
+    <main class="section">
         <div class="container">
-            <div class="dashboard-head">
+
+            <!-- Hero -->
+            <div class="admin-hero">
                 <div>
-                    <h1>لوحة تحكم الأدمن</h1>
-                    <p class="section-intro">عرض كامل للباحثين، الشركات، الوظائف، والمتقدمين مع صلاحيات الإدارة.</p>
+                    <p class="company-dash-welcome">&#x644;&#x648;&#x62d;&#x629; &#x62a;&#x62d;&#x643;&#x645; &#x627;&#x644;&#x645;&#x634;&#x631;&#x641; &#x627;&#x644;&#x639;&#x627;&#x645;</p>
+                    <h1 id="adminName">&#x62c;&#x627;&#x631;&#x64a; &#x627;&#x644;&#x62a;&#x62d;&#x645;&#x64a;&#x644;...</h1>
+                    <p class="company-dash-sub">&#x625;&#x62f;&#x627;&#x631;&#x629; &#x643;&#x627;&#x645;&#x644;&#x629; &#x644;&#x644;&#x645;&#x633;&#x62a;&#x62e;&#x62f;&#x645;&#x64a;&#x646; &#x648;&#x627;&#x644;&#x648;&#x638;&#x627;&#x626;&#x641; &#x648;&#x627;&#x644;&#x637;&#x644;&#x628;&#x627;&#x62a;</p>
                 </div>
-                <div class="dashboard-admin-meta" id="adminIdentityBox">الأدمن: -</div>
+                <div class="company-dash-stats">
+                    <div class="company-dash-stat"><span class="company-dash-stat-num" id="statSeekers">&mdash;</span><span class="company-dash-stat-label">&#x628;&#x627;&#x62d;&#x62b;</span></div>
+                    <div class="company-dash-stat"><span class="company-dash-stat-num" id="statCompanies">&mdash;</span><span class="company-dash-stat-label">&#x634;&#x631;&#x643;&#x629;</span></div>
+                    <div class="company-dash-stat"><span class="company-dash-stat-num" id="statJobs">&mdash;</span><span class="company-dash-stat-label">&#x648;&#x638;&#x64a;&#x641;&#x629;</span></div>
+                    <div class="company-dash-stat"><span class="company-dash-stat-num" id="statApplications">&mdash;</span><span class="company-dash-stat-label">&#x637;&#x644;&#x628;</span></div>
+                </div>
             </div>
 
-            <section id="stats" class="dashboard-section">
-                <h2>المؤشرات العامة</h2>
-                <div class="dashboard-stats-grid">
-                    <article class="dashboard-stat-card">
-                        <span class="dashboard-stat-label">عدد الباحثين عن عمل</span>
-                        <strong id="statSeekers">0</strong>
-                    </article>
-                    <article class="dashboard-stat-card">
-                        <span class="dashboard-stat-label">عدد الشركات</span>
-                        <strong id="statCompanies">0</strong>
-                    </article>
-                    <article class="dashboard-stat-card">
-                        <span class="dashboard-stat-label">عدد الوظائف المنشورة</span>
-                        <strong id="statJobs">0</strong>
-                    </article>
-                    <article class="dashboard-stat-card">
-                        <span class="dashboard-stat-label">عدد الطلبات / المتقدمين</span>
-                        <strong id="statApplications">0</strong>
-                    </article>
-                </div>
-            </section>
+            <!-- Tabs -->
+            <div class="dash-tabs">
+                <button class="dash-tab active" data-tab="users">&#x627;&#x644;&#x645;&#x633;&#x62a;&#x62e;&#x62f;&#x645;&#x648;&#x646;</button>
+                <button class="dash-tab" data-tab="jobs">&#x627;&#x644;&#x648;&#x638;&#x627;&#x626;&#x641;</button>
+                <button class="dash-tab" data-tab="applications">&#x627;&#x644;&#x637;&#x644;&#x628;&#x627;&#x62a;</button>
+                <button class="dash-tab" data-tab="staff-requests">&#x637;&#x644;&#x628;&#x627;&#x62a; &#x627;&#x644;&#x62a;&#x648;&#x638;&#x64a;&#x641;</button>
+            </div>
 
-            <section id="seekers" class="dashboard-section">
-                <h2>الباحثون عن عمل</h2>
-                <div class="dashboard-table-wrap">
-                    <table class="dashboard-table">
-                        <thead>
-                            <tr>
-                                <th>الاسم</th>
-                                <th>البريد</th>
-                                <th>رقم الجوال</th>
-                                <th>التخصص</th>
-                                <th>رابط CV</th>
-                            </tr>
-                        </thead>
-                        <tbody id="seekersTableBody"></tbody>
-                    </table>
+            <!-- Users Tab -->
+            <div class="dash-tab-content" id="tab-users">
+                <div class="dash-card">
+                    <div class="dash-card-header">
+                        <h2 class="dash-card-title">&#x625;&#x62f;&#x627;&#x631;&#x629; &#x627;&#x644;&#x645;&#x633;&#x62a;&#x62e;&#x62f;&#x645;&#x64a;&#x646;</h2>
+                        <div class="admin-filter-row">
+                            <input type="text" id="usersSearch" class="admin-search" placeholder="&#x628;&#x62d;&#x62b; &#x628;&#x627;&#x644;&#x627;&#x633;&#x645; &#x623;&#x648; &#x627;&#x644;&#x625;&#x64a;&#x645;&#x64a;&#x644;..." />
+                            <select id="usersRoleFilter" class="admin-select">
+                                <option value="">&#x643;&#x644; &#x627;&#x644;&#x645;&#x633;&#x62a;&#x62e;&#x62f;&#x645;&#x64a;&#x646; &#x25be;</option>
+                                <option value="job_seeker">&#x628;&#x627;&#x62d;&#x62b; &#x639;&#x646; &#x639;&#x645;&#x644;</option>
+                                <option value="company">&#x634;&#x631;&#x643;&#x629;</option>
+                                <option value="super_admin">&#x623;&#x62f;&#x645;&#x646;</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="dashboard-table-wrap">
+                        <table class="dashboard-table">
+                            <thead>
+                                <tr>
+                                    <th>&#x627;&#x644;&#x627;&#x633;&#x645;</th>
+                                    <th>&#x627;&#x644;&#x628;&#x631;&#x64a;&#x62f; &#x627;&#x644;&#x625;&#x644;&#x643;&#x62a;&#x631;&#x648;&#x646;&#x64a;</th>
+                                    <th>&#x627;&#x644;&#x62f;&#x648;&#x631;</th>
+                                    <th>&#x62a;&#x627;&#x631;&#x64a;&#x62e; &#x627;&#x644;&#x625;&#x646;&#x634;&#x627;&#x621;</th>
+                                    <th>CV</th>
+                                    <th>&#x627;&#x644;&#x625;&#x62c;&#x631;&#x627;&#x621;&#x627;&#x62a;</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTableBody"><tr><td colspan="6" class="no-data-msg">&#x62c;&#x627;&#x631;&#x64a; &#x627;&#x644;&#x62a;&#x62d;&#x645;&#x64a;&#x644;...</td></tr></tbody>
+                        </table>
+                    </div>
                 </div>
-            </section>
+            </div>
 
-            <section id="companies" class="dashboard-section">
-                <h2>الشركات</h2>
-                <div class="dashboard-table-wrap">
-                    <table class="dashboard-table">
-                        <thead>
-                            <tr>
-                                <th>اسم الشركة</th>
-                                <th>البريد</th>
-                                <th>رقم الجوال</th>
-                                <th>المجال / الخدمات</th>
-                            </tr>
-                        </thead>
-                        <tbody id="companiesTableBody"></tbody>
-                    </table>
+            <!-- Jobs Tab -->
+            <div class="dash-tab-content" id="tab-jobs" style="display:none;">
+                <div class="dash-card">
+                    <div class="dash-card-header">
+                        <h2 class="dash-card-title">&#x625;&#x62f;&#x627;&#x631;&#x629; &#x627;&#x644;&#x648;&#x638;&#x627;&#x626;&#x641;</h2>
+                        <input type="text" id="jobsSearch" class="admin-search" placeholder="&#x628;&#x62d;&#x62b; &#x628;&#x627;&#x633;&#x645; &#x627;&#x644;&#x648;&#x638;&#x64a;&#x641;&#x629; &#x623;&#x648; &#x627;&#x644;&#x634;&#x631;&#x643;&#x629;..." />
+                    </div>
+                    <div class="dashboard-table-wrap">
+                        <table class="dashboard-table">
+                            <thead>
+                                <tr>
+                                    <th>&#x627;&#x633;&#x645; &#x627;&#x644;&#x648;&#x638;&#x64a;&#x641;&#x629;</th>
+                                    <th>&#x627;&#x644;&#x634;&#x631;&#x643;&#x629;</th>
+                                    <th>&#x627;&#x644;&#x645;&#x648;&#x642;&#x639;</th>
+                                    <th>&#x627;&#x644;&#x646;&#x648;&#x639;</th>
+                                    <th>&#x62a;&#x627;&#x631;&#x64a;&#x62e; &#x627;&#x644;&#x646;&#x634;&#x631;</th>
+                                    <th>&#x627;&#x644;&#x625;&#x62c;&#x631;&#x627;&#x621;&#x627;&#x62a;</th>
+                                </tr>
+                            </thead>
+                            <tbody id="jobsTableBody"><tr><td colspan="6" class="no-data-msg">&#x62c;&#x627;&#x631;&#x64a; &#x627;&#x644;&#x62a;&#x62d;&#x645;&#x64a;&#x644;...</td></tr></tbody>
+                        </table>
+                    </div>
                 </div>
-            </section>
+            </div>
 
-            <section id="jobs" class="dashboard-section">
-                <h2>الوظائف المنشورة</h2>
-                <div class="dashboard-table-wrap">
-                    <table class="dashboard-table">
-                        <thead>
-                            <tr>
-                                <th>عنوان الوظيفة</th>
-                                <th>الشركة</th>
-                                <th>تاريخ النشر</th>
-                                <th>الإجراءات</th>
-                            </tr>
-                        </thead>
-                        <tbody id="jobsTableBody"></tbody>
-                    </table>
+            <!-- Applications Tab -->
+            <div class="dash-tab-content" id="tab-applications" style="display:none;">
+                <div class="dash-card">
+                    <div class="dash-card-header">
+                        <h2 class="dash-card-title">&#x625;&#x62f;&#x627;&#x631;&#x629; &#x627;&#x644;&#x637;&#x644;&#x628;&#x627;&#x62a;</h2>
+                        <div class="admin-filter-row">
+                            <select id="appStatusFilter" class="admin-select">
+                                <option value="">&#x643;&#x644; &#x627;&#x644;&#x62d;&#x627;&#x644;&#x627;&#x62a;</option>
+                                <option value="pending">&#x642;&#x64a;&#x62f; &#x627;&#x644;&#x645;&#x631;&#x627;&#x62c;&#x639;&#x629;</option>
+                                <option value="accepted">&#x645;&#x642;&#x628;&#x648;&#x644;</option>
+                                <option value="rejected">&#x645;&#x631;&#x641;&#x648;&#x636;</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="dashboard-table-wrap">
+                        <table class="dashboard-table">
+                            <thead>
+                                <tr>
+                                    <th>&#x627;&#x644;&#x645;&#x62a;&#x642;&#x62f;&#x645;</th>
+                                    <th>&#x627;&#x644;&#x628;&#x631;&#x64a;&#x62f;</th>
+                                    <th>&#x627;&#x644;&#x648;&#x638;&#x64a;&#x641;&#x629;</th>
+                                    <th>&#x62a;&#x627;&#x631;&#x64a;&#x62e; &#x627;&#x644;&#x62a;&#x642;&#x62f;&#x64a;&#x645;</th>
+                                    <th>&#x627;&#x644;&#x62d;&#x627;&#x644;&#x629;</th>
+                                    <th>CV</th>
+                                    <th>&#x62a;&#x63a;&#x64a;&#x64a;&#x631; &#x627;&#x644;&#x62d;&#x627;&#x644;&#x629;</th>
+                                </tr>
+                            </thead>
+                            <tbody id="applicationsTableBody"><tr><td colspan="7" class="no-data-msg">&#x62c;&#x627;&#x631;&#x64a; &#x627;&#x644;&#x62a;&#x62d;&#x645;&#x64a;&#x644;...</td></tr></tbody>
+                        </table>
+                    </div>
                 </div>
-            </section>
+            </div>
 
-            <section id="applications" class="dashboard-section">
-                <h2>المتقدمون</h2>
-                <div class="dashboard-table-wrap">
-                    <table class="dashboard-table">
-                        <thead>
-                            <tr>
-                                <th>اسم المتقدم</th>
-                                <th>الوظيفة</th>
-                                <th>تاريخ التقديم</th>
-                                <th>الحالة</th>
-                                <th>رابط CV</th>
-                            </tr>
-                        </thead>
-                        <tbody id="applicationsTableBody"></tbody>
-                    </table>
+            <!-- Staff Requests Tab (Admin only) -->
+            <div class="dash-tab-content" id="tab-staff-requests" style="display:none;">
+                <div class="dash-card">
+                    <div class="dash-card-header">
+                        <h2 class="dash-card-title">&#x637;&#x644;&#x628;&#x627;&#x62a; &#x627;&#x644;&#x62a;&#x648;&#x638;&#x64a;&#x641; &#x645;&#x646; &#x627;&#x644;&#x634;&#x631;&#x643;&#x627;&#x62a;</h2>
+                        <select id="staffReqStatusFilter" class="admin-select">
+                            <option value="">&#x643;&#x644; &#x627;&#x644;&#x62d;&#x627;&#x644;&#x627;&#x62a;</option>
+                            <option value="pending">&#x642;&#x64a;&#x62f; &#x627;&#x644;&#x645;&#x631;&#x627;&#x62c;&#x639;&#x629;</option>
+                            <option value="reviewed">&#x62a;&#x645;&#x62a; &#x627;&#x644;&#x645;&#x631;&#x627;&#x62c;&#x639;&#x629;</option>
+                            <option value="rejected">&#x645;&#x631;&#x641;&#x648;&#x636;</option>
+                        </select>
+                    </div>
+                    <div class="dashboard-table-wrap">
+                        <table class="dashboard-table">
+                            <thead>
+                                <tr>
+                                    <th>&#x627;&#x644;&#x634;&#x631;&#x643;&#x629;</th>
+                                    <th>&#x627;&#x644;&#x645;&#x633;&#x645;&#x649; &#x627;&#x644;&#x648;&#x638;&#x64a;&#x641;&#x64a;</th>
+                                    <th>&#x627;&#x644;&#x639;&#x62f;&#x62f;</th>
+                                    <th>&#x627;&#x644;&#x62a;&#x62e;&#x635;&#x635;</th>
+                                    <th>&#x646;&#x648;&#x639; &#x627;&#x644;&#x639;&#x645;&#x644;</th>
+                                    <th>&#x627;&#x644;&#x631;&#x627;&#x62a;&#x628;</th>
+                                    <th>&#x62a;&#x627;&#x631;&#x64a;&#x62e; &#x627;&#x644;&#x637;&#x644;&#x628;</th>
+                                    <th>&#x627;&#x644;&#x62d;&#x627;&#x644;&#x629;</th>
+                                    <th>&#x627;&#x644;&#x625;&#x62c;&#x631;&#x627;&#x621;&#x627;&#x62a;</th>
+                                </tr>
+                            </thead>
+                            <tbody id="staffRequestsTableBody"><tr><td colspan="9" class="no-data-msg">&#x62c;&#x627;&#x631;&#x64a; &#x627;&#x644;&#x62a;&#x62d;&#x645;&#x64a;&#x644;...</td></tr></tbody>
+                        </table>
+                    </div>
                 </div>
-            </section>
+            </div>
+
         </div>
     </main>
 
     <footer class="main-footer">
         <div class="container footer-inner">
-            <div>
-                <h3 class="footer-logo" data-i18n="footer.logo">ماهر</h3>
-            </div>
-            <div class="footer-copy">
-                <span data-i18n="footer.copy">© <span id="year"></span> ماهر. جميع الحقوق محفوظة.</span>
-            </div>
+            <div><h3 class="footer-logo">&#x645;&#x627;&#x647;&#x631;</h3></div>
+            <div class="footer-copy"><span>&copy; <span id="year"></span> &#x645;&#x627;&#x647;&#x631;. &#x62c;&#x645;&#x64a;&#x639; &#x627;&#x644;&#x62d;&#x642;&#x648;&#x642; &#x645;&#x62d;&#x641;&#x648;&#x638;&#x629;.</span></div>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/js/supabaseClient.js"></script>
     <script src="assets/js/auth.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/dashboard.js"></script>

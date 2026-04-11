@@ -120,12 +120,13 @@ document.addEventListener("DOMContentLoaded", async function () {
         const { data: userData } = await supabaseClient.auth.getUser();
         const user = userData && userData.user ? userData.user : null;
         if (!user) {
-            // Central auth guard in auth.js handles redirect decisions.
+            window.location.href = "seeker-login.html";
             return;
         }
 
         const role = await getUserRole(user);
         if (role !== "job_seeker") {
+            window.location.href = "login.html";
             return;
         }
 
@@ -254,8 +255,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                         specialization: specialization,
                         skills: skills,
                         cv_url: profileCvUrl,
-                        status: "pending",
-                        created_at: new Date().toISOString()
+                        status: "pending"
                     }
                 ]);
 
@@ -271,13 +271,11 @@ document.addEventListener("DOMContentLoaded", async function () {
                 }, 1400);
             } catch (error) {
                 console.error("Error submitting application", error);
-                let message = "حدث خطأ أثناء إرسال الطلب. حاول مرة أخرى.";
-                const rawMessage = String(error && error.message ? error.message : "").toLowerCase();
-                if (rawMessage.indexOf("already exists") !== -1 || rawMessage.indexOf("duplicate") !== -1) {
+                const rawMessage = String(error && error.message ? error.message : "");
+                const lower = rawMessage.toLowerCase();
+                let message = rawMessage || "حدث خطأ غير معروف";
+                if (lower.indexOf("already exists") !== -1 || lower.indexOf("duplicate") !== -1) {
                     message = "لقد قدّمت على هذه الوظيفة مسبقاً.";
-                }
-                if (rawMessage.indexOf("cv") !== -1) {
-                    message = "تأكد من رفع السيرة الذاتية في الملف الشخصي قبل التقديم.";
                 }
                 setStatus("error", message);
                 setLoading(false);
