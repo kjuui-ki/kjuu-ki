@@ -137,15 +137,22 @@
         // Remove existing before inserting
         var existing = document.getElementById("authUserMenu");
         if (existing) existing.remove();
+
+        var profileHref = role === "company" ? "company-profile.html" : (role === "job_seeker" ? "profile.html" : "");
+        var profileBtn = profileHref
+            ? '<a href="' + profileHref + '" class="btn btn-settings" title="\u0625\u0639\u062f\u0627\u062f\u0627\u062a \u0627\u0644\u062d\u0633\u0627\u0628" aria-label="\u0625\u0639\u062f\u0627\u062f\u0627\u062a \u0627\u0644\u062d\u0633\u0627\u0628">&#9881;</a>'
+            : '';
+
         var menu = document.createElement("div");
         menu.id = "authUserMenu";
         menu.className = "user-menu";
         menu.innerHTML =
-            '<div class="user-avatar">' + (fullName.trim().charAt(0) || "؟").toUpperCase() + '</div>' +
+            '<div class="user-avatar">' + (fullName.trim().charAt(0) || "\u061f").toUpperCase() + '</div>' +
             '<div class="user-info">' +
                 '<div class="user-name">' + fullName + '</div>' +
                 '<div class="user-role">' + role2label(role) + '</div>' +
             '</div>' +
+            profileBtn +
             '<button type="button" id="authLogoutBtn" class="btn btn-outline">تسجيل الخروج</button>';
         var langSwitch = headerInner.querySelector(".lang-switch");
         if (langSwitch) {

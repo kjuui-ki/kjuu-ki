@@ -75,6 +75,7 @@ const maherTranslations = {
         "section.careerBanner.title": "ابدأ رحلتك المهنية مع ماهر",
         "section.careerBanner.text": "انضم إلى منصة ماهر لبناء ملف مهني قوي، استكشف فرص التوظيف والدورات التدريبية التي تناسب طموحاتك، وابدأ اليوم أول خطوة في مسارك المهني.",
         "section.howItWorks.title": "كيف تعمل منصة ماهر؟",
+        "section.partners.title": "شركاء النجاح",
 
         "how.step1.title": "إنشاء حساب",
         "how.step1.text": "قم بإنشاء حساب كباحث عن عمل أو كمسؤول شركة.",
@@ -85,9 +86,11 @@ const maherTranslations = {
 
         "footer.logo": "ماهر",
         "footer.about": "منصة عربية للتوظيف والتدريب وتطوير المهارات.",
+        "footer.quickLinks": "روابط سريعة",
         "footer.jobs": "الوظائف",
         "footer.courses": "الدورات",
         "footer.contact": "تواصل معنا",
+        "footer.landline": "(أرضي)",
         "footer.copy": "© <span id=\"year\"></span> ماهر. جميع الحقوق محفوظة.",
 
         "page.jobs.title": "الوظائف",
@@ -236,6 +239,7 @@ const maherTranslations = {
         "section.careerBanner.title": "Start your career journey with Maher",
         "section.careerBanner.text": "Join Maher to build a strong professional profile, explore job opportunities and training courses that match your ambitions, and take the first step in your career path today.",
         "section.howItWorks.title": "How does Maher work?",
+        "section.partners.title": "Success Partners",
 
         "how.step1.title": "Create an account",
         "how.step1.text": "Create an account as a job seeker or company admin.",
@@ -246,9 +250,11 @@ const maherTranslations = {
 
         "footer.logo": "Maher",
         "footer.about": "An Arabic platform for jobs, training, and skill development.",
+        "footer.quickLinks": "Quick Links",
         "footer.jobs": "Jobs",
         "footer.courses": "Courses",
-        "footer.contact": "Contact us",
+        "footer.contact": "Contact Us",
+        "footer.landline": "(Landline)",
         "footer.copy": "© <span id=\"year\"></span> Maher. All rights reserved.",
 
         "page.jobs.title": "Jobs",
@@ -328,6 +334,7 @@ function maherApplyLanguage(lang) {
     var currentLang = lang === "en" ? "en" : "ar";
     root.lang = currentLang;
     root.dir = currentLang === "ar" ? "rtl" : "ltr";
+    localStorage.setItem("maherLang", currentLang);
 
     var dict = maherTranslations[currentLang] || {};
 
@@ -380,7 +387,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    var langFromStorage = document.documentElement.lang === "en" ? "en" : "ar";
+    var langFromStorage = localStorage.getItem("maherLang") || "ar";
 
     maherApplyLanguage(langFromStorage);
 

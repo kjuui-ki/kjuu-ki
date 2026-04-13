@@ -98,6 +98,31 @@ img {
     border-color: rgba(255, 255, 255, 0.85);
 }
 
+/* Settings / profile button in header */
+.btn-settings {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    font-size: 1.1rem;
+    line-height: 1;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    flex-shrink: 0;
+}
+
+.btn-settings:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.8);
+    transform: rotate(30deg);
+}
+
 .btn-full {
     width: 100%;
 }
@@ -850,10 +875,6 @@ html[dir="ltr"] .logo {
     flex-wrap: nowrap;
     width: max-content;
     animation: marquee-scroll 55s linear infinite;
-}
-
-.marquee-wrapper:hover .marquee-track {
-    animation-play-state: paused;
 }
 
 .marquee-track img {
