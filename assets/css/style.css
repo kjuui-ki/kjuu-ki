@@ -86,6 +86,18 @@ img {
     border-color: var(--color-primary);
 }
 
+/* Logout button specifically sits inside the dark header */
+.user-menu .btn-outline {
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.user-menu .btn-outline:hover {
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.85);
+}
+
 .btn-full {
     width: 100%;
 }
@@ -458,6 +470,7 @@ html[dir="ltr"] .logo {
 .section-header h2 {
     font-size: 1.6rem;
     margin-bottom: 0.4rem;
+    color: #ffffff;
 }
 
 .section-header h2 span {
@@ -466,7 +479,7 @@ html[dir="ltr"] .logo {
 }
 
 .section-header p {
-    color: var(--color-muted);
+    color: rgba(255, 255, 255, 0.78);
 }
 
 .grid {
@@ -538,10 +551,11 @@ html[dir="ltr"] .logo {
 .jobs-page-hero h1 {
     font-size: 2rem;
     margin-bottom: 0.45rem;
+    color: #ffffff;
 }
 
 .jobs-page-hero p {
-    color: var(--color-muted);
+    color: rgba(255, 255, 255, 0.78);
     max-width: 42rem;
 }
 
@@ -1309,14 +1323,20 @@ html[dir="ltr"] .logo {
 }
 
 .admin-nav-logout {
-    background: transparent;
-    border: 1px solid rgba(148, 163, 184, 0.3);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.55);
     color: #ffffff;
     border-radius: 999px;
     padding: 0.38rem 0.8rem;
     cursor: pointer;
     font-family: inherit;
     font-size: 0.85rem;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.admin-nav-logout:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.85);
 }
 
 .admin-nav-name {
@@ -1615,7 +1635,7 @@ html[dir="ltr"] .logo {
 }
 
 .section-intro {
-    color: var(--color-muted);
+    color: rgba(255, 255, 255, 0.78);
     margin-bottom: 1.5rem;
     font-size: 0.95rem;
 }
@@ -1883,4 +1903,24 @@ body.role-super-admin .role-home-hero-admin {
     .role-home-grid {
         grid-template-columns: minmax(0, 1fr);
     }
+}
+
+/* ── Page headings on dark gradient backgrounds ──────────────────
+   Targets h1 / p that are NOT inside white cards (auth-card,
+   dash-card, apply-card etc.) but sit directly on the dark body.
+   Covers: courses, contact, job-details, profile, my-applications
+   ─────────────────────────────────────────────────────────────── */
+.section .container > h1,
+.section .container > div > h1 {
+    color: #ffffff;
+}
+
+.section .container > p,
+.section .container > div > p {
+    color: rgba(255, 255, 255, 0.82);
+}
+
+/* profile-page bare h1 */
+.profile-page .container > h1 {
+    color: #ffffff;
 }
