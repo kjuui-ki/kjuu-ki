@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>رمز التحقق – منصة ماهر</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Tahoma, 'Arabic Typesetting', Arial, sans-serif;
+    background: #eef2ff;
+    padding: 30px 16px;
+    direction: rtl;
+  }
+  .wrapper { max-width: 520px; margin: 0 auto; }
+
+  /* Card */
+  .card {
+    background: #ffffff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(10, 51, 184, 0.14);
+  }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #020b3a 0%, #0a33b8 55%, #1a6fff 100%);
+    padding: 36px 28px 28px;
+    text-align: center;
+  }
+  .header-logo-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.12);
+    border-radius: 16px;
+    padding: 10px;
+    margin-bottom: 14px;
+  }
+  .header-logo {
+    width: 56px;
+    height: 56px;
+    border-radius: 10px;
+    display: block;
+  }
+  .header-title {
+    color: #ffffff;
+    font-size: 30px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    margin-bottom: 4px;
+  }
+  .header-sub {
+    color: rgba(255,255,255,0.70);
+    font-size: 13px;
+  }
+
+  /* Body */
+  .body { padding: 34px 30px 28px; }
+  .greeting {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 10px;
+  }
+  .msg {
+    font-size: 14.5px;
+    color: #475569;
+    line-height: 1.75;
+    margin-bottom: 28px;
+  }
+  .msg strong { color: #1e293b; }
+
+  /* Code box */
+  .code-box {
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    border: 2px solid #bfdbfe;
+    border-radius: 14px;
+    padding: 24px 20px 20px;
+    text-align: center;
+    margin-bottom: 26px;
+  }
+  .code-label {
+    font-size: 12px;
+    color: #64748b;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .code-value {
+    font-size: 46px;
+    font-weight: 900;
+    letter-spacing: 12px;
+    color: #0a33b8;
+    font-family: 'Courier New', 'Lucida Console', monospace;
+    line-height: 1;
+    padding-right: 12px; /* balance letter-spacing */
+  }
+  .code-expiry {
+    font-size: 12px;
+    color: #94a3b8;
+    margin-top: 10px;
+  }
+
+  /* Divider */
+  hr { border: none; border-top: 1px solid #e2e8f0; margin: 22px 0; }
+
+  /* Warning */
+  .warning {
+    font-size: 13px;
+    color: #94a3b8;
+    line-height: 1.65;
+  }
+  .warning .icon { color: #f59e0b; margin-left: 4px; }
+
+  /* Footer */
+  .footer {
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+    padding: 18px 28px;
+    text-align: center;
+  }
+  .footer-text { font-size: 12px; color: #94a3b8; }
+  .footer-brand { color: #0a33b8; font-weight: 700; }
+  .footer-link { color: #0a33b8; text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="card">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="header-logo-wrap">
+        <span style="font-size:36px;">🎓</span>
+      </div>
+      <div class="header-title">ماهر</div>
+      <div class="header-sub">منصة التوظيف والتدريب المهني</div>
+    </div>
+
+    <!-- BODY -->
+    <div class="body">
+      <p class="greeting">مرحباً 👋</p>
+      <p class="msg">
+        تلقّينا طلبًا لإعادة تعيين كلمة المرور للحساب المرتبط بـ
+        <strong>{{ .Email }}</strong>.<br /><br />
+        استخدم رمز التحقق أدناه لاستكمال العملية على المنصة:
+      </p>
+
+      <!-- OTP Code -->
+      <div class="code-box">
+        <p class="code-label">رمز التحقق الخاص بك</p>
+        <div class="code-value">{{ .Token }}</div>
+        <p class="code-expiry">⏱&nbsp; صالح لمدة <strong>10 دقائق</strong> فقط</p>
+      </div>
+
+      <hr />
+
+      <p class="warning">
+        <span class="icon">⚠️</span>
+        إذا لم تطلب إعادة تعيين كلمة المرور، يمكنك تجاهل هذه الرسالة بأمان تام.
+        لن يتم إجراء أي تغييرات على حسابك.
+      </p>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <p class="footer-text">
+        © 2026 <span class="footer-brand">منصة ماهر</span> —
+        جامعة الملك سعود &nbsp;|&nbsp;
+        <a href="{{ .SiteURL }}" class="footer-link">زيارة المنصة</a>
+      </p>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

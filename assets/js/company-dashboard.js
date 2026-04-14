@@ -35,7 +35,8 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (targetTab) targetTab.classList.add("active");
         if (targetPanel) targetPanel.style.display = "block";
         if (tabKey === "my-jobs") loadMyJobs();
-        if (tabKey === "request-staff") loadMyStaffRequests();
+        if (tabKey === "request-staff")  loadMyStaffRequests();
+        if (tabKey === "request-course") loadMyCourseRequests();
     }
 
     tabs.forEach(function (tab) {
@@ -343,6 +344,95 @@ document.addEventListener("DOMContentLoaded", async function () {
             } else {
                 setStatus(profileStatus, "success", "تم حفظ بيانات الشركة بنجاح ✓");
                 if (nameEl) nameEl.textContent = full_name || "شركتك";
+            }
+        });
+    }
+
+    // ── Course Request Form ──────────────────────────────────
+    var requestCourseForm   = document.getElementById("requestCourseForm");
+    var requestCourseStatus = document.getElementById("requestCourseStatus");
+    var myCourseRequestsList = document.getElementById("myCourseRequestsList");
+
+    function courseReqStatusHtml(s) {
+        if (s === "approved") return '<span class="badge badge-accepted">موافق عليه</span>';
+        if (s === "rejected") return '<span class="badge badge-rejected">مرفوض</span>';
+        return '<span class="badge badge-pending-status">قيد المراجعة</span>';
+    }
+
+    async function loadMyCourseRequests() {
+        if (!myCourseRequestsList) return;
+        myCourseRequestsList.innerHTML = '<p class="no-data-msg">جاري التحميل...</p>';
+        var res = await sb.from("course_requests")
+            .select("id, course_name, category, seats, duration, expected_date, status, created_at")
+            .eq("company_id", user.id)
+            .order("created_at", { ascending: false });
+        var items = res.data || [];
+        if (!items.length) { myCourseRequestsList.innerHTML = '<p class="no-data-msg">لم ترسل أي طلبات حتى الآن.</p>'; return; }
+        myCourseRequestsList.innerHTML = items.map(function (r) {
+            return '<div class="staff-request-card">' +
+                '<div class="src-row"><strong>' + esc(r.course_name) + '</strong>' + courseReqStatusHtml(r.status) + '</div>' +
+                '<div class="src-meta">' +
+                    (r.category     ? '<span>🏷 '     + esc(r.category) + '</span>' : '') +
+                    (r.seats        ? '<span>👥 '       + esc(String(r.seats)) + ' مقعد</span>' : '') +
+                    (r.duration     ? '<span>⏱ '          + esc(r.duration) + '</span>' : '') +
+                    (r.expected_date? '<span>📅 '       + esc(r.expected_date) + '</span>' : '') +
+                '</div>' +
+                (r.status === 'pending' ? '<button class="dashboard-btn dashboard-btn-delete" data-action="delete-cr" data-id="' + esc(r.id) + '">حذف</button>' : '') +
+            '</div>';
+        }).join("");
+    }
+
+    if (myCourseRequestsList) {
+        myCourseRequestsList.addEventListener("click", async function (e) {
+            var btn = e.target.closest("[data-action='delete-cr']");
+            if (!btn) return;
+            if (!confirm("حذف هذا الطلب؟")) return;
+            await sb.from("course_requests").delete().eq("id", btn.dataset.id);
+            loadMyCourseRequests();
+        });
+    }
+
+    if (requestCourseForm) {
+        requestCourseForm.addEventListener("submit", async function (e) {
+            e.preventDefault();
+            var btn       = requestCourseForm.querySelector('button[type="submit"]');
+            var name      = (document.getElementById("rcCourseName")    || {}).value || "";
+            var category  = (document.getElementById("rcCategory")       || {}).value || "";
+            var seats     = parseInt((document.getElementById("rcSeats")  || {}).value || "1", 10);
+            var duration  = (document.getElementById("rcDuration")       || {}).value || "";
+            var expDate   = (document.getElementById("rcExpectedDate")   || {}).value || "";
+            var audience  = (document.getElementById("rcAudience")       || {}).value || "";
+            var desc      = (document.getElementById("rcDescription")    || {}).value || "";
+            var notes     = (document.getElementById("rcNotes")          || {}).value || "";
+
+            if (!name.trim() || !desc.trim()) {
+                setStatus(requestCourseStatus, "error", "يرجى تعبئة الحقول المطلوبة (*)");
+                return;
+            }
+            setStatus(requestCourseStatus, null, "");
+            if (btn) { btn.disabled = true; btn.textContent = "جاري الإرسال..."; }
+
+            var resp = await sb.from("course_requests").insert([{
+                company_id:     user.id,
+                course_name:    name.trim(),
+                category:       category.trim() || null,
+                seats:          isNaN(seats) ? 1 : seats,
+                duration:       duration.trim() || null,
+                expected_date:  expDate || null,
+                target_audience: audience.trim() || null,
+                description:    desc.trim(),
+                notes:          notes.trim() || null,
+                status:         "pending"
+            }]);
+
+            if (btn) { btn.disabled = false; btn.textContent = "إرسال الطلب"; }
+
+            if (resp.error) {
+                setStatus(requestCourseStatus, "error", "تعذر إرسال الطلب: " + (resp.error.message || ""));
+            } else {
+                setStatus(requestCourseStatus, "success", "تم إرسال طلبك للإدارة بنجاح ✓");
+                requestCourseForm.reset();
+                loadMyCourseRequests();
             }
         });
     }

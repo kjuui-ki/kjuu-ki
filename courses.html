@@ -2,6 +2,10 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8" />
+    <link rel="preconnect" href="https://jgvfcievyfkyldryatlk.supabase.co" crossorigin />
+    <link rel="dns-prefetch" href="https://jgvfcievyfkyldryatlk.supabase.co" />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>الدورات التدريبية | منصة ماهر</title>
     <link rel="stylesheet" href="assets/css/style.css" />
@@ -35,10 +39,41 @@
         </div>
     </header>
 
-    <main class="section">
-        <div class="container">
-            <h1 data-i18n="page.courses.title">الدورات التدريبية</h1>
-            <p data-i18n="page.courses.text">سيتم تصميم بطاقات الدورات مع نظام الفلترة في خطوة قادمة.</p>
+    <main>
+        <!-- Hero -->
+        <section class="jobs-page-hero">
+            <div class="container">
+                <h1>الدورات التدريبية</h1>
+                <p>طوّر مهاراتك مع دورات مختارة بعناية من منصة ماهر</p>
+            </div>
+        </section>
+
+        <!-- Company: My Course Requests -->
+        <section class="section" id="myRequestsSection" style="display:none;">
+            <div class="container">
+                <h2 class="section-sub-title">&#x637;&#x644;&#x628;&#x627;&#x62a;&#x64a; &#x645;&#x646; &#x627;&#x644;&#x62f;&#x648;&#x631;&#x627;&#x62a;</h2>
+                <div id="myRequestsGrid" class="my-requests-grid"></div>
+            </div>
+        </section>
+
+        <!-- Courses Grid -->
+        <section class="section">
+            <div class="container">
+                <div id="coursesMsg" class="section-intro" style="text-align:center;padding:2rem 0;display:none;"></div>
+                <div id="coursesGrid" class="courses-grid"></div>
+            </div>
+        </section>
+
+        <!-- Enroll Modal -->
+        <div id="enrollModal" class="modal-overlay" style="display:none;">
+            <div class="modal-box">
+                <h3 id="enrollModalTitle" class="modal-title"></h3>
+                <p id="enrollModalBody" class="modal-body"></p>
+                <div class="modal-actions">
+                    <button id="enrollConfirmBtn" class="btn btn-primary">تأكيد التسجيل</button>
+                    <button id="enrollCancelBtn" class="btn btn-outline">إلغاء</button>
+                </div>
+            </div>
         </div>
     </main>
 
@@ -78,5 +113,203 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <script src="assets/js/auth.js" defer></script>
     <script src="assets/js/main.js" defer></script>
+    <script defer>
+    (function () {
+        var sb, currentUser, currentRole, pendingCourse;
+
+        function esc(v) {
+            return String(v || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+        }
+
+        function showMsg(msg) {
+            var el = document.getElementById("coursesMsg");
+            var grid = document.getElementById("coursesGrid");
+            if (el) { el.textContent = msg; el.style.display = "block"; }
+            if (grid) grid.innerHTML = "";
+        }
+
+        function categoryBadge(cat) {
+            if (!cat) return "";
+            return '<span class="course-badge">' + esc(cat) + '</span>';
+        }
+
+        function renderGrid(courses, enrolledIds) {
+            var grid = document.getElementById("coursesGrid");
+            var msg  = document.getElementById("coursesMsg");
+            if (!grid) return;
+            if (!courses.length) { showMsg("لا توجد دورات متاحة حالياً."); return; }
+            if (msg) msg.style.display = "none";
+
+            grid.innerHTML = courses.map(function (c) {
+                var isEnrolled = enrolledIds.indexOf(c.id) !== -1;
+                var seats = c.max_seats > 0 ? '<span class="course-seats">المقاعد: ' + esc(String(c.max_seats)) + '</span>' : "";
+                var actionBtn = "";
+                if (!currentUser) {
+                    actionBtn = '<a href="seeker-login.html" class="btn btn-primary btn-full">سجّل دخول للتسجيل</a>';
+                } else if (isEnrolled) {
+                    actionBtn = '<button class="btn btn-enrolled btn-full" disabled>✓ مسجّل في الدورة</button>';
+                } else {
+                    actionBtn = '<button class="btn btn-primary btn-full enroll-btn" data-id="' + esc(c.id) + '" data-title="' + esc(c.title) + '">التسجيل في الدورة</button>';
+                }
+                return '<div class="course-card card">' +
+                    '<div class="course-card-body">' +
+                        categoryBadge(c.category) +
+                        '<h3 class="course-card-title">' + esc(c.title) + '</h3>' +
+                        '<p class="course-card-desc">' + esc(c.description || "") + '</p>' +
+                        '<div class="course-card-meta">' +
+                            (c.instructor ? '<span>👨‍🏫 ' + esc(c.instructor) + '</span>' : '') +
+                            (c.duration   ? '<span>⏱ '    + esc(c.duration)   + '</span>' : '') +
+                            seats +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="course-card-footer">' + actionBtn + '</div>' +
+                '</div>';
+            }).join("");
+
+            grid.addEventListener("click", function (e) {
+                var btn = e.target.closest(".enroll-btn");
+                if (!btn) return;
+                pendingCourse = { id: btn.dataset.id, title: btn.dataset.title };
+                var modal = document.getElementById("enrollModal");
+                var titleEl = document.getElementById("enrollModalTitle");
+                var bodyEl  = document.getElementById("enrollModalBody");
+                if (titleEl) titleEl.textContent = btn.dataset.title;
+                if (bodyEl) {
+                    var who = currentRole === "company" ? "سيتم تسجيل حسابك كشركة في هذه الدورة." : "سيتم تسجيلك في هذه الدورة.";
+                    bodyEl.textContent = who;
+                }
+                if (modal) modal.style.display = "flex";
+            }, { once: true });
+        }
+
+        async function loadCourses() {
+            if (!sb) { showMsg("تعذّر الاتصال بقاعدة البيانات."); return; }
+
+            var userRes = await sb.auth.getUser();
+            currentUser = userRes.data && userRes.data.user ? userRes.data.user : null;
+
+            var enrolledIds = [];
+            if (currentUser) {
+                var profRes = await sb.from("profiles").select("role").eq("id", currentUser.id).single();
+                currentRole = profRes.data ? profRes.data.role : "";
+                if (currentRole === "super_admin") {
+                    window.location.href = "dashboard.html";
+                    return;
+                }
+                /* company: load their course requests */
+                if (currentRole === "company") {
+                    loadMyRequests();
+                }
+                var enrRes = await sb.from("course_enrollments").select("course_id").eq("user_id", currentUser.id);
+                enrolledIds = (enrRes.data || []).map(function (e) { return e.course_id; });
+            }
+
+            var res = await sb.from("courses").select("id, title, description, instructor, duration, category, max_seats").eq("is_active", true).order("created_at", { ascending: false });
+            /* if courses table doesn't exist yet, don't block the page */
+            renderGrid(res.error ? [] : (res.data || []), enrolledIds);
+        }
+
+        async function loadMyRequests() {
+            var section = document.getElementById("myRequestsSection");
+            var grid    = document.getElementById("myRequestsGrid");
+            if (!section || !grid) return;
+            section.style.display = "block";
+            grid.innerHTML = '<p class="no-data-msg">جاري التحميل...</p>';
+
+            var res = await sb.from("course_requests")
+                .select("id, course_name, category, seats, duration, expected_date, status, created_at, description")
+                .eq("company_id", currentUser.id)
+                .order("created_at", { ascending: false });
+            var items = res.data || [];
+
+            if (!items.length) {
+                grid.innerHTML = '<p class="no-data-msg">لم ترسل أي طلبات حتى الآن. <a href="company-dashboard.html?tab=request-course" class="btn-link">إرسال طلب</a></p>';
+                return;
+            }
+
+            var statusMap = {
+                pending:  '<span class="badge badge-pending-status">قيد المراجعة</span>',
+                approved: '<span class="badge badge-accepted">تمت الموافقة</span>',
+                rejected: '<span class="badge badge-rejected">مرفوض</span>'
+            };
+
+            grid.innerHTML = items.map(function (r) {
+                var d = new Date(r.created_at);
+                var dateStr = d.toLocaleDateString("ar-SA", { year: "numeric", month: "short", day: "numeric" });
+                return '<div class="req-card">' +
+                    '<div class="req-card-head">' +
+                        '<span class="req-card-title">' + esc(r.course_name) + '</span>' +
+                        (statusMap[r.status] || '') +
+                    '</div>' +
+                    '<div class="req-card-meta">' +
+                        (r.category     ? '<span>🏷 '       + esc(r.category)      + '</span>' : '') +
+                        (r.seats        ? '<span>👥 '        + esc(String(r.seats)) + ' مقعد</span>' : '') +
+                        (r.duration     ? '<span>⏱ '            + esc(r.duration)      + '</span>' : '') +
+                        (r.expected_date? '<span>📅 بدء: ' + esc(r.expected_date) + '</span>' : '') +
+                        '<span>🗓 التقديم: ' + dateStr + '</span>' +
+                    '</div>' +
+                    (r.description ? '<p class="req-card-desc">' + esc(r.description) + '</p>' : '') +
+                '</div>';
+            }).join("");
+        }
+
+        async function enroll(courseId) {
+            var res = await sb.from("course_enrollments").insert({
+                course_id:   courseId,
+                user_id:     currentUser.id,
+                enrolled_by: currentUser.id
+            });
+            return res;
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            /* wait for supabaseClient to be set by supabaseClient.js */
+            var attempts = 0;
+            var interval = setInterval(function () {
+                attempts++;
+                if (window.supabaseClient) {
+                    sb = window.supabaseClient;
+                    clearInterval(interval);
+                    loadCourses();
+                } else if (attempts > 40) {
+                    clearInterval(interval);
+                    showMsg("تعذّر الاتصال بقاعدة البيانات.");
+                }
+            }, 100);
+
+            var confirmBtn = document.getElementById("enrollConfirmBtn");
+            var cancelBtn  = document.getElementById("enrollCancelBtn");
+            var modal      = document.getElementById("enrollModal");
+
+            if (cancelBtn) cancelBtn.addEventListener("click", function () {
+                if (modal) modal.style.display = "none";
+                pendingCourse = null;
+            });
+
+            if (confirmBtn) confirmBtn.addEventListener("click", async function () {
+                if (!pendingCourse) return;
+                confirmBtn.disabled = true;
+                confirmBtn.textContent = "جارٍ التسجيل...";
+                var res = await enroll(pendingCourse.id);
+                if (modal) modal.style.display = "none";
+                confirmBtn.disabled = false;
+                confirmBtn.textContent = "تأكيد التسجيل";
+                if (res.error && res.error.code !== "23505") {
+                    alert("تعذّر التسجيل: " + (res.error.message || "خطأ غير معروف"));
+                } else {
+                    /* update button in grid */
+                    var btn = document.querySelector('.enroll-btn[data-id="' + pendingCourse.id + '"]');
+                    if (btn) {
+                        btn.textContent = "✓ مسجّل في الدورة";
+                        btn.classList.remove("enroll-btn", "btn-primary");
+                        btn.classList.add("btn-enrolled");
+                        btn.disabled = true;
+                    }
+                }
+                pendingCourse = null;
+            });
+        });
+    })();
+    </script>
 </body>
 </html>

@@ -2,6 +2,10 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8" />
+    <link rel="preconnect" href="https://jgvfcievyfkyldryatlk.supabase.co" crossorigin />
+    <link rel="dns-prefetch" href="https://jgvfcievyfkyldryatlk.supabase.co" />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>&#x644;&#x648;&#x62d;&#x629; &#x627;&#x644;&#x62a;&#x62d;&#x643;&#x645; | &#x645;&#x646;&#x635;&#x629; &#x645;&#x627;&#x647;&#x631;</title>
     <link rel="stylesheet" href="assets/css/style.css" />
@@ -46,6 +50,8 @@
                 <button class="dash-tab" data-tab="jobs">&#x627;&#x644;&#x648;&#x638;&#x627;&#x626;&#x641;</button>
                 <button class="dash-tab" data-tab="applications">&#x627;&#x644;&#x637;&#x644;&#x628;&#x627;&#x62a;</button>
                 <button class="dash-tab" data-tab="staff-requests">&#x637;&#x644;&#x628;&#x627;&#x62a; &#x627;&#x644;&#x62a;&#x648;&#x638;&#x64a;&#x641;</button>
+                <button class="dash-tab" data-tab="course-requests">&#x637;&#x644;&#x628;&#x627;&#x62a; &#x627;&#x644;&#x62f;&#x648;&#x631;&#x627;&#x62a;</button>
+                <button class="dash-tab" data-tab="courses">&#x627;&#x644;&#x62f;&#x648;&#x631;&#x627;&#x62a;</button>
             </div>
 
             <!-- Users Tab -->
@@ -173,6 +179,126 @@
                                 </tr>
                             </thead>
                             <tbody id="staffRequestsTableBody"><tr><td colspan="9" class="no-data-msg">&#x62c;&#x627;&#x631;&#x64a; &#x627;&#x644;&#x62a;&#x62d;&#x645;&#x64a;&#x644;...</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Course Requests Tab (Admin only) -->
+            <div class="dash-tab-content" id="tab-course-requests" style="display:none;">
+                <div class="dash-card">
+                    <div class="dash-card-header">
+                        <h2 class="dash-card-title">&#x637;&#x644;&#x628;&#x627;&#x62a; &#x641;&#x62a;&#x62d; &#x62f;&#x648;&#x631;&#x627;&#x62a; &#x645;&#x646; &#x627;&#x644;&#x634;&#x631;&#x643;&#x627;&#x62a;</h2>
+                        <select id="courseReqStatusFilter" class="admin-select">
+                            <option value="">&#x643;&#x644; &#x627;&#x644;&#x62d;&#x627;&#x644;&#x627;&#x62a;</option>
+                            <option value="pending">&#x642;&#x64a;&#x62f; &#x627;&#x644;&#x645;&#x631;&#x627;&#x62c;&#x639;&#x629;</option>
+                            <option value="approved">&#x645;&#x648;&#x627;&#x641;&#x642; &#x639;&#x644;&#x64a;&#x647;</option>
+                            <option value="rejected">&#x645;&#x631;&#x641;&#x648;&#x636;</option>
+                        </select>
+                    </div>
+                    <div class="dashboard-table-wrap">
+                        <table class="dashboard-table">
+                            <thead>
+                                <tr>
+                                    <th>&#x627;&#x644;&#x634;&#x631;&#x643;&#x629;</th>
+                                    <th>&#x627;&#x633;&#x645; &#x627;&#x644;&#x62f;&#x648;&#x631;&#x629;</th>
+                                    <th>&#x627;&#x644;&#x641;&#x626;&#x629;</th>
+                                    <th>&#x627;&#x644;&#x645;&#x642;&#x627;&#x639;&#x62f;</th>
+                                    <th>&#x627;&#x644;&#x645;&#x62f;&#x629;</th>
+                                    <th>&#x62a;&#x627;&#x631;&#x64a;&#x62e; &#x627;&#x644;&#x628;&#x62f;&#x621; &#x627;&#x644;&#x645;&#x62a;&#x648;&#x642;&#x639;</th>
+                                    <th>&#x62a;&#x627;&#x631;&#x64a;&#x62e; &#x627;&#x644;&#x637;&#x644;&#x628;</th>
+                                    <th>&#x627;&#x644;&#x62d;&#x627;&#x644;&#x629;</th>
+                                    <th>&#x627;&#x644;&#x625;&#x62c;&#x631;&#x627;&#x621;&#x627;&#x62a;</th>
+                                </tr>
+                            </thead>
+                            <tbody id="courseRequestsTableBody"><tr><td colspan="9" class="no-data-msg">&#x62c;&#x627;&#x631;&#x64a; &#x627;&#x644;&#x62a;&#x62d;&#x645;&#x64a;&#x644;...</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Courses Tab (Admin only) -->
+            <div class="dash-tab-content" id="tab-courses" style="display:none;">
+                <!-- Add course form -->
+                <div class="dash-card" style="margin-bottom:1.5rem;">
+                    <div class="dash-card-header">
+                        <h2 class="dash-card-title">&#x646;&#x634;&#x631; &#x62f;&#x648;&#x631;&#x629; &#x62c;&#x62f;&#x64a;&#x62f;&#x629;</h2>
+                    </div>
+                    <form id="addCourseForm" class="admin-course-form">
+                        <div class="admin-course-form-grid">
+                            <div class="auth-form-group">
+                                <label>&#x639;&#x646;&#x648;&#x627;&#x646; &#x627;&#x644;&#x62f;&#x648;&#x631;&#x629; *</label>
+                                <input type="text" id="courseTitle" placeholder="&#x645;&#x62b;&#x627;&#x644;: &#x623;&#x633;&#x627;&#x633;&#x64a;&#x627;&#x62a; HTML &amp; CSS" required />
+                            </div>
+                            <div class="auth-form-group">
+                                <label>&#x627;&#x644;&#x645;&#x62f;&#x631;&#x628;</label>
+                                <input type="text" id="courseInstructor" placeholder="&#x627;&#x633;&#x645; &#x627;&#x644;&#x645;&#x62f;&#x631;&#x628;" />
+                            </div>
+                            <div class="auth-form-group">
+                                <label>&#x627;&#x644;&#x645;&#x62f;&#x629;</label>
+                                <input type="text" id="courseDuration" placeholder="&#x645;&#x62b;&#x627;&#x644;: 10 &#x633;&#x627;&#x639;&#x627;&#x62a;" />
+                            </div>
+                            <div class="auth-form-group">
+                                <label>&#x627;&#x644;&#x641;&#x626;&#x629;</label>
+                                <input type="text" id="courseCategory" placeholder="&#x645;&#x62b;&#x627;&#x644;: &#x62a;&#x642;&#x646;&#x64a;&#x629;&#x60c; &#x623;&#x639;&#x645;&#x627;&#x644;" />
+                            </div>
+                            <div class="auth-form-group">
+                                <label>&#x639;&#x62f;&#x62f; &#x627;&#x644;&#x645;&#x642;&#x627;&#x639;&#x62f; (0 = &#x62b;&#x64a;&#x631; &#x645;&#x62d;&#x62f;&#x648;&#x62f;)</label>
+                                <input type="number" id="courseSeats" placeholder="0" min="0" value="0" />
+                            </div>
+                        </div>
+                        <div class="auth-form-group">
+                            <label>&#x648;&#x635;&#x641; &#x627;&#x644;&#x62f;&#x648;&#x631;&#x629;</label>
+                            <textarea id="courseDescription" rows="3" placeholder="&#x648;&#x635;&#x641; &#x645;&#x62e;&#x62a;&#x635;&#x631; &#x639;&#x646; &#x645;&#x62d;&#x62a;&#x648;&#x649; &#x627;&#x644;&#x62f;&#x648;&#x631;&#x629;"></textarea>
+                        </div>
+                        <div style="text-align:left; margin-top:0.5rem;">
+                            <button type="submit" class="dashboard-btn dashboard-btn-export">&#x2795; &#x646;&#x634;&#x631; &#x627;&#x644;&#x62f;&#x648;&#x631;&#x629;</button>
+                            <span id="addCourseMsg" style="margin-right:1rem;font-size:0.85rem;"></span>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Courses table -->
+                <div class="dash-card">
+                    <div class="dash-card-header">
+                        <h2 class="dash-card-title">&#x62c;&#x645;&#x64a;&#x639; &#x627;&#x644;&#x62f;&#x648;&#x631;&#x627;&#x62a;</h2>
+                    </div>
+                    <div class="dashboard-table-wrap">
+                        <table class="dashboard-table">
+                            <thead>
+                                <tr>
+                                    <th>&#x627;&#x644;&#x639;&#x646;&#x648;&#x627;&#x646;</th>
+                                    <th>&#x627;&#x644;&#x645;&#x62f;&#x631;&#x628;</th>
+                                    <th>&#x627;&#x644;&#x645;&#x62f;&#x629;</th>
+                                    <th>&#x627;&#x644;&#x641;&#x626;&#x629;</th>
+                                    <th>&#x627;&#x644;&#x645;&#x633;&#x62c;&#x644;&#x648;&#x646;</th>
+                                    <th>&#x62a;&#x627;&#x631;&#x64a;&#x62e; &#x627;&#x644;&#x646;&#x634;&#x631;</th>
+                                    <th>&#x627;&#x644;&#x625;&#x62c;&#x631;&#x627;&#x621;&#x627;&#x62a;</th>
+                                </tr>
+                            </thead>
+                            <tbody id="coursesTableBody"><tr><td colspan="7" class="no-data-msg">&#x62c;&#x627;&#x631;&#x64a; &#x627;&#x644;&#x62a;&#x62d;&#x645;&#x64a;&#x644;...</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Enrollments sub-panel -->
+                <div id="courseEnrollmentsPanel" class="dash-card" style="margin-top:1.5rem;display:none;">
+                    <div class="dash-card-header">
+                        <h2 class="dash-card-title" id="enrollmentsPanelTitle">&#x627;&#x644;&#x645;&#x633;&#x62c;&#x644;&#x648;&#x646; &#x641;&#x64a; &#x627;&#x644;&#x62f;&#x648;&#x631;&#x629;</h2>
+                        <button id="closeEnrollmentsPanel" class="dashboard-btn">&#x2715; &#x625;&#x63a;&#x644;&#x627;&#x642;</button>
+                    </div>
+                    <div class="dashboard-table-wrap">
+                        <table class="dashboard-table">
+                            <thead>
+                                <tr>
+                                    <th>&#x627;&#x644;&#x627;&#x633;&#x645;</th>
+                                    <th>&#x627;&#x644;&#x628;&#x631;&#x64a;&#x62f;</th>
+                                    <th>&#x627;&#x644;&#x62f;&#x648;&#x631;</th>
+                                    <th>&#x62a;&#x627;&#x631;&#x64a;&#x62e; &#x627;&#x644;&#x62a;&#x633;&#x62c;&#x64a;&#x644;</th>
+                                    <th>&#x627;&#x644;&#x62d;&#x627;&#x644;&#x629;</th>
+                                </tr>
+                            </thead>
+                            <tbody id="enrollmentsTableBody"><tr><td colspan="5" class="no-data-msg">&#x644;&#x627; &#x64a;&#x648;&#x62c;&#x62f; &#x645;&#x633;&#x62c;&#x644;&#x648;&#x646;.</td></tr></tbody>
                         </table>
                     </div>
                 </div>

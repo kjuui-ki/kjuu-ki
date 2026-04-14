@@ -50,7 +50,9 @@ document.addEventListener("DOMContentLoaded", async function () {
             tab.classList.add("active");
             var panel = document.getElementById("tab-" + tab.dataset.tab);
             if (panel) panel.style.display = "block";
-            if (tab.dataset.tab === "staff-requests") loadStaffRequests();
+            if (tab.dataset.tab === "staff-requests")  loadStaffRequests();
+            if (tab.dataset.tab === "course-requests") loadCourseRequests();
+            if (tab.dataset.tab === "courses")         loadCourses();
         });
     });
 
@@ -408,6 +410,199 @@ document.addEventListener("DOMContentLoaded", async function () {
             if (req) req.status = newStatus;
             var filterVal = staffReqFilter ? staffReqFilter.value : "";
             renderStaffRequests(filterVal ? allStaffRequests.filter(function (r) { return r.status === filterVal; }) : allStaffRequests);
+        });
+    }
+
+    /* ── course requests (admin) ──────────────────────────────────── */
+    var courseReqBody        = document.getElementById("courseRequestsTableBody");
+    var courseReqFilter      = document.getElementById("courseReqStatusFilter");
+    var allCourseRequests    = [];
+
+    function courseReqStatusLabel(s) {
+        if (s === "approved") return '<span class="badge badge-accepted">\u0645\u0648\u0627\u0641\u0642 \u0639\u0644\u064a\u0647</span>';
+        if (s === "rejected") return '<span class="badge badge-rejected">\u0645\u0631\u0641\u0648\u0636</span>';
+        return '<span class="badge badge-pending-status">\u0642\u064a\u062f \u0627\u0644\u0645\u0631\u0627\u062c\u0639\u0629</span>';
+    }
+
+    function renderCourseRequests(list) {
+        if (!courseReqBody) return;
+        if (!list.length) { courseReqBody.innerHTML = '<tr><td colspan="9" class="no-data-msg">\u0644\u0627 \u062a\u0648\u062c\u062f \u0637\u0644\u0628\u0627\u062a.</td></tr>'; return; }
+        courseReqBody.innerHTML = list.map(function (r) {
+            var company = profileMap[r.company_id] || {};
+            return '<tr>' +
+                '<td>' + esc(company.full_name || company.email || "\u2014") + '</td>' +
+                '<td><strong>' + esc(r.course_name || "\u2014") + '</strong></td>' +
+                '<td>' + esc(r.category || "\u2014") + '</td>' +
+                '<td>' + esc(String(r.seats || "\u2014")) + '</td>' +
+                '<td>' + esc(r.duration || "\u2014") + '</td>' +
+                '<td>' + esc(r.expected_date || "\u2014") + '</td>' +
+                '<td>' + fmtDate(r.created_at) + '</td>' +
+                '<td>' + courseReqStatusLabel(r.status) + '</td>' +
+                '<td><div class="dashboard-actions">' +
+                    '<button class="dashboard-btn dashboard-btn-accept" data-action="cr-approve" data-rid="' + esc(r.id) + '">\u0645\u0648\u0627\u0641\u0642\u0629</button>' +
+                    '<button class="dashboard-btn dashboard-btn-reject"  data-action="cr-reject"  data-rid="' + esc(r.id) + '">\u0631\u0641\u0636</button>' +
+                '</div></td>' +
+            '</tr>';
+        }).join("");
+    }
+
+    async function loadCourseRequests() {
+        if (!courseReqBody) return;
+        courseReqBody.innerHTML = '<tr><td colspan="9" class="no-data-msg">\u062c\u0627\u0631\u064a \u0627\u0644\u062a\u062d\u0645\u064a\u0644...</td></tr>';
+        var resp = await sb.from("course_requests")
+            .select("id, company_id, course_name, category, seats, duration, expected_date, description, notes, status, created_at")
+            .order("created_at", { ascending: false });
+        allCourseRequests = resp.data || [];
+        var filterVal = courseReqFilter ? courseReqFilter.value : "";
+        renderCourseRequests(filterVal ? allCourseRequests.filter(function (r) { return r.status === filterVal; }) : allCourseRequests);
+    }
+
+    if (courseReqFilter) {
+        courseReqFilter.addEventListener("change", function () {
+            var val = this.value;
+            renderCourseRequests(val ? allCourseRequests.filter(function (r) { return r.status === val; }) : allCourseRequests);
+        });
+    }
+
+    if (courseReqBody) {
+        courseReqBody.addEventListener("click", async function (e) {
+            var btn = e.target.closest("[data-action^='cr-']");
+            if (!btn) return;
+            var newStatus = btn.dataset.action === "cr-approve" ? "approved" : "rejected";
+            var res = await sb.from("course_requests").update({ status: newStatus }).eq("id", btn.dataset.rid);
+            if (res.error) { alert("\u062a\u0639\u0630\u0651\u0631 \u062a\u062d\u062f\u064a\u062b \u0627\u0644\u062d\u0627\u0644\u0629."); return; }
+            var req = allCourseRequests.find(function (r) { return r.id === btn.dataset.rid; });
+            if (req) req.status = newStatus;
+            var filterVal = courseReqFilter ? courseReqFilter.value : "";
+            renderCourseRequests(filterVal ? allCourseRequests.filter(function (r) { return r.status === filterVal; }) : allCourseRequests);
+        });
+    }
+
+    /* ── courses (admin) ──────────────────────────────────────────── */
+    var coursesBody  = document.getElementById("coursesTableBody");
+    var addCourseForm = document.getElementById("addCourseForm");
+    var addCourseMsg  = document.getElementById("addCourseMsg");
+    var allCourses   = [];
+    var enrollCountMap = {};
+
+    async function loadCourses() {
+        if (!coursesBody) return;
+        coursesBody.innerHTML = '<tr><td colspan="7" class="no-data-msg">\u062c\u0627\u0631\u064a \u0627\u0644\u062a\u062d\u0645\u064a\u0644...</td></tr>';
+
+        var results = await Promise.all([
+            sb.from("courses").select("id, title, instructor, duration, category, max_seats, is_active, created_at").order("created_at", { ascending: false }),
+            sb.from("course_enrollments").select("course_id")
+        ]);
+        allCourses = results[0].data || [];
+        var enrollments = results[1].data || [];
+
+        enrollCountMap = {};
+        enrollments.forEach(function (e) {
+            enrollCountMap[e.course_id] = (enrollCountMap[e.course_id] || 0) + 1;
+        });
+        renderCourses(allCourses);
+    }
+
+    function renderCourses(list) {
+        if (!coursesBody) return;
+        if (!list.length) { coursesBody.innerHTML = '<tr><td colspan="7" class="no-data-msg">\u0644\u0627 \u062a\u0648\u062c\u062f \u062f\u0648\u0631\u0627\u062a.</td></tr>'; return; }
+        coursesBody.innerHTML = list.map(function (c) {
+            return '<tr>' +
+                '<td>' + esc(c.title || "\u2014") + '</td>' +
+                '<td>' + esc(c.instructor || "\u2014") + '</td>' +
+                '<td>' + esc(c.duration || "\u2014") + '</td>' +
+                '<td>' + esc(c.category || "\u2014") + '</td>' +
+                '<td><strong>' + (enrollCountMap[c.id] || 0) + '</strong></td>' +
+                '<td>' + fmtDate(c.created_at) + '</td>' +
+                '<td><div class="dashboard-actions">' +
+                    '<button class="dashboard-btn dashboard-btn-edit" data-action="view-enrollments" data-cid="' + esc(c.id) + '" data-ctitle="' + esc(c.title || "") + '">\u0639\u0631\u0636 \u0627\u0644\u0645\u0633\u062c\u0644\u064a\u0646</button>' +
+                    '<button class="dashboard-btn dashboard-btn-delete" data-action="delete-course" data-cid="' + esc(c.id) + '">\u062d\u0630\u0641</button>' +
+                '</div></td>' +
+            '</tr>';
+        }).join("");
+    }
+
+    if (addCourseForm) {
+        addCourseForm.addEventListener("submit", async function (e) {
+            e.preventDefault();
+            var title       = (document.getElementById("courseTitle") || {}).value || "";
+            var instructor  = (document.getElementById("courseInstructor") || {}).value || "";
+            var duration    = (document.getElementById("courseDuration") || {}).value || "";
+            var category    = (document.getElementById("courseCategory") || {}).value || "";
+            var seats       = parseInt((document.getElementById("courseSeats") || {}).value || "0", 10);
+            var description = (document.getElementById("courseDescription") || {}).value || "";
+            if (!title.trim()) { if (addCourseMsg) { addCourseMsg.textContent = "\u0627\u0644\u0639\u0646\u0648\u0627\u0646 \u0645\u0637\u0644\u0648\u0628."; addCourseMsg.style.color="#f87171"; } return; }
+            var res = await sb.from("courses").insert({
+                title: title.trim(),
+                instructor: instructor.trim() || null,
+                duration: duration.trim() || null,
+                category: category.trim() || null,
+                max_seats: isNaN(seats) ? 0 : seats,
+                description: description.trim() || null,
+                created_by: user.id
+            });
+            if (res.error) {
+                if (addCourseMsg) { addCourseMsg.textContent = "\u062a\u0639\u0630\u0651\u0631 \u0627\u0644\u0646\u0634\u0631: " + res.error.message; addCourseMsg.style.color="#f87171"; }
+                return;
+            }
+            if (addCourseMsg) { addCourseMsg.textContent = "\u062a\u0645 \u0646\u0634\u0631 \u0627\u0644\u062f\u0648\u0631\u0629 \u0628\u0646\u062c\u0627\u062d."; addCourseMsg.style.color="#4ade80"; }
+            addCourseForm.reset();
+            await loadCourses();
+        });
+    }
+
+    if (coursesBody) {
+        coursesBody.addEventListener("click", async function (e) {
+            var delBtn  = e.target.closest("[data-action='delete-course']");
+            var viewBtn = e.target.closest("[data-action='view-enrollments']");
+            if (delBtn) {
+                if (!confirm("\u0647\u0644 \u0623\u0646\u062a \u0645\u062a\u0623\u0643\u062f \u0645\u0646 \u062d\u0630\u0641 \u0647\u0630\u0647 \u0627\u0644\u062f\u0648\u0631\u0629\u061f")) return;
+                var res = await sb.from("courses").delete().eq("id", delBtn.dataset.cid);
+                if (res.error) { alert("\u062a\u0639\u0630\u0651\u0631 \u0627\u0644\u062d\u0630\u0641."); return; }
+                await loadCourses();
+            }
+            if (viewBtn) {
+                await loadCourseEnrollments(viewBtn.dataset.cid, viewBtn.dataset.ctitle);
+            }
+        });
+    }
+
+    async function loadCourseEnrollments(courseId, courseTitle) {
+        var panel  = document.getElementById("courseEnrollmentsPanel");
+        var tbody  = document.getElementById("enrollmentsTableBody");
+        var titleEl = document.getElementById("enrollmentsPanelTitle");
+        if (!panel || !tbody) return;
+        panel.style.display = "block";
+        if (titleEl) titleEl.textContent = "\u0627\u0644\u0645\u0633\u062c\u0644\u0648\u0646 \u0641\u064a: " + (courseTitle || "");
+        tbody.innerHTML = '<tr><td colspan="5" class="no-data-msg">\u062c\u0627\u0631\u064a \u0627\u0644\u062a\u062d\u0645\u064a\u0644...</td></tr>';
+        panel.scrollIntoView({ behavior: "smooth", block: "start" });
+
+        var res = await sb.from("course_enrollments").select("user_id, status, created_at").eq("course_id", courseId).order("created_at", { ascending: false });
+        var rows = res.data || [];
+        if (!rows.length) { tbody.innerHTML = '<tr><td colspan="5" class="no-data-msg">\u0644\u0627 \u064a\u0648\u062c\u062f \u0645\u0633\u062c\u0644\u0648\u0646 \u0628\u0639\u062f.</td></tr>'; return; }
+
+        tbody.innerHTML = rows.map(function (r) {
+            var p = profileMap[r.user_id] || {};
+            var statusBadge = r.status === "completed"
+                ? '<span class="badge badge-accepted">\u0645\u0643\u062a\u0645\u0644</span>'
+                : r.status === "cancelled"
+                ? '<span class="badge badge-rejected">\u0645\u0644\u063a\u0649</span>'
+                : '<span class="badge badge-pending-status">\u0645\u0633\u062c\u0651\u0644</span>';
+            return '<tr>' +
+                '<td>' + esc(p.full_name || "\u2014") + '</td>' +
+                '<td>' + esc(p.email    || "\u2014") + '</td>' +
+                '<td>' + roleLabel(p.role || "") + '</td>' +
+                '<td>' + fmtDate(r.created_at) + '</td>' +
+                '<td>' + statusBadge + '</td>' +
+            '</tr>';
+        }).join("");
+    }
+
+    var closeEnrPanel = document.getElementById("closeEnrollmentsPanel");
+    if (closeEnrPanel) {
+        closeEnrPanel.addEventListener("click", function () {
+            var panel = document.getElementById("courseEnrollmentsPanel");
+            if (panel) panel.style.display = "none";
         });
     }
 

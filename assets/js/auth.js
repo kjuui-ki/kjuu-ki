@@ -98,14 +98,14 @@
                 { href: "jobs.html",             text: "الوظائف" },
                 { href: "profile.html",          text: "ملفي" },
                 { href: "my-applications.html",  text: "طلباتي" },
-                { href: "course-access.html",    text: "الدورات" }
+                { href: "courses.html",           text: "الدورات" }
             ];
         } else if (role === "company") {
             links = [
                 { href: "index.html",                          text: "الرئيسية" },
                 { href: "company-dashboard.html",              text: "لوحة الشركة" },
                 { href: "company-dashboard.html?tab=my-jobs",  text: "وظائفي" },
-                { href: "course-access.html",                  text: "الدورات" }
+                { href: "courses.html",                        text: "الدورات" }
             ];
         } else if (role === "super_admin") {
             links = [
@@ -228,21 +228,6 @@
     function wireLoginForm(formId, emailId, passwordId) {
         var form = document.getElementById(formId);
         if (!form) return;
-
-        // Forgot password
-        var forgot = form.querySelector(".auth-forgot");
-        if (forgot) {
-            forgot.addEventListener("click", async function (e) {
-                e.preventDefault();
-                var emailEl = document.getElementById(emailId);
-                var email = emailEl ? emailEl.value.trim() : "";
-                if (!email) { alert("أدخل البريد الإلكتروني أولاً"); return; }
-                var r = await sb.auth.resetPasswordForEmail(email, {
-                    redirectTo: window.location.origin + "/reset-password.html"
-                });
-                alert(r.error ? (r.error.message || "تعذر إرسال الرابط") : "تم إرسال رابط إعادة التعيين");
-            });
-        }
 
         form.addEventListener("submit", async function (e) {
             e.preventDefault();
