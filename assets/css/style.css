@@ -2544,3 +2544,489 @@ body.role-super-admin .role-home-hero-admin {
 .profile-page .container > h1 {
     color: #ffffff;
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   FULL MOBILE RESPONSIVE  — covers all pages, all components
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── 768px: tablets & large phones ─────────────────────────────── */
+@media (max-width: 768px) {
+
+    /* --- Navigation -------------------------------------------- */
+    .nav-toggle {
+        display: inline-flex;
+        order: 3;
+    }
+
+    .main-nav {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background: linear-gradient(135deg, rgba(2,11,58,0.98), rgba(6,27,99,0.98));
+        border-bottom: 1px solid rgba(148,163,184,0.22);
+        padding: 0.75rem 1.5rem 1.1rem;
+        gap: 0.25rem;
+        z-index: 200;
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-radius: 0 0 var(--radius-md) var(--radius-md);
+        box-shadow: 0 12px 32px rgba(2,11,58,0.45);
+    }
+
+    .main-nav.open {
+        display: flex;
+    }
+
+    .nav-link {
+        padding: 0.7rem 1rem;
+        border-radius: var(--radius-sm);
+        width: 100%;
+        font-size: 0.95rem;
+    }
+
+    .main-header {
+        position: sticky;
+    }
+
+    .header-inner {
+        position: relative;
+        flex-wrap: nowrap;
+        padding: 0.75rem 0;
+        gap: 0.75rem;
+    }
+
+    .header-main-group {
+        flex: 1;
+        gap: 0;
+    }
+
+    .lang-switch {
+        order: 2;
+    }
+
+    .lang-btn {
+        padding: 0.22rem 0.55rem;
+        font-size: 0.78rem;
+    }
+
+    .user-menu {
+        gap: 0.4rem;
+    }
+
+    .user-info {
+        display: none;
+    }
+
+    /* --- Hero -------------------------------------------------- */
+    .hero {
+        padding: 2.5rem 0;
+    }
+
+    .hero-content h1 {
+        font-size: 1.7rem;
+    }
+
+    .hero-stats .stat {
+        min-width: 110px;
+    }
+
+    /* --- Grids ------------------------------------------------- */
+    .grid-3 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    /* --- Dashboard stats -------------------------------------- */
+    .dashboard-stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    /* --- Admin / Company hero banners ------------------------- */
+    .admin-hero,
+    .company-dash-hero {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1.3rem 1.2rem;
+        gap: 1rem;
+    }
+
+    .admin-hero h1 {
+        font-size: 1.35rem;
+    }
+
+    .company-dash-hero h1 {
+        font-size: 1.5rem;
+    }
+
+    .company-dash-stats {
+        flex-wrap: wrap;
+        gap: 0.7rem;
+    }
+
+    .company-dash-stat {
+        min-width: 75px;
+        padding: 0.6rem 0.9rem;
+    }
+
+    .company-dash-stat-num {
+        font-size: 1.5rem;
+    }
+
+    /* --- Dash tabs: horizontal scroll on mobile --------------- */
+    .dash-tabs {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding-bottom: 0.5rem;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .dash-tabs::-webkit-scrollbar { display: none; }
+
+    .dash-tab {
+        flex-shrink: 0;
+        padding: 0.48rem 1rem;
+        font-size: 0.84rem;
+    }
+
+    /* --- Dash card -------------------------------------------- */
+    .dash-card {
+        padding: 1.1rem 1rem;
+    }
+
+    .dash-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    /* --- Filter row ------------------------------------------- */
+    .admin-filter-row {
+        width: 100%;
+    }
+
+    .admin-search {
+        width: 100%;
+        min-width: unset;
+    }
+
+    /* --- Post-job form grid ----------------------------------- */
+    .pjf-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    /* --- Career banner ---------------------------------------- */
+    .career-banner {
+        min-height: 260px;
+        padding: 2.5rem 0;
+    }
+
+    .career-banner-inner h2 {
+        font-size: 1.55rem;
+    }
+
+    /* --- Jobs page hero --------------------------------------- */
+    .jobs-page-hero h1 {
+        font-size: 1.5rem;
+    }
+}
+
+/* ── 640px: small phones ─────────────────────────────────────── */
+@media (max-width: 640px) {
+
+    .container {
+        padding: 0 0.9rem;
+    }
+
+    /* --- Hero -------------------------------------------------- */
+    .hero {
+        padding: 2rem 0;
+    }
+
+    .hero-content h1 {
+        font-size: 1.45rem;
+        line-height: 1.55;
+    }
+
+    .hero-content p {
+        font-size: 0.88rem;
+    }
+
+    .hero-stats {
+        gap: 0.5rem;
+    }
+
+    .hero-stats .stat {
+        min-width: 95px;
+        padding: 0.55rem 0.75rem;
+    }
+
+    .stat-number {
+        font-size: 1.25rem;
+    }
+
+    .stat-label {
+        font-size: 0.78rem;
+    }
+
+    .search-form {
+        padding: 0.9rem;
+    }
+
+    .form-row {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    /* --- All main grids → 1 col ------------------------------- */
+    .grid-3 {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .jobs-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .apply-form-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .course-access-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .admin-course-form-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .my-requests-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .courses-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    /* --- Section ------------------------------------------- */
+    .section {
+        padding: 1.8rem 0;
+    }
+
+    .section-header h2 {
+        font-size: 1.35rem;
+    }
+
+    /* --- Jobs page hero --------------------------------------- */
+    .jobs-page-hero h1 {
+        font-size: 1.25rem;
+    }
+
+    /* --- Apply card ------------------------------------------- */
+    .apply-card {
+        padding: 1.2rem 1rem;
+        border-radius: var(--radius-md);
+    }
+
+    .apply-job-summary h1 {
+        font-size: 1.25rem;
+    }
+
+    /* --- Career banner ---------------------------------------- */
+    .career-banner {
+        min-height: 220px;
+        padding: 2rem 0;
+    }
+
+    .career-banner-inner h2 {
+        font-size: 1.25rem;
+    }
+
+    .career-banner-inner p {
+        font-size: 0.88rem;
+    }
+
+    /* --- Auth -------------------------------------------------- */
+    .auth-card {
+        padding: 1.3rem 1rem;
+        border-radius: var(--radius-md);
+    }
+
+    .auth-title {
+        font-size: 1.2rem;
+    }
+
+    .register-card {
+        max-width: 100%;
+    }
+
+    /* --- OTP digits (8 boxes) — fit on small screen ----------- */
+    .otp-row {
+        gap: 0.28rem;
+        margin: 1.2rem 0 0.5rem;
+    }
+
+    .otp-digit {
+        width: 35px;
+        height: 43px;
+        font-size: 1.1rem;
+        border-radius: 9px;
+    }
+
+    /* --- Partners marquee ------------------------------------- */
+    .marquee-track img {
+        height: 58px;
+        max-width: 110px;
+        margin-right: 0.75rem;
+        padding: 0.35rem 0.5rem;
+    }
+
+    /* --- Dashboard -------------------------------------------- */
+    .dashboard-stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .dashboard-stat-card {
+        padding: 0.8rem;
+    }
+
+    .dashboard-stat-card strong {
+        font-size: 1.35rem;
+    }
+
+    /* --- Admin / company hero --------------------------------- */
+    .admin-hero,
+    .company-dash-hero {
+        padding: 1.1rem 0.9rem;
+    }
+
+    .admin-hero h1,
+    .company-dash-hero h1 {
+        font-size: 1.25rem;
+    }
+
+    /* --- Modal ------------------------------------------------- */
+    .modal-box {
+        padding: 1.4rem 1.1rem;
+        border-radius: var(--radius-md);
+        width: 95%;
+    }
+
+    /* --- Home course card ------------------------------------- */
+    .home-course-card {
+        padding: 1.2rem 1rem 1rem;
+    }
+
+    /* --- Hero card -------------------------------------------- */
+    .hero-card {
+        padding: 1.2rem 1rem;
+    }
+
+    /* --- Footer ----------------------------------------------- */
+    .footer-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1.2rem;
+    }
+
+    .footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+    }
+
+    /* --- Profile / dashboard page sections -------------------- */
+    .dashboard-head {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .dashboard-admin-meta {
+        font-size: 0.8rem;
+        padding: 0.35rem 0.75rem;
+    }
+
+    /* --- course access grid ----------------------------------- */
+    .course-access-grid {
+        max-width: 100%;
+    }
+}
+
+/* ── 480px: very small phones ─────────────────────────────────── */
+@media (max-width: 480px) {
+
+    /* --- OTP: make even tighter ------------------------------- */
+    .otp-digit {
+        width: 31px;
+        height: 38px;
+        font-size: 0.98rem;
+        border-radius: 7px;
+        border-width: 2px;
+    }
+
+    .otp-row {
+        gap: 0.2rem;
+    }
+
+    /* --- lang switch compact ---------------------------------- */
+    .lang-btn {
+        padding: 0.18rem 0.45rem;
+        font-size: 0.73rem;
+    }
+
+    /* --- Stats ------------------------------------------------ */
+    .hero-content h1 {
+        font-size: 1.3rem;
+    }
+
+    .stat-number {
+        font-size: 1.1rem;
+    }
+
+    /* --- Dashboard stats always 2-col ------------------------- */
+    .dashboard-stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    /* --- Action buttons in tables ----------------------------- */
+    .dashboard-actions {
+        flex-wrap: wrap;
+        gap: 0.3rem;
+    }
+
+    .dashboard-btn {
+        font-size: 0.75rem;
+        padding: 0.28rem 0.55rem;
+    }
+
+    /* --- Form rows even on very small ----------------------- */
+    .apply-form-grid,
+    .pjf-grid,
+    .form-row {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    /* --- Dash tabs even smaller ----------------------------- */
+    .dash-tab {
+        padding: 0.42rem 0.8rem;
+        font-size: 0.8rem;
+    }
+
+    /* --- Career banner -------------------------------------- */
+    .career-banner {
+        min-height: 190px;
+    }
+
+    .career-banner-inner h2 {
+        font-size: 1.15rem;
+    }
+
+    /* --- Section header ------------------------------------- */
+    .section-header h2 {
+        font-size: 1.2rem;
+    }
+}

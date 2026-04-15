@@ -385,6 +385,20 @@ document.addEventListener("DOMContentLoaded", function () {
         navToggle.addEventListener("click", function () {
             mainNav.classList.toggle("open");
         });
+
+        // Close nav when a link inside it is clicked (mobile)
+        mainNav.querySelectorAll("a").forEach(function (link) {
+            link.addEventListener("click", function () {
+                mainNav.classList.remove("open");
+            });
+        });
+
+        // Close nav when clicking outside
+        document.addEventListener("click", function (e) {
+            if (!mainNav.contains(e.target) && !navToggle.contains(e.target)) {
+                mainNav.classList.remove("open");
+            }
+        });
     }
 
     var langFromStorage = localStorage.getItem("maherLang") || "ar";
