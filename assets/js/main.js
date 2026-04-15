@@ -382,8 +382,19 @@ document.addEventListener("DOMContentLoaded", function () {
     var mainNav = document.getElementById("mainNav");
 
     if (navToggle && mainNav) {
+        // Calculate real header height and set nav top dynamically
+        function setNavTop() {
+            var header = document.querySelector(".main-header");
+            if (header) {
+                mainNav.style.top = header.offsetHeight + "px";
+            }
+        }
+        setNavTop();
+        window.addEventListener("resize", setNavTop);
+
         navToggle.addEventListener("click", function () {
             mainNav.classList.toggle("open");
+            setNavTop(); // recalc in case header height changed
         });
 
         // Close nav when a link inside it is clicked (mobile)
