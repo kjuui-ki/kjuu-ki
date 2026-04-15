@@ -248,7 +248,16 @@
             var res = await doLogin(email, password);
 
             if (res.error) {
-                showStatus(form, "error", res.error.message || "فشل تسجيل الدخول");
+                var msg = (res.error.message || "").toLowerCase();
+                var arabicMsg;
+                if (msg.includes("invalid login") || msg.includes("invalid credentials")) {
+                    arabicMsg = "البريد الإلكتروني أو كلمة المرور غير صحيحة.";
+                } else if (msg.includes("email not confirmed")) {
+                    arabicMsg = "البريد الإلكتروني أو كلمة المرور غير صحيحة.";
+                } else {
+                    arabicMsg = res.error.message || "فشل تسجيل الدخول";
+                }
+                showStatus(form, "error", arabicMsg);
                 setBtnLoading(btn, false);
             }
             // On success doLogin already does window.location.href → no need to re-enable btn
@@ -294,13 +303,27 @@
             var signUpRes = await sb.auth.signUp({
                 email: email,
                 password: password,
-                options: { data: { full_name: fullName, role: role } }
+                options: {
+                    data: { full_name: fullName, role: role },
+                    emailRedirectTo: undefined
+                }
             });
 
+            /* Supabase free tier may fail to send confirmation email but the
+               account is still created. Treat "Error sending confirmation email"
+               as a soft warning — not a blocker. */
             if (signUpRes.error) {
-                showStatus(form, "error", signUpRes.error.message || "تعذر إنشاء الحساب");
-                setBtnLoading(btn, false);
-                return;
+                var errMsg = signUpRes.error.message || "";
+                var isEmailErr = errMsg.toLowerCase().includes("confirmation") ||
+                                 errMsg.toLowerCase().includes("sending") ||
+                                 errMsg.toLowerCase().includes("smtp") ||
+                                 errMsg.toLowerCase().includes("email");
+                if (!isEmailErr) {
+                    showStatus(form, "error", errMsg || "تعذر إنشاء الحساب");
+                    setBtnLoading(btn, false);
+                    return;
+                }
+                /* email error only — proceed to login anyway */
             }
 
             // Auto-login immediately after signup

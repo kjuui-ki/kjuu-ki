@@ -1807,6 +1807,14 @@ html[dir="ltr"] .logo {
     color: #b91c1c;
 }
 
+.dashboard-btn-reset-pwd {
+    background: rgba(234, 179, 8, 0.13);
+    color: #92400e;
+}
+.dashboard-btn-reset-pwd:hover {
+    background: rgba(234, 179, 8, 0.25);
+}
+
 .dashboard-btn-accept {
     background: rgba(79, 209, 255, 0.13);
     color: #0a33b8;
@@ -1911,6 +1919,15 @@ html[dir="ltr"] .logo {
     font-size: 0.82rem;
 }
 .btn-link:hover { text-decoration: underline; }
+
+.phone-link {
+    color: #0a33b8;
+    font-size: 0.82rem;
+    text-decoration: none;
+    direction: ltr;
+    display: inline-block;
+}
+.phone-link:hover { text-decoration: underline; }
 
 .admin-main-nav {
     display: flex;

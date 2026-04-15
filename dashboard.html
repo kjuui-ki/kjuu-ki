@@ -73,15 +73,16 @@
                         <table class="dashboard-table">
                             <thead>
                                 <tr>
-                                    <th>&#x627;&#x644;&#x627;&#x633;&#x645;</th>
-                                    <th>&#x627;&#x644;&#x628;&#x631;&#x64a;&#x62f; &#x627;&#x644;&#x625;&#x644;&#x643;&#x62a;&#x631;&#x648;&#x646;&#x64a;</th>
-                                    <th>&#x627;&#x644;&#x62f;&#x648;&#x631;</th>
-                                    <th>&#x62a;&#x627;&#x631;&#x64a;&#x62e; &#x627;&#x644;&#x625;&#x646;&#x634;&#x627;&#x621;</th>
+                                    <th>الاسم</th>
+                                    <th>البريد الإلكتروني</th>
+                                    <th>رقم الجوال</th>
+                                    <th>الدور</th>
+                                    <th>تاريخ الإنشاء</th>
                                     <th>CV</th>
-                                    <th>&#x627;&#x644;&#x625;&#x62c;&#x631;&#x627;&#x621;&#x627;&#x62a;</th>
+                                    <th>الإجراءات</th>
                                 </tr>
                             </thead>
-                            <tbody id="usersTableBody"><tr><td colspan="6" class="no-data-msg">&#x62c;&#x627;&#x631;&#x64a; &#x627;&#x644;&#x62a;&#x62d;&#x645;&#x64a;&#x644;...</td></tr></tbody>
+                            <tbody id="usersTableBody"><tr><td colspan="7" class="no-data-msg">جاري التحميل...</td></tr></tbody>
                         </table>
                     </div>
                 </div>
@@ -284,21 +285,25 @@
                 <!-- Enrollments sub-panel -->
                 <div id="courseEnrollmentsPanel" class="dash-card" style="margin-top:1.5rem;display:none;">
                     <div class="dash-card-header">
-                        <h2 class="dash-card-title" id="enrollmentsPanelTitle">&#x627;&#x644;&#x645;&#x633;&#x62c;&#x644;&#x648;&#x646; &#x641;&#x64a; &#x627;&#x644;&#x62f;&#x648;&#x631;&#x629;</h2>
-                        <button id="closeEnrollmentsPanel" class="dashboard-btn">&#x2715; &#x625;&#x63a;&#x644;&#x627;&#x642;</button>
+                        <h2 class="dash-card-title" id="enrollmentsPanelTitle">المسجلون في الدورة</h2>
+                        <div style="display:flex;gap:0.6rem;align-items:center;">
+                            <button id="exportEnrollmentsBtn" class="dashboard-btn" style="background:rgba(21,128,61,0.1);color:#15803d;border:1px solid rgba(21,128,61,0.25);">&#x2B07; تصدير Excel</button>
+                            <button id="closeEnrollmentsPanel" class="dashboard-btn">✕ إغلاق</button>
+                        </div>
                     </div>
                     <div class="dashboard-table-wrap">
                         <table class="dashboard-table">
                             <thead>
                                 <tr>
-                                    <th>&#x627;&#x644;&#x627;&#x633;&#x645;</th>
-                                    <th>&#x627;&#x644;&#x628;&#x631;&#x64a;&#x62f;</th>
-                                    <th>&#x627;&#x644;&#x62f;&#x648;&#x631;</th>
-                                    <th>&#x62a;&#x627;&#x631;&#x64a;&#x62e; &#x627;&#x644;&#x62a;&#x633;&#x62c;&#x64a;&#x644;</th>
-                                    <th>&#x627;&#x644;&#x62d;&#x627;&#x644;&#x629;</th>
+                                    <th>الاسم</th>
+                                    <th>البريد</th>
+                                    <th>رقم الجوال</th>
+                                    <th>الدور</th>
+                                    <th>تاريخ التسجيل</th>
+                                    <th>الحالة</th>
                                 </tr>
                             </thead>
-                            <tbody id="enrollmentsTableBody"><tr><td colspan="5" class="no-data-msg">&#x644;&#x627; &#x64a;&#x648;&#x62c;&#x62f; &#x645;&#x633;&#x62c;&#x644;&#x648;&#x646;.</td></tr></tbody>
+                            <tbody id="enrollmentsTableBody"><tr><td colspan="6" class="no-data-msg">لا يوجد مسجلون.</td></tr></tbody>
                         </table>
                     </div>
                 </div>
@@ -341,6 +346,7 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
     <script src="assets/js/supabaseClient.js" defer></script>
     <script src="assets/js/auth.js" defer></script>
     <script src="assets/js/main.js" defer></script>

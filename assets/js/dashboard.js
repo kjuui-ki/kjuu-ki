@@ -99,9 +99,11 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (!list.length) { usersBody.innerHTML = '<tr><td colspan="6" class="no-data-msg">\u0644\u0627 \u064a\u0648\u062c\u062f \u0645\u0633\u062a\u062e\u062f\u0645\u0648\u0646.</td></tr>'; return; }
         usersBody.innerHTML = list.map(function (p) {
             var cv = p.cv_url ? '<a href="' + esc(p.cv_url) + '" target="_blank" class="btn-link">\u0639\u0631\u0636</a>' : "\u2014";
+            var phone = p.phone ? '<a href="tel:' + esc(p.phone) + '" class="phone-link">' + esc(p.phone) + '</a>' : "\u2014";
             return '<tr>' +
                 '<td>' + esc(p.full_name || "\u2014") + '</td>' +
                 '<td>' + esc(p.email || "\u2014") + '</td>' +
+                '<td>' + phone + '</td>' +
                 '<td>' + roleLabel(p.role) + '</td>' +
                 '<td>' + fmtDate(p.created_at) + '</td>' +
                 '<td>' + cv + '</td>' +
@@ -110,8 +112,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                         '<option value="job_seeker"' + (p.role === "job_seeker" ? " selected" : "") + '>\u0628\u0627\u062d\u062b</option>' +
                         '<option value="company"'    + (p.role === "company"    ? " selected" : "") + '>\u0634\u0631\u0643\u0629</option>' +
                         '<option value="super_admin"'+ (p.role === "super_admin"? " selected" : "") + '>\u0623\u062f\u0645\u0646</option>' +
-                    '</select>' +
-                    '<button class="dashboard-btn dashboard-btn-delete" data-action="delete-user" data-uid="' + esc(p.id) + '">\u062d\u0630\u0641</button>' +
+                    '</select>' +                    '<button class="dashboard-btn dashboard-btn-reset-pwd" data-action="reset-pwd" data-uid="' + esc(p.id) + '" data-email="' + esc(p.email || '') + '" title="إعادة تعيين كلمة المرور">🔑 تعيين</button>' +                    '<button class="dashboard-btn dashboard-btn-delete" data-action="delete-user" data-uid="' + esc(p.id) + '">\u062d\u0630\u0641</button>' +
                 '</div></td>' +
             '</tr>';
         }).join("");
@@ -139,6 +140,24 @@ document.addEventListener("DOMContentLoaded", async function () {
             renderStats();
         });
         usersBody.addEventListener("click", async function (e) {
+            var resetBtn = e.target.closest("[data-action='reset-pwd']");
+            if (resetBtn) {
+                var email = resetBtn.dataset.email;
+                if (!email) return;
+                if (!confirm('إرسال رابط إعادة تعيين كلمة المرور إلى:\n' + email + '\n\nهل أنت متأكد؟')) return;
+                resetBtn.disabled = true;
+                resetBtn.textContent = '...جاري';
+                var redirectUrl = window.location.origin + (window.location.pathname.replace(/\/[^\/]*$/, '/')) + 'reset-password.html';
+                var res = await sb.auth.resetPasswordForEmail(email, { redirectTo: redirectUrl });
+                resetBtn.disabled = false;
+                resetBtn.textContent = '🔑 تعيين';
+                if (res.error) {
+                    alert('تعذّر إرسال البريد: ' + res.error.message);
+                } else {
+                    alert('✅ تم إرسال رابط إعادة التعيين إلى ' + email);
+                }
+                return;
+            }
             var btn = e.target.closest("[data-action='delete-user']");
             if (!btn) return;
             if (!confirm("\u0647\u0644 \u0623\u0646\u062a \u0645\u062a\u0623\u0643\u062f \u0645\u0646 \u062d\u0630\u0641 \u0647\u0630\u0627 \u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645\u061f")) return;
@@ -259,12 +278,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     if (appFilter)    appFilter.addEventListener("change",    filterApps);
     if (appJobFilter) appJobFilter.addEventListener("change", filterApps);
 
-    /* export applications to CSV */
+    /* export applications to Excel */
     var exportBtn = document.getElementById("exportAppsBtn");
     if (exportBtn) {
         exportBtn.addEventListener("click", function () {
 
-            /* determine which rows to export (same filter as table) */
             var statusVal = appFilter    ? appFilter.value    : "";
             var jobVal    = appJobFilter ? appJobFilter.value : "";
             var rows = allApps.filter(function (a) {
@@ -273,65 +291,49 @@ document.addEventListener("DOMContentLoaded", async function () {
                 return matchStatus && matchJob;
             });
 
-            if (!rows.length) { alert("\u0644\u0627 \u062a\u0648\u062c\u062f \u0628\u064a\u0627\u0646\u0627\u062a \u0644\u0644\u062a\u0635\u062f\u064a\u0631."); return; }
+            if (!rows.length) { alert("لا توجد بيانات للتصدير."); return; }
 
-            /* wrap cell in quotes to protect semicolons/newlines inside values */
-            function cell(v) {
-                var s = String(v == null ? "" : v).trim();
-                return '"' + s.replace(/"/g, '""') + '"';
-            }
+            var statusText = { accepted: "مقبول", rejected: "مرفوض", pending: "قيد المراجعة" };
 
-            var statusText = {
-                accepted: "\u0645\u0642\u0628\u0648\u0644",
-                rejected: "\u0645\u0631\u0641\u0648\u0636",
-                pending:  "\u0642\u064a\u062f \u0627\u0644\u0645\u0631\u0627\u062c\u0639\u0629"
-            };
+            var data = [["#", "الاسم الكامل", "البريد الإلكتروني", "رقم الجوال", "التخصص", "الوظيفة", "الحالة", "تاريخ التقديم", "رابط السيرة الذاتية"]];
 
-            /* headers — 8 columns, semicolon separator for Arabic Excel */
-            var SEP   = ";";
-            var lines = [];
-            lines.push([
-                "\u0627\u0644\u0627\u0633\u0645",
-                "\u0627\u0644\u0628\u0631\u064a\u062f",
-                "\u0631\u0642\u0645 \u0627\u0644\u062c\u0648\u0627\u0644",
-                "\u0627\u0644\u062a\u062e\u0635\u0635",
-                "\u0627\u0644\u0648\u0638\u064a\u0641\u0629",
-                "\u0627\u0644\u062d\u0627\u0644\u0629",
-                "\u062a\u0627\u0631\u064a\u062e \u0627\u0644\u062a\u0642\u062f\u064a\u0645",
-                "\u0631\u0627\u0628\u0637 \u0627\u0644\u0633\u064a\u0631\u0629 \u0627\u0644\u0630\u0627\u062a\u064a\u0629"
-            ].map(cell).join(SEP));
-
-            rows.forEach(function (a) {
-                var seeker         = profileMap[a.user_id] || {};
-                var job            = jobMap[a.job_id]      || {};
-                var name           = a.full_name       || seeker.full_name       || "";
-                var email          = seeker.email      || "";
-                var phone          = a.phone           || seeker.phone           || "";
-                var specialization = a.specialization  || seeker.specialization  || "";
-                var jobTitle       = job.title         || "";
-                var status         = statusText[a.status] || a.status || "";
-                var date           = a.created_at ? new Date(a.created_at).toLocaleDateString("ar-SA") : "";
-                var cv             = a.cv_url          || seeker.cv_url          || "";
-                lines.push([name, email, phone, specialization, jobTitle, status, date, cv].map(cell).join(SEP));
+            rows.forEach(function (a, i) {
+                var seeker = profileMap[a.user_id] || {};
+                var job    = jobMap[a.job_id]      || {};
+                data.push([
+                    i + 1,
+                    a.full_name      || seeker.full_name      || "—",
+                    seeker.email     || "—",
+                    a.phone          || seeker.phone          || "—",
+                    a.specialization || seeker.specialization || "—",
+                    job.title        || "—",
+                    statusText[a.status] || a.status || "—",
+                    a.created_at ? new Date(a.created_at).toLocaleDateString("ar-SA") : "—",
+                    a.cv_url         || seeker.cv_url         || "—"
+                ]);
             });
 
-            /* dynamic filename: reflects selected job if filtered */
-            var selectedJobTitle = jobVal && jobMap[jobVal] ? jobMap[jobVal].title : "";
-            var filename = selectedJobTitle
-                ? "\u0645\u062a\u0642\u062f\u0645\u0648_" + selectedJobTitle.replace(/[\\/:*?"<>|]/g, "_") + ".csv"
-                : "applications.csv";
+            var wb = XLSX.utils.book_new();
+            var ws = XLSX.utils.aoa_to_sheet(data);
 
-            /* UTF-8 BOM (\uFEFF) makes Excel open Arabic correctly */
-            var csv  = "\uFEFF" + lines.join("\r\n");
-            var blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-            var url  = URL.createObjectURL(blob);
-            var link = document.createElement("a");
-            link.href     = url;
-            link.download = filename;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
+            ws["!cols"] = [
+                { wch: 5  },  // #
+                { wch: 22 },  // name
+                { wch: 30 },  // email
+                { wch: 16 },  // phone
+                { wch: 20 },  // specialization
+                { wch: 25 },  // job title
+                { wch: 14 },  // status
+                { wch: 18 },  // date
+                { wch: 40 }   // cv url
+            ];
+
+            var selectedJobTitle = jobVal && jobMap[jobVal] ? jobMap[jobVal].title : "";
+            var sheetName = selectedJobTitle ? selectedJobTitle.substring(0, 31) : "المتقدمون";
+            XLSX.utils.book_append_sheet(wb, ws, sheetName);
+
+            var safeName = (selectedJobTitle || "المتقدمون").replace(/[\\/:*?"<>|]/g, "_");
+            XLSX.writeFile(wb, "متقدمو_" + safeName + ".xlsx");
         });
     }
     if (appsBody) {
@@ -567,35 +569,89 @@ document.addEventListener("DOMContentLoaded", async function () {
         });
     }
 
+    var currentEnrollmentRows  = [];
+    var currentEnrollmentTitle = "";
+
     async function loadCourseEnrollments(courseId, courseTitle) {
         var panel  = document.getElementById("courseEnrollmentsPanel");
         var tbody  = document.getElementById("enrollmentsTableBody");
         var titleEl = document.getElementById("enrollmentsPanelTitle");
         if (!panel || !tbody) return;
+        currentEnrollmentTitle = courseTitle || "دورة";
         panel.style.display = "block";
-        if (titleEl) titleEl.textContent = "\u0627\u0644\u0645\u0633\u062c\u0644\u0648\u0646 \u0641\u064a: " + (courseTitle || "");
-        tbody.innerHTML = '<tr><td colspan="5" class="no-data-msg">\u062c\u0627\u0631\u064a \u0627\u0644\u062a\u062d\u0645\u064a\u0644...</td></tr>';
+        if (titleEl) titleEl.textContent = "\u0627\u0644\u0645\u0633\u062c\u0644\u0648\u0646 \u0641\u064a: " + currentEnrollmentTitle;
+        tbody.innerHTML = '<tr><td colspan="6" class="no-data-msg">\u062c\u0627\u0631\u064a \u0627\u0644\u062a\u062d\u0645\u064a\u0644...</td></tr>';
         panel.scrollIntoView({ behavior: "smooth", block: "start" });
 
         var res = await sb.from("course_enrollments").select("user_id, status, created_at").eq("course_id", courseId).order("created_at", { ascending: false });
-        var rows = res.data || [];
-        if (!rows.length) { tbody.innerHTML = '<tr><td colspan="5" class="no-data-msg">\u0644\u0627 \u064a\u0648\u062c\u062f \u0645\u0633\u062c\u0644\u0648\u0646 \u0628\u0639\u062f.</td></tr>'; return; }
+        currentEnrollmentRows = res.data || [];
+        if (!currentEnrollmentRows.length) {
+            tbody.innerHTML = '<tr><td colspan="6" class="no-data-msg">\u0644\u0627 \u064a\u0648\u062c\u062f \u0645\u0633\u062c\u0644\u0648\u0646 \u0628\u0639\u062f.</td></tr>';
+            return;
+        }
 
-        tbody.innerHTML = rows.map(function (r) {
+        tbody.innerHTML = currentEnrollmentRows.map(function (r) {
             var p = profileMap[r.user_id] || {};
             var statusBadge = r.status === "completed"
                 ? '<span class="badge badge-accepted">\u0645\u0643\u062a\u0645\u0644</span>'
                 : r.status === "cancelled"
                 ? '<span class="badge badge-rejected">\u0645\u0644\u063a\u0649</span>'
                 : '<span class="badge badge-pending-status">\u0645\u0633\u062c\u0651\u0644</span>';
+            var phone = p.phone ? '<a href="tel:' + esc(p.phone) + '" class="phone-link">' + esc(p.phone) + '</a>' : "\u2014";
             return '<tr>' +
                 '<td>' + esc(p.full_name || "\u2014") + '</td>' +
                 '<td>' + esc(p.email    || "\u2014") + '</td>' +
+                '<td>' + phone + '</td>' +
                 '<td>' + roleLabel(p.role || "") + '</td>' +
                 '<td>' + fmtDate(r.created_at) + '</td>' +
                 '<td>' + statusBadge + '</td>' +
             '</tr>';
         }).join("");
+    }
+
+    /* ── Export enrollments to Excel ── */
+    var exportEnrBtn = document.getElementById("exportEnrollmentsBtn");
+    if (exportEnrBtn) {
+        exportEnrBtn.addEventListener("click", function () {
+            if (!currentEnrollmentRows.length) return;
+
+            var statusMap = { completed: "مكتمل", cancelled: "ملغى", enrolled: "مسجّل" };
+            var roleMap   = { company: "شركة", super_admin: "أدمن", job_seeker: "باحث" };
+
+            // Build data array (header + rows)
+            var data = [["#", "الاسم الكامل", "البريد الإلكتروني", "رقم الجوال", "الدور", "تاريخ التسجيل", "الحالة"]];
+            currentEnrollmentRows.forEach(function (r, i) {
+                var p = profileMap[r.user_id] || {};
+                data.push([
+                    i + 1,
+                    p.full_name || "—",
+                    p.email     || "—",
+                    p.phone     || "—",
+                    roleMap[p.role] || p.role || "—",
+                    fmtDate(r.created_at),
+                    statusMap[r.status] || r.status || "—"
+                ]);
+            });
+
+            var wb  = XLSX.utils.book_new();
+            var ws  = XLSX.utils.aoa_to_sheet(data);
+
+            // Column widths
+            ws["!cols"] = [
+                { wch: 5  },  // #
+                { wch: 22 },  // name
+                { wch: 30 },  // email
+                { wch: 16 },  // phone
+                { wch: 10 },  // role
+                { wch: 18 },  // date
+                { wch: 12 }   // status
+            ];
+
+            XLSX.utils.book_append_sheet(wb, ws, currentEnrollmentTitle || "المسجلون");
+
+            var safeName = (currentEnrollmentTitle || "المسجلون").replace(/[\\/:*?"<>|]/g, "_");
+            XLSX.writeFile(wb, "مسجلو " + safeName + ".xlsx");
+        });
     }
 
     var closeEnrPanel = document.getElementById("closeEnrollmentsPanel");
