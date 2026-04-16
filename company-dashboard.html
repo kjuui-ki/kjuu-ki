@@ -39,84 +39,84 @@
 
             <div class="company-dash-hero">
                 <div class="company-dash-hero-content">
-                    <p class="company-dash-welcome">مرحباً بك في لوحة التحكم</p>
+                    <p class="company-dash-welcome" data-i18n="companyDash.welcome">مرحباً بك في لوحة التحكم</p>
                     <h1 id="companyDashName">شركتك</h1>
-                    <p class="company-dash-sub">إدارة الوظائف وفرص التوظيف ومعلومات شركتك</p>
+                    <p class="company-dash-sub" data-i18n="companyDash.sub">إدارة الوظائف وفرص التوظيف ومعلومات شركتك</p>
                 </div>
                 <div class="company-dash-stats" id="companyDashStats">
                     <div class="company-dash-stat">
                         <span class="company-dash-stat-num" id="statJobCount">—</span>
-                        <span class="company-dash-stat-label">وظيفة منشورة</span>
+                        <span class="company-dash-stat-label" data-i18n="companyDash.stat.jobs">وظيفة منشورة</span>
                     </div>
                 </div>
             </div>
 
             <div class="dash-tabs">
-                <button class="dash-tab active" data-tab="post-job">نشر وظيفة جديدة</button>
-                <button class="dash-tab" data-tab="my-jobs">وظائفي</button>
-                <button class="dash-tab" data-tab="request-staff">طلب موظفين</button>
-                <button class="dash-tab" data-tab="request-course">طلب دورة</button>
-                <button class="dash-tab" data-tab="company-info">معلومات الشركة</button>
+                <button class="dash-tab active" data-tab="post-job" data-i18n="tab.postJob">نشر وظيفة جديدة</button>
+                <button class="dash-tab" data-tab="my-jobs" data-i18n="tab.myJobs">وظائفي</button>
+                <button class="dash-tab" data-tab="request-staff" data-i18n="tab.requestStaff">طلب موظفين</button>
+                <button class="dash-tab" data-tab="request-course" data-i18n="tab.requestCourse">طلب دورة</button>
+                <button class="dash-tab" data-tab="company-info" data-i18n="tab.companyInfo">معلومات الشركة</button>
             </div>
 
             <!-- Post Job Tab -->
             <div class="dash-tab-content" id="tab-post-job">
                 <div class="dash-card">
-                    <h2 class="dash-card-title">نشر وظيفة جديدة</h2>
+                    <h2 class="dash-card-title" data-i18n="cd.postJob.title">نشر وظيفة جديدة</h2>
                     <form id="companyPostJobForm" class="post-job-form">
                         <div class="pjf-grid">
                             <div class="auth-form-group pjf-full">
-                                <label for="cdJobTitle">اسم الوظيفة *</label>
+                                <label for="cdJobTitle" data-i18n="cd.jobTitle.label">اسم الوظيفة *</label>
                                 <input id="cdJobTitle" type="text" placeholder="مثال: مهندس البرمجيات" required />
                             </div>
                             <div class="auth-form-group pjf-full">
-                                <label for="cdJobDescription">وصف الوظيفة *</label>
+                                <label for="cdJobDescription" data-i18n="cd.jobDescription.label">وصف الوظيفة *</label>
                                 <textarea id="cdJobDescription" rows="5" placeholder="اكتب وصفاً تفصيلياً للوظيفة ومهام العمل" required></textarea>
                             </div>
                             <div class="auth-form-group pjf-full">
-                                <label for="cdJobRequirements">المتطلبات *</label>
+                                <label for="cdJobRequirements" data-i18n="cd.jobRequirements.label">المتطلبات *</label>
                                 <textarea id="cdJobRequirements" rows="4" placeholder="حدد المتطلبات والمهارات المطلوبة" required></textarea>
                             </div>
                             <div class="auth-form-group">
-                                <label for="cdJobSalary">الراتب المتوقع</label>
+                                <label for="cdJobSalary" data-i18n="cd.salary.label">الراتب المتوقع</label>
                                 <input id="cdJobSalary" type="text" placeholder="مثال: 5000 - 8000 ريال" />
                             </div>
                             <div class="auth-form-group">
-                                <label for="cdJobLocation">الموقع *</label>
+                                <label for="cdJobLocation" data-i18n="cd.location.label">الموقع *</label>
                                 <input id="cdJobLocation" type="text" placeholder="مثال: الرياض" required />
                             </div>
                             <div class="auth-form-group">
-                                <label for="cdJobType">نوع التوظيف *</label>
+                                <label for="cdJobType" data-i18n="cd.jobType.label">نوع التوظيف *</label>
                                 <select id="cdJobType" required>
-                                    <option value="">اختر نوع التوظيف</option>
-                                    <option value="دوام كامل">دوام كامل</option>
-                                    <option value="دوام جزئي">دوام جزئي</option>
-                                    <option value="عقد مؤقت">عقد مؤقت</option>
-                                    <option value="تدريب">تدريب</option>
+                                    <option value="" data-i18n="opt.jobType.select">اختر نوع التوظيف</option>
+                                    <option value="دوام كامل" data-i18n="opt.jobType.fullTime">دوام كامل</option>
+                                    <option value="دوام جزئي" data-i18n="opt.jobType.partTime">دوام جزئي</option>
+                                    <option value="عقد مؤقت" data-i18n="opt.jobType.contract">عقد مؤقت</option>
+                                    <option value="تدريب" data-i18n="opt.jobType.internship">تدريب</option>
                                 </select>
                             </div>
                             <div class="auth-form-group">
-                                <label for="cdJobCategory">المجال *</label>
+                                <label for="cdJobCategory" data-i18n="cd.category.label">المجال *</label>
                                 <select id="cdJobCategory" required>
-                                    <option value="">اختر المجال</option>
-                                    <option value="تقنية المعلومات">تقنية المعلومات</option>
-                                    <option value="التسويق">التسويق</option>
-                                    <option value="المبيعات">المبيعات</option>
-                                    <option value="الموارد البشرية">الموارد البشرية</option>
-                                    <option value="التصميم">التصميم</option>
-                                    <option value="الهندسة">الهندسة</option>
-                                    <option value="التعليم">التعليم</option>
-                                    <option value="أخرى">أخرى</option>
+                                    <option value="" data-i18n="opt.jobCategory.select">اختر المجال</option>
+                                    <option value="تقنية المعلومات" data-i18n="opt.jobCategory.it">تقنية المعلومات</option>
+                                    <option value="التسويق" data-i18n="opt.jobCategory.marketing">التسويق</option>
+                                    <option value="المبيعات" data-i18n="opt.jobCategory.sales">المبيعات</option>
+                                    <option value="الموارد البشرية" data-i18n="opt.jobCategory.hr">الموارد البشرية</option>
+                                    <option value="التصميم" data-i18n="opt.jobCategory.design">التصميم</option>
+                                    <option value="الهندسة" data-i18n="opt.jobCategory.engineering">الهندسة</option>
+                                    <option value="التعليم" data-i18n="opt.jobCategory.education">التعليم</option>
+                                    <option value="أخرى" data-i18n="opt.jobCategory.other">أخرى</option>
                                 </select>
                             </div>
                             <div class="auth-form-group pjf-full">
-                                <label for="cdJobDeadline">آخر موعد للتقديم</label>
+                                <label for="cdJobDeadline" data-i18n="cd.deadline.label">آخر موعد للتقديم</label>
                                 <input id="cdJobDeadline" type="date" />
                             </div>
                         </div>
                         <div id="postJobStatus" class="form-status" style="display:none;"></div>
                         <div class="auth-submit" style="margin-top:1rem;">
-                            <button type="submit" class="btn btn-primary">نشر الوظيفة</button>
+                            <button type="submit" class="btn btn-primary" data-i18n="cd.postJob.btn">نشر الوظيفة</button>
                         </div>
                     </form>
                 </div>
@@ -126,8 +126,8 @@
             <div class="dash-tab-content" id="tab-my-jobs" style="display:none;">
                 <div class="dash-card">
                     <div class="dash-card-header">
-                        <h2 class="dash-card-title">الوظائف المنشورة</h2>
-                        <button type="button" class="btn btn-primary btn-sm" id="btnGoPostJob">+ نشر وظيفة جديدة</button>
+                        <h2 class="dash-card-title" data-i18n="cd.myJobs.title">الوظائف المنشورة</h2>
+                        <button type="button" class="btn btn-primary btn-sm" id="btnGoPostJob" data-i18n="cd.myJobs.addBtn">+ نشر وظيفة جديدة</button>
                     </div>
                     <div id="companyJobsList"><p class="no-data-msg">جاري التحميل...</p></div>
                 </div>
@@ -136,58 +136,58 @@
             <!-- Request Staff Tab -->
             <div class="dash-tab-content" id="tab-request-staff" style="display:none;">
                 <div class="dash-card">
-                    <h2 class="dash-card-title">طلب موظفين</h2>
-                    <p class="company-dash-sub" style="margin-bottom:1.2rem;">أرسل طلبك لإدارة المنصة للحصول على موظفين مناسبين — يطّلع على هذه الطلبات فريق الإدارة فقط.</p>
+                    <h2 class="dash-card-title" data-i18n="cd.requestStaff.title">طلب موظفين</h2>
+                    <p class="company-dash-sub" style="margin-bottom:1.2rem;" data-i18n="cd.requestStaff.sub">أرسل طلبك لإدارة المنصة للحصول على موظفين مناسبين — يطّلع على هذه الطلبات فريق الإدارة فقط.</p>
                     <form id="requestStaffForm" class="post-job-form">
                         <div class="pjf-grid">
                             <div class="auth-form-group">
-                                <label for="rsJobTitle">المسمى الوظيفي المطلوب *</label>
+                                <label for="rsJobTitle" data-i18n="cd.requestStaff.jobTitle.label">المسمى الوظيفي المطلوب *</label>
                                 <input id="rsJobTitle" type="text" placeholder="مثال: محاسب، مبرمج، مدير مبيعات" required />
                             </div>
                             <div class="auth-form-group">
-                                <label for="rsCount">عدد الموظفين المطلوبين *</label>
+                                <label for="rsCount" data-i18n="cd.requestStaff.count.label">عدد الموظفين المطلوبين *</label>
                                 <input id="rsCount" type="number" min="1" placeholder="مثال: 3" required />
                             </div>
                             <div class="auth-form-group">
-                                <label for="rsSpecialization">التخصص المطلوب *</label>
+                                <label for="rsSpecialization" data-i18n="cd.requestStaff.spec.label">التخصص المطلوب *</label>
                                 <input id="rsSpecialization" type="text" placeholder="مثال: تقنية المعلومات، المحاسبة" required />
                             </div>
                             <div class="auth-form-group">
-                                <label for="rsWorkType">نوع العمل</label>
+                                <label for="rsWorkType" data-i18n="cd.requestStaff.workType.label">نوع العمل</label>
                                 <select id="rsWorkType">
-                                    <option value="">اختر</option>
-                                    <option value="دوام كامل">دوام كامل</option>
-                                    <option value="دوام جزئي">دوام جزئي</option>
-                                    <option value="عقد مؤقت">عقد مؤقت</option>
-                                    <option value="تدريب">تدريب</option>
+                                    <option value="" data-i18n="opt.workType.select">اختر</option>
+                                    <option value="دوام كامل" data-i18n="opt.jobType.fullTime">دوام كامل</option>
+                                    <option value="دوام جزئي" data-i18n="opt.jobType.partTime">دوام جزئي</option>
+                                    <option value="عقد مؤقت" data-i18n="opt.jobType.contract">عقد مؤقت</option>
+                                    <option value="تدريب" data-i18n="opt.jobType.internship">تدريب</option>
                                 </select>
                             </div>
                             <div class="auth-form-group">
-                                <label for="rsSalary">الراتب المتوقع</label>
+                                <label for="rsSalary" data-i18n="cd.requestStaff.salary.label">الراتب المتوقع</label>
                                 <input id="rsSalary" type="text" placeholder="مثال: 5000 - 8000 ريال" />
                             </div>
                             <div class="auth-form-group">
-                                <label for="rsDeadline">آخر موعد للحاجة</label>
+                                <label for="rsDeadline" data-i18n="cd.requestStaff.deadline.label">آخر موعد للحاجة</label>
                                 <input id="rsDeadline" type="date" />
                             </div>
                             <div class="auth-form-group pjf-full">
-                                <label for="rsSkills">المهارات والمتطلبات *</label>
+                                <label for="rsSkills" data-i18n="cd.requestStaff.skills.label">المهارات والمتطلبات *</label>
                                 <textarea id="rsSkills" rows="4" placeholder="اذكر المهارات والخبرات المطلوبة في الموظف" required></textarea>
                             </div>
                             <div class="auth-form-group pjf-full">
-                                <label for="rsNotes">ملاحظات إضافية</label>
+                                <label for="rsNotes" data-i18n="cd.requestStaff.notes.label">ملاحظات إضافية</label>
                                 <textarea id="rsNotes" rows="3" placeholder="أي معلومات إضافية ترغب في إيصالها للإدارة"></textarea>
                             </div>
                         </div>
                         <div id="requestStaffStatus" class="form-status" style="display:none;"></div>
                         <div class="auth-submit" style="margin-top:1rem;">
-                            <button type="submit" class="btn btn-primary">إرسال الطلب</button>
+                            <button type="submit" class="btn btn-primary" data-i18n="cd.requestStaff.submit">إرسال الطلب</button>
                         </div>
                     </form>
 
                     <!-- My requests list -->
                     <div style="margin-top:2rem;">
-                        <h3 class="dash-card-title" style="font-size:1rem;margin-bottom:0.8rem;">طلباتي السابقة</h3>
+                        <h3 class="dash-card-title" style="font-size:1rem;margin-bottom:0.8rem;" data-i18n="cd.requestStaff.prevTitle">طلباتي السابقة</h3>
                         <div id="myStaffRequestsList"><p class="no-data-msg">جاري التحميل...</p></div>
                     </div>
                 </div>
@@ -197,51 +197,51 @@
             <div class="dash-tab-content" id="tab-request-course" style="display:none;">
                 <div class="dash-card">
                     <h2 class="dash-card-title">طلب فتح دورة تدريبية</h2>
-                    <p class="company-dash-sub" style="margin-bottom:1.2rem;">أرسل طلبك لإدارة المنصة لفتح دورة تدريبية لموظفيك — يطّلع على هذه الطلبات فريق الإدارة فقط.</p>
+                    <p class="company-dash-sub" style="margin-bottom:1.2rem;" data-i18n="cd.requestCourse.sub">أرسل طلبك لإدارة المنصة لفتح دورة تدريبية لموظفيك — يطّلع على هذه الطلبات فريق الإدارة فقط.</p>
                     <form id="requestCourseForm" class="post-job-form">
                         <div class="pjf-grid">
                             <div class="auth-form-group">
-                                <label for="rcCourseName">اسم الدورة المطلوبة *</label>
+                                <label for="rcCourseName" data-i18n="cd.requestCourse.name.label">اسم الدورة المطلوبة *</label>
                                 <input id="rcCourseName" type="text" placeholder="مثال: دورة في إدارة المشاريع" required />
                             </div>
                             <div class="auth-form-group">
-                                <label for="rcCategory">المجال / الفئة</label>
+                                <label for="rcCategory" data-i18n="cd.requestCourse.category.label">المجال / الفئة</label>
                                 <input id="rcCategory" type="text" placeholder="مثال: تقنية، مالية، تسويق" />
                             </div>
                             <div class="auth-form-group">
-                                <label for="rcSeats">عدد المقاعد المطلوبة *</label>
+                                <label for="rcSeats" data-i18n="cd.requestCourse.seats.label">عدد المقاعد المطلوبة *</label>
                                 <input id="rcSeats" type="number" min="1" value="1" placeholder="مثال: 10" required />
                             </div>
                             <div class="auth-form-group">
-                                <label for="rcDuration">المدة الزمنية المتوقعة</label>
+                                <label for="rcDuration" data-i18n="cd.requestCourse.duration.label">المدة الزمنية المتوقعة</label>
                                 <input id="rcDuration" type="text" placeholder="مثال: 3 أيام، 40 ساعة" />
                             </div>
                             <div class="auth-form-group">
-                                <label for="rcExpectedDate">تاريخ البدء المتوقع</label>
+                                <label for="rcExpectedDate" data-i18n="cd.requestCourse.expectedDate.label">تاريخ البدء المتوقع</label>
                                 <input id="rcExpectedDate" type="date" />
                             </div>
                             <div class="auth-form-group">
-                                <label for="rcAudience">الفئة المستهدفة</label>
+                                <label for="rcAudience" data-i18n="cd.requestCourse.audience.label">الفئة المستهدفة</label>
                                 <input id="rcAudience" type="text" placeholder="مثال: موظفون جدد، مديرو فرق" />
                             </div>
                             <div class="auth-form-group pjf-full">
-                                <label for="rcDescription">وصف الدورة ومحتواها المطلوب *</label>
+                                <label for="rcDescription" data-i18n="cd.requestCourse.description.label">وصف الدورة ومحتواها المطلوب *</label>
                                 <textarea id="rcDescription" rows="4" placeholder="اذكر المحاور الرئيسية والمحتوى الذي تحتاجه الدورة" required></textarea>
                             </div>
                             <div class="auth-form-group pjf-full">
-                                <label for="rcNotes">ملاحظات إضافية</label>
+                                <label for="rcNotes" data-i18n="cd.requestCourse.notes.label">ملاحظات إضافية</label>
                                 <textarea id="rcNotes" rows="3" placeholder="أي معلومات إضافية ترغب في إيصالها للإدارة"></textarea>
                             </div>
                         </div>
                         <div id="requestCourseStatus" class="form-status" style="display:none;"></div>
                         <div class="auth-submit" style="margin-top:1rem;">
-                            <button type="submit" class="btn btn-primary">إرسال الطلب</button>
+                            <button type="submit" class="btn btn-primary" data-i18n="cd.requestCourse.submit">إرسال الطلب</button>
                         </div>
                     </form>
 
                     <!-- My course requests list -->
                     <div style="margin-top:2rem;">
-                        <h3 class="dash-card-title" style="font-size:1rem;margin-bottom:0.8rem;">طلباتي السابقة</h3>
+                        <h3 class="dash-card-title" style="font-size:1rem;margin-bottom:0.8rem;" data-i18n="cd.requestCourse.prevTitle">طلباتي السابقة</h3>
                         <div id="myCourseRequestsList"></div>
                     </div>
                 </div>
@@ -250,27 +250,27 @@
             <!-- Company Info Tab -->
             <div class="dash-tab-content" id="tab-company-info" style="display:none;">
                 <div class="dash-card">
-                    <h2 class="dash-card-title">معلومات الشركة</h2>
+                    <h2 class="dash-card-title" data-i18n="cd.companyInfo.title">معلومات الشركة</h2>
                     <form id="companyDashProfileForm" class="company-info-form">
                         <div class="auth-form-group">
-                            <label for="cdCompanyName">اسم الشركة</label>
+                            <label for="cdCompanyName" data-i18n="cd.companyName.label">اسم الشركة</label>
                             <input id="cdCompanyName" type="text" placeholder="اسم الشركة" />
                         </div>
                         <div class="auth-form-group">
-                            <label for="cdCompanyPhone">رقم الجوال</label>
+                            <label for="cdCompanyPhone" data-i18n="cd.companyPhone.label">رقم الجوال</label>
                             <input id="cdCompanyPhone" type="tel" placeholder="مثال: 05XXXXXXXX" />
                         </div>
                         <div class="auth-form-group">
-                            <label for="cdCompanySpec">التخصص / القطاع</label>
+                            <label for="cdCompanySpec" data-i18n="cd.companySpec.label">التخصص / القطاع</label>
                             <input id="cdCompanySpec" type="text" placeholder="مثال: تقنية المعلومات" />
                         </div>
                         <div class="auth-form-group">
-                            <label for="cdCompanyServices">وصف الشركة / الخدمات</label>
+                            <label for="cdCompanyServices" data-i18n="cd.companyServices.label">وصف الشركة / الخدمات</label>
                             <textarea id="cdCompanyServices" rows="4" placeholder="اكتب وصفاً عن الشركة وخدماتها"></textarea>
                         </div>
                         <div id="profileStatus" class="form-status" style="display:none;"></div>
                         <div class="auth-submit" style="margin-top:1rem;">
-                            <button type="submit" class="btn btn-primary">حفظ البيانات</button>
+                            <button type="submit" class="btn btn-primary" data-i18n="cd.companyInfo.save">حفظ البيانات</button>
                         </div>
                     </form>
                 </div>

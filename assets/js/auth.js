@@ -94,24 +94,24 @@
         var links;
         if (role === "job_seeker") {
             links = [
-                { href: "index.html",           text: "الرئيسية" },
-                { href: "jobs.html",             text: "الوظائف" },
-                { href: "profile.html",          text: "ملفي" },
-                { href: "my-applications.html",  text: "طلباتي" },
-                { href: "courses.html",           text: "الدورات" }
+                { href: "index.html",           i18n: "nav.home",           text: "الرئيسية" },
+                { href: "jobs.html",             i18n: "nav.jobs",           text: "الوظائف" },
+                { href: "profile.html",          i18n: "nav.profile",        text: "ملفي" },
+                { href: "my-applications.html",  i18n: "nav.myApplications", text: "طلباتي" },
+                { href: "courses.html",          i18n: "nav.courses",        text: "الدورات" }
             ];
         } else if (role === "company") {
             links = [
-                { href: "index.html",                          text: "الرئيسية" },
-                { href: "company-dashboard.html",              text: "لوحة الشركة" },
-                { href: "company-dashboard.html?tab=my-jobs",  text: "وظائفي" },
-                { href: "courses.html",                        text: "الدورات" }
+                { href: "index.html",                          i18n: "nav.home",             text: "الرئيسية" },
+                { href: "company-dashboard.html",              i18n: "nav.companyDashboard",  text: "لوحة الشركة" },
+                { href: "company-dashboard.html?tab=my-jobs",  i18n: "nav.myJobs",           text: "وظائفي" },
+                { href: "courses.html",                        i18n: "nav.courses",           text: "الدورات" }
             ];
         } else if (role === "super_admin") {
             links = [
-                { href: "dashboard.html", text: "لوحة الأدمن" },
-                { href: "jobs.html",      text: "الوظائف" },
-                { href: "index.html",     text: "الرئيسية" }
+                { href: "dashboard.html", i18n: "nav.adminDashboard", text: "لوحة الأدمن" },
+                { href: "jobs.html",      i18n: "nav.jobs",           text: "الوظائف" },
+                { href: "index.html",     i18n: "nav.home",           text: "الرئيسية" }
             ];
         } else {
             return;
@@ -124,8 +124,9 @@
             var hrefQuery = l.href.indexOf("?") !== -1 ? l.href.slice(l.href.indexOf("?")) : "";
             var isActive = hrefPath === cur && hrefQuery === curSearch;
             var active = isActive ? " active" : "";
-            return '<a href="' + l.href + '" class="nav-link' + active + '">' + l.text + '</a>';
-        }).join("");
+            return '<a href="' + l.href + '" class="nav-link' + active + '" data-i18n="' + l.i18n + '">' + l.text + '</a>';
+        }).join("") +
+        '<button type="button" id="authLogoutBtnMobile" class="nav-logout-mobile" data-i18n="header.logout">تسجيل الخروج</button>';
         nav.style.visibility = "visible";
         try { sessionStorage.setItem("_uiRole", role); } catch (e) {}
     }
@@ -143,6 +144,8 @@
             ? '<a href="' + profileHref + '" class="btn btn-settings" title="\u0625\u0639\u062f\u0627\u062f\u0627\u062a \u0627\u0644\u062d\u0633\u0627\u0628" aria-label="\u0625\u0639\u062f\u0627\u062f\u0627\u062a \u0627\u0644\u062d\u0633\u0627\u0628">&#9881;</a>'
             : '';
 
+        var roleI18nKey = role === "job_seeker" ? "role.jobSeeker" : (role === "company" ? "role.company" : "role.superAdmin");
+
         var menu = document.createElement("div");
         menu.id = "authUserMenu";
         menu.className = "user-menu";
@@ -150,10 +153,10 @@
             '<div class="user-avatar">' + (fullName.trim().charAt(0) || "\u061f").toUpperCase() + '</div>' +
             '<div class="user-info">' +
                 '<div class="user-name">' + fullName + '</div>' +
-                '<div class="user-role">' + role2label(role) + '</div>' +
+                '<div class="user-role" data-i18n="' + roleI18nKey + '">' + role2label(role) + '</div>' +
             '</div>' +
             profileBtn +
-            '<button type="button" id="authLogoutBtn" class="btn btn-outline">تسجيل الخروج</button>';
+            '<button type="button" id="authLogoutBtn" class="btn btn-outline" data-i18n="header.logout">\u062a\u0633\u062c\u064a\u0644 \u0627\u0644\u062e\u0631\u0648\u062c</button>';
         var langSwitch = headerInner.querySelector(".lang-switch");
         if (langSwitch) {
             headerInner.insertBefore(menu, langSwitch);
@@ -194,6 +197,11 @@
 
         // Render user menu (also saves name to sessionStorage)
         _renderUserMenu(fullName, role);
+
+        // Re-apply current language to any newly injected data-i18n elements
+        if (typeof window.maherApplyLanguage === "function") {
+            window.maherApplyLanguage(localStorage.getItem("maherLang") || "ar");
+        }
     }
 
     /* ── 5. Logout ────────────────────────────────────────────────── */
@@ -205,7 +213,7 @@
 
     document.addEventListener("click", function (e) {
         var btn = e.target && e.target.closest &&
-                  e.target.closest("#authLogoutBtn, #adminHeaderLogout, [data-logout='true']");
+                  e.target.closest("#authLogoutBtn, #authLogoutBtnMobile, #adminHeaderLogout, [data-logout='true']");
         if (!btn) return;
         e.preventDefault();
         void logout();

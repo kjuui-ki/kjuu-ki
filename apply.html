@@ -51,27 +51,27 @@
                     <form id="jobApplyForm">
                         <div class="apply-form-grid">
                             <div class="apply-form-group full-width">
-                                <label for="fullName">الاسم الكامل</label>
-                                <input id="fullName" type="text" placeholder="اكتب اسمك الكامل" autocomplete="name" />
+                                <label for="fullName" data-i18n="apply.fullName.label">الاسم الكامل</label>
+                                <input id="fullName" type="text" data-i18n-placeholder="apply.fullName.placeholder" placeholder="اكتب اسمك الكامل" autocomplete="name" />
                             </div>
 
                             <div class="apply-form-group">
-                                <label for="phone">رقم الجوال</label>
+                                <label for="phone" data-i18n="apply.phone.label">رقم الجوال</label>
                                 <input id="phone" type="tel" placeholder="05XXXXXXXX" autocomplete="tel" />
                             </div>
 
                             <div class="apply-form-group">
-                                <label for="specialization">التخصص</label>
-                                <input id="specialization" type="text" placeholder="مثال: تقنية المعلومات" />
+                                <label for="specialization" data-i18n="apply.specialization.label">التخصص</label>
+                                <input id="specialization" type="text" data-i18n-placeholder="apply.specialization.placeholder" placeholder="مثال: تقنية المعلومات" />
                             </div>
 
                             <div class="apply-form-group full-width">
-                                <label for="skills">المهارات</label>
-                                <textarea id="skills" placeholder="اذكر أهم مهاراتك وخبراتك بشكل مختصر"></textarea>
+                                <label for="skills" data-i18n="apply.skills.label">المهارات</label>
+                                <textarea id="skills" data-i18n-placeholder="apply.skills.placeholder" placeholder="اذكر أهم مهاراتك وخبراتك بشكل مختصر"></textarea>
                             </div>
 
                             <div class="apply-form-group full-width">
-                                <label for="cvFile">رفع ملف CV</label>
+                                <label for="cvFile" data-i18n="apply.cv.label">رفع ملف CV</label>
                                 <div class="file-input-box">
                                     <input id="cvFile" type="file" accept=".pdf,.doc,.docx" />
                                 </div>
@@ -81,11 +81,11 @@
                         <div id="applyFormStatus" class="form-status" style="display: none;"></div>
 
                         <div class="apply-actions">
-                            <button type="submit" id="submitApplicationBtn" class="btn btn-primary apply-submit">إرسال الطلب</button>
+                            <button type="submit" id="submitApplicationBtn" class="btn btn-primary apply-submit" data-i18n="apply.submit">إرسال الطلب</button>
                         </div>
                     </form>
 
-                    <p class="page-note">يُسمح بطلب واحد فقط لكل وظيفة، وسيتم حفظه بحالة pending.</p>
+                    <p class="page-note" data-i18n="apply.note">يُسمح بطلب واحد فقط لكل وظيفة، وسيتم حفظه بحالة pending.</p>
                 </div>
             </div>
         </div>

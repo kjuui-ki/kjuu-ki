@@ -193,6 +193,11 @@ img {
     background: rgba(255, 255, 255, 0.04);
 }
 
+/* Mobile logout button hidden on desktop */
+.nav-logout-mobile {
+    display: none;
+}
+
 .nav-link {
     font-size: 0.9rem;
     color: rgba(255, 255, 255, 0.9);
@@ -2586,6 +2591,30 @@ body.role-super-admin .role-home-hero-admin {
         display: flex;
     }
 
+    /* Mobile logout link inside nav dropdown */
+    .nav-logout-mobile {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 0.85rem 1rem;
+        border-radius: var(--radius-sm);
+        font-size: 0.95rem;
+        min-height: 44px;
+        color: rgba(255, 100, 100, 0.95);
+        background: rgba(255, 80, 80, 0.08);
+        border: none;
+        cursor: pointer;
+        margin-top: 0.5rem;
+        font-family: inherit;
+        font-weight: 600;
+        border-top: 1px solid rgba(148, 163, 184, 0.15);
+        padding-top: 1rem;
+    }
+
+    .nav-logout-mobile:hover {
+        background: rgba(255, 80, 80, 0.18);
+    }
+
     .nav-link {
         padding: 0.85rem 1rem;
         border-radius: var(--radius-sm);
@@ -2633,6 +2662,11 @@ body.role-super-admin .role-home-hero-admin {
     }
 
     .user-info {
+        display: none;
+    }
+
+    /* Hide logout button from header on mobile — it lives in the nav dropdown */
+    .user-menu #authLogoutBtn {
         display: none;
     }
 

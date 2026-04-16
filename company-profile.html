@@ -41,30 +41,30 @@
 
     <main class="section profile-page">
         <div class="container">
-            <h1>ملف الشركة</h1>
-            <p class="section-intro">قم بتحديث بيانات شركتك الأساسية.</p>
+            <h1 data-i18n="companyProfile.title">ملف الشركة</h1>
+            <p class="section-intro" data-i18n="companyProfile.subtitle">قم بتحديث بيانات شركتك الأساسية.</p>
 
             <div class="auth-card">
                 <form id="companyProfileForm" class="profile-form">
                     <div class="auth-form-group">
-                        <label for="companyName">اسم الشركة</label>
-                        <input id="companyName" type="text" placeholder="اسم الشركة" />
+                        <label for="companyName" data-i18n="companyProfile.name.label">اسم الشركة</label>
+                        <input id="companyName" type="text" data-i18n-placeholder="companyProfile.name.placeholder" placeholder="اسم الشركة" />
                     </div>
                     <div class="auth-form-group">
-                        <label for="companyPhone">رقم التواصل</label>
+                        <label for="companyPhone" data-i18n="companyProfile.phone.label">رقم التواصل</label>
                         <input id="companyPhone" type="tel" placeholder="مثال: 05XXXXXXXX" />
                     </div>
                     <div class="auth-form-group">
-                        <label for="companySpecialization">مجال العمل / التخصص</label>
-                        <input id="companySpecialization" type="text" placeholder="مثال: تقنية، تعليم، خدمات" />
+                        <label for="companySpecialization" data-i18n="companyProfile.specialization.label">مجال العمل / التخصص</label>
+                        <input id="companySpecialization" type="text" data-i18n-placeholder="companyProfile.specialization.placeholder" placeholder="مثال: تقنية، تعليم، خدمات" />
                     </div>
                     <div class="auth-form-group">
-                        <label for="companyServices">نبذة وخدمات الشركة</label>
-                        <textarea id="companyServices" rows="3" placeholder="اكتب وصفًا مختصرًا عن الشركة والخدمات"></textarea>
+                        <label for="companyServices" data-i18n="companyProfile.services.label">نبذة وخدمات الشركة</label>
+                        <textarea id="companyServices" rows="3" data-i18n-placeholder="companyProfile.services.placeholder" placeholder="اكتب وصفًا مختصرًا عن الشركة والخدمات"></textarea>
                     </div>
 
                     <div class="auth-submit">
-                        <button type="submit" class="btn btn-primary btn-full">حفظ</button>
+                        <button type="submit" class="btn btn-primary btn-full" data-i18n="btn.save">حفظ</button>
                     </div>
                 </form>
             </div>

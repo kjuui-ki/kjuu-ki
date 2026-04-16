@@ -41,38 +41,38 @@
 
     <main class="section profile-page">
         <div class="container">
-            <h1>ملفي الشخصي</h1>
-            <p class="section-intro">قم بتحديث بياناتك المهنية ورفع سيرتك الذاتية.</p>
+            <h1 data-i18n="profile.title">ملفي الشخصي</h1>
+            <p class="section-intro" data-i18n="profile.subtitle">قم بتحديث بياناتك المهنية ورفع سيرتك الذاتية.</p>
 
             <div class="auth-card">
                 <form id="seekerProfileForm" class="profile-form">
                     <div class="auth-form-group">
-                        <label for="profileFullName">الاسم الكامل</label>
-                        <input id="profileFullName" type="text" placeholder="الاسم الثلاثي" />
+                        <label for="profileFullName" data-i18n="profile.fullName.label">الاسم الكامل</label>
+                        <input id="profileFullName" type="text" data-i18n-placeholder="profile.fullName.placeholder" placeholder="الاسم الثلاثي" />
                     </div>
                     <div class="auth-form-group">
-                        <label for="profilePhone">رقم الجوال</label>
+                        <label for="profilePhone" data-i18n="profile.phone.label">رقم الجوال</label>
                         <input id="profilePhone" type="tel" placeholder="مثال: 05XXXXXXXX" />
                     </div>
                     <div class="auth-form-group">
-                        <label for="profileSpecialization">التخصص</label>
-                        <input id="profileSpecialization" type="text" placeholder="مثال: تقنية معلومات" />
+                        <label for="profileSpecialization" data-i18n="profile.specialization.label">التخصص</label>
+                        <input id="profileSpecialization" type="text" data-i18n-placeholder="profile.specialization.placeholder" placeholder="مثال: تقنية معلومات" />
                     </div>
                     <div class="auth-form-group">
-                        <label for="profileSkills">المهارات</label>
-                        <textarea id="profileSkills" rows="3" placeholder="اكتب المهارات والدورات والخبرات"></textarea>
+                        <label for="profileSkills" data-i18n="profile.skills.label">المهارات</label>
+                        <textarea id="profileSkills" rows="3" data-i18n-placeholder="profile.skills.placeholder" placeholder="اكتب المهارات والدورات والخبرات"></textarea>
                     </div>
                     <div class="auth-form-group">
-                        <label for="profileCv">السيرة الذاتية (PDF أو Word)</label>
+                        <label for="profileCv" data-i18n="profile.cv.label">السيرة الذاتية (PDF أو Word)</label>
                         <input id="profileCv" type="file" accept=".pdf,.doc,.docx" />
                     </div>
 
                     <div id="profileCvLinkContainer" class="profile-cv-link" style="display:none;">
-                        <a id="profileCvLink" href="#" target="_blank" rel="noopener noreferrer">عرض السيرة الذاتية الحالية</a>
+                        <a id="profileCvLink" href="#" target="_blank" rel="noopener noreferrer" data-i18n="profile.cv.link">عرض السيرة الذاتية الحالية</a>
                     </div>
 
                     <div class="auth-submit">
-                        <button type="submit" class="btn btn-primary btn-full">حفظ</button>
+                        <button type="submit" class="btn btn-primary btn-full" data-i18n="btn.save">حفظ</button>
                     </div>
                 </form>
             </div>
