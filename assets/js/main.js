@@ -15,7 +15,8 @@ const maherTranslations = {
         "hero.search.keywordPlaceholder": "المسمى الوظيفي، المهارة، الشركة",
         "hero.search.cityLabel": "المدينة",
         "hero.search.categoryLabel": "التخصص",
-        "hero.search.submit": "بحث عن وظائف",
+        "hero.search.submit": "بحث",
+        "search.trending": "الأكثر بحثًا:",
         "hero.search.city.any": "كل المدن",
         "hero.search.city.riyadh": "الرياض",
         "hero.search.city.jeddah": "جدة",
@@ -46,31 +47,24 @@ const maherTranslations = {
         "section.why.card2.text": "تعلّم مهارات جديدة من خلال دورات مجانية ومدفوعة.",
         "section.why.card3.title": "ملف مهني احترافي",
         "section.why.card3.text": "ابنِ ملفك المهني وشارك سيرتك الذاتية مع الشركات.",
-        "section.latestJobs.title": "أحدث الوظائف",
-        "section.latestJobs.subtitle": "بعض الأمثلة على الوظائف التي يمكن أن تظهر في المنصة.",
-        "latestJobs.card1.title": "مطوّر واجهات أمامية",
-        "latestJobs.card1.meta": "شركة تقنية • الرياض • دوام كامل",
-        "latestJobs.card1.text": "تطوير واجهات ويب تفاعلية باستخدام HTML و CSS و JavaScript.",
-        "latestJobs.card2.title": "محاسب مالي",
-        "latestJobs.card2.meta": "شركة استثمار • جدة • دوام كامل",
-        "latestJobs.card2.text": "إعداد التقارير المالية ومتابعة العمليات المحاسبية.",
-        "latestJobs.card3.title": "أخصائي موارد بشرية",
-        "latestJobs.card3.meta": "شركة خدمات • الدمام • دوام جزئي",
-        "latestJobs.card3.text": "المساهمة في توظيف الكفاءات وإدارة شؤون الموظفين.",
-        "latestJobs.card.link": "استعراض الوظائف",
-        "section.courses.title": "الدورات التدريبية",
-        "section.courses.subtitle": "طوّر مهاراتك من خلال دورات متخصصة تناسب مستواك.",
-        "badge.free": "مجانية",
-        "badge.paid": "مدفوعة",
-        "courses.card1.title": "أساسيات تطوير الويب",
-        "courses.card1.text": "تعرف على أساسيات HTML و CSS و JavaScript.",
-        "courses.card1.meta": "مستوى: مبتدئ",
-        "courses.card2.title": "مسار مطوّر واجهات أمامية",
-        "courses.card2.text": "مسار متكامل لبناء واجهات احترافية.",
-        "courses.card2.meta": "مستوى: متوسط",
-        "courses.card3.title": "مهارات التقديم على الوظائف",
-        "courses.card3.text": "تعلّم كيف تكتب سيرة ذاتية وخطاب تعريفي احترافي.",
-        "courses.card3.meta": "مستوى: لجميع المستويات",
+        "section.jobCats.title": "استكشف مجالات التوظيف",
+        "section.jobCats.subtitle": "تصفّح الوظائف حسب التخصص وابحث عن الفرصة الأنسب لك.",
+        "section.jobCats.btn": "استعراض جميع الوظائف",
+        "cat.tech": "تقنية المعلومات",
+        "cat.finance": "المالية والمحاسبة",
+        "cat.hr": "الموارد البشرية",
+        "cat.marketing": "التسويق والإعلان",
+        "cat.engineering": "الهندسة والتشغيل",
+        "cat.admin": "الإدارة والأعمال",
+        "section.learningPaths.title": "مسارات التدريب والتطوير",
+        "section.learningPaths.subtitle": "مسارات مهنية متكاملة تبني كفاءتك وتؤهلك لسوق العمل.",
+        "path.tech.title": "المسار التقني",
+        "path.tech.desc": "دورات في البرمجة وتطوير الويب والذكاء الاصطناعي وأمن المعلومات.",
+        "path.admin.title": "المسار الإداري",
+        "path.admin.desc": "مهارات القيادة وإدارة المشاريع والتخطيط الاستراتيجي للمهنيين.",
+        "path.career.title": "مهارات التوظيف",
+        "path.career.desc": "إعداد السيرة الذاتية والتحضير للمقابلات وبناء الحضور المهني.",
+        "path.explore": "استكشف المسار",
 
         "section.careerBanner.title": "ابدأ رحلتك المهنية مع ماهر",
         "section.careerBanner.text": "انضم إلى منصة ماهر لبناء ملف مهني قوي، استكشف فرص التوظيف والدورات التدريبية التي تناسب طموحاتك، وابدأ اليوم أول خطوة في مسارك المهني.",
@@ -333,7 +327,95 @@ const maherTranslations = {
         "adm.th.count": "العدد",
         "adm.th.workType": "نوع العمل",
         "adm.th.salary": "الراتب",
-        "adm.th.requestedAt": "تاريخ الطلب"
+        "adm.th.requestedAt": "تاريخ الطلب",
+
+        /* ── Generic login ───────────────────────────────── */
+        "page.generic.login.subtitle": "ادخل بياناتك وسيتم تحويلك تلقائيًا حسب نوع الحساب.",
+        "form.emailOrPhone.label": "البريد الإلكتروني أو رقم الجوال",
+        "form.emailOrPhone.placeholder": "example@domain.com أو 0512345678",
+
+        /* ── Split-page login (lsp) ───────────────────────── */
+        "lsp.backLink": "العودة للرئيسية",
+        "lsp.seeker.chip": "👤 باحث عن عمل",
+        "lsp.employer.chip": "🏢 شركة / جهة توظيف",
+        "lsp.seeker.formTitle": "مرحبًا بعودتك 👋",
+        "lsp.seeker.formSub": "سجّل دخولك للوصول إلى الوظائف والدورات المخصصة لك.",
+        "lsp.employer.formTitle": "مرحبًا بك 🤝",
+        "lsp.employer.formSub": "سجّل دخولك لإدارة الوظائف والمتقدمين وتطوير فريقك.",
+        "lsp.emailOrPhone.label": "البريد الإلكتروني أو الجوال",
+        "lsp.password.label": "كلمة المرور",
+        "lsp.forgot": "نسيت كلمة المرور؟",
+        "lsp.submit": "تسجيل الدخول",
+        "lsp.noAccount": "ليس لديك حساب؟",
+        "lsp.seeker.createAccount": "إنشاء حساب جديد",
+        "lsp.employer.createAccount": "إنشاء حساب شركة",
+        "lsp.seeker.switchText": "هل أنت صاحب عمل أو شركة؟",
+        "lsp.seeker.switchAction": "تسجيل دخول كشركة",
+        "lsp.employer.switchText": "هل أنت باحث عن عمل؟",
+        "lsp.employer.switchAction": "تسجيل دخول كباحث",
+
+        /* ── Courses page UI labels ───────────────────────── */
+        "courses.noAvailable": "لا توجد دورات متاحة حالياً.",
+        "courses.seatsLabel": "المقاعد: ",
+        "courses.loginToEnroll": "سجّل دخول للتسجيل",
+        "courses.enrolled": "✓ مسجّل في الدورة",
+        "courses.enrollBtn": "التسجيل في الدورة",
+        "courses.modalBodySeeker": "سيتم تسجيلك في هذه الدورة.",
+        "courses.modalBodyCompany": "سيتم تسجيل حسابك كشركة في هذه الدورة.",
+        "courses.noDb": "تعذّر الاتصال بقاعدة البيانات.",
+        "courses.loading": "جاري التحميل...",
+        "courses.enrolling": "جارٍ التسجيل...",
+        "courses.enrollError": "تعذّر التسجيل",
+
+        /* ── Courses hero & filter ───────────────────────── */
+        "courses.hero.badge": "🎓 منصة ماهر للتدريب",
+        "courses.hero.h1": "الدورات <em class=\"ch-accent\">التدريبية</em>",
+        "courses.search.placeholder": "ابحث عن دورة تدريبية...",
+        "courses.filter.all": "الكل",
+        "courses.results.count": "دورة متاحة",
+        "courses.request.statusPending": "قيد المراجعة",
+        "courses.request.statusApproved": "تمت الموافقة",
+        "courses.request.statusRejected": "مرفوض",
+        "courses.request.seats": "مقاعد",
+        "courses.request.noRequests": "لم ترسل أي طلبات حتى الآن.",
+        "courses.request.sendRequest": "إرسال طلب",
+
+        /* ── Jobs hero ────────────────────────────────────── */
+        "jobs.hero.badge": "💼 فرص العمل",
+        "jobs.hero.h1": "استكشف <span>فرص العمل</span><br>المناسبة لك",
+
+        /* ── Seeker login visual panel ───────────────────────────────── */
+        "lsp.seeker.panelH2": "ابنِ مسارك المهني<br>مع <span>ماهر</span>",
+        "lsp.seeker.panelSub": "منصتك المتكاملة للوظائف والتدريب وتطوير المهارات المهنية.",
+        "lsp.seeker.feat1": "آلاف الوظائف من شركات موثوقة",
+        "lsp.seeker.feat2": "تقديم سريع بنقرة واحدة",
+        "lsp.seeker.feat3": "دورات تدريبية معتمدة",
+        "lsp.seeker.feat4": "تتبع طلباتك بسهولة",
+        "lsp.seeker.stat1Lbl": "وظيفة متاحة",
+        "lsp.seeker.stat2Lbl": "شركة مسجّلة",
+        "lsp.seeker.stat3Lbl": "متدرب",
+        "lsp.seeker.quoteText": "\"ماهر غيّرت مسيرتي المهنية — وجدت وظيفتي الأولى خلال أسبوعين فقط.\"",
+        "lsp.seeker.quoteName": "محمد الغامدي",
+        "lsp.seeker.quoteRole": "مطوّر برمجيات · الرياض",
+        "lsp.seeker.quoteAvatar": "م",
+
+        /* ── Employer login visual panel ─────────────────────────────── */
+        "lsp.employer.panelH2": "وظّف أفضل المواهب<br>مع <span>ماهر</span>",
+        "lsp.employer.panelSub": "منصتك الاحترافية لنشر الوظائف وإدارة التوظيف وتطوير الكوادر البشرية.",
+        "lsp.employer.feat1": "نشر الوظائف في دقائق معدودة",
+        "lsp.employer.feat2": "استعراض السير الذاتية بكفاءة عالية",
+        "lsp.employer.feat3": "إدارة طلبات التوظيف بسهولة",
+        "lsp.employer.feat4": "تدريب وتطوير كوادرك البشرية",
+        "lsp.employer.stat1Lbl": "مرشح مؤهّل",
+        "lsp.employer.stat2Lbl": "وظيفة نُشرت",
+        "lsp.employer.stat3Lbl": "رضا الشركات",
+        "lsp.employer.quoteText": "\"وجدنا مرشحين متميزين خلال أيام. ماهر غيّرت طريقة توظيفنا بالكامل.\"",
+        "lsp.employer.quoteName": "نورة العتيبي",
+        "lsp.employer.quoteRole": "مديرة الموارد البشرية · الرياض",
+        "lsp.employer.quoteAvatar": "ن",
+
+        /* ── Shared footer copyright ─────────────────────────────────── */
+        "lsp.copyright": "© 2026 منصة ماهر · جميع الحقوق محفوظة"
     },
     en: {
         "nav.home": "Home",
@@ -351,7 +433,8 @@ const maherTranslations = {
         "hero.search.keywordPlaceholder": "Job title, skill, company",
         "hero.search.cityLabel": "City",
         "hero.search.categoryLabel": "Specialization",
-        "hero.search.submit": "Search Jobs",
+        "hero.search.submit": "Search",
+        "search.trending": "Trending:",
         "hero.search.city.any": "All cities",
         "hero.search.city.riyadh": "Riyadh",
         "hero.search.city.jeddah": "Jeddah",
@@ -382,31 +465,24 @@ const maherTranslations = {
         "section.why.card2.text": "Learn new skills through free and paid courses.",
         "section.why.card3.title": "Professional profile",
         "section.why.card3.text": "Build your professional profile and share your CV with companies.",
-        "section.latestJobs.title": "Latest Jobs",
-        "section.latestJobs.subtitle": "Examples of jobs that could appear on the platform.",
-        "latestJobs.card1.title": "Front-end Developer",
-        "latestJobs.card1.meta": "Tech company • Riyadh • Full-time",
-        "latestJobs.card1.text": "Build interactive web interfaces using HTML, CSS, and JavaScript.",
-        "latestJobs.card2.title": "Financial Accountant",
-        "latestJobs.card2.meta": "Investment company • Jeddah • Full-time",
-        "latestJobs.card2.text": "Prepare financial reports and follow up on accounting operations.",
-        "latestJobs.card3.title": "HR Specialist",
-        "latestJobs.card3.meta": "Services company • Dammam • Part-time",
-        "latestJobs.card3.text": "Support recruitment and manage employee affairs.",
-        "latestJobs.card.link": "View jobs",
-        "section.courses.title": "Training Courses",
-        "section.courses.subtitle": "Develop your skills with specialized courses that fit your level.",
-        "badge.free": "Free",
-        "badge.paid": "Paid",
-        "courses.card1.title": "Web Development Basics",
-        "courses.card1.text": "Learn the basics of HTML, CSS, and JavaScript.",
-        "courses.card1.meta": "Level: Beginner",
-        "courses.card2.title": "Front-end Developer Track",
-        "courses.card2.text": "A complete track for building professional interfaces.",
-        "courses.card2.meta": "Level: Intermediate",
-        "courses.card3.title": "Job Application Skills",
-        "courses.card3.text": "Learn how to write a professional CV and cover letter.",
-        "courses.card3.meta": "Level: All levels",
+        "section.jobCats.title": "Explore Job Fields",
+        "section.jobCats.subtitle": "Browse jobs by specialization and find the right opportunity for you.",
+        "section.jobCats.btn": "View All Jobs",
+        "cat.tech": "Information Technology",
+        "cat.finance": "Finance & Accounting",
+        "cat.hr": "Human Resources",
+        "cat.marketing": "Marketing & Advertising",
+        "cat.engineering": "Engineering & Operations",
+        "cat.admin": "Administration & Business",
+        "section.learningPaths.title": "Training & Development Paths",
+        "section.learningPaths.subtitle": "Comprehensive career paths to build your competency and prepare you for the job market.",
+        "path.tech.title": "Technical Track",
+        "path.tech.desc": "Courses in programming, web development, AI, and information security.",
+        "path.admin.title": "Administrative Track",
+        "path.admin.desc": "Leadership skills, project management, and strategic planning for professionals.",
+        "path.career.title": "Career Skills",
+        "path.career.desc": "CV preparation, interview readiness, and building your professional presence.",
+        "path.explore": "Explore Track",
 
         "section.careerBanner.title": "Start your career journey with Maher",
         "section.careerBanner.text": "Join Maher to build a strong professional profile, explore job opportunities and training courses that match your ambitions, and take the first step in your career path today.",
@@ -430,7 +506,7 @@ const maherTranslations = {
         "footer.copy": "© <span id=\"year\"></span> Maher. All rights reserved.",
 
         "page.jobs.title": "Jobs",
-        "page.jobs.text": "The detailed jobs listing page will be developed next.",
+        "page.jobs.text": "Browse the latest jobs from top companies and apply in seconds.",
 
         "page.courses.title": "Training Courses",
         "page.courses.text": "Courses cards and filtering will be designed in a later step.",
@@ -669,15 +745,107 @@ const maherTranslations = {
         "adm.th.count": "Count",
         "adm.th.workType": "Work Type",
         "adm.th.salary": "Salary",
-        "adm.th.requestedAt": "Requested At"
+        "adm.th.requestedAt": "Requested At",
+
+        /* ── Generic login ───────────────────────────────── */
+        "page.generic.login.subtitle": "Enter your details and you'll be redirected based on your account type.",
+        "form.emailOrPhone.label": "Email or Mobile Number",
+        "form.emailOrPhone.placeholder": "example@domain.com or 0512345678",
+
+        /* ── Split-page login (lsp) ───────────────────────── */
+        "lsp.backLink": "Back to Home",
+        "lsp.seeker.chip": "👤 Job Seeker",
+        "lsp.employer.chip": "🏢 Company / Employer",
+        "lsp.seeker.formTitle": "Welcome back 👋",
+        "lsp.seeker.formSub": "Sign in to access jobs and courses tailored for you.",
+        "lsp.employer.formTitle": "Welcome 🤝",
+        "lsp.employer.formSub": "Sign in to manage your jobs, applicants and develop your team.",
+        "lsp.emailOrPhone.label": "Email or Mobile Number",
+        "lsp.password.label": "Password",
+        "lsp.forgot": "Forgot password?",
+        "lsp.submit": "Sign in",
+        "lsp.noAccount": "Don't have an account?",
+        "lsp.seeker.createAccount": "Create new account",
+        "lsp.employer.createAccount": "Create company account",
+        "lsp.seeker.switchText": "Are you an employer or company?",
+        "lsp.seeker.switchAction": "Sign in as a company",
+        "lsp.employer.switchText": "Are you a job seeker?",
+        "lsp.employer.switchAction": "Sign in as a seeker",
+
+        /* ── Courses page UI labels ───────────────────────── */
+        "courses.noAvailable": "No courses available at the moment.",
+        "courses.seatsLabel": "Seats: ",
+        "courses.loginToEnroll": "Sign in to enroll",
+        "courses.enrolled": "✓ Enrolled",
+        "courses.enrollBtn": "Enroll in course",
+        "courses.modalBodySeeker": "You will be enrolled in this course.",
+        "courses.modalBodyCompany": "Your company account will be registered in this course.",
+        "courses.noDb": "Failed to connect to the database.",
+        "courses.loading": "Loading...",
+        "courses.enrolling": "Enrolling...",
+        "courses.enrollError": "Enrollment failed",
+
+        /* ── Courses hero & filter ───────────────────────── */
+        "courses.hero.badge": "🎓 Maher Training Platform",
+        "courses.hero.h1": "Training <em class=\"ch-accent\">Courses</em>",
+        "courses.search.placeholder": "Search for a training course...",
+        "courses.filter.all": "All",
+        "courses.results.count": "courses available",
+        "courses.request.statusPending": "Under Review",
+        "courses.request.statusApproved": "Approved",
+        "courses.request.statusRejected": "Rejected",
+        "courses.request.seats": "seat(s)",
+        "courses.request.noRequests": "You haven't sent any requests yet.",
+        "courses.request.sendRequest": "Send Request",
+
+        /* ── Jobs hero ────────────────────────────────────── */
+        "jobs.hero.badge": "💼 Job Opportunities",
+        "jobs.hero.h1": "Explore <span>Job Opportunities</span><br>Just for You",
+
+        /* ── Seeker login visual panel ───────────────────────────────── */
+        "lsp.seeker.panelH2": "Build Your Career<br>with <span>Maher</span>",
+        "lsp.seeker.panelSub": "Your all-in-one platform for jobs, training, and professional skill development.",
+        "lsp.seeker.feat1": "Thousands of jobs from trusted companies",
+        "lsp.seeker.feat2": "Apply in one click",
+        "lsp.seeker.feat3": "Certified training courses",
+        "lsp.seeker.feat4": "Track your applications easily",
+        "lsp.seeker.stat1Lbl": "Open Jobs",
+        "lsp.seeker.stat2Lbl": "Registered Companies",
+        "lsp.seeker.stat3Lbl": "Trainees",
+        "lsp.seeker.quoteText": "\"Maher transformed my career — I found my first job within two weeks.\"",
+        "lsp.seeker.quoteName": "Mohammed Al-Ghamdi",
+        "lsp.seeker.quoteRole": "Software Developer · Riyadh",
+        "lsp.seeker.quoteAvatar": "M",
+
+        /* ── Employer login visual panel ─────────────────────────────── */
+        "lsp.employer.panelH2": "Hire the Best Talent<br>with <span>Maher</span>",
+        "lsp.employer.panelSub": "Your professional platform for posting jobs, managing hiring, and developing your workforce.",
+        "lsp.employer.feat1": "Post jobs in minutes",
+        "lsp.employer.feat2": "Browse CVs with high efficiency",
+        "lsp.employer.feat3": "Manage hiring applications easily",
+        "lsp.employer.feat4": "Train and develop your workforce",
+        "lsp.employer.stat1Lbl": "Qualified Candidates",
+        "lsp.employer.stat2Lbl": "Jobs Posted",
+        "lsp.employer.stat3Lbl": "Company Satisfaction",
+        "lsp.employer.quoteText": "\"We found outstanding candidates within days. Maher completely changed how we hire.\"",
+        "lsp.employer.quoteName": "Noura Al-Otaibi",
+        "lsp.employer.quoteRole": "HR Manager · Riyadh",
+        "lsp.employer.quoteAvatar": "N",
+
+        /* ── Shared footer copyright ─────────────────────────────────── */
+        "lsp.copyright": "© 2026 Maher Platform · All rights reserved"
     }
 };
+
+/* Expose to window so inline scripts on other pages can access it */
+window.maherTranslations = maherTranslations;
 
 function maherApplyLanguage(lang) {
     var root = document.documentElement;
     var currentLang = lang === "en" ? "en" : "ar";
     root.lang = currentLang;
-    root.dir = currentLang === "ar" ? "rtl" : "ltr";
+    /* Keep dir="rtl" always — the site layout is RTL-only.
+       Changing dir breaks flex/grid directions on all pages. */
     localStorage.setItem("maherLang", currentLang);
 
     var dict = maherTranslations[currentLang] || {};
@@ -719,6 +887,9 @@ function maherApplyLanguage(lang) {
     if (yearSpan) {
         yearSpan.textContent = new Date().getFullYear().toString();
     }
+
+    /* Notify other scripts that language changed (e.g. to re-render dynamic grids) */
+    document.dispatchEvent(new CustomEvent("maherLangChanged", { detail: { lang: currentLang } }));
 }
 
 document.addEventListener("DOMContentLoaded", function () {

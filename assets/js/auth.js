@@ -220,8 +220,26 @@
     });
 
     /* ── 6. Login helper (redirect after login) ───────────────────── */
-    async function doLogin(email, password) {
-        var res = await sb.auth.signInWithPassword({ email: email, password: password });
+    function _isPhoneInput(val) {
+        if (val.indexOf("@") !== -1) return false;
+        var stripped = val.replace(/[\s\-().]/g, "");
+        return /^[+0-9]{7,15}$/.test(stripped);
+    }
+
+    function _normalizePhone(val) {
+        var s = val.replace(/[\s\-().]/g, "");
+        if (/^05\d{8}$/.test(s))  return "+966" + s.slice(1);   // 05XXXXXXXX → +9665XXXXXXXX
+        if (/^5\d{8}$/.test(s))   return "+9665" + s;           // 5XXXXXXXX  → +9665XXXXXXXX
+        if (s.charAt(0) !== "+")  return "+" + s;
+        return s;
+    }
+
+    async function doLogin(emailOrPhone, password) {
+        var isPhone = _isPhoneInput(emailOrPhone);
+        var credential = isPhone
+            ? { phone: _normalizePhone(emailOrPhone), password: password }
+            : { email: emailOrPhone, password: password };
+        var res = await sb.auth.signInWithPassword(credential);
         if (res.error) return { error: res.error };
 
         var user = res.data.user;
@@ -239,21 +257,21 @@
 
         form.addEventListener("submit", async function (e) {
             e.preventDefault();
-            var emailEl = document.getElementById(emailId);
-            var passEl  = document.getElementById(passwordId);
-            var email    = emailEl ? emailEl.value.trim() : "";
+            var loginEl  = document.getElementById(emailId);
+            var passEl   = document.getElementById(passwordId);
+            var login    = loginEl ? loginEl.value.trim() : "";
             var password = passEl  ? passEl.value : "";
             var btn      = form.querySelector('button[type="submit"]');
 
-            if (!email || !password) {
-                showStatus(form, "error", "يرجى إدخال البريد الإلكتروني وكلمة المرور");
+            if (!login || !password) {
+                showStatus(form, "error", "يرجى إدخال البريد الإلكتروني أو رقم الجوال وكلمة المرور");
                 return;
             }
 
             showStatus(form, null, "");
             setBtnLoading(btn, true, "جاري تسجيل الدخول...");
 
-            var res = await doLogin(email, password);
+            var res = await doLogin(login, password);
 
             if (res.error) {
                 var msg = (res.error.message || "").toLowerCase();

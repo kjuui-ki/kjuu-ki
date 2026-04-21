@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8" />
@@ -15,14 +15,14 @@
         <div class="container header-inner">
             <div class="header-main-group">
                 <a href="index.html" class="logo">
-                    <img src="assets/images/ksu1.png" alt="شعار المنصة" class="logo-img">
+                    <img src="assets/images/ksu1.png" alt="Ø´Ø¹Ø§Ø± Ø§Ù„Ù…Ù†ØµØ©" class="logo-img">
                 </a>
                 <nav class="main-nav" id="mainNav">
                     <a href="index.html" class="nav-link" data-i18n="nav.home"></a>
                     <a href="seeker-login.html" class="nav-link" data-i18n="nav.seekers"></a>
                     <a href="employer-login.html" class="nav-link" data-i18n="nav.employers"></a>
                     <a href="jobs.html" class="nav-link" data-i18n="nav.jobs"></a>
-                    <a href="course-access.html" class="nav-link" data-i18n="nav.courses"></a>
+                    <a href="courses.html" class="nav-link" data-i18n="nav.courses"></a>
                 </nav>
             </div>
 
@@ -40,18 +40,34 @@
     </header>
 
     <main>
-        <!-- Hero -->
-        <section class="jobs-page-hero">
-            <div class="container">
-                <h1 data-i18n="courses.page.title">الدورات التدريبية</h1>
-                <p data-i18n="courses.page.subtitle">طوّر مهاراتك مع دورات مختارة بعناية من منصة ماهر</p>
+        <!-- Courses Hero -->
+        <section class="courses-hero">
+            <div class="ch-blob ch-blob-1"></div>
+            <div class="ch-blob ch-blob-2"></div>
+            <div class="ch-blob ch-blob-3"></div>
+            <div class="container ch-inner">
+                <span class="ch-badge" data-i18n="courses.hero.badge">🎓 منصة ماهر للتدريب</span>
+                <h1 class="ch-title" data-i18n="courses.hero.h1">الدورات <em class="ch-accent">التدريبية</em></h1>
+                <p class="ch-sub" data-i18n="courses.page.subtitle">طوّر مهاراتك مع دورات مختارة بعناية من منصة ماهر</p>
+                <div class="ch-search-wrap">
+                    <svg class="ch-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                        <circle cx="11" cy="11" r="7"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    <input class="ch-search-input" id="courseSearchInput" type="search" autocomplete="off"
+                           data-i18n-placeholder="courses.search.placeholder"
+                           placeholder="ابحث عن دورة تدريبية..." />
+                </div>
+                <div class="ch-tabs" id="categoryTabs">
+                    <button class="ch-tab ch-tab-active" data-cat="" data-i18n="courses.filter.all">الكل</button>
+                </div>
             </div>
         </section>
 
         <!-- Company: My Course Requests -->
         <section class="section" id="myRequestsSection" style="display:none;">
             <div class="container">
-                <h2 class="section-sub-title" data-i18n="courses.myRequests.title">طلباتي من الدورات</h2>
+                <h2 class="courses-section-title" data-i18n="courses.myRequests.title">طلباتي من الدورات</h2>
                 <div id="myRequestsGrid" class="my-requests-grid"></div>
             </div>
         </section>
@@ -59,6 +75,9 @@
         <!-- Courses Grid -->
         <section class="section">
             <div class="container">
+                <div class="ch-results-bar" id="coursesResultsBar" style="display:none;">
+                    <span class="ch-results-txt" id="coursesResultsTxt"></span>
+                </div>
                 <div id="coursesMsg" class="section-intro" style="text-align:center;padding:2rem 0;display:none;"></div>
                 <div id="coursesGrid" class="courses-grid"></div>
             </div>
@@ -66,7 +85,8 @@
 
         <!-- Enroll Modal -->
         <div id="enrollModal" class="modal-overlay" style="display:none;">
-            <div class="modal-box">
+            <div class="modal-box modal-box-premium">
+                <span class="modal-icon">🎓</span>
                 <h3 id="enrollModalTitle" class="modal-title"></h3>
                 <p id="enrollModalBody" class="modal-body"></p>
                 <div class="modal-actions">
@@ -81,7 +101,7 @@
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-col">
-                    <img src="assets/images/ksu1.png" alt="شعار ماهر" class="footer-logo-img">
+                    <img src="assets/images/ksu1.png" alt="Ø´Ø¹Ø§Ø± Ù…Ø§Ù‡Ø±" class="footer-logo-img">
                     <h3 class="footer-logo" data-i18n="footer.logo">ماهر</h3>
                     <p class="footer-about" data-i18n="footer.about">منصة عربية للتوظيف والتدريب وتطوير المهارات.</p>
                     <a class="footer-site-link" href="https://www.maher.edu.sa" target="_blank" rel="noopener">🌐 www.maher.edu.sa</a>
@@ -90,7 +110,7 @@
                     <h4 class="footer-col-title" data-i18n="footer.quickLinks">روابط سريعة</h4>
                     <div class="footer-links">
                         <a href="jobs.html" data-i18n="footer.jobs">الوظائف</a>
-                        <a href="course-access.html" data-i18n="footer.courses">الدورات</a>
+                        <a href="courses.html" data-i18n="footer.courses">الدورات</a>
                         <a href="contact.html" data-i18n="footer.contact">تواصل معنا</a>
                     </div>
                 </div>
@@ -100,7 +120,7 @@
                         <li>📞 <a href="tel:920016798">920016798</a> <span class="footer-contact-note" data-i18n="footer.landline">(أرضي)</span></li>
                         <li>📱 <a href="tel:0539600050">0539600050</a></li>
                         <li>📱 <a href="tel:0539600080">0539600080</a></li>
-                        <li>✉️ <a href="mailto:info@maher.edu.sa">info@maher.edu.sa</a></li>
+                        <li>✉️ <a href="mailto:info@maher.edu.sa">info@maher.edu.sa</a></li>
                     </ul>
                 </div>
             </div>
@@ -111,110 +131,209 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="assets/js/supabaseClient.js" defer></script>
     <script src="assets/js/auth.js" defer></script>
     <script src="assets/js/main.js" defer></script>
     <script defer>
     (function () {
         var sb, currentUser, currentRole, pendingCourse;
+        var allCourses      = [];
+        var enrolledIdsCache = [];
+        var activeCategory  = "";
+
+        /* ── Translation helper ─────────────────────────── */
+        function t(key) {
+            var lang = localStorage.getItem("maherLang") || "ar";
+            var dict = (window.maherTranslations || {})[lang] || (window.maherTranslations || {}).ar || {};
+            return dict[key] !== undefined ? dict[key] : key;
+        }
 
         function esc(v) {
-            return String(v || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+            return String(v || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
         }
 
         function showMsg(msg) {
-            var el = document.getElementById("coursesMsg");
+            var el   = document.getElementById("coursesMsg");
             var grid = document.getElementById("coursesGrid");
-            if (el) { el.textContent = msg; el.style.display = "block"; }
+            if (el)   { el.textContent = msg; el.style.display = "block"; }
             if (grid) grid.innerHTML = "";
+            var bar = document.getElementById("coursesResultsBar");
+            if (bar) bar.style.display = "none";
         }
 
-        function categoryBadge(cat) {
-            if (!cat) return "";
-            return '<span class="course-badge">' + esc(cat) + '</span>';
+        /* ── Category icon mapping ──────────────────────── */
+        function getCatIcon(cat) {
+            if (!cat) return "🎓";
+            var c = cat.toLowerCase();
+            if (c.includes("برمج") || c.includes("تقن") || c.includes("program") || c.includes("tech") || c.includes("software")) return "💻";
+            if (c.includes("تصميم") || c.includes("design"))                    return "🎨";
+            if (c.includes("إدار") || c.includes("ادار") || c.includes("manag") || c.includes("business")) return "💼";
+            if (c.includes("تسويق") || c.includes("market"))                    return "📣";
+            if (c.includes("مال") || c.includes("محاسب") || c.includes("financ") || c.includes("account")) return "💰";
+            if (c.includes("موارد") || c.includes("بشر") || c.includes("hr") || c.includes("human"))       return "👥";
+            if (c.includes("أمن") || c.includes("امن") || c.includes("secur") || c.includes("cyber"))      return "🔐";
+            if (c.includes("بيانات") || c.includes("data") || c.includes("تحليل") || c.includes("analyt")) return "📊";
+            if (c.includes("لغة") || c.includes("انجليز") || c.includes("english") || c.includes("lang"))  return "🗣";
+            if (c.includes("قيادة") || c.includes("leader"))                    return "🏆";
+            return "🎓";
         }
 
+        /* ── Build dynamic category tabs ───────────────── */
+        function buildCategoryTabs(courses) {
+            var tabsEl = document.getElementById("categoryTabs");
+            if (!tabsEl) return;
+            var cats = [];
+            courses.forEach(function (c) {
+                if (c.category && cats.indexOf(c.category) === -1) cats.push(c.category);
+            });
+            if (!cats.length) return;
+            cats.forEach(function (cat) {
+                var btn = document.createElement("button");
+                btn.className = "ch-tab";
+                btn.setAttribute("data-cat", cat);
+                btn.textContent = cat;
+                btn.addEventListener("click", function () {
+                    activeCategory = cat;
+                    tabsEl.querySelectorAll(".ch-tab").forEach(function (b) { b.classList.remove("ch-tab-active"); });
+                    btn.classList.add("ch-tab-active");
+                    applyFilter();
+                });
+                tabsEl.appendChild(btn);
+            });
+            /* Wire the "All" tab */
+            var allTab = tabsEl.querySelector("[data-cat='']");
+            if (allTab) {
+                allTab.addEventListener("click", function () {
+                    activeCategory = "";
+                    tabsEl.querySelectorAll(".ch-tab").forEach(function (b) { b.classList.remove("ch-tab-active"); });
+                    allTab.classList.add("ch-tab-active");
+                    applyFilter();
+                });
+            }
+        }
+
+        /* ── Live filter (search + category) ───────────── */
+        function applyFilter() {
+            var input = document.getElementById("courseSearchInput");
+            var term  = input ? input.value.trim().toLowerCase() : "";
+            var filtered = allCourses.filter(function (c) {
+                var matchCat    = !activeCategory || c.category === activeCategory;
+                var matchSearch = !term ||
+                    (c.title       && c.title.toLowerCase().includes(term)) ||
+                    (c.description && c.description.toLowerCase().includes(term)) ||
+                    (c.instructor  && c.instructor.toLowerCase().includes(term)) ||
+                    (c.category    && c.category.toLowerCase().includes(term));
+                return matchCat && matchSearch;
+            });
+            renderGrid(filtered, enrolledIdsCache);
+            updateResultsBar(filtered.length);
+        }
+
+        function updateResultsBar(count) {
+            var bar = document.getElementById("coursesResultsBar");
+            var txt = document.getElementById("coursesResultsTxt");
+            if (!bar || !txt) return;
+            if (!allCourses.length) { bar.style.display = "none"; return; }
+            bar.style.display = "block";
+            txt.innerHTML = '<span class="ch-results-num">' + count + '</span> ' + t("courses.results.count");
+        }
+
+        /* ── Render course cards ────────────────────────── */
         function renderGrid(courses, enrolledIds) {
             var grid = document.getElementById("coursesGrid");
             var msg  = document.getElementById("coursesMsg");
             if (!grid) return;
-            if (!courses.length) { showMsg("لا توجد دورات متاحة حالياً."); return; }
+
+            if (!courses.length) {
+                if (msg) { msg.textContent = t("courses.noAvailable"); msg.style.display = "block"; }
+                grid.innerHTML = "";
+                return;
+            }
             if (msg) msg.style.display = "none";
 
             grid.innerHTML = courses.map(function (c) {
                 var isEnrolled = enrolledIds.indexOf(c.id) !== -1;
-                var seats = c.max_seats > 0 ? '<span class="course-seats">المقاعد: ' + esc(String(c.max_seats)) + '</span>' : "";
-                var actionBtn = "";
+                var seatsHtml  = c.max_seats > 0
+                    ? '<span class="course-seats">🪑 ' + esc(String(c.max_seats)) + '</span>'
+                    : "";
+                var actionBtn  = "";
                 if (!currentUser) {
-                    actionBtn = '<a href="seeker-login.html" class="btn btn-primary btn-full">سجّل دخول للتسجيل</a>';
+                    actionBtn = '<a href="seeker-login.html" class="btn btn-primary btn-full">' + t("courses.loginToEnroll") + '</a>';
                 } else if (isEnrolled) {
-                    actionBtn = '<button class="btn btn-enrolled btn-full" disabled>✓ مسجّل في الدورة</button>';
+                    actionBtn = '<button class="btn btn-enrolled btn-full" disabled>' + t("courses.enrolled") + '</button>';
                 } else {
-                    actionBtn = '<button class="btn btn-primary btn-full enroll-btn" data-id="' + esc(c.id) + '" data-title="' + esc(c.title) + '">التسجيل في الدورة</button>';
+                    actionBtn = '<button class="btn btn-primary btn-full enroll-btn"'
+                        + ' data-id="' + esc(c.id) + '"'
+                        + ' data-title="' + esc(c.title) + '">'
+                        + t("courses.enrollBtn") + '</button>';
                 }
-                return '<div class="course-card card">' +
-                    '<div class="course-card-body">' +
-                        categoryBadge(c.category) +
-                        '<h3 class="course-card-title">' + esc(c.title) + '</h3>' +
-                        '<p class="course-card-desc">' + esc(c.description || "") + '</p>' +
-                        '<div class="course-card-meta">' +
-                            (c.instructor ? '<span>👨‍🏫 ' + esc(c.instructor) + '</span>' : '') +
-                            (c.duration   ? '<span>⏱ '    + esc(c.duration)   + '</span>' : '') +
-                            seats +
-                        '</div>' +
-                    '</div>' +
-                    '<div class="course-card-footer">' + actionBtn + '</div>' +
-                '</div>';
+                return '<div class="course-card">'
+                    + '<div class="course-card-header">'
+                    +     '<span class="course-card-icon">' + getCatIcon(c.category) + '</span>'
+                    + '</div>'
+                    + '<div class="course-card-body">'
+                    +     (c.category ? '<span class="course-badge">' + esc(c.category) + '</span>' : '')
+                    +     '<h3 class="course-card-title">' + esc(c.title) + '</h3>'
+                    +     '<p class="course-card-desc">' + esc(c.description || "") + '</p>'
+                    +     '<div class="course-card-meta">'
+                    +         (c.instructor ? '<span>👨‍🏫 ' + esc(c.instructor) + '</span>' : '')
+                    +         (c.duration   ? '<span>⏱ '   + esc(c.duration)   + '</span>' : '')
+                    +         seatsHtml
+                    +     '</div>'
+                    + '</div>'
+                    + '<div class="course-card-footer">' + actionBtn + '</div>'
+                    + '</div>';
             }).join("");
 
-            grid.addEventListener("click", function (e) {
+            /* Event delegation for enroll buttons */
+            grid.addEventListener("click", function handler(e) {
                 var btn = e.target.closest(".enroll-btn");
                 if (!btn) return;
+                grid.removeEventListener("click", handler);
                 pendingCourse = { id: btn.dataset.id, title: btn.dataset.title };
-                var modal = document.getElementById("enrollModal");
+                var modal   = document.getElementById("enrollModal");
                 var titleEl = document.getElementById("enrollModalTitle");
                 var bodyEl  = document.getElementById("enrollModalBody");
                 if (titleEl) titleEl.textContent = btn.dataset.title;
-                if (bodyEl) {
-                    var who = currentRole === "company" ? "سيتم تسجيل حسابك كشركة في هذه الدورة." : "سيتم تسجيلك في هذه الدورة.";
-                    bodyEl.textContent = who;
-                }
+                if (bodyEl)  bodyEl.textContent   = currentRole === "company"
+                    ? t("courses.modalBodyCompany") : t("courses.modalBodySeeker");
                 if (modal) modal.style.display = "flex";
-            }, { once: true });
+            });
         }
 
+        /* ── Load courses from Supabase ─────────────────── */
         async function loadCourses() {
-            if (!sb) { showMsg("تعذّر الاتصال بقاعدة البيانات."); return; }
+            if (!sb) { showMsg(t("courses.noDb")); return; }
 
             var userRes = await sb.auth.getUser();
             currentUser = userRes.data && userRes.data.user ? userRes.data.user : null;
 
-            var enrolledIds = [];
             if (currentUser) {
                 var profRes = await sb.from("profiles").select("role").eq("id", currentUser.id).single();
                 currentRole = profRes.data ? profRes.data.role : "";
-                if (currentRole === "super_admin") {
-                    window.location.href = "dashboard.html";
-                    return;
-                }
-                /* company: load their course requests */
-                if (currentRole === "company") {
-                    loadMyRequests();
-                }
+                if (currentRole === "super_admin") { window.location.href = "dashboard.html"; return; }
+                if (currentRole === "company") loadMyRequests();
                 var enrRes = await sb.from("course_enrollments").select("course_id").eq("user_id", currentUser.id);
-                enrolledIds = (enrRes.data || []).map(function (e) { return e.course_id; });
+                enrolledIdsCache = (enrRes.data || []).map(function (e) { return e.course_id; });
             }
 
-            var res = await sb.from("courses").select("id, title, description, instructor, duration, category, max_seats").eq("is_active", true).order("created_at", { ascending: false });
-            /* if courses table doesn't exist yet, don't block the page */
-            renderGrid(res.error ? [] : (res.data || []), enrolledIds);
+            var res = await sb.from("courses")
+                .select("id, title, description, instructor, duration, category, max_seats")
+                .eq("is_active", true)
+                .order("created_at", { ascending: false });
+            allCourses = res.error ? [] : (res.data || []);
+            buildCategoryTabs(allCourses);
+            renderGrid(allCourses, enrolledIdsCache);
+            updateResultsBar(allCourses.length);
         }
 
+        /* ── Load company course requests ───────────────── */
         async function loadMyRequests() {
             var section = document.getElementById("myRequestsSection");
             var grid    = document.getElementById("myRequestsGrid");
             if (!section || !grid) return;
             section.style.display = "block";
-            grid.innerHTML = '<p class="no-data-msg">جاري التحميل...</p>';
+            grid.innerHTML = '<p class="no-data-msg">' + t("courses.loading") + '</p>';
 
             var res = await sb.from("course_requests")
                 .select("id, course_name, category, seats, duration, expected_date, status, created_at, description")
@@ -223,47 +342,56 @@
             var items = res.data || [];
 
             if (!items.length) {
-                grid.innerHTML = '<p class="no-data-msg">لم ترسل أي طلبات حتى الآن. <a href="company-dashboard.html?tab=request-course" class="btn-link">إرسال طلب</a></p>';
+                grid.innerHTML = '<p class="no-data-msg">'
+                    + t("courses.request.noRequests") + ' '
+                    + '<a href="company-dashboard.html?tab=request-course" class="btn-link">'
+                    + t("courses.request.sendRequest") + '</a></p>';
                 return;
             }
 
-            var statusMap = {
-                pending:  '<span class="badge badge-pending-status">قيد المراجعة</span>',
-                approved: '<span class="badge badge-accepted">تمت الموافقة</span>',
-                rejected: '<span class="badge badge-rejected">مرفوض</span>'
-            };
+            function statusBadge(s) {
+                var map = {
+                    pending:  ["badge-pending-status", t("courses.request.statusPending")],
+                    approved: ["badge-accepted",        t("courses.request.statusApproved")],
+                    rejected: ["badge-rejected",        t("courses.request.statusRejected")]
+                };
+                var info = map[s] || ["badge-pending-status", s];
+                return '<span class="badge ' + info[0] + '">' + info[1] + '</span>';
+            }
 
             grid.innerHTML = items.map(function (r) {
-                var d = new Date(r.created_at);
-                var dateStr = d.toLocaleDateString("ar-SA", { year: "numeric", month: "short", day: "numeric" });
-                return '<div class="req-card">' +
-                    '<div class="req-card-head">' +
-                        '<span class="req-card-title">' + esc(r.course_name) + '</span>' +
-                        (statusMap[r.status] || '') +
-                    '</div>' +
-                    '<div class="req-card-meta">' +
-                        (r.category     ? '<span>🏷 '       + esc(r.category)      + '</span>' : '') +
-                        (r.seats        ? '<span>👥 '        + esc(String(r.seats)) + ' مقعد</span>' : '') +
-                        (r.duration     ? '<span>⏱ '            + esc(r.duration)      + '</span>' : '') +
-                        (r.expected_date? '<span>📅 بدء: ' + esc(r.expected_date) + '</span>' : '') +
-                        '<span>🗓 التقديم: ' + dateStr + '</span>' +
-                    '</div>' +
-                    (r.description ? '<p class="req-card-desc">' + esc(r.description) + '</p>' : '') +
-                '</div>';
+                var lang    = localStorage.getItem("maherLang") || "ar";
+                var locale  = lang === "en" ? "en-US" : "ar-SA";
+                var dateStr = new Date(r.created_at).toLocaleDateString(locale, { year:"numeric", month:"short", day:"numeric" });
+                return '<div class="req-card">'
+                    + '<div class="req-card-head">'
+                    +     '<span class="req-card-title">' + esc(r.course_name) + '</span>'
+                    +     statusBadge(r.status)
+                    + '</div>'
+                    + '<div class="req-card-meta">'
+                    +     (r.category      ? '<span>🏷 '  + esc(r.category)      + '</span>' : '')
+                    +     (r.seats         ? '<span>👥 '  + esc(String(r.seats)) + ' ' + t("courses.request.seats") + '</span>' : '')
+                    +     (r.duration      ? '<span>⏱ '  + esc(r.duration)      + '</span>' : '')
+                    +     (r.expected_date ? '<span>📅 '  + esc(r.expected_date) + '</span>' : '')
+                    +     '<span>🗓 ' + dateStr + '</span>'
+                    + '</div>'
+                    + (r.description ? '<p class="req-card-desc">' + esc(r.description) + '</p>' : '')
+                    + '</div>';
             }).join("");
         }
 
+        /* ── Enroll ─────────────────────────────────────── */
         async function enroll(courseId) {
-            var res = await sb.from("course_enrollments").insert({
+            return await sb.from("course_enrollments").insert({
                 course_id:   courseId,
                 user_id:     currentUser.id,
                 enrolled_by: currentUser.id
             });
-            return res;
         }
 
+        /* ── DOMContentLoaded ───────────────────────────── */
         document.addEventListener("DOMContentLoaded", function () {
-            /* wait for supabaseClient to be set by supabaseClient.js */
+            /* Boot Supabase client */
             var attempts = 0;
             var interval = setInterval(function () {
                 attempts++;
@@ -273,40 +401,66 @@
                     loadCourses();
                 } else if (attempts > 40) {
                     clearInterval(interval);
-                    showMsg("تعذّر الاتصال بقاعدة البيانات.");
+                    showMsg(t("courses.noDb"));
                 }
             }, 100);
 
-            var confirmBtn = document.getElementById("enrollConfirmBtn");
-            var cancelBtn  = document.getElementById("enrollCancelBtn");
-            var modal      = document.getElementById("enrollModal");
+            /* Live search */
+            var searchInput = document.getElementById("courseSearchInput");
+            if (searchInput) searchInput.addEventListener("input", function () { applyFilter(); });
 
+            /* Modal — cancel */
+            var cancelBtn = document.getElementById("enrollCancelBtn");
+            var modal     = document.getElementById("enrollModal");
             if (cancelBtn) cancelBtn.addEventListener("click", function () {
                 if (modal) modal.style.display = "none";
                 pendingCourse = null;
             });
 
+            /* Modal — confirm enroll */
+            var confirmBtn = document.getElementById("enrollConfirmBtn");
             if (confirmBtn) confirmBtn.addEventListener("click", async function () {
                 if (!pendingCourse) return;
-                confirmBtn.disabled = true;
-                confirmBtn.textContent = "جارٍ التسجيل...";
+                confirmBtn.disabled    = true;
+                confirmBtn.textContent = t("courses.enrolling");
                 var res = await enroll(pendingCourse.id);
                 if (modal) modal.style.display = "none";
                 confirmBtn.disabled = false;
-                confirmBtn.textContent = "تأكيد التسجيل";
+                /* restore translated label */
+                if (typeof window.maherApplyLanguage === "function")
+                    window.maherApplyLanguage(localStorage.getItem("maherLang") || "ar");
                 if (res.error && res.error.code !== "23505") {
-                    alert("تعذّر التسجيل: " + (res.error.message || "خطأ غير معروف"));
+                    alert(t("courses.enrollError") + ": " + (res.error.message || ""));
                 } else {
-                    /* update button in grid */
-                    var btn = document.querySelector('.enroll-btn[data-id="' + pendingCourse.id + '"]');
-                    if (btn) {
-                        btn.textContent = "✓ مسجّل في الدورة";
-                        btn.classList.remove("enroll-btn", "btn-primary");
-                        btn.classList.add("btn-enrolled");
-                        btn.disabled = true;
+                    var enrolledBtn = document.querySelector('.enroll-btn[data-id="' + pendingCourse.id + '"]');
+                    if (enrolledBtn) {
+                        enrolledBtn.textContent = t("courses.enrolled");
+                        enrolledBtn.classList.remove("enroll-btn", "btn-primary");
+                        enrolledBtn.classList.add("btn-enrolled");
+                        enrolledBtn.disabled = true;
                     }
+                    enrolledIdsCache.push(pendingCourse.id);
                 }
                 pendingCourse = null;
+            });
+
+            /* Re-render grid when language switches */
+            document.addEventListener("maherLangChanged", function () {
+                if (allCourses.length) {
+                    applyFilter();
+                    updateResultsBar(
+                        (function(){
+                            var input = document.getElementById("courseSearchInput");
+                            var term  = input ? input.value.trim().toLowerCase() : "";
+                            return allCourses.filter(function(c){
+                                var mc = !activeCategory || c.category === activeCategory;
+                                var ms = !term || [c.title, c.description, c.instructor, c.category]
+                                    .some(function(f){ return f && f.toLowerCase().includes(term); });
+                                return mc && ms;
+                            }).length;
+                        })()
+                    );
+                }
             });
         });
     })();

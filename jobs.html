@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8" />
@@ -15,14 +15,14 @@
         <div class="container header-inner">
             <div class="header-main-group">
                 <a href="index.html" class="logo">
-                    <img src="assets/images/ksu1.png" alt="شعار المنصة" class="logo-img">
+                    <img src="assets/images/ksu1.png" alt="Ø´Ø¹Ø§Ø± Ø§Ù„Ù…Ù†ØµØ©" class="logo-img">
                 </a>
                 <nav class="main-nav" id="mainNav">
                     <a href="index.html" class="nav-link" data-i18n="nav.home"></a>
                     <a href="seeker-login.html" class="nav-link" data-i18n="nav.seekers"></a>
                     <a href="employer-login.html" class="nav-link" data-i18n="nav.employers"></a>
                     <a href="jobs.html" class="nav-link" data-i18n="nav.jobs"></a>
-                    <a href="course-access.html" class="nav-link" data-i18n="nav.courses"></a>
+                    <a href="courses.html" class="nav-link" data-i18n="nav.courses"></a>
                 </nav>
             </div>
 
@@ -39,24 +39,55 @@
         </div>
     </header>
 
-    <main class="section">
-        <div class="container">
-            <div class="jobs-page-hero">
-                <h1 data-i18n="page.jobs.title">الوظائف</h1>
-                <p data-i18n="page.jobs.text">استعرض الوظائف المتاحة، واطّلع على تفاصيل كل فرصة، ثم انتقل إلى صفحة التقديم لإكمال الطلب.</p>
+    <main>
+        <!-- Jobs Hero -->
+        <section class="jobs-hero">
+            <div class="container jobs-hero-inner">
+                <div class="jobs-hero-text">
+                    <div class="jobs-hero-badge" data-i18n="jobs.hero.badge">💼 فرص العمل</div>
+                    <h1 data-i18n="jobs.hero.h1">استكشف <span>فرص العمل</span><br>المناسبة لك</h1>
+                    <p data-i18n="page.jobs.text">استعرض أحدث الوظائف من كبرى الشركات، وقدّم طلبك في ثوانٍ.</p>
+                </div>
+                <!-- Filter Bar -->
+                <div class="jobs-filter-bar">
+                    <div class="jfb-search-wrap">
+                        <svg class="jfb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <input id="jobsSearchInput" class="jfb-input" type="text" placeholder="ابحث: مسمى وظيفي، شركة..." autocomplete="off" />
+                    </div>
+                    <div class="jfb-divider"></div>
+                    <select id="jobsTypeFilter" class="jfb-select" aria-label="نوع العقد">
+                        <option value="">📋 كل أنواع العقود</option>
+                        <option value="كامل">دوام كامل</option>
+                        <option value="جزئي">دوام جزئي</option>
+                        <option value="عن بعد">عن بعد</option>
+                    </select>
+                    <select id="jobsCityFilter" class="jfb-select" aria-label="المدينة">
+                        <option value="">📍 كل المدن</option>
+                        <option value="الرياض">الرياض</option>
+                        <option value="جدة">جدة</option>
+                        <option value="الدمام">الدمام</option>
+                        <option value="مكة">مكة</option>
+                    </select>
+                </div>
             </div>
+        </section>
 
-            <div id="jobsCardsGrid" class="jobs-grid">
-                <!-- قائمة الوظائف ستظهر هنا -->
+        <!-- Jobs Grid -->
+        <section class="section jobs-section">
+            <div class="container">
+                <div id="jobsResultsInfo" class="jobs-results-info"></div>
+                <div id="jobsCardsGrid" class="jobs-grid">
+                    <!-- Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„ÙˆØ¸Ø§Ø¦Ù Ø³ØªØ¸Ù‡Ø± Ù‡Ù†Ø§ -->
+                </div>
             </div>
-        </div>
+        </section>
     </main>
 
     <footer class="main-footer">
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-col">
-                    <img src="assets/images/ksu1.png" alt="شعار ماهر" class="footer-logo-img">
+                    <img src="assets/images/ksu1.png" alt="Ø´Ø¹Ø§Ø± Ù…Ø§Ù‡Ø±" class="footer-logo-img">
                     <h3 class="footer-logo" data-i18n="footer.logo">ماهر</h3>
                     <p class="footer-about" data-i18n="footer.about">منصة عربية للتوظيف والتدريب وتطوير المهارات.</p>
                     <a class="footer-site-link" href="https://www.maher.edu.sa" target="_blank" rel="noopener">🌐 www.maher.edu.sa</a>
@@ -65,7 +96,7 @@
                     <h4 class="footer-col-title" data-i18n="footer.quickLinks">روابط سريعة</h4>
                     <div class="footer-links">
                         <a href="jobs.html" data-i18n="footer.jobs">الوظائف</a>
-                        <a href="course-access.html" data-i18n="footer.courses">الدورات</a>
+                        <a href="courses.html" data-i18n="footer.courses">الدورات</a>
                         <a href="contact.html" data-i18n="footer.contact">تواصل معنا</a>
                     </div>
                 </div>
@@ -75,7 +106,7 @@
                         <li>📞 <a href="tel:920016798">920016798</a> <span class="footer-contact-note" data-i18n="footer.landline">(أرضي)</span></li>
                         <li>📱 <a href="tel:0539600050">0539600050</a></li>
                         <li>📱 <a href="tel:0539600080">0539600080</a></li>
-                        <li>✉️ <a href="mailto:info@maher.edu.sa">info@maher.edu.sa</a></li>
+                        <li>✉️ <a href="mailto:info@maher.edu.sa">info@maher.edu.sa</a></li>
                     </ul>
                 </div>
             </div>
