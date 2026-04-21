@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap');
 
+/* Anti-FOUC: hide page until translations are applied */
+html.maher-loading { visibility: hidden; }
+
 :root {
     --color-primary: #0a33b8;
     --color-primary-light: #3366ff;

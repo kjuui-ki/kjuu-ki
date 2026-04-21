@@ -890,6 +890,9 @@ function maherApplyLanguage(lang) {
 
     /* Notify other scripts that language changed (e.g. to re-render dynamic grids) */
     document.dispatchEvent(new CustomEvent("maherLangChanged", { detail: { lang: currentLang } }));
+
+    /* Remove loading class to reveal page — prevents flash of untranslated content */
+    document.documentElement.classList.remove("maher-loading");
 }
 
 document.addEventListener("DOMContentLoaded", function () {
