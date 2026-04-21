@@ -33,61 +33,105 @@
         </div>
     </header>
 
-    <main>
-        <section class="section">
-        <div class="container">
+    <main class="cdash-page">
 
-            <div class="company-dash-hero">
-                <div class="company-dash-hero-content">
-                    <p class="company-dash-welcome" data-i18n="companyDash.welcome">مرحباً بك في لوحة التحكم</p>
-                    <h1 id="companyDashName">شركتك</h1>
-                    <p class="company-dash-sub" data-i18n="companyDash.sub">إدارة الوظائف وفرص التوظيف ومعلومات شركتك</p>
+        <!-- ── Hero ──────────────────────────────────────────── -->
+        <div class="cdash-hero">
+            <div class="cdash-hero-blob cdash-hero-blob-1"></div>
+            <div class="cdash-hero-blob cdash-hero-blob-2"></div>
+            <div class="cdash-hero-blob cdash-hero-blob-3"></div>
+            <div class="container cdash-hero-inner">
+                <div class="cdash-avatar-wrap">
+                    <div class="cdash-avatar" id="cdashAvatar">🏢</div>
+                    <div class="cdash-avatar-ring"></div>
                 </div>
-                <div class="company-dash-stats" id="companyDashStats">
-                    <div class="company-dash-stat">
-                        <span class="company-dash-stat-num" id="statJobCount">—</span>
-                        <span class="company-dash-stat-label" data-i18n="companyDash.stat.jobs">وظيفة منشورة</span>
+                <div class="cdash-hero-text">
+                    <p class="cdash-welcome" data-i18n="companyDash.welcome">مرحباً بك في لوحة التحكم</p>
+                    <h1 class="cdash-company-name" id="companyDashName">شركتك</h1>
+                    <p class="cdash-sub" data-i18n="companyDash.sub">إدارة الوظائف وفرص التوظيف ومعلومات شركتك</p>
+                </div>
+                <div class="cdash-stats-strip" id="companyDashStats">
+                    <div class="cdash-stat">
+                        <span class="cdash-stat-num" id="statJobCount">—</span>
+                        <span class="cdash-stat-lbl" data-i18n="companyDash.stat.jobs">وظيفة منشورة</span>
+                    </div>
+                    <div class="cdash-stat-divider"></div>
+                    <div class="cdash-stat">
+                        <span class="cdash-stat-num">🟢</span>
+                        <span class="cdash-stat-lbl">حساب نشط</span>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="dash-tabs">
-                <button class="dash-tab active" data-tab="post-job" data-i18n="tab.postJob">نشر وظيفة جديدة</button>
-                <button class="dash-tab" data-tab="my-jobs" data-i18n="tab.myJobs">وظائفي</button>
-                <button class="dash-tab" data-tab="request-staff" data-i18n="tab.requestStaff">طلب موظفين</button>
-                <button class="dash-tab" data-tab="request-course" data-i18n="tab.requestCourse">طلب دورة</button>
-                <button class="dash-tab" data-tab="company-info" data-i18n="tab.companyInfo">معلومات الشركة</button>
+        <div class="container cdash-body">
+
+            <!-- ── Tab Bar ───────────────────────────────────── -->
+            <div class="cdash-tabs-wrap">
+                <div class="dash-tabs cdash-tabs">
+                    <button class="dash-tab cdash-tab active" data-tab="post-job">
+                        <span class="cdash-tab-icon">✏️</span><span data-i18n="tab.postJob">نشر وظيفة</span>
+                    </button>
+                    <button class="dash-tab cdash-tab" data-tab="my-jobs">
+                        <span class="cdash-tab-icon">💼</span><span data-i18n="tab.myJobs">وظائفي</span>
+                    </button>
+                    <button class="dash-tab cdash-tab" data-tab="request-staff">
+                        <span class="cdash-tab-icon">👥</span><span data-i18n="tab.requestStaff">طلب موظفين</span>
+                    </button>
+                    <button class="dash-tab cdash-tab" data-tab="request-course">
+                        <span class="cdash-tab-icon">🎓</span><span data-i18n="tab.requestCourse">طلب دورة</span>
+                    </button>
+                    <button class="dash-tab cdash-tab" data-tab="company-info">
+                        <span class="cdash-tab-icon">🏢</span><span data-i18n="tab.companyInfo">معلومات الشركة</span>
+                    </button>
+                </div>
             </div>
 
-            <!-- Post Job Tab -->
+
+            <!-- ── Post Job Tab ──────────────────────────────── -->
             <div class="dash-tab-content" id="tab-post-job">
-                <div class="dash-card">
-                    <h2 class="dash-card-title" data-i18n="cd.postJob.title">نشر وظيفة جديدة</h2>
-                    <form id="companyPostJobForm" class="post-job-form">
-                        <div class="pjf-grid">
-                            <div class="auth-form-group pjf-full">
-                                <label for="cdJobTitle" data-i18n="cd.jobTitle.label">اسم الوظيفة *</label>
-                                <input id="cdJobTitle" type="text" placeholder="مثال: مهندس البرمجيات" required />
+                <div class="cdash-card">
+                    <div class="cdash-card-head">
+                        <div class="cdash-card-icon" style="background:rgba(99,102,241,0.12);color:#6366f1;">✏️</div>
+                        <div>
+                            <h2 class="cdash-card-title" data-i18n="cd.postJob.title">نشر وظيفة جديدة</h2>
+                            <p class="cdash-card-sub">أضف وظيفة وستظهر فوراً للباحثين عن عمل</p>
+                        </div>
+                    </div>
+                    <form id="companyPostJobForm">
+                        <div class="cdash-form-grid">
+                            <div class="prf-field cdash-full">
+                                <label class="prf-label" for="cdJobTitle" data-i18n="cd.jobTitle.label">اسم الوظيفة *</label>
+                                <div class="prf-input-wrap">
+                                    <svg class="prf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+                                    <input id="cdJobTitle" class="prf-input" type="text" placeholder="مثال: مهندس البرمجيات" required />
+                                </div>
                             </div>
-                            <div class="auth-form-group pjf-full">
-                                <label for="cdJobDescription" data-i18n="cd.jobDescription.label">وصف الوظيفة *</label>
-                                <textarea id="cdJobDescription" rows="5" placeholder="اكتب وصفاً تفصيلياً للوظيفة ومهام العمل" required></textarea>
+                            <div class="prf-field cdash-full">
+                                <label class="prf-label" for="cdJobDescription" data-i18n="cd.jobDescription.label">وصف الوظيفة *</label>
+                                <textarea id="cdJobDescription" class="prf-textarea" rows="4" placeholder="اكتب وصفاً تفصيلياً للوظيفة ومهام العمل" required></textarea>
                             </div>
-                            <div class="auth-form-group pjf-full">
-                                <label for="cdJobRequirements" data-i18n="cd.jobRequirements.label">المتطلبات *</label>
-                                <textarea id="cdJobRequirements" rows="4" placeholder="حدد المتطلبات والمهارات المطلوبة" required></textarea>
+                            <div class="prf-field cdash-full">
+                                <label class="prf-label" for="cdJobRequirements" data-i18n="cd.jobRequirements.label">المتطلبات *</label>
+                                <textarea id="cdJobRequirements" class="prf-textarea" rows="3" placeholder="حدد المتطلبات والمهارات المطلوبة" required></textarea>
                             </div>
-                            <div class="auth-form-group">
-                                <label for="cdJobSalary" data-i18n="cd.salary.label">الراتب المتوقع</label>
-                                <input id="cdJobSalary" type="text" placeholder="مثال: 5000 - 8000 ريال" />
+                            <div class="prf-field">
+                                <label class="prf-label" for="cdJobSalary" data-i18n="cd.salary.label">الراتب المتوقع</label>
+                                <div class="prf-input-wrap">
+                                    <svg class="prf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 6v2m0 8v2M9 9h4a2 2 0 010 4H9m0 0h5"/></svg>
+                                    <input id="cdJobSalary" class="prf-input" type="text" placeholder="مثال: 5000 - 8000 ريال" />
+                                </div>
                             </div>
-                            <div class="auth-form-group">
-                                <label for="cdJobLocation" data-i18n="cd.location.label">الموقع *</label>
-                                <input id="cdJobLocation" type="text" placeholder="مثال: الرياض" required />
+                            <div class="prf-field">
+                                <label class="prf-label" for="cdJobLocation" data-i18n="cd.location.label">الموقع *</label>
+                                <div class="prf-input-wrap">
+                                    <svg class="prf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                                    <input id="cdJobLocation" class="prf-input" type="text" placeholder="مثال: الرياض" required />
+                                </div>
                             </div>
-                            <div class="auth-form-group">
-                                <label for="cdJobType" data-i18n="cd.jobType.label">نوع التوظيف *</label>
-                                <select id="cdJobType" required>
+                            <div class="prf-field">
+                                <label class="prf-label" for="cdJobType" data-i18n="cd.jobType.label">نوع التوظيف *</label>
+                                <select id="cdJobType" class="prf-input" required>
                                     <option value="" data-i18n="opt.jobType.select">اختر نوع التوظيف</option>
                                     <option value="دوام كامل" data-i18n="opt.jobType.fullTime">دوام كامل</option>
                                     <option value="دوام جزئي" data-i18n="opt.jobType.partTime">دوام جزئي</option>
@@ -95,9 +139,9 @@
                                     <option value="تدريب" data-i18n="opt.jobType.internship">تدريب</option>
                                 </select>
                             </div>
-                            <div class="auth-form-group">
-                                <label for="cdJobCategory" data-i18n="cd.category.label">المجال *</label>
-                                <select id="cdJobCategory" required>
+                            <div class="prf-field">
+                                <label class="prf-label" for="cdJobCategory" data-i18n="cd.category.label">المجال *</label>
+                                <select id="cdJobCategory" class="prf-input" required>
                                     <option value="" data-i18n="opt.jobCategory.select">اختر المجال</option>
                                     <option value="تقنية المعلومات" data-i18n="opt.jobCategory.it">تقنية المعلومات</option>
                                     <option value="التسويق" data-i18n="opt.jobCategory.marketing">التسويق</option>
@@ -109,52 +153,74 @@
                                     <option value="أخرى" data-i18n="opt.jobCategory.other">أخرى</option>
                                 </select>
                             </div>
-                            <div class="auth-form-group pjf-full">
-                                <label for="cdJobDeadline" data-i18n="cd.deadline.label">آخر موعد للتقديم</label>
-                                <input id="cdJobDeadline" type="date" />
+                            <div class="prf-field">
+                                <label class="prf-label" for="cdJobDeadline" data-i18n="cd.deadline.label">آخر موعد للتقديم</label>
+                                <input id="cdJobDeadline" class="prf-input" type="date" />
                             </div>
                         </div>
                         <div id="postJobStatus" class="form-status" style="display:none;"></div>
-                        <div class="auth-submit" style="margin-top:1rem;">
-                            <button type="submit" class="btn btn-primary" data-i18n="cd.postJob.btn">نشر الوظيفة</button>
-                        </div>
+                        <button type="submit" class="prf-save-btn" data-i18n="cd.postJob.btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="18" height="18"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                            نشر الوظيفة
+                        </button>
                     </form>
                 </div>
             </div>
 
-            <!-- My Jobs Tab -->
+            <!-- ── My Jobs Tab ───────────────────────────────── -->
             <div class="dash-tab-content" id="tab-my-jobs" style="display:none;">
-                <div class="dash-card">
-                    <div class="dash-card-header">
-                        <h2 class="dash-card-title" data-i18n="cd.myJobs.title">الوظائف المنشورة</h2>
-                        <button type="button" class="btn btn-primary btn-sm" id="btnGoPostJob" data-i18n="cd.myJobs.addBtn">+ نشر وظيفة جديدة</button>
+                <div class="cdash-card">
+                    <div class="cdash-card-head">
+                        <div class="cdash-card-icon" style="background:rgba(16,185,129,0.10);color:#059669;">💼</div>
+                        <div style="flex:1;">
+                            <h2 class="cdash-card-title" data-i18n="cd.myJobs.title">الوظائف المنشورة</h2>
+                            <p class="cdash-card-sub">جميع الوظائف التي نشرتها على المنصة</p>
+                        </div>
+                        <button type="button" class="cdash-add-btn" id="btnGoPostJob" data-i18n="cd.myJobs.addBtn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" width="15" height="15"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            نشر وظيفة جديدة
+                        </button>
                     </div>
-                    <div id="companyJobsList"><p class="no-data-msg">جاري التحميل...</p></div>
+                    <div id="companyJobsList"><p class="cdash-no-data">جاري التحميل...</p></div>
                 </div>
             </div>
 
-            <!-- Request Staff Tab -->
+            <!-- ── Request Staff Tab ─────────────────────────── -->
             <div class="dash-tab-content" id="tab-request-staff" style="display:none;">
-                <div class="dash-card">
-                    <h2 class="dash-card-title" data-i18n="cd.requestStaff.title">طلب موظفين</h2>
-                    <p class="company-dash-sub" style="margin-bottom:1.2rem;" data-i18n="cd.requestStaff.sub">أرسل طلبك لإدارة المنصة للحصول على موظفين مناسبين — يطّلع على هذه الطلبات فريق الإدارة فقط.</p>
-                    <form id="requestStaffForm" class="post-job-form">
-                        <div class="pjf-grid">
-                            <div class="auth-form-group">
-                                <label for="rsJobTitle" data-i18n="cd.requestStaff.jobTitle.label">المسمى الوظيفي المطلوب *</label>
-                                <input id="rsJobTitle" type="text" placeholder="مثال: محاسب، مبرمج، مدير مبيعات" required />
+                <div class="cdash-card">
+                    <div class="cdash-card-head">
+                        <div class="cdash-card-icon" style="background:rgba(245,158,11,0.10);color:#d97706;">👥</div>
+                        <div>
+                            <h2 class="cdash-card-title" data-i18n="cd.requestStaff.title">طلب موظفين</h2>
+                            <p class="cdash-card-sub" data-i18n="cd.requestStaff.sub">أرسل طلبك لإدارة المنصة — يطّلع عليه فريق الإدارة فقط.</p>
+                        </div>
+                    </div>
+                    <form id="requestStaffForm">
+                        <div class="cdash-form-grid">
+                            <div class="prf-field">
+                                <label class="prf-label" for="rsJobTitle" data-i18n="cd.requestStaff.jobTitle.label">المسمى الوظيفي المطلوب *</label>
+                                <div class="prf-input-wrap">
+                                    <svg class="prf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+                                    <input id="rsJobTitle" class="prf-input" type="text" placeholder="مثال: محاسب، مبرمج، مدير مبيعات" required />
+                                </div>
                             </div>
-                            <div class="auth-form-group">
-                                <label for="rsCount" data-i18n="cd.requestStaff.count.label">عدد الموظفين المطلوبين *</label>
-                                <input id="rsCount" type="number" min="1" placeholder="مثال: 3" required />
+                            <div class="prf-field">
+                                <label class="prf-label" for="rsCount" data-i18n="cd.requestStaff.count.label">عدد الموظفين *</label>
+                                <div class="prf-input-wrap">
+                                    <svg class="prf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+                                    <input id="rsCount" class="prf-input" type="number" min="1" placeholder="مثال: 3" required />
+                                </div>
                             </div>
-                            <div class="auth-form-group">
-                                <label for="rsSpecialization" data-i18n="cd.requestStaff.spec.label">التخصص المطلوب *</label>
-                                <input id="rsSpecialization" type="text" placeholder="مثال: تقنية المعلومات، المحاسبة" required />
+                            <div class="prf-field">
+                                <label class="prf-label" for="rsSpecialization" data-i18n="cd.requestStaff.spec.label">التخصص المطلوب *</label>
+                                <div class="prf-input-wrap">
+                                    <svg class="prf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/></svg>
+                                    <input id="rsSpecialization" class="prf-input" type="text" placeholder="مثال: تقنية المعلومات، المحاسبة" required />
+                                </div>
                             </div>
-                            <div class="auth-form-group">
-                                <label for="rsWorkType" data-i18n="cd.requestStaff.workType.label">نوع العمل</label>
-                                <select id="rsWorkType">
+                            <div class="prf-field">
+                                <label class="prf-label" for="rsWorkType" data-i18n="cd.requestStaff.workType.label">نوع العمل</label>
+                                <select id="rsWorkType" class="prf-input">
                                     <option value="" data-i18n="opt.workType.select">اختر</option>
                                     <option value="دوام كامل" data-i18n="opt.jobType.fullTime">دوام كامل</option>
                                     <option value="دوام جزئي" data-i18n="opt.jobType.partTime">دوام جزئي</option>
@@ -162,121 +228,164 @@
                                     <option value="تدريب" data-i18n="opt.jobType.internship">تدريب</option>
                                 </select>
                             </div>
-                            <div class="auth-form-group">
-                                <label for="rsSalary" data-i18n="cd.requestStaff.salary.label">الراتب المتوقع</label>
-                                <input id="rsSalary" type="text" placeholder="مثال: 5000 - 8000 ريال" />
+                            <div class="prf-field">
+                                <label class="prf-label" for="rsSalary" data-i18n="cd.requestStaff.salary.label">الراتب المتوقع</label>
+                                <div class="prf-input-wrap">
+                                    <svg class="prf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 6v2m0 8v2M9 9h4a2 2 0 010 4H9m0 0h5"/></svg>
+                                    <input id="rsSalary" class="prf-input" type="text" placeholder="مثال: 5000 - 8000 ريال" />
+                                </div>
                             </div>
-                            <div class="auth-form-group">
-                                <label for="rsDeadline" data-i18n="cd.requestStaff.deadline.label">آخر موعد للحاجة</label>
-                                <input id="rsDeadline" type="date" />
+                            <div class="prf-field">
+                                <label class="prf-label" for="rsDeadline" data-i18n="cd.requestStaff.deadline.label">آخر موعد للحاجة</label>
+                                <input id="rsDeadline" class="prf-input" type="date" />
                             </div>
-                            <div class="auth-form-group pjf-full">
-                                <label for="rsSkills" data-i18n="cd.requestStaff.skills.label">المهارات والمتطلبات *</label>
-                                <textarea id="rsSkills" rows="4" placeholder="اذكر المهارات والخبرات المطلوبة في الموظف" required></textarea>
+                            <div class="prf-field cdash-full">
+                                <label class="prf-label" for="rsSkills" data-i18n="cd.requestStaff.skills.label">المهارات والمتطلبات *</label>
+                                <textarea id="rsSkills" class="prf-textarea" rows="3" placeholder="اذكر المهارات والخبرات المطلوبة في الموظف" required></textarea>
                             </div>
-                            <div class="auth-form-group pjf-full">
-                                <label for="rsNotes" data-i18n="cd.requestStaff.notes.label">ملاحظات إضافية</label>
-                                <textarea id="rsNotes" rows="3" placeholder="أي معلومات إضافية ترغب في إيصالها للإدارة"></textarea>
+                            <div class="prf-field cdash-full">
+                                <label class="prf-label" for="rsNotes" data-i18n="cd.requestStaff.notes.label">ملاحظات إضافية</label>
+                                <textarea id="rsNotes" class="prf-textarea" rows="2" placeholder="أي معلومات إضافية ترغب في إيصالها للإدارة"></textarea>
                             </div>
                         </div>
                         <div id="requestStaffStatus" class="form-status" style="display:none;"></div>
-                        <div class="auth-submit" style="margin-top:1rem;">
-                            <button type="submit" class="btn btn-primary" data-i18n="cd.requestStaff.submit">إرسال الطلب</button>
-                        </div>
+                        <button type="submit" class="prf-save-btn" data-i18n="cd.requestStaff.submit">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="18" height="18"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                            إرسال الطلب
+                        </button>
                     </form>
-
-                    <!-- My requests list -->
-                    <div style="margin-top:2rem;">
-                        <h3 class="dash-card-title" style="font-size:1rem;margin-bottom:0.8rem;" data-i18n="cd.requestStaff.prevTitle">طلباتي السابقة</h3>
-                        <div id="myStaffRequestsList"><p class="no-data-msg">جاري التحميل...</p></div>
+                    <div class="cdash-prev-section">
+                        <h3 class="cdash-prev-title" data-i18n="cd.requestStaff.prevTitle">
+                            <span>📋</span> طلباتي السابقة
+                        </h3>
+                        <div id="myStaffRequestsList"><p class="cdash-no-data">جاري التحميل...</p></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Request Course Tab -->
+            <!-- ── Request Course Tab ────────────────────────── -->
             <div class="dash-tab-content" id="tab-request-course" style="display:none;">
-                <div class="dash-card">
-                    <h2 class="dash-card-title">طلب فتح دورة تدريبية</h2>
-                    <p class="company-dash-sub" style="margin-bottom:1.2rem;" data-i18n="cd.requestCourse.sub">أرسل طلبك لإدارة المنصة لفتح دورة تدريبية لموظفيك — يطّلع على هذه الطلبات فريق الإدارة فقط.</p>
-                    <form id="requestCourseForm" class="post-job-form">
-                        <div class="pjf-grid">
-                            <div class="auth-form-group">
-                                <label for="rcCourseName" data-i18n="cd.requestCourse.name.label">اسم الدورة المطلوبة *</label>
-                                <input id="rcCourseName" type="text" placeholder="مثال: دورة في إدارة المشاريع" required />
+                <div class="cdash-card">
+                    <div class="cdash-card-head">
+                        <div class="cdash-card-icon" style="background:rgba(79,209,255,0.10);color:#0ea5e9;">🎓</div>
+                        <div>
+                            <h2 class="cdash-card-title">طلب فتح دورة تدريبية</h2>
+                            <p class="cdash-card-sub" data-i18n="cd.requestCourse.sub">أرسل طلبك لفتح دورة لموظفيك — يطّلع عليه فريق الإدارة فقط.</p>
+                        </div>
+                    </div>
+                    <form id="requestCourseForm">
+                        <div class="cdash-form-grid">
+                            <div class="prf-field">
+                                <label class="prf-label" for="rcCourseName" data-i18n="cd.requestCourse.name.label">اسم الدورة المطلوبة *</label>
+                                <div class="prf-input-wrap">
+                                    <svg class="prf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                                    <input id="rcCourseName" class="prf-input" type="text" placeholder="مثال: دورة في إدارة المشاريع" required />
+                                </div>
                             </div>
-                            <div class="auth-form-group">
-                                <label for="rcCategory" data-i18n="cd.requestCourse.category.label">المجال / الفئة</label>
-                                <input id="rcCategory" type="text" placeholder="مثال: تقنية، مالية، تسويق" />
+                            <div class="prf-field">
+                                <label class="prf-label" for="rcCategory" data-i18n="cd.requestCourse.category.label">المجال / الفئة</label>
+                                <div class="prf-input-wrap">
+                                    <svg class="prf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h8m-8 6h16"/></svg>
+                                    <input id="rcCategory" class="prf-input" type="text" placeholder="مثال: تقنية، مالية، تسويق" />
+                                </div>
                             </div>
-                            <div class="auth-form-group">
-                                <label for="rcSeats" data-i18n="cd.requestCourse.seats.label">عدد المقاعد المطلوبة *</label>
-                                <input id="rcSeats" type="number" min="1" value="1" placeholder="مثال: 10" required />
+                            <div class="prf-field">
+                                <label class="prf-label" for="rcSeats" data-i18n="cd.requestCourse.seats.label">عدد المقاعد *</label>
+                                <div class="prf-input-wrap">
+                                    <svg class="prf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+                                    <input id="rcSeats" class="prf-input" type="number" min="1" value="1" placeholder="مثال: 10" required />
+                                </div>
                             </div>
-                            <div class="auth-form-group">
-                                <label for="rcDuration" data-i18n="cd.requestCourse.duration.label">المدة الزمنية المتوقعة</label>
-                                <input id="rcDuration" type="text" placeholder="مثال: 3 أيام، 40 ساعة" />
+                            <div class="prf-field">
+                                <label class="prf-label" for="rcDuration" data-i18n="cd.requestCourse.duration.label">المدة الزمنية</label>
+                                <div class="prf-input-wrap">
+                                    <svg class="prf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                    <input id="rcDuration" class="prf-input" type="text" placeholder="مثال: 3 أيام، 40 ساعة" />
+                                </div>
                             </div>
-                            <div class="auth-form-group">
-                                <label for="rcExpectedDate" data-i18n="cd.requestCourse.expectedDate.label">تاريخ البدء المتوقع</label>
-                                <input id="rcExpectedDate" type="date" />
+                            <div class="prf-field">
+                                <label class="prf-label" for="rcExpectedDate" data-i18n="cd.requestCourse.expectedDate.label">تاريخ البدء المتوقع</label>
+                                <input id="rcExpectedDate" class="prf-input" type="date" />
                             </div>
-                            <div class="auth-form-group">
-                                <label for="rcAudience" data-i18n="cd.requestCourse.audience.label">الفئة المستهدفة</label>
-                                <input id="rcAudience" type="text" placeholder="مثال: موظفون جدد، مديرو فرق" />
+                            <div class="prf-field">
+                                <label class="prf-label" for="rcAudience" data-i18n="cd.requestCourse.audience.label">الفئة المستهدفة</label>
+                                <div class="prf-input-wrap">
+                                    <svg class="prf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+                                    <input id="rcAudience" class="prf-input" type="text" placeholder="مثال: موظفون جدد، مديرو فرق" />
+                                </div>
                             </div>
-                            <div class="auth-form-group pjf-full">
-                                <label for="rcDescription" data-i18n="cd.requestCourse.description.label">وصف الدورة ومحتواها المطلوب *</label>
-                                <textarea id="rcDescription" rows="4" placeholder="اذكر المحاور الرئيسية والمحتوى الذي تحتاجه الدورة" required></textarea>
+                            <div class="prf-field cdash-full">
+                                <label class="prf-label" for="rcDescription" data-i18n="cd.requestCourse.description.label">وصف الدورة ومحتواها *</label>
+                                <textarea id="rcDescription" class="prf-textarea" rows="4" placeholder="اذكر المحاور الرئيسية والمحتوى الذي تحتاجه الدورة" required></textarea>
                             </div>
-                            <div class="auth-form-group pjf-full">
-                                <label for="rcNotes" data-i18n="cd.requestCourse.notes.label">ملاحظات إضافية</label>
-                                <textarea id="rcNotes" rows="3" placeholder="أي معلومات إضافية ترغب في إيصالها للإدارة"></textarea>
+                            <div class="prf-field cdash-full">
+                                <label class="prf-label" for="rcNotes" data-i18n="cd.requestCourse.notes.label">ملاحظات إضافية</label>
+                                <textarea id="rcNotes" class="prf-textarea" rows="2" placeholder="أي معلومات إضافية ترغب في إيصالها للإدارة"></textarea>
                             </div>
                         </div>
                         <div id="requestCourseStatus" class="form-status" style="display:none;"></div>
-                        <div class="auth-submit" style="margin-top:1rem;">
-                            <button type="submit" class="btn btn-primary" data-i18n="cd.requestCourse.submit">إرسال الطلب</button>
-                        </div>
+                        <button type="submit" class="prf-save-btn" data-i18n="cd.requestCourse.submit">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="18" height="18"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                            إرسال الطلب
+                        </button>
                     </form>
-
-                    <!-- My course requests list -->
-                    <div style="margin-top:2rem;">
-                        <h3 class="dash-card-title" style="font-size:1rem;margin-bottom:0.8rem;" data-i18n="cd.requestCourse.prevTitle">طلباتي السابقة</h3>
+                    <div class="cdash-prev-section">
+                        <h3 class="cdash-prev-title" data-i18n="cd.requestCourse.prevTitle">
+                            <span>📋</span> طلباتي السابقة
+                        </h3>
                         <div id="myCourseRequestsList"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Company Info Tab -->
+            <!-- ── Company Info Tab ──────────────────────────── -->
             <div class="dash-tab-content" id="tab-company-info" style="display:none;">
-                <div class="dash-card">
-                    <h2 class="dash-card-title" data-i18n="cd.companyInfo.title">معلومات الشركة</h2>
-                    <form id="companyDashProfileForm" class="company-info-form">
-                        <div class="auth-form-group">
-                            <label for="cdCompanyName" data-i18n="cd.companyName.label">اسم الشركة</label>
-                            <input id="cdCompanyName" type="text" placeholder="اسم الشركة" />
+                <div class="cdash-card">
+                    <div class="cdash-card-head">
+                        <div class="cdash-card-icon" style="background:rgba(10,51,184,0.10);color:#0a33b8;">🏢</div>
+                        <div>
+                            <h2 class="cdash-card-title" data-i18n="cd.companyInfo.title">معلومات الشركة</h2>
+                            <p class="cdash-card-sub">بيانات شركتك الظاهرة على المنصة</p>
                         </div>
-                        <div class="auth-form-group">
-                            <label for="cdCompanyPhone" data-i18n="cd.companyPhone.label">رقم الجوال</label>
-                            <input id="cdCompanyPhone" type="tel" placeholder="مثال: 05XXXXXXXX" />
-                        </div>
-                        <div class="auth-form-group">
-                            <label for="cdCompanySpec" data-i18n="cd.companySpec.label">التخصص / القطاع</label>
-                            <input id="cdCompanySpec" type="text" placeholder="مثال: تقنية المعلومات" />
-                        </div>
-                        <div class="auth-form-group">
-                            <label for="cdCompanyServices" data-i18n="cd.companyServices.label">وصف الشركة / الخدمات</label>
-                            <textarea id="cdCompanyServices" rows="4" placeholder="اكتب وصفاً عن الشركة وخدماتها"></textarea>
+                    </div>
+                    <form id="companyDashProfileForm">
+                        <div class="cdash-form-grid">
+                            <div class="prf-field">
+                                <label class="prf-label" for="cdCompanyName" data-i18n="cd.companyName.label">اسم الشركة</label>
+                                <div class="prf-input-wrap">
+                                    <svg class="prf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="8" width="20" height="14"/><path d="M15 8V4H9v4"/><line x1="12" y1="12" x2="12" y2="16"/></svg>
+                                    <input id="cdCompanyName" class="prf-input" type="text" placeholder="اسم الشركة" />
+                                </div>
+                            </div>
+                            <div class="prf-field">
+                                <label class="prf-label" for="cdCompanyPhone" data-i18n="cd.companyPhone.label">رقم الجوال</label>
+                                <div class="prf-input-wrap">
+                                    <svg class="prf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg>
+                                    <input id="cdCompanyPhone" class="prf-input" type="tel" placeholder="مثال: 05XXXXXXXX" />
+                                </div>
+                            </div>
+                            <div class="prf-field">
+                                <label class="prf-label" for="cdCompanySpec" data-i18n="cd.companySpec.label">التخصص / القطاع</label>
+                                <div class="prf-input-wrap">
+                                    <svg class="prf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/></svg>
+                                    <input id="cdCompanySpec" class="prf-input" type="text" placeholder="مثال: تقنية المعلومات" />
+                                </div>
+                            </div>
+                            <div class="prf-field cdash-full">
+                                <label class="prf-label" for="cdCompanyServices" data-i18n="cd.companyServices.label">وصف الشركة / الخدمات</label>
+                                <textarea id="cdCompanyServices" class="prf-textarea" rows="4" placeholder="اكتب وصفاً عن الشركة وخدماتها"></textarea>
+                            </div>
                         </div>
                         <div id="profileStatus" class="form-status" style="display:none;"></div>
-                        <div class="auth-submit" style="margin-top:1rem;">
-                            <button type="submit" class="btn btn-primary" data-i18n="cd.companyInfo.save">حفظ البيانات</button>
-                        </div>
+                        <button type="submit" class="prf-save-btn" data-i18n="cd.companyInfo.save">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="18" height="18"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                            حفظ البيانات
+                        </button>
                     </form>
                 </div>
             </div>
+
         </div>
-        </section>
     </main>
 
     <footer class="main-footer">

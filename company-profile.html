@@ -39,34 +39,88 @@
         </div>
     </header>
 
-    <main class="section profile-page">
-        <div class="container">
-            <h1 data-i18n="companyProfile.title">ملف الشركة</h1>
-            <p class="section-intro" data-i18n="companyProfile.subtitle">قم بتحديث بيانات شركتك الأساسية.</p>
+    <main class="cprf-page">
 
-            <div class="auth-card">
-                <form id="companyProfileForm" class="profile-form">
-                    <div class="auth-form-group">
-                        <label for="companyName" data-i18n="companyProfile.name.label">اسم الشركة</label>
-                        <input id="companyName" type="text" data-i18n-placeholder="companyProfile.name.placeholder" placeholder="اسم الشركة" />
-                    </div>
-                    <div class="auth-form-group">
-                        <label for="companyPhone" data-i18n="companyProfile.phone.label">رقم التواصل</label>
-                        <input id="companyPhone" type="tel" placeholder="مثال: 05XXXXXXXX" />
-                    </div>
-                    <div class="auth-form-group">
-                        <label for="companySpecialization" data-i18n="companyProfile.specialization.label">مجال العمل / التخصص</label>
-                        <input id="companySpecialization" type="text" data-i18n-placeholder="companyProfile.specialization.placeholder" placeholder="مثال: تقنية، تعليم، خدمات" />
-                    </div>
-                    <div class="auth-form-group">
-                        <label for="companyServices" data-i18n="companyProfile.services.label">نبذة وخدمات الشركة</label>
-                        <textarea id="companyServices" rows="3" data-i18n-placeholder="companyProfile.services.placeholder" placeholder="اكتب وصفًا مختصرًا عن الشركة والخدمات"></textarea>
-                    </div>
+        <!-- Hero -->
+        <div class="cprf-hero">
+            <div class="cprf-hero-blob cprf-hero-blob-1"></div>
+            <div class="cprf-hero-blob cprf-hero-blob-2"></div>
+            <div class="container cprf-hero-inner">
+                <div class="cprf-avatar-wrap">
+                    <div class="cprf-avatar">🏢</div>
+                    <div class="cprf-avatar-badge">✏️</div>
+                </div>
+                <div class="cprf-hero-text">
+                    <h1 class="cprf-hero-title" data-i18n="companyProfile.title">ملف الشركة</h1>
+                    <p class="cprf-hero-sub" data-i18n="companyProfile.subtitle">قم بتحديث بيانات شركتك الأساسية.</p>
+                </div>
+            </div>
+        </div>
 
-                    <div class="auth-submit">
-                        <button type="submit" class="btn btn-primary btn-full" data-i18n="btn.save">حفظ</button>
+        <div class="container cprf-body">
+            <div class="cprf-grid">
+                <!-- Left: Form -->
+                <div class="cprf-form-col">
+                    <div class="prf-section-card">
+                        <div class="prf-section-head">
+                            <div class="prf-section-icon">🏢</div>
+                            <h2 class="prf-section-title">بيانات الشركة</h2>
+                        </div>
+                        <form id="companyProfileForm">
+                            <div class="prf-field">
+                                <label class="prf-label" for="companyName" data-i18n="companyProfile.name.label">اسم الشركة</label>
+                                <div class="prf-input-wrap">
+                                    <svg class="prf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="8" width="20" height="14"/><path d="M15 8V4H9v4"/></svg>
+                                    <input id="companyName" class="prf-input" type="text" data-i18n-placeholder="companyProfile.name.placeholder" placeholder="اسم الشركة" />
+                                </div>
+                            </div>
+                            <div class="prf-field">
+                                <label class="prf-label" for="companyPhone" data-i18n="companyProfile.phone.label">رقم التواصل</label>
+                                <div class="prf-input-wrap">
+                                    <svg class="prf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg>
+                                    <input id="companyPhone" class="prf-input" type="tel" placeholder="مثال: 05XXXXXXXX" />
+                                </div>
+                            </div>
+                            <div class="prf-field">
+                                <label class="prf-label" for="companySpecialization" data-i18n="companyProfile.specialization.label">مجال العمل / التخصص</label>
+                                <div class="prf-input-wrap">
+                                    <svg class="prf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/></svg>
+                                    <input id="companySpecialization" class="prf-input" type="text" data-i18n-placeholder="companyProfile.specialization.placeholder" placeholder="مثال: تقنية، تعليم، خدمات" />
+                                </div>
+                            </div>
+                            <div class="prf-field">
+                                <label class="prf-label" for="companyServices" data-i18n="companyProfile.services.label">نبذة وخدمات الشركة</label>
+                                <textarea id="companyServices" class="prf-textarea" rows="4" data-i18n-placeholder="companyProfile.services.placeholder" placeholder="اكتب وصفًا مختصرًا عن الشركة والخدمات"></textarea>
+                            </div>
+                            <div class="form-status" id="cpfStatus"></div>
+                            <button type="submit" class="prf-save-btn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="18" height="18"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                                <span data-i18n="btn.save">حفظ التغييرات</span>
+                            </button>
+                        </form>
                     </div>
-                </form>
+                </div>
+
+                <!-- Right: Info -->
+                <div class="cprf-info-col">
+                    <div class="prf-tips-card">
+                        <h3 class="prf-tips-title">💡 نصائح لملف شركة قوي</h3>
+                        <ul class="prf-tips-list">
+                            <li>أضف اسم الشركة الرسمي بدقة</li>
+                            <li>اذكر مجال العمل ليظهر في البحث</li>
+                            <li>اكتب وصفاً جذاباً لخدمات شركتك</li>
+                            <li>أضف رقم تواصل صحيح للباحثين</li>
+                        </ul>
+                    </div>
+                    <a href="company-dashboard.html" class="prf-link-card">
+                        <span class="prf-link-card-icon">📊</span>
+                        <div>
+                            <div class="prf-link-card-title">لوحة التحكم</div>
+                            <div class="prf-link-card-sub">نشر الوظائف وإدارة الطلبات</div>
+                        </div>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="9 18 15 12 9 6"/></svg>
+                    </a>
+                </div>
             </div>
         </div>
     </main>
