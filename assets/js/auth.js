@@ -405,9 +405,40 @@
             if (specEl)     specEl.value     = d.specialization || "";
             if (skillsEl)   skillsEl.value   = d.skills || "";
             if (cvContainer && cvLink && d.cv_url) {
-                cvLink.href = d.cv_url; cvContainer.style.display = "block";
+                cvLink.href = d.cv_url; cvContainer.style.display = "flex";
             }
+
+            // Hero name
+            var heroName = document.getElementById("prfHeroName");
+            if (heroName && d.full_name) heroName.textContent = d.full_name;
+
+            // Avatar initials
+            var avatarEl = document.getElementById("prfAvatarCircle");
+            if (avatarEl && d.full_name) {
+                var parts = d.full_name.trim().split(/\s+/);
+                var initials = parts.length >= 2 ? parts[0][0] + parts[1][0] : parts[0][0];
+                avatarEl.textContent = initials.toUpperCase();
+            }
+
+            // Completion bar
+            var fields = [d.full_name, d.phone, d.specialization, d.skills, d.cv_url];
+            var filled = fields.filter(function (v) { return v && v.trim(); }).length;
+            var pct = Math.round((filled / fields.length) * 100);
+            var pctEl  = document.getElementById("prfCompletionPct");
+            var fillEl = document.getElementById("prfProgressFill");
+            if (pctEl)  pctEl.textContent = pct + "%";
+            if (fillEl) fillEl.style.width = pct + "%";
         }
+
+        // Load stat: application count
+        var appsRes = await sb.from("applications").select("id", { count: "exact" }).eq("user_id", user.id);
+        var appCountEl = document.getElementById("prfAppCount");
+        if (appCountEl) appCountEl.textContent = appsRes.count != null ? appsRes.count : 0;
+
+        // Load stat: course count (course_requests table)
+        var coursesRes = await sb.from("course_requests").select("id", { count: "exact" }).eq("user_id", user.id);
+        var courseCountEl = document.getElementById("prfCourseCount");
+        if (courseCountEl) courseCountEl.textContent = coursesRes.count != null ? coursesRes.count : 0;
 
         form.addEventListener("submit", async function (e) {
             e.preventDefault();
@@ -442,8 +473,22 @@
                 if (res.error) throw res.error;
 
                 if (cvUrl && cvContainer && cvLink) {
-                    cvLink.href = cvUrl; cvContainer.style.display = "block";
+                    cvLink.href = cvUrl; cvContainer.style.display = "flex";
                 }
+
+                // Refresh completion bar after save
+                var fields2 = [payload.full_name, payload.phone, payload.specialization, payload.skills, cvUrl || (cvLink && cvLink.href !== "#" ? cvLink.href : null)];
+                var filled2 = fields2.filter(function (v) { return v && v.toString().trim(); }).length;
+                var pct2 = Math.round((filled2 / fields2.length) * 100);
+                var pctEl2  = document.getElementById("prfCompletionPct");
+                var fillEl2 = document.getElementById("prfProgressFill");
+                if (pctEl2)  pctEl2.textContent = pct2 + "%";
+                if (fillEl2) fillEl2.style.width = pct2 + "%";
+
+                // Update hero name
+                var heroName2 = document.getElementById("prfHeroName");
+                if (heroName2 && payload.full_name) heroName2.textContent = payload.full_name;
+
                 showStatus(form, "success", "تم حفظ البيانات بنجاح ✓");
             } catch (err) {
                 showStatus(form, "error", err.message || "تعذر حفظ البيانات");
@@ -467,23 +512,103 @@
             .order("created_at", { ascending: false });
 
         var items = appsRes.data || [];
-        if (!items.length) { list.innerHTML = "<p>لم تقم بالتقديم على أي وظيفة حتى الآن.</p>"; return; }
+
+        // Update hero counts
+        var totalEl    = document.getElementById("appsTotal");
+        var pendingEl  = document.getElementById("appsPending");
+        var approvedEl = document.getElementById("appsApproved");
+        var counts = { all: items.length, pending: 0, approved: 0, reviewing: 0, rejected: 0 };
+        items.forEach(function (a) {
+            var s = (a.status || "pending").toLowerCase();
+            if (counts[s] !== undefined) counts[s]++;
+            else counts.pending++;
+        });
+        if (totalEl)    totalEl.textContent    = counts.all;
+        if (pendingEl)  pendingEl.textContent  = counts.pending + counts.reviewing;
+        if (approvedEl) approvedEl.textContent = counts.approved;
+
+        // Update filter badges
+        var fbAll      = document.getElementById("fbAll");
+        var fbPending  = document.getElementById("fbPending");
+        var fbApproved = document.getElementById("fbApproved");
+        var fbReviewing= document.getElementById("fbReviewing");
+        var fbRejected = document.getElementById("fbRejected");
+        if (fbAll)       fbAll.textContent       = counts.all;
+        if (fbPending)   fbPending.textContent   = counts.pending;
+        if (fbApproved)  fbApproved.textContent  = counts.approved;
+        if (fbReviewing) fbReviewing.textContent = counts.reviewing;
+        if (fbRejected)  fbRejected.textContent  = counts.rejected;
+
+        if (!items.length) {
+            list.innerHTML = '<div class="apps-empty">' +
+                '<div class="apps-empty-icon">📭</div>' +
+                '<h3 class="apps-empty-title">لم تتقدم على أي وظيفة بعد</h3>' +
+                '<p class="apps-empty-sub">ابدأ رحلتك المهنية وتصفح الوظائف المتاحة الآن.</p>' +
+                '<a href="jobs.html" class="apps-empty-btn">🔍 تصفح الوظائف</a>' +
+                '</div>';
+            return;
+        }
 
         var jobIds = items.map(function (a) { return a.job_id; }).filter(Boolean);
         var jobsRes = await sb.from("jobs").select("id, title").in("id", jobIds);
         var jobMap = new Map();
         (jobsRes.data || []).forEach(function (j) { jobMap.set(j.id, j); });
 
+        // Status label/class map
+        var statusMap = {
+            pending:   { cls: "app-status-pending",   label: "قيد المراجعة" },
+            approved:  { cls: "app-status-approved",  label: "مقبول" },
+            rejected:  { cls: "app-status-rejected",  label: "مرفوض" },
+            reviewing: { cls: "app-status-reviewing", label: "تحت المراجعة" }
+        };
+
         list.innerHTML = "";
         items.forEach(function (app) {
             var j = jobMap.get(app.job_id);
-            var title = j ? j.title : "وظيفة";
-            var date  = app.created_at ? new Date(app.created_at).toLocaleDateString("ar-SA") : "-";
+            var title  = j ? j.title : "وظيفة";
+            var date   = app.created_at ? new Date(app.created_at).toLocaleDateString("ar-SA") : "-";
+            var status = (app.status || "pending").toLowerCase();
+            var sm     = statusMap[status] || statusMap.pending;
+
             var el = document.createElement("article");
-            el.className = "job-card-modern";
-            el.innerHTML = "<h3>" + title + "</h3><p>الحالة: " + (app.status || "pending") + "</p><p>تاريخ التقديم: " + date + "</p>";
+            el.className = "app-card";
+            el.dataset.status = status;
+            el.innerHTML =
+                '<div class="app-card-logo">💼</div>' +
+                '<div class="app-card-body">' +
+                    '<h3 class="app-card-title">' + title + '</h3>' +
+                    '<div class="app-card-meta">' +
+                        '<span class="app-status ' + sm.cls + '">' + sm.label + '</span>' +
+                        '<span class="app-card-date">' +
+                            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>' +
+                            date +
+                        '</span>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="app-card-actions">' +
+                    '<a href="jobs.html" class="app-card-btn">عرض الوظائف</a>' +
+                '</div>';
             list.appendChild(el);
         });
+
+        // Wire filter buttons
+        var filterBar = document.getElementById("appsFilterBar");
+        if (filterBar) {
+            filterBar.addEventListener("click", function (e) {
+                var btn = e.target.closest(".apps-filter-btn");
+                if (!btn) return;
+                filterBar.querySelectorAll(".apps-filter-btn").forEach(function (b) { b.classList.remove("active"); });
+                btn.classList.add("active");
+                var filter = btn.dataset.filter;
+                list.querySelectorAll(".app-card").forEach(function (card) {
+                    if (filter === "all" || card.dataset.status === filter) {
+                        card.style.display = "";
+                    } else {
+                        card.style.display = "none";
+                    }
+                });
+            });
+        }
     }
 
     /* ── 11. Bootstrap (runs on every page) ──────────────────────── */

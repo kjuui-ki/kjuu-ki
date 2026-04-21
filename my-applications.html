@@ -39,16 +39,55 @@
         </div>
     </header>
 
-    <main class="section">
-        <div class="container">
-            <div style="margin-bottom: 1.5rem;">
-                <h1 data-i18n="page.myApplications.title">طلباتي</h1>
-                <p data-i18n="page.myApplications.text">ستظهر هنا جميع الوظائف التي قدّمت عليها كباحث عن عمل.</p>
+    <main class="apps-page">
+
+        <!-- Hero -->
+        <div class="apps-hero">
+            <div class="apps-hero-blob apps-hero-blob-1"></div>
+            <div class="apps-hero-blob apps-hero-blob-2"></div>
+            <div class="container apps-hero-inner">
+                <div class="apps-hero-badge">📋 <span data-i18n="page.myApplications.badge">سجل التقديمات</span></div>
+                <h1 class="apps-hero-title" data-i18n="page.myApplications.title">طلباتي</h1>
+                <p class="apps-hero-sub" data-i18n="page.myApplications.text">ستظهر هنا جميع الوظائف التي قدّمت عليها كباحث عن عمل.</p>
+                <div class="apps-count-strip">
+                    <div class="apps-count-item">
+                        <div class="apps-count-num" id="appsTotal">—</div>
+                        <div class="apps-count-lbl" data-i18n="apps.count.total">إجمالي الطلبات</div>
+                    </div>
+                    <div class="apps-count-item">
+                        <div class="apps-count-num" id="appsPending">—</div>
+                        <div class="apps-count-lbl" data-i18n="apps.count.pending">قيد المراجعة</div>
+                    </div>
+                    <div class="apps-count-item">
+                        <div class="apps-count-num" id="appsApproved">—</div>
+                        <div class="apps-count-lbl" data-i18n="apps.count.approved">مقبولة</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container apps-body">
+
+            <!-- Filter bar -->
+            <div class="apps-filter-bar" id="appsFilterBar">
+                <button class="apps-filter-btn active" data-filter="all">
+                    الكل <span class="apps-filter-badge" id="fbAll">0</span>
+                </button>
+                <button class="apps-filter-btn" data-filter="pending">
+                    ⏳ قيد المراجعة <span class="apps-filter-badge" id="fbPending">0</span>
+                </button>
+                <button class="apps-filter-btn" data-filter="approved">
+                    ✅ مقبولة <span class="apps-filter-badge" id="fbApproved">0</span>
+                </button>
+                <button class="apps-filter-btn" data-filter="reviewing">
+                    🔍 تحت المراجعة <span class="apps-filter-badge" id="fbReviewing">0</span>
+                </button>
+                <button class="apps-filter-btn" data-filter="rejected">
+                    ❌ مرفوضة <span class="apps-filter-badge" id="fbRejected">0</span>
+                </button>
             </div>
 
-            <div id="myApplicationsList" class="applications-list" style="margin-top: 1.5rem;">
-                <!-- Ø§Ù„Ø·Ù„Ø¨Ø§Øª Ø³ØªØ¸Ù‡Ø± Ù‡Ù†Ø§ -->
-            </div>
+            <div id="myApplicationsList"></div>
         </div>
     </main>
 

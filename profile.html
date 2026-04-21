@@ -39,42 +39,138 @@
         </div>
     </header>
 
-    <main class="section profile-page">
-        <div class="container">
-            <h1 data-i18n="profile.title">ملفي الشخصي</h1>
-            <p class="section-intro" data-i18n="profile.subtitle">قم بتحديث بياناتك المهنية ورفع سيرتك الذاتية.</p>
+    <main class="prf-page">
 
-            <div class="auth-card">
-                <form id="seekerProfileForm" class="profile-form">
-                    <div class="auth-form-group">
-                        <label for="profileFullName" data-i18n="profile.fullName.label">الاسم الكامل</label>
-                        <input id="profileFullName" type="text" data-i18n-placeholder="profile.fullName.placeholder" placeholder="الاسم الثلاثي" />
+        <!-- Hero Banner -->
+        <div class="prf-hero">
+            <div class="prf-hero-blob prf-hero-blob-1"></div>
+            <div class="prf-hero-blob prf-hero-blob-2"></div>
+            <div class="container prf-hero-inner">
+                <div class="prf-avatar-wrap">
+                    <div class="prf-avatar" id="prfAvatarCircle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
                     </div>
-                    <div class="auth-form-group">
-                        <label for="profilePhone" data-i18n="profile.phone.label">رقم الجوال</label>
-                        <input id="profilePhone" type="tel" placeholder="مثال: 05XXXXXXXX" />
-                    </div>
-                    <div class="auth-form-group">
-                        <label for="profileSpecialization" data-i18n="profile.specialization.label">التخصص</label>
-                        <input id="profileSpecialization" type="text" data-i18n-placeholder="profile.specialization.placeholder" placeholder="مثال: تقنية معلومات" />
-                    </div>
-                    <div class="auth-form-group">
-                        <label for="profileSkills" data-i18n="profile.skills.label">المهارات</label>
-                        <textarea id="profileSkills" rows="3" data-i18n-placeholder="profile.skills.placeholder" placeholder="اكتب المهارات والدورات والخبرات"></textarea>
-                    </div>
-                    <div class="auth-form-group">
-                        <label for="profileCv" data-i18n="profile.cv.label">السيرة الذاتية (PDF أو Word)</label>
-                        <input id="profileCv" type="file" accept=".pdf,.doc,.docx" />
-                    </div>
+                    <div class="prf-avatar-badge">✏️</div>
+                </div>
+                <div class="prf-hero-text">
+                    <h1 class="prf-hero-name" id="prfHeroName" data-i18n="profile.title">ملفي الشخصي</h1>
+                    <p class="prf-hero-sub" id="prfHeroSub" data-i18n="profile.subtitle">قم بتحديث بياناتك المهنية ورفع سيرتك الذاتية.</p>
+                </div>
+            </div>
+        </div>
 
-                    <div id="profileCvLinkContainer" class="profile-cv-link" style="display:none;">
-                        <a id="profileCvLink" href="#" target="_blank" rel="noopener noreferrer" data-i18n="profile.cv.link">عرض السيرة الذاتية الحالية</a>
-                    </div>
+        <div class="container prf-body">
 
-                    <div class="auth-submit">
-                        <button type="submit" class="btn btn-primary btn-full" data-i18n="btn.save">حفظ</button>
+            <!-- Completion bar -->
+            <div class="prf-completion-card">
+                <div class="prf-completion-top">
+                    <span class="prf-completion-label" data-i18n="profile.completion">اكتمال الملف</span>
+                    <span class="prf-completion-pct" id="prfCompletionPct">0%</span>
+                </div>
+                <div class="prf-progress-track">
+                    <div class="prf-progress-fill" id="prfProgressFill" style="width:0%"></div>
+                </div>
+            </div>
+
+            <div class="prf-grid">
+
+                <!-- Left: Form -->
+                <div class="prf-form-col">
+                    <div class="prf-section-card">
+                        <div class="prf-section-head">
+                            <div class="prf-section-icon">👤</div>
+                            <h2 class="prf-section-title" data-i18n="profile.personalInfo">المعلومات الشخصية</h2>
+                        </div>
+                        <form id="seekerProfileForm">
+                            <div class="prf-field">
+                                <label class="prf-label" for="profileFullName" data-i18n="profile.fullName.label">الاسم الكامل</label>
+                                <div class="prf-input-wrap">
+                                    <svg class="prf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+                                    <input id="profileFullName" class="prf-input" type="text" data-i18n-placeholder="profile.fullName.placeholder" placeholder="الاسم الثلاثي" />
+                                </div>
+                            </div>
+                            <div class="prf-field">
+                                <label class="prf-label" for="profilePhone" data-i18n="profile.phone.label">رقم الجوال</label>
+                                <div class="prf-input-wrap">
+                                    <svg class="prf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg>
+                                    <input id="profilePhone" class="prf-input" type="tel" placeholder="05XXXXXXXX" />
+                                </div>
+                            </div>
+                            <div class="prf-field">
+                                <label class="prf-label" for="profileSpecialization" data-i18n="profile.specialization.label">التخصص</label>
+                                <div class="prf-input-wrap">
+                                    <svg class="prf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                                    <input id="profileSpecialization" class="prf-input" type="text" data-i18n-placeholder="profile.specialization.placeholder" placeholder="مثال: تقنية معلومات" />
+                                </div>
+                            </div>
+                            <div class="prf-field">
+                                <label class="prf-label" for="profileSkills" data-i18n="profile.skills.label">المهارات والخبرات</label>
+                                <textarea id="profileSkills" class="prf-textarea" rows="4" data-i18n-placeholder="profile.skills.placeholder" placeholder="اكتب المهارات والدورات والخبرات"></textarea>
+                            </div>
+
+                            <div class="prf-section-head prf-section-head-secondary">
+                                <div class="prf-section-icon">📄</div>
+                                <h2 class="prf-section-title" data-i18n="profile.cv.sectionTitle">السيرة الذاتية</h2>
+                            </div>
+
+                            <div class="prf-cv-upload-area" id="prfCvUploadArea">
+                                <div class="prf-cv-upload-icon">📎</div>
+                                <p class="prf-cv-upload-text" data-i18n="profile.cv.dragText">اسحب ملف السيرة الذاتية هنا أو</p>
+                                <label for="profileCv" class="prf-cv-upload-btn" data-i18n="profile.cv.browseBtn">اختر ملفاً</label>
+                                <input id="profileCv" type="file" accept=".pdf,.doc,.docx" class="prf-cv-file-input" />
+                                <p class="prf-cv-hint" data-i18n="profile.cv.hint">PDF أو Word — حجم أقصى 5MB</p>
+                            </div>
+
+                            <div id="profileCvLinkContainer" class="prf-cv-current" style="display:none;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                                <a id="profileCvLink" href="#" target="_blank" rel="noopener noreferrer" data-i18n="profile.cv.link">عرض السيرة الذاتية الحالية</a>
+                            </div>
+
+                            <div class="form-status" id="prfStatus"></div>
+
+                            <button type="submit" class="prf-save-btn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="18" height="18"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                                <span data-i18n="btn.save">حفظ التغييرات</span>
+                            </button>
+                        </form>
                     </div>
-                </form>
+                </div>
+
+                <!-- Right: Info cards -->
+                <div class="prf-info-col">
+                    <div class="prf-stat-card">
+                        <div class="prf-stat-icon">💼</div>
+                        <div class="prf-stat-body">
+                            <span class="prf-stat-num" id="prfAppCount">—</span>
+                            <span class="prf-stat-lbl" data-i18n="profile.stat.applications">طلب وظيفي</span>
+                        </div>
+                    </div>
+                    <div class="prf-stat-card">
+                        <div class="prf-stat-icon">🎓</div>
+                        <div class="prf-stat-body">
+                            <span class="prf-stat-num" id="prfCourseCount">—</span>
+                            <span class="prf-stat-lbl" data-i18n="profile.stat.courses">دورة مسجّلة</span>
+                        </div>
+                    </div>
+                    <div class="prf-tips-card">
+                        <h3 class="prf-tips-title">💡 نصائح لملف قوي</h3>
+                        <ul class="prf-tips-list">
+                            <li>أضف تخصصك بدقة ليظهر في نتائج البحث</li>
+                            <li>اذكر مهاراتك التقنية بوضوح</li>
+                            <li>ارفع سيرة ذاتية محدّثة بصيغة PDF</li>
+                            <li>أضف رقم جوال صحيح لتواصل الشركات معك</li>
+                        </ul>
+                    </div>
+                    <a href="my-applications.html" class="prf-link-card">
+                        <span class="prf-link-card-icon">📋</span>
+                        <div>
+                            <div class="prf-link-card-title" data-i18n="nav.myApplications">طلباتي</div>
+                            <div class="prf-link-card-sub">عرض جميع الوظائف التي تقدّمت عليها</div>
+                        </div>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="9 18 15 12 9 6"/></svg>
+                    </a>
+                </div>
+
             </div>
         </div>
     </main>
