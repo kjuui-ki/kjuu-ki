@@ -5894,7 +5894,7 @@ body.login-split-page {
 /* ── Page background ────────────────────────────────────────────── */
 .cdash-page {
     min-height: 100vh;
-    background: linear-gradient(160deg, #f0f4ff 0%, #f8f0ff 40%, #fff8f0 80%, #f0feff 100%);
+    background: linear-gradient(175deg, #0d1b4b 0%, #0f2060 40%, #0a1a4a 100%);
     padding-bottom: 5rem;
 }
 
@@ -6182,7 +6182,7 @@ body.login-split-page {
 ══════════════════════════════════════════════════════════════════ */
 .cprf-page {
     min-height: 100vh;
-    background: linear-gradient(160deg, #f0f4ff 0%, #f8f0ff 40%, #fff8f0 80%, #f0feff 100%);
+    background: linear-gradient(175deg, #0d1b4b 0%, #0f2060 40%, #0a1a4a 100%);
     padding-bottom: 5rem;
 }
 .cprf-hero {
