@@ -4450,7 +4450,10 @@ body.login-split-page {
 }
 
 .lsp-back-bar {
-    padding: 1.2rem 2rem 0;
+    position: absolute;
+    top: 1.4rem;
+    right: 1.8rem;
+    z-index: 10;
 }
 .lsp-back-bar .lsp-back-link {
     margin-bottom: 0;
