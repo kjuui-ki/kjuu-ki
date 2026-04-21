@@ -5262,7 +5262,7 @@ body.login-split-page {
 ══════════════════════════════════════════════════════════════════ */
 .prf-page {
     min-height: 100vh;
-    background: #f1f5fb;
+    background: linear-gradient(150deg, #eef1ff 0%, #f5eeff 28%, #ffedf8 58%, #edf8ff 100%);
     padding-bottom: 5rem;
 }
 
@@ -5627,7 +5627,7 @@ body.login-split-page {
 ══════════════════════════════════════════════════════════════════ */
 .apps-page {
     min-height: 100vh;
-    background: #f1f5fb;
+    background: linear-gradient(150deg, #eef1ff 0%, #f5eeff 28%, #ffedf8 58%, #edf8ff 100%);
     padding-bottom: 5rem;
 }
 
