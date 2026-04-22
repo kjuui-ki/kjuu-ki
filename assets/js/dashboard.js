@@ -730,7 +730,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     async function loadPromoRequests() {
         if (!promoReqBody || !isSuperPrimary) return;
-        promoReqBody.innerHTML = '<tr><td colspan="12" class="no-data-msg">\u062c\u0627\u0631\u064a \u0627\u0644\u062a\u062d\u0645\u064a\u0644...</td></tr>';
+        promoReqBody.innerHTML = '<div class="prq-loading">\u062c\u0627\u0631\u064a \u0627\u0644\u062a\u062d\u0645\u064a\u0644...</div>';
         var resp = await sb.from("admin_promotion_requests")
             .select("id, requested_by, target_user_id, status, created_at")
             .order("created_at", { ascending: false });
@@ -738,39 +738,96 @@ document.addEventListener("DOMContentLoaded", async function () {
         renderPromoReqs(allPromoReqs);
     }
 
+    function initials(name) {
+        if (!name) return "?";
+        var parts = name.trim().split(" ");
+        return parts.length >= 2 ? parts[0][0] + parts[1][0] : parts[0][0];
+    }
+
     function renderPromoReqs(list) {
         if (!promoReqBody) return;
+
+        /* stats strip */
+        var statsEl = document.getElementById("prqStats");
+        if (statsEl) {
+            var pending  = list.filter(function (r) { return r.status === "pending";  }).length;
+            var approved = list.filter(function (r) { return r.status === "approved"; }).length;
+            var rejected = list.filter(function (r) { return r.status === "rejected"; }).length;
+            statsEl.innerHTML =
+                '<div class="prq-stat"><span class="prq-stat-num">' + list.length + '</span><span class="prq-stat-lbl">\u0625\u062c\u0645\u0627\u0644\u064a</span></div>' +
+                '<div class="prq-stat prq-stat--pending"><span class="prq-stat-num">' + pending  + '</span><span class="prq-stat-lbl">\u0642\u064a\u062f \u0627\u0644\u0645\u0631\u0627\u062c\u0639\u0629</span></div>' +
+                '<div class="prq-stat prq-stat--approved"><span class="prq-stat-num">' + approved + '</span><span class="prq-stat-lbl">\u0645\u0648\u0627\u0641\u0642 \u0639\u0644\u064a\u0647</span></div>' +
+                '<div class="prq-stat prq-stat--rejected"><span class="prq-stat-num">' + rejected + '</span><span class="prq-stat-lbl">\u0645\u0631\u0641\u0648\u0636</span></div>';
+        }
+
         if (!list.length) {
-            promoReqBody.innerHTML = '<tr><td colspan="12" class="no-data-msg">\u0644\u0627 \u062a\u0648\u062c\u062f \u0637\u0644\u0628\u0627\u062a \u062a\u0631\u0642\u064a\u0629.</td></tr>';
+            promoReqBody.innerHTML =
+                '<div class="prq-empty">' +
+                '<div class="prq-empty-icon">📭</div>' +
+                '<p class="prq-empty-text">\u0644\u0627 \u062a\u0648\u062c\u062f \u0637\u0644\u0628\u0627\u062a \u062a\u0631\u0642\u064a\u0629 \u062d\u062a\u0649 \u0627\u0644\u0622\u0646.</p>' +
+                '</div>';
             return;
         }
+
         promoReqBody.innerHTML = list.map(function (r) {
             var req = profileMap[r.requested_by]   || {};
             var tgt = profileMap[r.target_user_id] || {};
-            var statusBadge;
-            if      (r.status === "approved") statusBadge = '<span class="badge badge-accepted">\u0645\u0648\u0627\u0641\u0642 \u0639\u0644\u064a\u0647</span>';
-            else if (r.status === "rejected") statusBadge = '<span class="badge badge-rejected">\u0645\u0631\u0641\u0648\u0636</span>';
-            else                              statusBadge = '<span class="badge badge-pending-status">\u0642\u064a\u062f \u0627\u0644\u0645\u0631\u0627\u062c\u0639\u0629</span>';
-            var reqPhone = req.phone ? '<a href="tel:' + esc(req.phone) + '" class="phone-link">' + esc(req.phone) + '</a>' : "\u2014";
-            var tgtPhone = tgt.phone ? '<a href="tel:' + esc(tgt.phone) + '" class="phone-link">' + esc(tgt.phone) + '</a>' : "\u2014";
+
+            var statusClass = r.status === "approved" ? "prq-status--approved"
+                            : r.status === "rejected" ? "prq-status--rejected"
+                            : "prq-status--pending";
+            var statusTxt   = r.status === "approved" ? "\u2705 \u0645\u0648\u0627\u0641\u0642 \u0639\u0644\u064a\u0647"
+                            : r.status === "rejected" ? "\u274c \u0645\u0631\u0641\u0648\u0636"
+                            : "\u23f3 \u0642\u064a\u062f \u0627\u0644\u0645\u0631\u0627\u062c\u0639\u0629";
+
+            var reqRole  = req.role === "super_admin" ? "\u0645\u0634\u0631\u0641 \u0639\u0627\u0645" : req.role === "company" ? "\u0634\u0631\u0643\u0629" : "\u0628\u0627\u062d\u062b";
+            var tgtRole  = tgt.role === "super_admin" ? "\u0645\u0634\u0631\u0641 \u0639\u0627\u0645" : tgt.role === "company" ? "\u0634\u0631\u0643\u0629" : "\u0628\u0627\u062d\u062b";
+
             var actionsHtml = r.status === "pending"
-                ? '<button class="dashboard-btn dashboard-btn-accept" data-action="promo-approve" data-rid="' + esc(r.id) + '" data-uid="' + esc(r.target_user_id) + '">\u2705 \u0645\u0648\u0627\u0641\u0642\u0629</button>' +
-                  '<button class="dashboard-btn dashboard-btn-reject"  data-action="promo-reject"  data-rid="' + esc(r.id) + '">\u274c \u0631\u0641\u0636</button>'
-                : "\u2014";
-            return '<tr>' +
-                '<td><strong>' + esc(req.full_name    || "\u2014") + '</strong></td>' +
-                '<td>'         + esc(req.email        || "\u2014") + '</td>' +
-                '<td>'         + reqPhone              + '</td>' +
-                '<td>'         + esc(req.specialization|| "\u2014") + '</td>' +
-                '<td>'         + roleLabel(req.role    || "")       + '</td>' +
-                '<td><strong>' + esc(tgt.full_name    || "\u2014") + '</strong></td>' +
-                '<td>'         + esc(tgt.email        || "\u2014") + '</td>' +
-                '<td>'         + tgtPhone              + '</td>' +
-                '<td>'         + roleLabel(tgt.role    || "")       + '</td>' +
-                '<td>'         + fmtDate(r.created_at) + '</td>' +
-                '<td>'         + statusBadge            + '</td>' +
-                '<td><div class="dashboard-actions">' + actionsHtml + '</div></td>' +
-            '</tr>';
+                ? '<div class="prq-card-actions">' +
+                      '<button class="prq-btn-approve" data-action="promo-approve" data-rid="' + esc(r.id) + '" data-uid="' + esc(r.target_user_id) + '">\u2714 \u0645\u0648\u0627\u0641\u0642\u0629</button>' +
+                      '<button class="prq-btn-reject"  data-action="promo-reject"  data-rid="' + esc(r.id) + '">\u2715 \u0631\u0641\u0636</button>' +
+                  '</div>'
+                : "";
+
+            var reqInitials = initials(req.full_name || req.email || "");
+            var tgtInitials = initials(tgt.full_name || tgt.email || "");
+
+            return '<div class="prq-card" data-status="' + esc(r.status) + '">' +
+                '<div class="prq-card-top">' +
+                    '<span class="prq-date">' + fmtDate(r.created_at) + '</span>' +
+                    '<span class="prq-status ' + statusClass + '">' + statusTxt + '</span>' +
+                '</div>' +
+                '<div class="prq-card-mid">' +
+                    /* Requester */
+                    '<div class="prq-party">' +
+                        '<div class="prq-party-lbl">\u0645\u0642\u062f\u0651\u0645 \u0627\u0644\u0637\u0644\u0628</div>' +
+                        '<div class="prq-avatar prq-avatar--req">' + esc(reqInitials) + '</div>' +
+                        '<div class="prq-party-name">' + esc(req.full_name || "\u2014") + '</div>' +
+                        '<div class="prq-party-meta"><span>✉</span> ' + esc(req.email || "\u2014") + '</div>' +
+                        (req.phone ? '<div class="prq-party-meta"><span>📱</span> <a href="tel:' + esc(req.phone) + '">' + esc(req.phone) + '</a></div>' : '') +
+                        (req.specialization ? '<div class="prq-party-meta"><span>🎓</span> ' + esc(req.specialization) + '</div>' : '') +
+                        '<div class="prq-party-role">' + reqRole + '</div>' +
+                    '</div>' +
+                    /* Arrow */
+                    '<div class="prq-arrow">' +
+                        '<div class="prq-arrow-line"></div>' +
+                        '<div class="prq-arrow-label">\u064a\u0631\u064a\u062f \u062a\u0631\u0642\u064a\u0629</div>' +
+                        '<div class="prq-arrow-icon">←</div>' +
+                    '</div>' +
+                    /* Target */
+                    '<div class="prq-party">' +
+                        '<div class="prq-party-lbl">\u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645 \u0627\u0644\u0645\u0631\u0627\u062f \u062a\u0631\u0642\u064a\u062a\u0647</div>' +
+                        '<div class="prq-avatar prq-avatar--tgt">' + esc(tgtInitials) + '</div>' +
+                        '<div class="prq-party-name">' + esc(tgt.full_name || "\u2014") + '</div>' +
+                        '<div class="prq-party-meta"><span>✉</span> ' + esc(tgt.email || "\u2014") + '</div>' +
+                        (tgt.phone ? '<div class="prq-party-meta"><span>📱</span> <a href="tel:' + esc(tgt.phone) + '">' + esc(tgt.phone) + '</a></div>' : '') +
+                        (tgt.specialization ? '<div class="prq-party-meta"><span>🎓</span> ' + esc(tgt.specialization) + '</div>' : '') +
+                        '<div class="prq-party-role prq-party-role--target">' + tgtRole + ' → \u0645\u0634\u0631\u0641 \u0639\u0627\u0645</div>' +
+                    '</div>' +
+                '</div>' +
+                actionsHtml +
+            '</div>';
         }).join("");
     }
 
@@ -780,20 +837,19 @@ document.addEventListener("DOMContentLoaded", async function () {
             if (!btn) return;
             var rid = btn.dataset.rid;
             btn.disabled = true;
+            btn.textContent = "...";
             if (btn.dataset.action === "promo-approve") {
-                if (!confirm("\u0647\u0644 \u062a\u0631\u064a\u062f \u0627\u0644\u0645\u0648\u0627\u0641\u0642\u0629 \u0648\u062a\u0631\u0642\u064a\u0629 \u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645 \u0644\u0645\u0634\u0631\u0641 \u0639\u0627\u0645?")) { btn.disabled = false; return; }
                 var uid = btn.dataset.uid;
                 var r1 = await sb.from("profiles").update({ role: "super_admin" }).eq("id", uid);
-                if (r1.error) { alert("\u062a\u0639\u0630\u0651\u0631 \u0627\u0644\u062a\u0631\u0642\u064a\u0629: " + r1.error.message); btn.disabled = false; return; }
+                if (r1.error) { showToast("\u062a\u0639\u0630\u0651\u0631 \u0627\u0644\u062a\u0631\u0642\u064a\u0629.", "error"); btn.disabled = false; btn.textContent = "\u2714 \u0645\u0648\u0627\u0641\u0642\u0629"; return; }
                 await sb.from("admin_promotion_requests").update({ status: "approved" }).eq("id", rid);
                 if (profileMap[uid]) profileMap[uid].role = "super_admin";
                 renderStats();
-                alert("\u2705 \u062a\u0645\u062a \u0627\u0644\u0645\u0648\u0627\u0641\u0642\u0629 \u0648\u062a\u0631\u0642\u064a\u0629 \u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645 \u0644\u0645\u0634\u0631\u0641 \u0639\u0627\u0645.");
+                showToast("\u2705 \u062a\u0645\u062a \u0627\u0644\u0645\u0648\u0627\u0641\u0642\u0629 \u0648\u062a\u0631\u0642\u064a\u0629 \u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645 \u0644\u0645\u0634\u0631\u0641 \u0639\u0627\u0645.", "success");
             } else {
-                if (!confirm("\u0647\u0644 \u062a\u0631\u064a\u062f \u0631\u0641\u0636 \u0647\u0630\u0627 \u0627\u0644\u0637\u0644\u0628?")) { btn.disabled = false; return; }
                 var r2 = await sb.from("admin_promotion_requests").update({ status: "rejected" }).eq("id", rid);
-                if (r2.error) { alert("\u062a\u0639\u0630\u0651\u0631 \u0627\u0644\u0631\u0641\u0636: " + r2.error.message); btn.disabled = false; return; }
-                alert("\u062a\u0645 \u0631\u0641\u0636 \u0627\u0644\u0637\u0644\u0628.");
+                if (r2.error) { showToast("\u062a\u0639\u0630\u0651\u0631 \u0627\u0644\u0631\u0641\u0636.", "error"); btn.disabled = false; btn.textContent = "\u2715 \u0631\u0641\u0636"; return; }
+                showToast("\u062a\u0645 \u0631\u0641\u0636 \u0627\u0644\u0637\u0644\u0628.", "success");
             }
             await loadPromoRequests();
         });
