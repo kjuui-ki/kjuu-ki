@@ -28,6 +28,19 @@ document.addEventListener("DOMContentLoaded", async function () {
             .replace(/&/g, "&amp;").replace(/</g, "&lt;")
             .replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
     }
+
+    function showToast(msg, type) {
+        var t = document.createElement("div");
+        t.textContent = msg;
+        t.style.cssText = "position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);" +
+            "padding:0.75rem 1.5rem;border-radius:12px;font-size:0.9rem;font-weight:700;" +
+            "z-index:9999;box-shadow:0 6px 24px rgba(0,0,0,0.18);transition:opacity .4s;color:#fff;" +
+            (type === "error"
+                ? "background:linear-gradient(135deg,#dc2626,#ef4444);"
+                : "background:linear-gradient(135deg,#059669,#10b981);");
+        document.body.appendChild(t);
+        setTimeout(function () { t.style.opacity = "0"; setTimeout(function () { t.remove(); }, 400); }, 3000);
+    }
     function fmtDate(v) {
         if (!v) return "\u2014";
         return new Date(v).toLocaleDateString("ar-SA", { year: "numeric", month: "short", day: "numeric" });
@@ -170,20 +183,21 @@ document.addEventListener("DOMContentLoaded", async function () {
             if (promoBtn) {
                 var targetUid  = promoBtn.dataset.uid;
                 var targetName = promoBtn.dataset.uname;
-                if (!confirm("\u0625\u0631\u0633\u0627\u0644 \u0637\u0644\u0628 \u062a\u0631\u0642\u064a\u0629 " + targetName + " \u0625\u0644\u0649 \u0645\u0634\u0631\u0641 \u0639\u0627\u0645?\n\n\u0633\u064a\u062a\u0645 \u0625\u0631\u0633\u0627\u0644 \u0627\u0644\u0637\u0644\u0628 \u0644\u0644\u0645\u0634\u0631\u0641 \u0627\u0644\u0631\u0626\u064a\u0633\u064a \u0644\u0644\u0628\u062a \u0641\u064a\u0647.")) return;
                 promoBtn.disabled    = true;
-                promoBtn.textContent = "...\u062c\u0627\u0631\u064a";
+                promoBtn.textContent = "...جاري";
                 var reqRes = await sb.from("admin_promotion_requests").insert({
                     requested_by:   user.id,
                     target_user_id: targetUid,
                     status:         "pending"
                 });
-                promoBtn.disabled    = false;
-                promoBtn.innerHTML   = "\uD83D\uDD11 \u0637\u0644\u0628 \u062a\u0631\u0642\u064a\u0629 \u0644\u0623\u062f\u0645\u0646";
+                promoBtn.disabled  = false;
+                promoBtn.innerHTML = "\uD83D\uDD11 \u0637\u0644\u0628 \u062a\u0631\u0642\u064a\u0629 \u0644\u0623\u062f\u0645\u0646";
                 if (reqRes.error) {
-                    alert("\u062a\u0639\u0630\u0651\u0631 \u0625\u0631\u0633\u0627\u0644 \u0627\u0644\u0637\u0644\u0628: " + reqRes.error.message);
+                    showToast("\u062a\u0639\u0630\u0651\u0631 \u0625\u0631\u0633\u0627\u0644 \u0627\u0644\u0637\u0644\u0628. \u062a\u0623\u0643\u062f \u0645\u0646 \u0625\u0646\u0634\u0627\u0621 \u0627\u0644\u062c\u062f\u0648\u0644 \u0641\u064a Supabase.", "error");
                 } else {
-                    alert("\u2705 \u062a\u0645 \u0625\u0631\u0633\u0627\u0644 \u0637\u0644\u0628 \u0627\u0644\u062a\u0631\u0642\u064a\u0629 \u0644\u0644\u0645\u0634\u0631\u0641 \u0627\u0644\u0631\u0626\u064a\u0633\u064a. \u0633\u064a\u062a\u0645 \u0627\u0644\u0628\u062a \u0641\u064a\u0647 \u0642\u0631\u064a\u0628\u0627\u064b.");
+                    promoBtn.textContent = "\u2705 \u062a\u0645 \u0627\u0644\u0625\u0631\u0633\u0627\u0644";
+                    promoBtn.disabled = true;
+                    showToast("\u062a\u0645 \u0625\u0631\u0633\u0627\u0644 \u0637\u0644\u0628 \u0627\u0644\u062a\u0631\u0642\u064a\u0629 \u0644\u0644\u0645\u0634\u0631\u0641 \u0627\u0644\u0631\u0626\u064a\u0633\u064a \u2705", "success");
                 }
                 return;
             }
