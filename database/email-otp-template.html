@@ -3,8 +3,159 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>رمز التحقق – منصة ماهر</title>
-<style>
+<title>إعادة تعيين كلمة المرور – منصة ماهر</title>
+</head>
+<body style="margin:0;padding:0;background:#f0f4ff;font-family:'Segoe UI',Tahoma,Arial,sans-serif;direction:rtl;">
+
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f0f4ff;padding:40px 16px;">
+  <tr>
+    <td align="center">
+      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:540px;">
+
+        <!-- ═══ HEADER ═══ -->
+        <tr>
+          <td style="background:linear-gradient(135deg,#020b3a 0%,#0a33b8 50%,#1a6fff 100%);border-radius:24px 24px 0 0;padding:0;overflow:hidden;">
+            
+            <!-- Top accent line -->
+            <div style="height:4px;background:linear-gradient(90deg,#4fd1ff,#a78bfa,#4fd1ff);"></div>
+            
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="padding:40px 36px 36px;text-align:center;">
+                  
+                  <!-- Logo circle -->
+                  <div style="display:inline-block;background:rgba(255,255,255,0.12);border-radius:20px;padding:12px 12px 8px;margin-bottom:20px;border:1px solid rgba(255,255,255,0.2);">
+                    <img src="https://kjuui-ki.github.io/kjuu-ki/assets/images/ksu1.png"
+                         alt="شعار منصة ماهر"
+                         width="72" height="72"
+                         style="display:block;border-radius:12px;object-fit:contain;" />
+                  </div>
+                  
+                  <!-- Brand name -->
+                  <div style="color:#ffffff;font-size:34px;font-weight:900;letter-spacing:-1.5px;margin-bottom:6px;line-height:1;">ماهر</div>
+                  <div style="color:rgba(255,255,255,0.65);font-size:13px;letter-spacing:0.5px;">منصة التوظيف والتدريب المهني</div>
+                  
+                  <!-- Horizontal divider -->
+                  <div style="width:60px;height:3px;background:linear-gradient(90deg,rgba(255,255,255,0.15),rgba(255,255,255,0.6),rgba(255,255,255,0.15));border-radius:3px;margin:18px auto 0;"></div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- ═══ BODY ═══ -->
+        <tr>
+          <td style="background:#ffffff;padding:38px 36px 32px;">
+
+            <!-- Greeting row -->
+            <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px;">
+              <tr>
+                <td style="background:linear-gradient(135deg,#eff6ff,#dbeafe);border-right:4px solid #3b82f6;border-radius:0 10px 10px 0;padding:14px 18px 14px 14px;">
+                  <span style="font-size:17px;font-weight:800;color:#1e293b;">مرحباً 👋 &nbsp; تلقّينا طلبًا لإعادة تعيين كلمة المرور</span>
+                </td>
+              </tr>
+            </table>
+
+            <!-- Message -->
+            <p style="font-size:14.5px;color:#475569;line-height:1.8;margin:0 0 28px;">
+              ورد إلينا طلب لإعادة تعيين كلمة المرور للحساب المرتبط بعنوان البريد الإلكتروني:
+              <br />
+              <strong style="color:#0a33b8;font-size:15px;">{{ .Email }}</strong>
+              <br /><br />
+              استخدم رمز التحقق أدناه لإتمام العملية. الرمز شخصي ولا تشاركه مع أحد.
+            </p>
+
+            <!-- OTP Box -->
+            <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:28px;">
+              <tr>
+                <td style="background:linear-gradient(135deg,#f8faff 0%,#eff6ff 50%,#dbeafe 100%);border:2px solid #bfdbfe;border-radius:18px;padding:28px 20px 22px;text-align:center;">
+                  <p style="font-size:11px;color:#64748b;letter-spacing:0.12em;text-transform:uppercase;font-weight:700;margin:0 0 14px;">رمز التحقق الخاص بك</p>
+                  
+                  <!-- Code -->
+                  <div style="font-size:48px;font-weight:900;letter-spacing:14px;color:#0a33b8;font-family:'Courier New','Lucida Console',monospace;line-height:1;padding-right:14px;margin-bottom:14px;">{{ .Token }}</div>
+                  
+                  <!-- Timer badge -->
+                  <div style="display:inline-block;background:linear-gradient(135deg,#fef3c7,#fde68a);border:1px solid #fcd34d;border-radius:20px;padding:5px 16px;">
+                    <span style="font-size:12px;color:#92400e;font-weight:700;">⏱&nbsp; صالح لمدة <strong>10 دقائق</strong> فقط</span>
+                  </div>
+                </td>
+              </tr>
+            </table>
+
+            <!-- Steps guide -->
+            <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:28px;background:#f8fafc;border-radius:14px;border:1px solid #e2e8f0;">
+              <tr>
+                <td style="padding:18px 20px;">
+                  <p style="font-size:12px;font-weight:800;color:#475569;letter-spacing:0.05em;text-transform:uppercase;margin:0 0 12px;">خطوات استكمال إعادة التعيين</p>
+                  <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                      <td style="padding:4px 0;">
+                        <span style="display:inline-block;width:22px;height:22px;background:linear-gradient(135deg,#0a33b8,#3366ff);border-radius:50%;color:#fff;font-size:11px;font-weight:800;text-align:center;line-height:22px;margin-left:8px;">١</span>
+                        <span style="font-size:13px;color:#475569;">افتح صفحة إعادة تعيين كلمة المرور على المنصة</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="padding:4px 0;">
+                        <span style="display:inline-block;width:22px;height:22px;background:linear-gradient(135deg,#0a33b8,#3366ff);border-radius:50%;color:#fff;font-size:11px;font-weight:800;text-align:center;line-height:22px;margin-left:8px;">٢</span>
+                        <span style="font-size:13px;color:#475569;">أدخل الرمز أعلاه في الحقل المخصص</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="padding:4px 0;">
+                        <span style="display:inline-block;width:22px;height:22px;background:linear-gradient(135deg,#0a33b8,#3366ff);border-radius:50%;color:#fff;font-size:11px;font-weight:800;text-align:center;line-height:22px;margin-left:8px;">٣</span>
+                        <span style="font-size:13px;color:#475569;">أنشئ كلمة المرور الجديدة وأكّدها</span>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+
+            <!-- Warning -->
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:14px 18px;">
+                  <p style="font-size:13px;color:#78350f;line-height:1.7;margin:0;">
+                    <strong>⚠️ تنبيه:</strong> إذا لم تطلب إعادة تعيين كلمة المرور، يمكنك تجاهل هذه الرسالة بأمان تام. لن يتم إجراء أي تغييرات على حسابك.
+                  </p>
+                </td>
+              </tr>
+            </table>
+
+          </td>
+        </tr>
+
+        <!-- ═══ FOOTER ═══ -->
+        <tr>
+          <td style="background:linear-gradient(135deg,#f8fafc,#f0f4ff);border-top:1px solid #e2e8f0;border-radius:0 0 24px 24px;padding:22px 36px;">
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="text-align:center;">
+                  <p style="font-size:12px;color:#94a3b8;margin:0 0 8px;">
+                    © 2026 &nbsp;<strong style="color:#0a33b8;">منصة ماهر</strong>&nbsp; — جامعة الملك سعود
+                  </p>
+                  <p style="font-size:12px;color:#94a3b8;margin:0;">
+                    هذه رسالة تلقائية، يرجى عدم الرد عليها. &nbsp;|&nbsp;
+                    <a href="{{ .SiteURL }}" style="color:#0a33b8;font-weight:700;text-decoration:none;">زيارة المنصة</a>
+                  </p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Bottom spacing -->
+        <tr>
+          <td style="padding:10px;"></td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: 'Segoe UI', Tahoma, 'Arabic Typesetting', Arial, sans-serif;
