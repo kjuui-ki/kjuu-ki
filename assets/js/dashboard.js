@@ -14,6 +14,10 @@ document.addEventListener("DOMContentLoaded", async function () {
     var profile = profRes.data;
     if (!profile || profile.role !== "super_admin") { window.location.href = "index.html"; return; }
 
+    /* ── Primary admin lock ────────────────────────────────────── */
+    var SUPER_PRIMARY_EMAIL = "kramabid1@gmail.com";
+    var isSuperPrimary = (user.email === SUPER_PRIMARY_EMAIL);
+
     var displayName = profile.full_name || profile.email || user.email || "Admin";
     var nameEl = document.getElementById("adminName");
     if (nameEl) nameEl.textContent = displayName;
@@ -43,6 +47,13 @@ document.addEventListener("DOMContentLoaded", async function () {
     /* tab management */
     var tabs     = document.querySelectorAll(".dash-tab");
     var contents = document.querySelectorAll(".dash-tab-content");
+
+    /* Show promo-requests tab only for primary admin */
+    if (isSuperPrimary) {
+        var _promoTab = document.getElementById("promoReqTab");
+        if (_promoTab) _promoTab.style.display = "";
+    }
+
     tabs.forEach(function (tab) {
         tab.addEventListener("click", function () {
             tabs.forEach(function (t) { t.classList.remove("active"); });
@@ -53,6 +64,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             if (tab.dataset.tab === "staff-requests")  loadStaffRequests();
             if (tab.dataset.tab === "course-requests") loadCourseRequests();
             if (tab.dataset.tab === "courses")         loadCourses();
+            if (tab.dataset.tab === "promo-requests")  loadPromoRequests();
         });
     });
 
@@ -96,24 +108,37 @@ document.addEventListener("DOMContentLoaded", async function () {
     var usersBody = document.getElementById("usersTableBody");
     function renderUsers(list) {
         if (!usersBody) return;
-        if (!list.length) { usersBody.innerHTML = '<tr><td colspan="6" class="no-data-msg">\u0644\u0627 \u064a\u0648\u062c\u062f \u0645\u0633\u062a\u062e\u062f\u0645\u0648\u0646.</td></tr>'; return; }
+        if (!list.length) { usersBody.innerHTML = '<tr><td colspan="7" class="no-data-msg">\u0644\u0627 \u064a\u0648\u062c\u062f \u0645\u0633\u062a\u062e\u062f\u0645\u0648\u0646.</td></tr>'; return; }
         usersBody.innerHTML = list.map(function (p) {
-            var cv = p.cv_url ? '<a href="' + esc(p.cv_url) + '" target="_blank" class="btn-link">\u0639\u0631\u0636</a>' : "\u2014";
-            var phone = p.phone ? '<a href="tel:' + esc(p.phone) + '" class="phone-link">' + esc(p.phone) + '</a>' : "\u2014";
+            var cv    = p.cv_url ? '<a href="' + esc(p.cv_url) + '" target="_blank" class="btn-link">\u0639\u0631\u0636</a>' : "\u2014";
+            var phone = p.phone  ? '<a href="tel:' + esc(p.phone) + '" class="phone-link">' + esc(p.phone) + '</a>' : "\u2014";
+            var actionsHtml;
+            if (isSuperPrimary) {
+                /* Primary admin: full controls */
+                actionsHtml =
+                    '<select class="admin-select-sm role-select" data-uid="' + esc(p.id) + '">' +
+                        '<option value="job_seeker"'  + (p.role === "job_seeker"  ? " selected" : "") + '>\u0628\u0627\u062d\u062b</option>' +
+                        '<option value="company"'     + (p.role === "company"     ? " selected" : "") + '>\u0634\u0631\u0643\u0629</option>' +
+                        '<option value="super_admin"' + (p.role === "super_admin" ? " selected" : "") + '>\u0623\u062f\u0645\u0646</option>' +
+                    '</select>' +
+                    '<button class="dashboard-btn dashboard-btn-reset-pwd" data-action="reset-pwd" data-uid="' + esc(p.id) + '" data-email="' + esc(p.email || "") + '" title="\u0625\u0639\u0627\u062f\u0629 \u062a\u0639\u064a\u064a\u0646 \u0643\u0644\u0645\u0629 \u0627\u0644\u0645\u0631\u0648\u0631">\uD83D\uDD11 \u062a\u0639\u064a\u064a\u0646</button>' +
+                    '<button class="dashboard-btn dashboard-btn-delete" data-action="delete-user" data-uid="' + esc(p.id) + '">\u062d\u0630\u0641</button>';
+            } else {
+                /* Secondary admin: read-only + promo request button for non-admins */
+                if (p.role !== "super_admin") {
+                    actionsHtml = '<button class="dashboard-btn" style="background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;font-size:0.78rem;" data-action="request-promo" data-uid="' + esc(p.id) + '" data-uname="' + esc(p.full_name || p.email || "") + '">\uD83D\uDD11 \u0637\u0644\u0628 \u062a\u0631\u0642\u064a\u0629 \u0644\u0623\u062f\u0645\u0646</button>';
+                } else {
+                    actionsHtml = '<span style="color:#64748b;font-size:0.8rem;">\u0623\u062f\u0645\u0646 \u0628\u0627\u0644\u0641\u0639\u0644</span>';
+                }
+            }
             return '<tr>' +
                 '<td>' + esc(p.full_name || "\u2014") + '</td>' +
-                '<td>' + esc(p.email || "\u2014") + '</td>' +
+                '<td>' + esc(p.email    || "\u2014") + '</td>' +
                 '<td>' + phone + '</td>' +
                 '<td>' + roleLabel(p.role) + '</td>' +
                 '<td>' + fmtDate(p.created_at) + '</td>' +
                 '<td>' + cv + '</td>' +
-                '<td><div class="dashboard-actions">' +
-                    '<select class="admin-select-sm role-select" data-uid="' + esc(p.id) + '">' +
-                        '<option value="job_seeker"' + (p.role === "job_seeker" ? " selected" : "") + '>\u0628\u0627\u062d\u062b</option>' +
-                        '<option value="company"'    + (p.role === "company"    ? " selected" : "") + '>\u0634\u0631\u0643\u0629</option>' +
-                        '<option value="super_admin"'+ (p.role === "super_admin"? " selected" : "") + '>\u0623\u062f\u0645\u0646</option>' +
-                    '</select>' +                    '<button class="dashboard-btn dashboard-btn-reset-pwd" data-action="reset-pwd" data-uid="' + esc(p.id) + '" data-email="' + esc(p.email || '') + '" title="إعادة تعيين كلمة المرور">🔑 تعيين</button>' +                    '<button class="dashboard-btn dashboard-btn-delete" data-action="delete-user" data-uid="' + esc(p.id) + '">\u062d\u0630\u0641</button>' +
-                '</div></td>' +
+                '<td><div class="dashboard-actions">' + actionsHtml + '</div></td>' +
             '</tr>';
         }).join("");
     }
@@ -140,6 +165,29 @@ document.addEventListener("DOMContentLoaded", async function () {
             renderStats();
         });
         usersBody.addEventListener("click", async function (e) {
+            /* Secondary admin: request promo */
+            var promoBtn = e.target.closest("[data-action='request-promo']");
+            if (promoBtn) {
+                var targetUid  = promoBtn.dataset.uid;
+                var targetName = promoBtn.dataset.uname;
+                if (!confirm("\u0625\u0631\u0633\u0627\u0644 \u0637\u0644\u0628 \u062a\u0631\u0642\u064a\u0629 " + targetName + " \u0625\u0644\u0649 \u0645\u0634\u0631\u0641 \u0639\u0627\u0645?\n\n\u0633\u064a\u062a\u0645 \u0625\u0631\u0633\u0627\u0644 \u0627\u0644\u0637\u0644\u0628 \u0644\u0644\u0645\u0634\u0631\u0641 \u0627\u0644\u0631\u0626\u064a\u0633\u064a \u0644\u0644\u0628\u062a \u0641\u064a\u0647.")) return;
+                promoBtn.disabled    = true;
+                promoBtn.textContent = "...\u062c\u0627\u0631\u064a";
+                var reqRes = await sb.from("admin_promotion_requests").insert({
+                    requested_by:   user.id,
+                    target_user_id: targetUid,
+                    status:         "pending"
+                });
+                promoBtn.disabled    = false;
+                promoBtn.innerHTML   = "\uD83D\uDD11 \u0637\u0644\u0628 \u062a\u0631\u0642\u064a\u0629 \u0644\u0623\u062f\u0645\u0646";
+                if (reqRes.error) {
+                    alert("\u062a\u0639\u0630\u0651\u0631 \u0625\u0631\u0633\u0627\u0644 \u0627\u0644\u0637\u0644\u0628: " + reqRes.error.message);
+                } else {
+                    alert("\u2705 \u062a\u0645 \u0625\u0631\u0633\u0627\u0644 \u0637\u0644\u0628 \u0627\u0644\u062a\u0631\u0642\u064a\u0629 \u0644\u0644\u0645\u0634\u0631\u0641 \u0627\u0644\u0631\u0626\u064a\u0633\u064a. \u0633\u064a\u062a\u0645 \u0627\u0644\u0628\u062a \u0641\u064a\u0647 \u0642\u0631\u064a\u0628\u0627\u064b.");
+                }
+                return;
+            }
+
             var resetBtn = e.target.closest("[data-action='reset-pwd']");
             if (resetBtn) {
                 var email = resetBtn.dataset.email;
@@ -659,6 +707,81 @@ document.addEventListener("DOMContentLoaded", async function () {
         closeEnrPanel.addEventListener("click", function () {
             var panel = document.getElementById("courseEnrollmentsPanel");
             if (panel) panel.style.display = "none";
+        });
+    }
+
+    /* ── Promotion Requests (primary admin only) ────────────────── */
+    var promoReqBody = document.getElementById("promoReqTableBody");
+    var allPromoReqs = [];
+
+    async function loadPromoRequests() {
+        if (!promoReqBody || !isSuperPrimary) return;
+        promoReqBody.innerHTML = '<tr><td colspan="12" class="no-data-msg">\u062c\u0627\u0631\u064a \u0627\u0644\u062a\u062d\u0645\u064a\u0644...</td></tr>';
+        var resp = await sb.from("admin_promotion_requests")
+            .select("id, requested_by, target_user_id, status, created_at")
+            .order("created_at", { ascending: false });
+        allPromoReqs = resp.data || [];
+        renderPromoReqs(allPromoReqs);
+    }
+
+    function renderPromoReqs(list) {
+        if (!promoReqBody) return;
+        if (!list.length) {
+            promoReqBody.innerHTML = '<tr><td colspan="12" class="no-data-msg">\u0644\u0627 \u062a\u0648\u062c\u062f \u0637\u0644\u0628\u0627\u062a \u062a\u0631\u0642\u064a\u0629.</td></tr>';
+            return;
+        }
+        promoReqBody.innerHTML = list.map(function (r) {
+            var req = profileMap[r.requested_by]   || {};
+            var tgt = profileMap[r.target_user_id] || {};
+            var statusBadge;
+            if      (r.status === "approved") statusBadge = '<span class="badge badge-accepted">\u0645\u0648\u0627\u0641\u0642 \u0639\u0644\u064a\u0647</span>';
+            else if (r.status === "rejected") statusBadge = '<span class="badge badge-rejected">\u0645\u0631\u0641\u0648\u0636</span>';
+            else                              statusBadge = '<span class="badge badge-pending-status">\u0642\u064a\u062f \u0627\u0644\u0645\u0631\u0627\u062c\u0639\u0629</span>';
+            var reqPhone = req.phone ? '<a href="tel:' + esc(req.phone) + '" class="phone-link">' + esc(req.phone) + '</a>' : "\u2014";
+            var tgtPhone = tgt.phone ? '<a href="tel:' + esc(tgt.phone) + '" class="phone-link">' + esc(tgt.phone) + '</a>' : "\u2014";
+            var actionsHtml = r.status === "pending"
+                ? '<button class="dashboard-btn dashboard-btn-accept" data-action="promo-approve" data-rid="' + esc(r.id) + '" data-uid="' + esc(r.target_user_id) + '">\u2705 \u0645\u0648\u0627\u0641\u0642\u0629</button>' +
+                  '<button class="dashboard-btn dashboard-btn-reject"  data-action="promo-reject"  data-rid="' + esc(r.id) + '">\u274c \u0631\u0641\u0636</button>'
+                : "\u2014";
+            return '<tr>' +
+                '<td><strong>' + esc(req.full_name    || "\u2014") + '</strong></td>' +
+                '<td>'         + esc(req.email        || "\u2014") + '</td>' +
+                '<td>'         + reqPhone              + '</td>' +
+                '<td>'         + esc(req.specialization|| "\u2014") + '</td>' +
+                '<td>'         + roleLabel(req.role    || "")       + '</td>' +
+                '<td><strong>' + esc(tgt.full_name    || "\u2014") + '</strong></td>' +
+                '<td>'         + esc(tgt.email        || "\u2014") + '</td>' +
+                '<td>'         + tgtPhone              + '</td>' +
+                '<td>'         + roleLabel(tgt.role    || "")       + '</td>' +
+                '<td>'         + fmtDate(r.created_at) + '</td>' +
+                '<td>'         + statusBadge            + '</td>' +
+                '<td><div class="dashboard-actions">' + actionsHtml + '</div></td>' +
+            '</tr>';
+        }).join("");
+    }
+
+    if (promoReqBody) {
+        promoReqBody.addEventListener("click", async function (e) {
+            var btn = e.target.closest("[data-action^='promo-']");
+            if (!btn) return;
+            var rid = btn.dataset.rid;
+            btn.disabled = true;
+            if (btn.dataset.action === "promo-approve") {
+                if (!confirm("\u0647\u0644 \u062a\u0631\u064a\u062f \u0627\u0644\u0645\u0648\u0627\u0641\u0642\u0629 \u0648\u062a\u0631\u0642\u064a\u0629 \u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645 \u0644\u0645\u0634\u0631\u0641 \u0639\u0627\u0645?")) { btn.disabled = false; return; }
+                var uid = btn.dataset.uid;
+                var r1 = await sb.from("profiles").update({ role: "super_admin" }).eq("id", uid);
+                if (r1.error) { alert("\u062a\u0639\u0630\u0651\u0631 \u0627\u0644\u062a\u0631\u0642\u064a\u0629: " + r1.error.message); btn.disabled = false; return; }
+                await sb.from("admin_promotion_requests").update({ status: "approved" }).eq("id", rid);
+                if (profileMap[uid]) profileMap[uid].role = "super_admin";
+                renderStats();
+                alert("\u2705 \u062a\u0645\u062a \u0627\u0644\u0645\u0648\u0627\u0641\u0642\u0629 \u0648\u062a\u0631\u0642\u064a\u0629 \u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645 \u0644\u0645\u0634\u0631\u0641 \u0639\u0627\u0645.");
+            } else {
+                if (!confirm("\u0647\u0644 \u062a\u0631\u064a\u062f \u0631\u0641\u0636 \u0647\u0630\u0627 \u0627\u0644\u0637\u0644\u0628?")) { btn.disabled = false; return; }
+                var r2 = await sb.from("admin_promotion_requests").update({ status: "rejected" }).eq("id", rid);
+                if (r2.error) { alert("\u062a\u0639\u0630\u0651\u0631 \u0627\u0644\u0631\u0641\u0636: " + r2.error.message); btn.disabled = false; return; }
+                alert("\u062a\u0645 \u0631\u0641\u0636 \u0627\u0644\u0637\u0644\u0628.");
+            }
+            await loadPromoRequests();
         });
     }
 
