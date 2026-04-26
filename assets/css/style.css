@@ -450,6 +450,10 @@ html[dir="ltr"] .logo {
     align-items: center;
 }
 
+.hero-content {
+    text-align: center;
+}
+
 .hero-content h1 {
     font-size: 3rem;
     line-height: 1.4;
@@ -470,6 +474,8 @@ html[dir="ltr"] .logo {
     color: #e5e7eb;
     max-width: 32rem;
     margin-bottom: 1.5rem;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* ── Smart Search Box ─────────────────────────────────────────────── */
@@ -477,6 +483,8 @@ html[dir="ltr"] .logo {
     position: relative;
     margin-bottom: 1.8rem;
     max-width: 780px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .ssb-main {
@@ -715,6 +723,7 @@ html[dir="ltr"] .logo {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
     margin-top: 1.1rem;
 }
@@ -749,6 +758,7 @@ html[dir="ltr"] .logo {
     flex-wrap: wrap;
     gap: 0.9rem;
     margin-top: 1.2rem;
+    justify-content: center;
 }
 
 .stat {
@@ -760,7 +770,7 @@ html[dir="ltr"] .logo {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255,255,255,0.15);
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     transition: transform 0.2s, background 0.2s;
