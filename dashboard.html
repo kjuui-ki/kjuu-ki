@@ -32,9 +32,9 @@
             <!-- Hero -->
             <div class="admin-hero">
                 <div>
-                    <p class="company-dash-welcome">&#x644;&#x648;&#x62d;&#x629; &#x62a;&#x62d;&#x643;&#x645; &#x627;&#x644;&#x645;&#x634;&#x631;&#x641; &#x627;&#x644;&#x639;&#x627;&#x645;</p>
+                    <p class="company-dash-welcome" data-i18n="adm.hero.badge">&#x644;&#x648;&#x62d;&#x629; &#x62a;&#x62d;&#x643;&#x645; &#x627;&#x644;&#x645;&#x634;&#x631;&#x641; &#x627;&#x644;&#x639;&#x627;&#x645;</p>
                     <h1 id="adminName">&#x62c;&#x627;&#x631;&#x64a; &#x627;&#x644;&#x62a;&#x62d;&#x645;&#x64a;&#x644;...</h1>
-                    <p class="company-dash-sub">&#x625;&#x62f;&#x627;&#x631;&#x629; &#x643;&#x627;&#x645;&#x644;&#x629; &#x644;&#x644;&#x645;&#x633;&#x62a;&#x62e;&#x62f;&#x645;&#x64a;&#x646; &#x648;&#x627;&#x644;&#x648;&#x638;&#x627;&#x626;&#x641; &#x648;&#x627;&#x644;&#x637;&#x644;&#x628;&#x627;&#x62a;</p>
+                    <p class="company-dash-sub" data-i18n="adm.hero.sub">&#x625;&#x62f;&#x627;&#x631;&#x629; &#x643;&#x627;&#x645;&#x644;&#x629; &#x644;&#x644;&#x645;&#x633;&#x62a;&#x62e;&#x62f;&#x645;&#x64a;&#x646; &#x648;&#x627;&#x644;&#x648;&#x638;&#x627;&#x626;&#x641; &#x648;&#x627;&#x644;&#x637;&#x644;&#x628;&#x627;&#x62a;</p>
                 </div>
                 <div class="company-dash-stats">
                     <div class="company-dash-stat"><span class="company-dash-stat-num" id="statSeekers">&mdash;</span><span class="company-dash-stat-label">&#x628;&#x627;&#x62d;&#x62b;</span></div>
@@ -46,27 +46,27 @@
 
             <!-- Tabs -->
             <div class="dash-tabs">
-                <button class="dash-tab active" data-tab="users">&#x627;&#x644;&#x645;&#x633;&#x62a;&#x62e;&#x62f;&#x645;&#x648;&#x646;</button>
-                <button class="dash-tab" data-tab="jobs">&#x627;&#x644;&#x648;&#x638;&#x627;&#x626;&#x641;</button>
-                <button class="dash-tab" data-tab="applications">&#x627;&#x644;&#x637;&#x644;&#x628;&#x627;&#x62a;</button>
-                <button class="dash-tab" data-tab="staff-requests">&#x637;&#x644;&#x628;&#x627;&#x62a; &#x627;&#x644;&#x62a;&#x648;&#x638;&#x64a;&#x641;</button>
-                <button class="dash-tab" data-tab="course-requests">&#x637;&#x644;&#x628;&#x627;&#x62a; &#x627;&#x644;&#x62f;&#x648;&#x631;&#x627;&#x62a;</button>
-                <button class="dash-tab" data-tab="courses">&#x627;&#x644;&#x62f;&#x648;&#x631;&#x627;&#x62a;</button>
-                <button class="dash-tab" data-tab="promo-requests" id="promoReqTab" style="display:none;">&#x1f511; &#x637;&#x644;&#x628;&#x627;&#x62a; &#x627;&#x644;&#x62a;&#x631;&#x642;&#x64a;&#x629;</button>
+                <button class="dash-tab active" data-tab="users" data-i18n="adm.tab.users">&#x627;&#x644;&#x645;&#x633;&#x62a;&#x62e;&#x62f;&#x645;&#x648;&#x646;</button>
+                <button class="dash-tab" data-tab="jobs" data-i18n="adm.tab.jobs">&#x627;&#x644;&#x648;&#x638;&#x627;&#x626;&#x641;</button>
+                <button class="dash-tab" data-tab="applications" data-i18n="adm.tab.applications">&#x627;&#x644;&#x637;&#x644;&#x628;&#x627;&#x62a;</button>
+                <button class="dash-tab" data-tab="staff-requests" data-i18n="adm.tab.staffRequests">&#x637;&#x644;&#x628;&#x627;&#x62a; &#x627;&#x644;&#x62a;&#x648;&#x638;&#x64a;&#x641;</button>
+                <button class="dash-tab" data-tab="course-requests" data-i18n="adm.tab.courseRequests">&#x637;&#x644;&#x628;&#x627;&#x62a; &#x627;&#x644;&#x62f;&#x648;&#x631;&#x627;&#x62a;</button>
+                <button class="dash-tab" data-tab="courses" data-i18n="adm.tab.courses">&#x627;&#x644;&#x62f;&#x648;&#x631;&#x627;&#x62a;</button>
+                <button class="dash-tab" data-tab="promo-requests" id="promoReqTab" style="display:none;" data-i18n="adm.tab.promoRequests">&#x1f511; &#x637;&#x644;&#x628;&#x627;&#x62a; &#x627;&#x644;&#x62a;&#x631;&#x642;&#x64a;&#x629;</button>
             </div>
 
             <!-- Users Tab -->
             <div class="dash-tab-content" id="tab-users">
                 <div class="dash-card">
                     <div class="dash-card-header">
-                        <h2 class="dash-card-title">&#x625;&#x62f;&#x627;&#x631;&#x629; &#x627;&#x644;&#x645;&#x633;&#x62a;&#x62e;&#x62f;&#x645;&#x64a;&#x646;</h2>
+                        <h2 class="dash-card-title" data-i18n="adm.users.title">&#x625;&#x62f;&#x627;&#x631;&#x629; &#x627;&#x644;&#x645;&#x633;&#x62a;&#x62e;&#x62f;&#x645;&#x64a;&#x646;</h2>
                         <div class="admin-filter-row">
-                            <input type="text" id="usersSearch" class="admin-search" placeholder="&#x628;&#x62d;&#x62b; &#x628;&#x627;&#x644;&#x627;&#x633;&#x645; &#x623;&#x648; &#x627;&#x644;&#x625;&#x64a;&#x645;&#x64a;&#x644;..." />
+                            <input type="text" id="usersSearch" class="admin-search" placeholder="&#x628;&#x62d;&#x62b; &#x628;&#x627;&#x644;&#x627;&#x633;&#x645; &#x623;&#x648; &#x627;&#x644;&#x625;&#x64a;&#x645;&#x64a;&#x644;..." data-i18n-placeholder="adm.users.searchPlaceholder" />
                             <select id="usersRoleFilter" class="admin-select">
-                                <option value="">&#x643;&#x644; &#x627;&#x644;&#x645;&#x633;&#x62a;&#x62e;&#x62f;&#x645;&#x64a;&#x646; &#x25be;</option>
-                                <option value="job_seeker">&#x628;&#x627;&#x62d;&#x62b; &#x639;&#x646; &#x639;&#x645;&#x644;</option>
-                                <option value="company">&#x634;&#x631;&#x643;&#x629;</option>
-                                <option value="super_admin">&#x623;&#x62f;&#x645;&#x646;</option>
+                                <option value="" data-i18n="adm.users.filter.all">&#x643;&#x644; &#x627;&#x644;&#x645;&#x633;&#x62a;&#x62e;&#x62f;&#x645;&#x64a;&#x646; &#x25be;</option>
+                                <option value="job_seeker" data-i18n="adm.users.filter.seeker">&#x628;&#x627;&#x62d;&#x62b; &#x639;&#x646; &#x639;&#x645;&#x644;</option>
+                                <option value="company" data-i18n="adm.users.filter.company">&#x634;&#x631;&#x643;&#x629;</option>
+                                <option value="super_admin" data-i18n="adm.users.filter.admin">&#x623;&#x62f;&#x645;&#x646;</option>
                             </select>
                         </div>
                     </div>
@@ -93,8 +93,8 @@
             <div class="dash-tab-content" id="tab-jobs" style="display:none;">
                 <div class="dash-card">
                     <div class="dash-card-header">
-                        <h2 class="dash-card-title">&#x625;&#x62f;&#x627;&#x631;&#x629; &#x627;&#x644;&#x648;&#x638;&#x627;&#x626;&#x641;</h2>
-                        <input type="text" id="jobsSearch" class="admin-search" placeholder="&#x628;&#x62d;&#x62b; &#x628;&#x627;&#x633;&#x645; &#x627;&#x644;&#x648;&#x638;&#x64a;&#x641;&#x629; &#x623;&#x648; &#x627;&#x644;&#x634;&#x631;&#x643;&#x629;..." />
+                        <h2 class="dash-card-title" data-i18n="adm.jobs.title">&#x625;&#x62f;&#x627;&#x631;&#x629; &#x627;&#x644;&#x648;&#x638;&#x627;&#x626;&#x641;</h2>
+                        <input type="text" id="jobsSearch" class="admin-search" placeholder="&#x628;&#x62d;&#x62b; &#x628;&#x627;&#x633;&#x645; &#x627;&#x644;&#x648;&#x638;&#x64a;&#x641;&#x629; &#x623;&#x648; &#x627;&#x644;&#x634;&#x631;&#x643;&#x629;..." data-i18n-placeholder="adm.jobs.searchPlaceholder" />
                     </div>
                     <div class="dashboard-table-wrap">
                         <table class="dashboard-table">
@@ -118,18 +118,18 @@
             <div class="dash-tab-content" id="tab-applications" style="display:none;">
                 <div class="dash-card">
                     <div class="dash-card-header">
-                        <h2 class="dash-card-title">&#x625;&#x62f;&#x627;&#x631;&#x629; &#x627;&#x644;&#x637;&#x644;&#x628;&#x627;&#x62a;</h2>
+                        <h2 class="dash-card-title" data-i18n="adm.apps.title">&#x625;&#x62f;&#x627;&#x631;&#x629; &#x627;&#x644;&#x637;&#x644;&#x628;&#x627;&#x62a;</h2>
                         <div class="admin-filter-row">
                             <select id="appJobFilter" class="admin-select">
-                                <option value="">&#x643;&#x644; &#x627;&#x644;&#x648;&#x638;&#x627;&#x626;&#x641; &#x25be;</option>
+                                <option value="" data-i18n="adm.apps.filter.allJobs">&#x643;&#x644; &#x627;&#x644;&#x648;&#x638;&#x627;&#x626;&#x641; &#x25be;</option>
                             </select>
                             <select id="appStatusFilter" class="admin-select">
-                                <option value="">&#x643;&#x644; &#x627;&#x644;&#x62d;&#x627;&#x644;&#x627;&#x62a;</option>
-                                <option value="pending">&#x642;&#x64a;&#x62f; &#x627;&#x644;&#x645;&#x631;&#x627;&#x62c;&#x639;&#x629;</option>
-                                <option value="accepted">&#x645;&#x642;&#x628;&#x648;&#x644;</option>
-                                <option value="rejected">&#x645;&#x631;&#x641;&#x648;&#x636;</option>
+                                <option value="" data-i18n="adm.apps.filter.allStatus">&#x643;&#x644; &#x627;&#x644;&#x62d;&#x627;&#x644;&#x627;&#x62a;</option>
+                                <option value="pending" data-i18n="adm.apps.filter.pending">&#x642;&#x64a;&#x62f; &#x627;&#x644;&#x645;&#x631;&#x627;&#x62c;&#x639;&#x629;</option>
+                                <option value="accepted" data-i18n="adm.apps.filter.accepted">&#x645;&#x642;&#x628;&#x648;&#x644;</option>
+                                <option value="rejected" data-i18n="adm.apps.filter.rejected">&#x645;&#x631;&#x641;&#x648;&#x636;</option>
                             </select>
-                            <button id="exportAppsBtn" class="dashboard-btn dashboard-btn-export">&#x2b07;&#xfe0f; &#x62a;&#x635;&#x62f;&#x64a;&#x631; CSV</button>
+                            <button id="exportAppsBtn" class="dashboard-btn dashboard-btn-export" data-i18n="adm.export.csv">&#x2b07;&#xfe0f; &#x62a;&#x635;&#x62f;&#x64a;&#x631; CSV</button>
                         </div>
                     </div>
                     <div class="dashboard-table-wrap">
@@ -157,12 +157,12 @@
             <div class="dash-tab-content" id="tab-staff-requests" style="display:none;">
                 <div class="dash-card">
                     <div class="dash-card-header">
-                        <h2 class="dash-card-title">&#x637;&#x644;&#x628;&#x627;&#x62a; &#x627;&#x644;&#x62a;&#x648;&#x638;&#x64a;&#x641; &#x645;&#x646; &#x627;&#x644;&#x634;&#x631;&#x643;&#x627;&#x62a;</h2>
+                        <h2 class="dash-card-title" data-i18n="adm.staffReq.title">&#x637;&#x644;&#x628;&#x627;&#x62a; &#x627;&#x644;&#x62a;&#x648;&#x638;&#x64a;&#x641; &#x645;&#x646; &#x627;&#x644;&#x634;&#x631;&#x643;&#x627;&#x62a;</h2>
                         <select id="staffReqStatusFilter" class="admin-select">
-                            <option value="">&#x643;&#x644; &#x627;&#x644;&#x62d;&#x627;&#x644;&#x627;&#x62a;</option>
-                            <option value="pending">&#x642;&#x64a;&#x62f; &#x627;&#x644;&#x645;&#x631;&#x627;&#x62c;&#x639;&#x629;</option>
-                            <option value="reviewed">&#x62a;&#x645;&#x62a; &#x627;&#x644;&#x645;&#x631;&#x627;&#x62c;&#x639;&#x629;</option>
-                            <option value="rejected">&#x645;&#x631;&#x641;&#x648;&#x636;</option>
+                            <option value="" data-i18n="adm.staffReq.filter.all">&#x643;&#x644; &#x627;&#x644;&#x62d;&#x627;&#x644;&#x627;&#x62a;</option>
+                            <option value="pending" data-i18n="adm.staffReq.filter.pending">&#x642;&#x64a;&#x62f; &#x627;&#x644;&#x645;&#x631;&#x627;&#x62c;&#x639;&#x629;</option>
+                            <option value="reviewed" data-i18n="adm.staffReq.filter.reviewed">&#x62a;&#x645;&#x62a; &#x627;&#x644;&#x645;&#x631;&#x627;&#x62c;&#x639;&#x629;</option>
+                            <option value="rejected" data-i18n="adm.staffReq.filter.rejected">&#x645;&#x631;&#x641;&#x648;&#x636;</option>
                         </select>
                     </div>
                     <div class="dashboard-table-wrap">
@@ -190,27 +190,27 @@
             <div class="dash-tab-content" id="tab-course-requests" style="display:none;">
                 <div class="dash-card">
                     <div class="dash-card-header">
-                        <h2 class="dash-card-title">&#x637;&#x644;&#x628;&#x627;&#x62a; &#x641;&#x62a;&#x62d; &#x62f;&#x648;&#x631;&#x627;&#x62a; &#x645;&#x646; &#x627;&#x644;&#x634;&#x631;&#x643;&#x627;&#x62a;</h2>
+                        <h2 class="dash-card-title" data-i18n="adm.courseReq.title">&#x637;&#x644;&#x628;&#x627;&#x62a; &#x641;&#x62a;&#x62d; &#x62f;&#x648;&#x631;&#x627;&#x62a; &#x645;&#x646; &#x627;&#x644;&#x634;&#x631;&#x643;&#x627;&#x62a;</h2>
                         <select id="courseReqStatusFilter" class="admin-select">
-                            <option value="">&#x643;&#x644; &#x627;&#x644;&#x62d;&#x627;&#x644;&#x627;&#x62a;</option>
-                            <option value="pending">&#x642;&#x64a;&#x62f; &#x627;&#x644;&#x645;&#x631;&#x627;&#x62c;&#x639;&#x629;</option>
-                            <option value="approved">&#x645;&#x648;&#x627;&#x641;&#x642; &#x639;&#x644;&#x64a;&#x647;</option>
-                            <option value="rejected">&#x645;&#x631;&#x641;&#x648;&#x636;</option>
+                            <option value="" data-i18n="adm.courseReq.filter.all">&#x643;&#x644; &#x627;&#x644;&#x62d;&#x627;&#x644;&#x627;&#x62a;</option>
+                            <option value="pending" data-i18n="adm.courseReq.filter.pending">&#x642;&#x64a;&#x62f; &#x627;&#x644;&#x645;&#x631;&#x627;&#x62c;&#x639;&#x629;</option>
+                            <option value="approved" data-i18n="adm.courseReq.filter.approved">&#x645;&#x648;&#x627;&#x641;&#x642; &#x639;&#x644;&#x64a;&#x647;</option>
+                            <option value="rejected" data-i18n="adm.courseReq.filter.rejected">&#x645;&#x631;&#x641;&#x648;&#x636;</option>
                         </select>
                     </div>
                     <div class="dashboard-table-wrap">
                         <table class="dashboard-table">
                             <thead>
                                 <tr>
-                                    <th>&#x627;&#x644;&#x634;&#x631;&#x643;&#x629;</th>
-                                    <th>&#x627;&#x633;&#x645; &#x627;&#x644;&#x62f;&#x648;&#x631;&#x629;</th>
-                                    <th>&#x627;&#x644;&#x641;&#x626;&#x629;</th>
-                                    <th>&#x627;&#x644;&#x645;&#x642;&#x627;&#x639;&#x62f;</th>
-                                    <th>&#x627;&#x644;&#x645;&#x62f;&#x629;</th>
-                                    <th>&#x62a;&#x627;&#x631;&#x64a;&#x62e; &#x627;&#x644;&#x628;&#x62f;&#x621; &#x627;&#x644;&#x645;&#x62a;&#x648;&#x642;&#x639;</th>
-                                    <th>&#x62a;&#x627;&#x631;&#x64a;&#x62e; &#x627;&#x644;&#x637;&#x644;&#x628;</th>
-                                    <th>&#x627;&#x644;&#x62d;&#x627;&#x644;&#x629;</th>
-                                    <th>&#x627;&#x644;&#x625;&#x62c;&#x631;&#x627;&#x621;&#x627;&#x62a;</th>
+                                    <th data-i18n="adm.th.company">&#x627;&#x634;&#x631;&#x643;&#x629;</th>
+                                    <th data-i18n="adm.th.courseName">&#x627;&#x633;&#x645; &#x627;&#x644;&#x62f;&#x648;&#x631;&#x629;</th>
+                                    <th data-i18n="adm.th.category">&#x627;&#x644;&#x641;&#x626;&#x629;</th>
+                                    <th data-i18n="adm.th.count">&#x627;&#x644;&#x645;&#x642;&#x627;&#x639;&#x62f;</th>
+                                    <th data-i18n="adm.th.duration">&#x627;&#x644;&#x645;&#x62f;&#x629;</th>
+                                    <th data-i18n="adm.th.expectedDate">&#x62a;&#x627;&#x631;&#x64a;&#x62e; &#x627;&#x644;&#x628;&#x62f;&#x621; &#x627;&#x644;&#x645;&#x62a;&#x648;&#x642;&#x639;</th>
+                                    <th data-i18n="adm.th.requestedAt">&#x62a;&#x627;&#x631;&#x64a;&#x62e; &#x627;&#x644;&#x637;&#x644;&#x628;</th>
+                                    <th data-i18n="adm.th.status">&#x627;&#x644;&#x62d;&#x627;&#x644;&#x629;</th>
+                                    <th data-i18n="adm.th.actions">&#x627;&#x644;&#x625;&#x62c;&#x631;&#x627;&#x621;&#x627;&#x62a;</th>
                                 </tr>
                             </thead>
                             <tbody id="courseRequestsTableBody"><tr><td colspan="9" class="no-data-msg">&#x62c;&#x627;&#x631;&#x64a; &#x627;&#x644;&#x62a;&#x62d;&#x645;&#x64a;&#x644;...</td></tr></tbody>
@@ -224,37 +224,37 @@
                 <!-- Add course form -->
                 <div class="dash-card" style="margin-bottom:1.5rem;">
                     <div class="dash-card-header">
-                        <h2 class="dash-card-title">&#x646;&#x634;&#x631; &#x62f;&#x648;&#x631;&#x629; &#x62c;&#x62f;&#x64a;&#x62f;&#x629;</h2>
+                        <h2 class="dash-card-title" data-i18n="adm.course.addTitle">&#x646;&#x634;&#x631; &#x62f;&#x648;&#x631;&#x629; &#x62c;&#x62f;&#x64a;&#x62f;&#x629;</h2>
                     </div>
                     <form id="addCourseForm" class="admin-course-form">
                         <div class="admin-course-form-grid">
                             <div class="auth-form-group">
-                                <label>&#x639;&#x646;&#x648;&#x627;&#x646; &#x627;&#x644;&#x62f;&#x648;&#x631;&#x629; *</label>
-                                <input type="text" id="courseTitle" placeholder="&#x645;&#x62b;&#x627;&#x644;: &#x623;&#x633;&#x627;&#x633;&#x64a;&#x627;&#x62a; HTML &amp; CSS" required />
+                                <label data-i18n="adm.course.titleLabel">&#x639;&#x646;&#x648;&#x627;&#x646; &#x627;&#x644;&#x62f;&#x648;&#x631;&#x629; *</label>
+                                <input type="text" id="courseTitle" placeholder="&#x645;&#x62b;&#x627;&#x644;: &#x623;&#x633;&#x627;&#x633;&#x64a;&#x627;&#x62a; HTML &amp; CSS" data-i18n-placeholder="adm.course.titlePlaceholder" required />
                             </div>
                             <div class="auth-form-group">
-                                <label>&#x627;&#x644;&#x645;&#x62f;&#x631;&#x628;</label>
-                                <input type="text" id="courseInstructor" placeholder="&#x627;&#x633;&#x645; &#x627;&#x644;&#x645;&#x62f;&#x631;&#x628;" />
+                                <label data-i18n="adm.course.instructorLabel">&#x627;&#x644;&#x645;&#x62f;&#x631;&#x628;</label>
+                                <input type="text" id="courseInstructor" placeholder="&#x627;&#x633;&#x645; &#x627;&#x644;&#x645;&#x62f;&#x631;&#x628;" data-i18n-placeholder="adm.course.instructorPlaceholder" />
                             </div>
                             <div class="auth-form-group">
-                                <label>&#x627;&#x644;&#x645;&#x62f;&#x629;</label>
-                                <input type="text" id="courseDuration" placeholder="&#x645;&#x62b;&#x627;&#x644;: 10 &#x633;&#x627;&#x639;&#x627;&#x62a;" />
+                                <label data-i18n="adm.course.durationLabel">&#x627;&#x644;&#x645;&#x62f;&#x629;</label>
+                                <input type="text" id="courseDuration" placeholder="&#x645;&#x62b;&#x627;&#x644;: 10 &#x633;&#x627;&#x639;&#x627;&#x62a;" data-i18n-placeholder="adm.course.durationPlaceholder" />
                             </div>
                             <div class="auth-form-group">
-                                <label>&#x627;&#x644;&#x641;&#x626;&#x629;</label>
-                                <input type="text" id="courseCategory" placeholder="&#x645;&#x62b;&#x627;&#x644;: &#x62a;&#x642;&#x646;&#x64a;&#x629;&#x60c; &#x623;&#x639;&#x645;&#x627;&#x644;" />
+                                <label data-i18n="adm.course.categoryLabel">&#x627;&#x644;&#x641;&#x626;&#x629;</label>
+                                <input type="text" id="courseCategory" placeholder="&#x645;&#x62b;&#x627;&#x644;: &#x62a;&#x642;&#x646;&#x64a;&#x629;&#x60c; &#x623;&#x639;&#x645;&#x627;&#x644;" data-i18n-placeholder="adm.course.categoryPlaceholder" />
                             </div>
                             <div class="auth-form-group">
-                                <label>&#x639;&#x62f;&#x62f; &#x627;&#x644;&#x645;&#x642;&#x627;&#x639;&#x62f; (0 = &#x62b;&#x64a;&#x631; &#x645;&#x62d;&#x62f;&#x648;&#x62f;)</label>
+                                <label data-i18n="adm.course.seatsLabel">&#x639;&#x62f;&#x62f; &#x627;&#x644;&#x645;&#x642;&#x627;&#x639;&#x62f; (0 = &#x62b;&#x64a;&#x631; &#x645;&#x62d;&#x62f;&#x648;&#x62f;)</label>
                                 <input type="number" id="courseSeats" placeholder="0" min="0" value="0" />
                             </div>
                         </div>
                         <div class="auth-form-group">
-                            <label>&#x648;&#x635;&#x641; &#x627;&#x644;&#x62f;&#x648;&#x631;&#x629;</label>
-                            <textarea id="courseDescription" rows="3" placeholder="&#x648;&#x635;&#x641; &#x645;&#x62e;&#x62a;&#x635;&#x631; &#x639;&#x646; &#x645;&#x62d;&#x62a;&#x648;&#x649; &#x627;&#x644;&#x62f;&#x648;&#x631;&#x629;"></textarea>
+                            <label data-i18n="adm.course.descLabel">&#x648;&#x635;&#x641; &#x627;&#x644;&#x62f;&#x648;&#x631;&#x629;</label>
+                            <textarea id="courseDescription" rows="3" placeholder="&#x648;&#x635;&#x641; &#x645;&#x62e;&#x62a;&#x635;&#x631; &#x639;&#x646; &#x645;&#x62d;&#x62a;&#x648;&#x649; &#x627;&#x644;&#x62f;&#x648;&#x631;&#x629;" data-i18n-placeholder="adm.course.descPlaceholder"></textarea>
                         </div>
                         <div style="text-align:left; margin-top:0.5rem;">
-                            <button type="submit" class="dashboard-btn dashboard-btn-export">&#x2795; &#x646;&#x634;&#x631; &#x627;&#x644;&#x62f;&#x648;&#x631;&#x629;</button>
+                            <button type="submit" class="dashboard-btn dashboard-btn-export" data-i18n="adm.course.publishBtn">&#x2795; &#x646;&#x634;&#x631; &#x627;&#x644;&#x62f;&#x648;&#x631;&#x629;</button>
                             <span id="addCourseMsg" style="margin-right:1rem;font-size:0.85rem;"></span>
                         </div>
                     </form>
@@ -263,19 +263,19 @@
                 <!-- Courses table -->
                 <div class="dash-card">
                     <div class="dash-card-header">
-                        <h2 class="dash-card-title">&#x62c;&#x645;&#x64a;&#x639; &#x627;&#x644;&#x62f;&#x648;&#x631;&#x627;&#x62a;</h2>
+                        <h2 class="dash-card-title" data-i18n="adm.courses.tableTitle">&#x62c;&#x645;&#x64a;&#x639; &#x627;&#x644;&#x62f;&#x648;&#x631;&#x627;&#x62a;</h2>
                     </div>
                     <div class="dashboard-table-wrap">
                         <table class="dashboard-table">
                             <thead>
                                 <tr>
-                                    <th>&#x627;&#x644;&#x639;&#x646;&#x648;&#x627;&#x646;</th>
-                                    <th>&#x627;&#x644;&#x645;&#x62f;&#x631;&#x628;</th>
-                                    <th>&#x627;&#x644;&#x645;&#x62f;&#x629;</th>
-                                    <th>&#x627;&#x644;&#x641;&#x626;&#x629;</th>
-                                    <th>&#x627;&#x644;&#x645;&#x633;&#x62c;&#x644;&#x648;&#x646;</th>
-                                    <th>&#x62a;&#x627;&#x631;&#x64a;&#x62e; &#x627;&#x644;&#x646;&#x634;&#x631;</th>
-                                    <th>&#x627;&#x644;&#x625;&#x62c;&#x631;&#x627;&#x621;&#x627;&#x62a;</th>
+                                    <th data-i18n="adm.th.courseTitle">&#x627;&#x644;&#x639;&#x646;&#x648;&#x627;&#x646;</th>
+                                    <th data-i18n="adm.th.instructor">&#x627;&#x644;&#x645;&#x62f;&#x631;&#x628;</th>
+                                    <th data-i18n="adm.th.duration">&#x627;&#x644;&#x645;&#x62f;&#x629;</th>
+                                    <th data-i18n="adm.th.category">&#x627;&#x644;&#x641;&#x626;&#x629;</th>
+                                    <th data-i18n="adm.th.enrolled">&#x627;&#x644;&#x645;&#x633;&#x62c;&#x644;&#x648;&#x646;</th>
+                                    <th data-i18n="adm.th.publishedAt">&#x62a;&#x627;&#x631;&#x64a;&#x62e; &#x627;&#x646;&#x634;&#x631;</th>
+                                    <th data-i18n="adm.th.actions">&#x627;&#x644;&#x625;&#x62c;&#x631;&#x627;&#x621;&#x627;&#x62a;</th>
                                 </tr>
                             </thead>
                             <tbody id="coursesTableBody"><tr><td colspan="7" class="no-data-msg">&#x62c;&#x627;&#x631;&#x64a; &#x627;&#x644;&#x62a;&#x62d;&#x645;&#x64a;&#x644;...</td></tr></tbody>
@@ -288,20 +288,20 @@
                     <div class="dash-card-header">
                         <h2 class="dash-card-title" id="enrollmentsPanelTitle">المسجلون في الدورة</h2>
                         <div style="display:flex;gap:0.6rem;align-items:center;">
-                            <button id="exportEnrollmentsBtn" class="dashboard-btn" style="background:rgba(21,128,61,0.1);color:#15803d;border:1px solid rgba(21,128,61,0.25);">&#x2B07; تصدير Excel</button>
-                            <button id="closeEnrollmentsPanel" class="dashboard-btn">✕ إغلاق</button>
+                            <button id="exportEnrollmentsBtn" class="dashboard-btn" style="background:rgba(21,128,61,0.1);color:#15803d;border:1px solid rgba(21,128,61,0.25);" data-i18n="adm.enrollments.exportBtn">&#x2B07; تصدير Excel</button>
+                            <button id="closeEnrollmentsPanel" class="dashboard-btn" data-i18n="adm.enrollments.closeBtn">✕ إغلاق</button>
                         </div>
                     </div>
                     <div class="dashboard-table-wrap">
                         <table class="dashboard-table">
                             <thead>
                                 <tr>
-                                    <th>الاسم</th>
-                                    <th>البريد</th>
-                                    <th>رقم الجوال</th>
-                                    <th>الدور</th>
-                                    <th>تاريخ التسجيل</th>
-                                    <th>الحالة</th>
+                                    <th data-i18n="adm.th.name">الاسم</th>
+                                    <th data-i18n="adm.th.email">البريد</th>
+                                    <th data-i18n="adm.th.phone">رقم الجوال</th>
+                                    <th data-i18n="adm.th.role">الدور</th>
+                                    <th data-i18n="adm.th.enrolledAt">تاريخ التسجيل</th>
+                                    <th data-i18n="adm.th.status">الحالة</th>
                                 </tr>
                             </thead>
                             <tbody id="enrollmentsTableBody"><tr><td colspan="6" class="no-data-msg">لا يوجد مسجلون.</td></tr></tbody>
@@ -317,8 +317,8 @@
                         <div class="prq-panel-title-wrap">
                             <div class="prq-panel-icon">🔑</div>
                             <div>
-                                <h2 class="prq-panel-title">طلبات الترقية لأدمن</h2>
-                                <p class="prq-panel-sub">طلبات ترقية مستخدم إلى مشرف عام — تراجعها أنت فقط</p>
+                                <h2 class="prq-panel-title" data-i18n="adm.promo.title">طلبات الترقية لأدمن</h2>
+                                <p class="prq-panel-sub" data-i18n="adm.promo.sub">طلبات ترقية مستخدم إلى مشرف عام — تراجعها أنت فقط</p>
                             </div>
                         </div>
                         <div class="prq-stats" id="prqStats"></div>

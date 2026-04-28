@@ -29,6 +29,13 @@ document.addEventListener("DOMContentLoaded", async function () {
             .replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
     }
 
+    /* i18n helper — reads current lang from localStorage */
+    function t(key) {
+        var lang = (typeof localStorage !== "undefined" ? localStorage.getItem("maherLang") : null) || "ar";
+        var dict = (window.maherTranslations && window.maherTranslations[lang]) || {};
+        return dict[key] || key;
+    }
+
     function showToast(msg, type) {
         var t = document.createElement("div");
         t.textContent = msg;
@@ -43,17 +50,18 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
     function fmtDate(v) {
         if (!v) return "\u2014";
-        return new Date(v).toLocaleDateString("ar-SA", { year: "numeric", month: "short", day: "numeric" });
+        var lang = (typeof localStorage !== "undefined" ? localStorage.getItem("maherLang") : null) || "ar";
+        return new Date(v).toLocaleDateString(lang === "en" ? "en-US" : "ar-SA", { year: "numeric", month: "short", day: "numeric" });
     }
     function statusLabel(s) {
-        if (s === "accepted") return '<span class="badge badge-accepted">\u0645\u0642\u0628\u0648\u0644</span>';
-        if (s === "rejected") return '<span class="badge badge-rejected">\u0645\u0631\u0641\u0648\u0636</span>';
-        return '<span class="badge badge-pending-status">\u0642\u064a\u062f \u0627\u0644\u0645\u0631\u0627\u062c\u0639\u0629</span>';
+        if (s === "accepted") return '<span class="badge badge-accepted">' + t("adm.dyn.statusAccepted") + '</span>';
+        if (s === "rejected") return '<span class="badge badge-rejected">'  + t("adm.dyn.statusRejected") + '</span>';
+        return '<span class="badge badge-pending-status">' + t("adm.dyn.statusPending") + '</span>';
     }
     function roleLabel(r) {
-        if (r === "job_seeker")  return '<span class="badge badge-role-seeker">\u0628\u0627\u062d\u062b</span>';
-        if (r === "company")     return '<span class="badge badge-role-company">\u0634\u0631\u0643\u0629</span>';
-        if (r === "super_admin") return '<span class="badge badge-role-admin">\u0623\u062f\u0645\u0646</span>';
+        if (r === "job_seeker")  return '<span class="badge badge-role-seeker">'  + t("adm.dyn.roleSeeker")  + '</span>';
+        if (r === "company")     return '<span class="badge badge-role-company">'  + t("adm.dyn.roleCompany") + '</span>';
+        if (r === "super_admin") return '<span class="badge badge-role-admin">'    + t("adm.dyn.roleAdmin")   + '</span>';
         return '<span class="badge">' + esc(r) + '</span>';
     }
 
@@ -121,27 +129,27 @@ document.addEventListener("DOMContentLoaded", async function () {
     var usersBody = document.getElementById("usersTableBody");
     function renderUsers(list) {
         if (!usersBody) return;
-        if (!list.length) { usersBody.innerHTML = '<tr><td colspan="7" class="no-data-msg">\u0644\u0627 \u064a\u0648\u062c\u062f \u0645\u0633\u062a\u062e\u062f\u0645\u0648\u0646.</td></tr>'; return; }
+        if (!list.length) { usersBody.innerHTML = '<tr><td colspan="7" class="no-data-msg">' + t("adm.dyn.noUsers") + '</td></tr>'; return; }
         usersBody.innerHTML = list.map(function (p) {
-            var cv    = p.cv_url ? '<a href="' + esc(p.cv_url) + '" target="_blank" class="btn-link">\u0639\u0631\u0636</a>' : "\u2014";
+            var cv    = p.cv_url ? '<a href="' + esc(p.cv_url) + '" target="_blank" class="btn-link">' + t("adm.dyn.viewCv") + '</a>' : "\u2014";
             var phone = p.phone  ? '<a href="tel:' + esc(p.phone) + '" class="phone-link">' + esc(p.phone) + '</a>' : "\u2014";
             var actionsHtml;
             if (isSuperPrimary) {
                 /* Primary admin: full controls */
                 actionsHtml =
                     '<select class="admin-select-sm role-select" data-uid="' + esc(p.id) + '">' +
-                        '<option value="job_seeker"'  + (p.role === "job_seeker"  ? " selected" : "") + '>\u0628\u0627\u062d\u062b</option>' +
-                        '<option value="company"'     + (p.role === "company"     ? " selected" : "") + '>\u0634\u0631\u0643\u0629</option>' +
-                        '<option value="super_admin"' + (p.role === "super_admin" ? " selected" : "") + '>\u0623\u062f\u0645\u0646</option>' +
+                        '<option value="job_seeker"'  + (p.role === "job_seeker"  ? " selected" : "") + '>' + t("adm.dyn.roleSeeker")  + '</option>' +
+                        '<option value="company"'     + (p.role === "company"     ? " selected" : "") + '>' + t("adm.dyn.roleCompany") + '</option>' +
+                        '<option value="super_admin"' + (p.role === "super_admin" ? " selected" : "") + '>' + t("adm.dyn.roleAdmin")   + '</option>' +
                     '</select>' +
-                    '<button class="dashboard-btn dashboard-btn-reset-pwd" data-action="reset-pwd" data-uid="' + esc(p.id) + '" data-email="' + esc(p.email || "") + '" title="\u0625\u0639\u0627\u062f\u0629 \u062a\u0639\u064a\u064a\u0646 \u0643\u0644\u0645\u0629 \u0627\u0644\u0645\u0631\u0648\u0631">\uD83D\uDD11 \u062a\u0639\u064a\u064a\u0646</button>' +
-                    '<button class="dashboard-btn dashboard-btn-delete" data-action="delete-user" data-uid="' + esc(p.id) + '">\u062d\u0630\u0641</button>';
+                    '<button class="dashboard-btn dashboard-btn-reset-pwd" data-action="reset-pwd" data-uid="' + esc(p.id) + '" data-email="' + esc(p.email || "") + '" title="' + t("adm.dyn.assign") + '">' + t("adm.dyn.assign") + '</button>' +
+                    '<button class="dashboard-btn dashboard-btn-delete" data-action="delete-user" data-uid="' + esc(p.id) + '">' + t("adm.dyn.delete") + '</button>';
             } else {
                 /* Secondary admin: read-only + promo request button for non-admins */
                 if (p.role !== "super_admin") {
-                    actionsHtml = '<button class="dashboard-btn" style="background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;font-size:0.78rem;" data-action="request-promo" data-uid="' + esc(p.id) + '" data-uname="' + esc(p.full_name || p.email || "") + '">\uD83D\uDD11 \u0637\u0644\u0628 \u062a\u0631\u0642\u064a\u0629 \u0644\u0623\u062f\u0645\u0646</button>';
+                    actionsHtml = '<button class="dashboard-btn" style="background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;font-size:0.78rem;" data-action="request-promo" data-uid="' + esc(p.id) + '" data-uname="' + esc(p.full_name || p.email || "") + '">' + t("adm.dyn.requestPromo") + '</button>';
                 } else {
-                    actionsHtml = '<span style="color:#64748b;font-size:0.8rem;">\u0623\u062f\u0645\u0646 \u0628\u0627\u0644\u0641\u0639\u0644</span>';
+                    actionsHtml = '<span style="color:#64748b;font-size:0.8rem;">' + t("adm.dyn.alreadyAdmin") + '</span>';
                 }
             }
             return '<tr>' +
@@ -184,18 +192,18 @@ document.addEventListener("DOMContentLoaded", async function () {
                 var targetUid  = promoBtn.dataset.uid;
                 var targetName = promoBtn.dataset.uname;
                 promoBtn.disabled    = true;
-                promoBtn.textContent = "...جاري";
+                promoBtn.textContent = t("adm.dyn.sending");
                 var reqRes = await sb.from("admin_promotion_requests").insert({
                     requested_by:   user.id,
                     target_user_id: targetUid,
                     status:         "pending"
                 });
                 promoBtn.disabled  = false;
-                promoBtn.innerHTML = "\uD83D\uDD11 \u0637\u0644\u0628 \u062a\u0631\u0642\u064a\u0629 \u0644\u0623\u062f\u0645\u0646";
+                promoBtn.innerHTML = t("adm.dyn.requestPromo");
                 if (reqRes.error) {
                     showToast("\u062a\u0639\u0630\u0651\u0631 \u0625\u0631\u0633\u0627\u0644 \u0627\u0644\u0637\u0644\u0628. \u062a\u0623\u0643\u062f \u0645\u0646 \u0625\u0646\u0634\u0627\u0621 \u0627\u0644\u062c\u062f\u0648\u0644 \u0641\u064a Supabase.", "error");
                 } else {
-                    promoBtn.textContent = "\u2705 \u062a\u0645 \u0627\u0644\u0625\u0631\u0633\u0627\u0644";
+                    promoBtn.textContent = t("adm.dyn.sent");
                     promoBtn.disabled = true;
                     showToast("\u062a\u0645 \u0625\u0631\u0633\u0627\u0644 \u0637\u0644\u0628 \u0627\u0644\u062a\u0631\u0642\u064a\u0629 \u0644\u0644\u0645\u0634\u0631\u0641 \u0627\u0644\u0631\u0626\u064a\u0633\u064a \u2705", "success");
                 }
@@ -208,11 +216,11 @@ document.addEventListener("DOMContentLoaded", async function () {
                 if (!email) return;
                 if (!confirm('إرسال رابط إعادة تعيين كلمة المرور إلى:\n' + email + '\n\nهل أنت متأكد؟')) return;
                 resetBtn.disabled = true;
-                resetBtn.textContent = '...جاري';
+                resetBtn.textContent = t("adm.dyn.sending");
                 var redirectUrl = window.location.origin + (window.location.pathname.replace(/\/[^\/]*$/, '/')) + 'reset-password.html';
                 var res = await sb.auth.resetPasswordForEmail(email, { redirectTo: redirectUrl });
                 resetBtn.disabled = false;
-                resetBtn.textContent = '🔑 تعيين';
+                resetBtn.textContent = t("adm.dyn.assign");
                 if (res.error) {
                     alert('تعذّر إرسال البريد: ' + res.error.message);
                 } else {
@@ -233,7 +241,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     var jobsBody = document.getElementById("jobsTableBody");
     function renderJobs(list) {
         if (!jobsBody) return;
-        if (!list.length) { jobsBody.innerHTML = '<tr><td colspan="6" class="no-data-msg">\u0644\u0627 \u062a\u0648\u062c\u062f \u0648\u0638\u0627\u0626\u0641.</td></tr>'; return; }
+        if (!list.length) { jobsBody.innerHTML = '<tr><td colspan="6" class="no-data-msg">' + t("adm.dyn.noJobs") + '</td></tr>'; return; }
         jobsBody.innerHTML = list.map(function (j) {
             var company = profileMap[j.company_id] || {};
             return '<tr>' +
@@ -243,8 +251,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 '<td>' + esc(j.job_type || "\u2014") + '</td>' +
                 '<td>' + fmtDate(j.created_at) + '</td>' +
                 '<td><div class="dashboard-actions">' +
-                    '<button class="dashboard-btn dashboard-btn-edit" data-action="edit-job" data-jid="' + esc(j.id) + '" data-title="' + esc(j.title || "") + '">\u062a\u0639\u062f\u064a\u0644</button>' +
-                    '<button class="dashboard-btn dashboard-btn-delete" data-action="delete-job" data-jid="' + esc(j.id) + '">\u062d\u0630\u0641</button>' +
+                    '<button class="dashboard-btn dashboard-btn-edit" data-action="edit-job" data-jid="' + esc(j.id) + '" data-title="' + esc(j.title || "") + '">' + t("adm.dyn.edit") + '</button>' +
+                    '<button class="dashboard-btn dashboard-btn-delete" data-action="delete-job" data-jid="' + esc(j.id) + '">' + t("adm.dyn.delete") + '</button>' +
                 '</div></td>' +
             '</tr>';
         }).join("");
@@ -287,8 +295,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     function populateJobFilter() {
         if (!appJobFilter) return;
         /* keep the first blank option, replace everything after it */
-        appJobFilter.innerHTML = '<option value="">' +
-            '\u0643\u0644 \u0627\u0644\u0648\u0638\u0627\u0626\u0641 \u25be</option>';
+        appJobFilter.innerHTML = '<option value="">' + t("adm.apps.filter.allJobs") + '</option>';
         allJobs.forEach(function (j) {
             var opt = document.createElement("option");
             opt.value = j.id;
@@ -310,7 +317,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     function renderApps(list) {
         if (!appsBody) return;
-        if (!list.length) { appsBody.innerHTML = '<tr><td colspan="9" class="no-data-msg">\u0644\u0627 \u062a\u0648\u062c\u062f \u0637\u0644\u0628\u0627\u062a.</td></tr>'; return; }
+        if (!list.length) { appsBody.innerHTML = '<tr><td colspan="9" class="no-data-msg">' + t("adm.dyn.noApps") + '</td></tr>'; return; }
         appsBody.innerHTML = list.map(function (a) {
             var seeker       = profileMap[a.user_id] || {};
             var job          = jobMap[a.job_id] || {};
@@ -320,7 +327,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             var specialization = a.specialization || seeker.specialization || "\u2014";
             var jobTitle     = job.title        || "\u2014";
             var cvUrl        = a.cv_url         || seeker.cv_url;
-            var cv           = cvUrl ? '<a href="' + esc(cvUrl) + '" target="_blank" class="btn-link">\u0639\u0631\u0636 CV</a>' : "\u2014";
+            var cv           = cvUrl ? '<a href="' + esc(cvUrl) + '" target="_blank" class="btn-link">' + t("adm.dyn.viewCvShort") + '</a>' : "\u2014";
             return '<tr>' +
                 '<td>' + esc(name) + '</td>' +
                 '<td>' + esc(email) + '</td>' +
@@ -331,8 +338,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 '<td>' + statusLabel(a.status || "pending") + '</td>' +
                 '<td>' + cv + '</td>' +
                 '<td><div class="dashboard-actions">' +
-                    '<button class="dashboard-btn dashboard-btn-accept" data-action="app-accept" data-aid="' + esc(a.id) + '">\u0642\u0628\u0648\u0644</button>' +
-                    '<button class="dashboard-btn dashboard-btn-reject" data-action="app-reject" data-aid="' + esc(a.id) + '">\u0631\u0641\u0636</button>' +
+                    '<button class="dashboard-btn dashboard-btn-accept" data-action="app-accept" data-aid="' + esc(a.id) + '">' + t("adm.dyn.accept") + '</button>' +
+                    '<button class="dashboard-btn dashboard-btn-reject" data-action="app-reject" data-aid="' + esc(a.id) + '">' + t("adm.dyn.reject") + '</button>' +
                 '</div></td>' +
             '</tr>';
         }).join("");
@@ -416,14 +423,14 @@ document.addEventListener("DOMContentLoaded", async function () {
     var staffReqFilter = document.getElementById("staffReqStatusFilter");
 
     function staffReqStatusLabel(s) {
-        if (s === "reviewed") return '<span class="badge badge-accepted">\u062a\u0645\u062a \u0627\u0644\u0645\u0631\u0627\u062c\u0639\u0629</span>';
-        if (s === "rejected") return '<span class="badge badge-rejected">\u0645\u0631\u0641\u0648\u0636</span>';
-        return '<span class="badge badge-pending-status">\u0642\u064a\u062f \u0627\u0644\u0645\u0631\u0627\u062c\u0639\u0629</span>';
+        if (s === "reviewed") return '<span class="badge badge-accepted">'      + t("adm.dyn.statusReviewed") + '</span>';
+        if (s === "rejected") return '<span class="badge badge-rejected">'      + t("adm.dyn.statusRejected") + '</span>';
+        return '<span class="badge badge-pending-status">' + t("adm.dyn.statusPending") + '</span>';
     }
 
     function renderStaffRequests(list) {
         if (!staffReqBody) return;
-        if (!list.length) { staffReqBody.innerHTML = '<tr><td colspan="9" class="no-data-msg">\u0644\u0627 \u062a\u0648\u062c\u062f \u0637\u0644\u0628\u0627\u062a.</td></tr>'; return; }
+        if (!list.length) { staffReqBody.innerHTML = '<tr><td colspan="9" class="no-data-msg">' + t("adm.dyn.noApps") + '</td></tr>'; return; }
         staffReqBody.innerHTML = list.map(function (r) {
             var company = profileMap[r.company_id] || {};
             var companyName = company.full_name || company.email || "\u2014";
@@ -437,8 +444,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 '<td>' + fmtDate(r.created_at) + '</td>' +
                 '<td>' + staffReqStatusLabel(r.status) + '</td>' +
                 '<td><div class="dashboard-actions">' +
-                    '<button class="dashboard-btn dashboard-btn-accept" data-action="req-review" data-rid="' + esc(r.id) + '">\u0645\u0631\u0627\u062c\u0639\u0629</button>' +
-                    '<button class="dashboard-btn dashboard-btn-reject" data-action="req-reject" data-rid="' + esc(r.id) + '">\u0631\u0641\u0636</button>' +
+                    '<button class="dashboard-btn dashboard-btn-accept" data-action="req-review" data-rid="' + esc(r.id) + '">' + t("adm.dyn.review") + '</button>' +
+                    '<button class="dashboard-btn dashboard-btn-reject" data-action="req-reject" data-rid="' + esc(r.id) + '">' + t("adm.dyn.reject") + '</button>' +
                 '</div></td>' +
             '</tr>';
         }).join("");
@@ -483,14 +490,14 @@ document.addEventListener("DOMContentLoaded", async function () {
     var allCourseRequests    = [];
 
     function courseReqStatusLabel(s) {
-        if (s === "approved") return '<span class="badge badge-accepted">\u0645\u0648\u0627\u0641\u0642 \u0639\u0644\u064a\u0647</span>';
-        if (s === "rejected") return '<span class="badge badge-rejected">\u0645\u0631\u0641\u0648\u0636</span>';
-        return '<span class="badge badge-pending-status">\u0642\u064a\u062f \u0627\u0644\u0645\u0631\u0627\u062c\u0639\u0629</span>';
+        if (s === "approved") return '<span class="badge badge-accepted">' + t("adm.dyn.statusApproved") + '</span>';
+        if (s === "rejected") return '<span class="badge badge-rejected">'  + t("adm.dyn.statusRejected") + '</span>';
+        return '<span class="badge badge-pending-status">' + t("adm.dyn.statusPending") + '</span>';
     }
 
     function renderCourseRequests(list) {
         if (!courseReqBody) return;
-        if (!list.length) { courseReqBody.innerHTML = '<tr><td colspan="9" class="no-data-msg">\u0644\u0627 \u062a\u0648\u062c\u062f \u0637\u0644\u0628\u0627\u062a.</td></tr>'; return; }
+        if (!list.length) { courseReqBody.innerHTML = '<tr><td colspan="9" class="no-data-msg">' + t("adm.dyn.noApps") + '</td></tr>'; return; }
         courseReqBody.innerHTML = list.map(function (r) {
             var company = profileMap[r.company_id] || {};
             return '<tr>' +
@@ -503,8 +510,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 '<td>' + fmtDate(r.created_at) + '</td>' +
                 '<td>' + courseReqStatusLabel(r.status) + '</td>' +
                 '<td><div class="dashboard-actions">' +
-                    '<button class="dashboard-btn dashboard-btn-accept" data-action="cr-approve" data-rid="' + esc(r.id) + '">\u0645\u0648\u0627\u0641\u0642\u0629</button>' +
-                    '<button class="dashboard-btn dashboard-btn-reject"  data-action="cr-reject"  data-rid="' + esc(r.id) + '">\u0631\u0641\u0636</button>' +
+                    '<button class="dashboard-btn dashboard-btn-accept" data-action="cr-approve" data-rid="' + esc(r.id) + '">' + t("adm.dyn.approve") + '</button>' +
+                    '<button class="dashboard-btn dashboard-btn-reject"  data-action="cr-reject"  data-rid="' + esc(r.id) + '">' + t("adm.dyn.reject")  + '</button>' +
                 '</div></td>' +
             '</tr>';
         }).join("");
@@ -569,7 +576,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     function renderCourses(list) {
         if (!coursesBody) return;
-        if (!list.length) { coursesBody.innerHTML = '<tr><td colspan="7" class="no-data-msg">\u0644\u0627 \u062a\u0648\u062c\u062f \u062f\u0648\u0631\u0627\u062a.</td></tr>'; return; }
+        if (!list.length) { coursesBody.innerHTML = '<tr><td colspan="7" class="no-data-msg">' + t("adm.dyn.noCourses") + '</td></tr>'; return; }
         coursesBody.innerHTML = list.map(function (c) {
             return '<tr>' +
                 '<td>' + esc(c.title || "\u2014") + '</td>' +
@@ -579,8 +586,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 '<td><strong>' + (enrollCountMap[c.id] || 0) + '</strong></td>' +
                 '<td>' + fmtDate(c.created_at) + '</td>' +
                 '<td><div class="dashboard-actions">' +
-                    '<button class="dashboard-btn dashboard-btn-edit" data-action="view-enrollments" data-cid="' + esc(c.id) + '" data-ctitle="' + esc(c.title || "") + '">\u0639\u0631\u0636 \u0627\u0644\u0645\u0633\u062c\u0644\u064a\u0646</button>' +
-                    '<button class="dashboard-btn dashboard-btn-delete" data-action="delete-course" data-cid="' + esc(c.id) + '">\u062d\u0630\u0641</button>' +
+                    '<button class="dashboard-btn dashboard-btn-edit" data-action="view-enrollments" data-cid="' + esc(c.id) + '" data-ctitle="' + esc(c.title || "") + '">' + t("adm.dyn.viewEnrollments") + '</button>' +
+                    '<button class="dashboard-btn dashboard-btn-delete" data-action="delete-course" data-cid="' + esc(c.id) + '">' + t("adm.dyn.delete") + '</button>' +
                 '</div></td>' +
             '</tr>';
         }).join("");
@@ -595,7 +602,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             var category    = (document.getElementById("courseCategory") || {}).value || "";
             var seats       = parseInt((document.getElementById("courseSeats") || {}).value || "0", 10);
             var description = (document.getElementById("courseDescription") || {}).value || "";
-            if (!title.trim()) { if (addCourseMsg) { addCourseMsg.textContent = "\u0627\u0644\u0639\u0646\u0648\u0627\u0646 \u0645\u0637\u0644\u0648\u0628."; addCourseMsg.style.color="#f87171"; } return; }
+            if (!title.trim()) { if (addCourseMsg) { addCourseMsg.textContent = t("adm.course.titleRequired"); addCourseMsg.style.color="#f87171"; } return; }
             var res = await sb.from("courses").insert({
                 title: title.trim(),
                 instructor: instructor.trim() || null,
@@ -606,10 +613,10 @@ document.addEventListener("DOMContentLoaded", async function () {
                 created_by: user.id
             });
             if (res.error) {
-                if (addCourseMsg) { addCourseMsg.textContent = "\u062a\u0639\u0630\u0651\u0631 \u0627\u0644\u0646\u0634\u0631: " + res.error.message; addCourseMsg.style.color="#f87171"; }
+                if (addCourseMsg) { addCourseMsg.textContent = t("adm.course.publishError") + ": " + res.error.message; addCourseMsg.style.color="#f87171"; }
                 return;
             }
-            if (addCourseMsg) { addCourseMsg.textContent = "\u062a\u0645 \u0646\u0634\u0631 \u0627\u0644\u062f\u0648\u0631\u0629 \u0628\u0646\u062c\u0627\u062d."; addCourseMsg.style.color="#4ade80"; }
+            if (addCourseMsg) { addCourseMsg.textContent = t("adm.course.publishSuccess"); addCourseMsg.style.color="#4ade80"; }
             addCourseForm.reset();
             await loadCourses();
         });
@@ -641,24 +648,24 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (!panel || !tbody) return;
         currentEnrollmentTitle = courseTitle || "دورة";
         panel.style.display = "block";
-        if (titleEl) titleEl.textContent = "\u0627\u0644\u0645\u0633\u062c\u0644\u0648\u0646 \u0641\u064a: " + currentEnrollmentTitle;
-        tbody.innerHTML = '<tr><td colspan="6" class="no-data-msg">\u062c\u0627\u0631\u064a \u0627\u0644\u062a\u062d\u0645\u064a\u0644...</td></tr>';
+        if (titleEl) titleEl.textContent = t("adm.enrollments.title") + ": " + currentEnrollmentTitle;
+        tbody.innerHTML = '<tr><td colspan="6" class="no-data-msg">' + t("adm.dyn.loading") + '</td></tr>';
         panel.scrollIntoView({ behavior: "smooth", block: "start" });
 
         var res = await sb.from("course_enrollments").select("user_id, status, created_at").eq("course_id", courseId).order("created_at", { ascending: false });
         currentEnrollmentRows = res.data || [];
         if (!currentEnrollmentRows.length) {
-            tbody.innerHTML = '<tr><td colspan="6" class="no-data-msg">\u0644\u0627 \u064a\u0648\u062c\u062f \u0645\u0633\u062c\u0644\u0648\u0646 \u0628\u0639\u062f.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="6" class="no-data-msg">' + t("adm.dyn.noEnrollments") + '</td></tr>';
             return;
         }
 
         tbody.innerHTML = currentEnrollmentRows.map(function (r) {
             var p = profileMap[r.user_id] || {};
             var statusBadge = r.status === "completed"
-                ? '<span class="badge badge-accepted">\u0645\u0643\u062a\u0645\u0644</span>'
+                ? '<span class="badge badge-accepted">'      + t("adm.dyn.statusCompleted") + '</span>'
                 : r.status === "cancelled"
-                ? '<span class="badge badge-rejected">\u0645\u0644\u063a\u0649</span>'
-                : '<span class="badge badge-pending-status">\u0645\u0633\u062c\u0651\u0644</span>';
+                ? '<span class="badge badge-rejected">'      + t("adm.dyn.statusCancelled") + '</span>'
+                : '<span class="badge badge-pending-status">' + t("adm.dyn.statusEnrolled")  + '</span>';
             var phone = p.phone ? '<a href="tel:' + esc(p.phone) + '" class="phone-link">' + esc(p.phone) + '</a>' : "\u2014";
             return '<tr>' +
                 '<td>' + esc(p.full_name || "\u2014") + '</td>' +
@@ -730,7 +737,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     async function loadPromoRequests() {
         if (!promoReqBody || !isSuperPrimary) return;
-        promoReqBody.innerHTML = '<div class="prq-loading">\u062c\u0627\u0631\u064a \u0627\u0644\u062a\u062d\u0645\u064a\u0644...</div>';
+        promoReqBody.innerHTML = '<div class="prq-loading">' + t("adm.dyn.loading") + '</div>';
         var resp = await sb.from("admin_promotion_requests")
             .select("id, requested_by, target_user_id, status, created_at")
             .order("created_at", { ascending: false });
@@ -754,17 +761,17 @@ document.addEventListener("DOMContentLoaded", async function () {
             var approved = list.filter(function (r) { return r.status === "approved"; }).length;
             var rejected = list.filter(function (r) { return r.status === "rejected"; }).length;
             statsEl.innerHTML =
-                '<div class="prq-stat"><span class="prq-stat-num">' + list.length + '</span><span class="prq-stat-lbl">\u0625\u062c\u0645\u0627\u0644\u064a</span></div>' +
-                '<div class="prq-stat prq-stat--pending"><span class="prq-stat-num">' + pending  + '</span><span class="prq-stat-lbl">\u0642\u064a\u062f \u0627\u0644\u0645\u0631\u0627\u062c\u0639\u0629</span></div>' +
-                '<div class="prq-stat prq-stat--approved"><span class="prq-stat-num">' + approved + '</span><span class="prq-stat-lbl">\u0645\u0648\u0627\u0641\u0642 \u0639\u0644\u064a\u0647</span></div>' +
-                '<div class="prq-stat prq-stat--rejected"><span class="prq-stat-num">' + rejected + '</span><span class="prq-stat-lbl">\u0645\u0631\u0641\u0648\u0636</span></div>';
+                '<div class="prq-stat"><span class="prq-stat-num">' + list.length + '</span><span class="prq-stat-lbl">' + t("adm.promo.total")    + '</span></div>' +
+                '<div class="prq-stat prq-stat--pending"><span class="prq-stat-num">' + pending  + '</span><span class="prq-stat-lbl">' + t("adm.dyn.statusPending")  + '</span></div>' +
+                '<div class="prq-stat prq-stat--approved"><span class="prq-stat-num">' + approved + '</span><span class="prq-stat-lbl">' + t("adm.dyn.statusApproved") + '</span></div>' +
+                '<div class="prq-stat prq-stat--rejected"><span class="prq-stat-num">' + rejected + '</span><span class="prq-stat-lbl">' + t("adm.dyn.statusRejected") + '</span></div>';
         }
 
         if (!list.length) {
             promoReqBody.innerHTML =
                 '<div class="prq-empty">' +
                 '<div class="prq-empty-icon">📭</div>' +
-                '<p class="prq-empty-text">\u0644\u0627 \u062a\u0648\u062c\u062f \u0637\u0644\u0628\u0627\u062a \u062a\u0631\u0642\u064a\u0629 \u062d\u062a\u0649 \u0627\u0644\u0622\u0646.</p>' +
+                '<p class="prq-empty-text">' + t("adm.promo.empty") + '</p>' +
                 '</div>';
             return;
         }
@@ -776,17 +783,17 @@ document.addEventListener("DOMContentLoaded", async function () {
             var statusClass = r.status === "approved" ? "prq-status--approved"
                             : r.status === "rejected" ? "prq-status--rejected"
                             : "prq-status--pending";
-            var statusTxt   = r.status === "approved" ? "\u2705 \u0645\u0648\u0627\u0641\u0642 \u0639\u0644\u064a\u0647"
-                            : r.status === "rejected" ? "\u274c \u0645\u0631\u0641\u0648\u0636"
-                            : "\u23f3 \u0642\u064a\u062f \u0627\u0644\u0645\u0631\u0627\u062c\u0639\u0629";
+            var statusTxt   = r.status === "approved" ? "\u2705 " + t("adm.dyn.statusApproved")
+                            : r.status === "rejected"  ? "\u274c " + t("adm.dyn.statusRejected")
+                            : "\u23f3 "                             + t("adm.dyn.statusPending");
 
-            var reqRole  = req.role === "super_admin" ? "\u0645\u0634\u0631\u0641 \u0639\u0627\u0645" : req.role === "company" ? "\u0634\u0631\u0643\u0629" : "\u0628\u0627\u062d\u062b";
-            var tgtRole  = tgt.role === "super_admin" ? "\u0645\u0634\u0631\u0641 \u0639\u0627\u0645" : tgt.role === "company" ? "\u0634\u0631\u0643\u0629" : "\u0628\u0627\u062d\u062b";
+            var reqRole  = roleLabel(req.role || "");
+            var tgtRole  = roleLabel(tgt.role || "");
 
             var actionsHtml = r.status === "pending"
                 ? '<div class="prq-card-actions">' +
-                      '<button class="prq-btn-approve" data-action="promo-approve" data-rid="' + esc(r.id) + '" data-uid="' + esc(r.target_user_id) + '">\u2714 \u0645\u0648\u0627\u0641\u0642\u0629</button>' +
-                      '<button class="prq-btn-reject"  data-action="promo-reject"  data-rid="' + esc(r.id) + '">\u2715 \u0631\u0641\u0636</button>' +
+                      '<button class="prq-btn-approve" data-action="promo-approve" data-rid="' + esc(r.id) + '" data-uid="' + esc(r.target_user_id) + '">\u2714 ' + t("adm.dyn.approve") + '</button>' +
+                      '<button class="prq-btn-reject"  data-action="promo-reject"  data-rid="' + esc(r.id) + '">\u2715 ' + t("adm.dyn.reject") + '</button>' +
                   '</div>'
                 : "";
 
@@ -801,7 +808,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 '<div class="prq-card-mid">' +
                     /* Requester */
                     '<div class="prq-party">' +
-                        '<div class="prq-party-lbl">\u0645\u0642\u062f\u0651\u0645 \u0627\u0644\u0637\u0644\u0628</div>' +
+                        '<div class="prq-party-lbl">' + t("adm.promo.requester") + '</div>' +
                         '<div class="prq-avatar prq-avatar--req">' + esc(reqInitials) + '</div>' +
                         '<div class="prq-party-name">' + esc(req.full_name || "\u2014") + '</div>' +
                         '<div class="prq-party-meta"><span>✉</span> ' + esc(req.email || "\u2014") + '</div>' +
@@ -812,18 +819,18 @@ document.addEventListener("DOMContentLoaded", async function () {
                     /* Arrow */
                     '<div class="prq-arrow">' +
                         '<div class="prq-arrow-line"></div>' +
-                        '<div class="prq-arrow-label">\u064a\u0631\u064a\u062f \u062a\u0631\u0642\u064a\u0629</div>' +
+                        '<div class="prq-arrow-label">' + t("adm.promo.wantsPromo") + '</div>' +
                         '<div class="prq-arrow-icon">←</div>' +
                     '</div>' +
                     /* Target */
                     '<div class="prq-party">' +
-                        '<div class="prq-party-lbl">\u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645 \u0627\u0644\u0645\u0631\u0627\u062f \u062a\u0631\u0642\u064a\u062a\u0647</div>' +
+                        '<div class="prq-party-lbl">' + t("adm.promo.targetUser") + '</div>' +
                         '<div class="prq-avatar prq-avatar--tgt">' + esc(tgtInitials) + '</div>' +
                         '<div class="prq-party-name">' + esc(tgt.full_name || "\u2014") + '</div>' +
                         '<div class="prq-party-meta"><span>✉</span> ' + esc(tgt.email || "\u2014") + '</div>' +
                         (tgt.phone ? '<div class="prq-party-meta"><span>📱</span> <a href="tel:' + esc(tgt.phone) + '">' + esc(tgt.phone) + '</a></div>' : '') +
                         (tgt.specialization ? '<div class="prq-party-meta"><span>🎓</span> ' + esc(tgt.specialization) + '</div>' : '') +
-                        '<div class="prq-party-role prq-party-role--target">' + tgtRole + ' → \u0645\u0634\u0631\u0641 \u0639\u0627\u0645</div>' +
+                        '<div class="prq-party-role prq-party-role--target">' + tgtRole + ' → ' + t("adm.promo.targetRole") + '</div>' +
                     '</div>' +
                 '</div>' +
                 actionsHtml +
@@ -854,6 +861,22 @@ document.addEventListener("DOMContentLoaded", async function () {
             await loadPromoRequests();
         });
     }
+
+    /* ── Re-render on language change ─────────────────────────────── */
+    document.addEventListener("maherLangChanged", function () {
+        filterUsers();
+        populateJobFilter();
+        var activeTab = document.querySelector(".dash-tab.active");
+        if (activeTab) {
+            var tabName = activeTab.dataset.tab;
+            if (tabName === "jobs")            renderJobs(allJobs);
+            if (tabName === "applications")    filterApps();
+            if (tabName === "staff-requests")  renderStaffRequests(staffReqFilter && staffReqFilter.value ? allStaffRequests.filter(function (r) { return r.status === staffReqFilter.value; }) : allStaffRequests);
+            if (tabName === "course-requests") renderCourseRequests(courseReqFilter && courseReqFilter.value ? allCourseRequests.filter(function (r) { return r.status === courseReqFilter.value; }) : allCourseRequests);
+            if (tabName === "courses")         renderCourses(allCourses);
+            if (tabName === "promo-requests")  renderPromoReqs(allPromoReqs);
+        }
+    });
 
     /* init */
     await loadAll();
