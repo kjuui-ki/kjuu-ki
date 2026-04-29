@@ -7,66 +7,500 @@
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>&#x644;&#x648;&#x62d;&#x629; &#x627;&#x644;&#x62a;&#x62d;&#x643;&#x645; | &#x645;&#x646;&#x635;&#x629; &#x645;&#x627;&#x647;&#x631;</title>
+    <title>لوحة التحكم | ماهر</title>
     <link rel="stylesheet" href="assets/css/style.css" />
+    <style>
+        html, body { margin: 0; padding: 0; }
+        .adm-body {
+            min-height: 100vh;
+            font-family: 'Segoe UI', 'Cairo', Arial, sans-serif;
+            background: #0a0e1a;
+            background-image:
+                radial-gradient(ellipse at 12% 18%, rgba(99,102,241,0.45) 0%, transparent 45%),
+                radial-gradient(ellipse at 88% 75%, rgba(59,130,246,0.35) 0%, transparent 45%),
+                radial-gradient(ellipse at 88% 10%, rgba(16,185,129,0.22) 0%, transparent 38%),
+                radial-gradient(ellipse at 12% 88%, rgba(139,92,246,0.28) 0%, transparent 40%),
+                radial-gradient(ellipse at 50% 50%, rgba(30,41,80,0.9) 0%, transparent 65%);
+            background-attachment: fixed;
+        }
+        /* Aurora animated dots */
+        .adm-body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                radial-gradient(ellipse at 35% 60%, rgba(245,158,11,0.12) 0%, transparent 40%),
+                radial-gradient(ellipse at 70% 30%, rgba(236,72,153,0.1) 0%, transparent 38%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .adm-body .main-header,
+        .adm-body .main-footer { display: none !important; }
+        .adm-layout { display: flex; min-height: 100vh; }
+        /* ── Sidebar ── */
+        .adm-sidebar {
+            width: 260px; background: #1a2332; color: #fff;
+            display: flex; flex-direction: column;
+            position: fixed; right: 0; top: 0; bottom: 0;
+            overflow-y: auto; overflow-x: hidden; z-index: 200;
+            transition: transform 0.3s ease;
+        }
+        .adm-sidebar::-webkit-scrollbar { width: 4px; }
+        .adm-sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+        .adm-main { flex: 1; margin-right: 260px; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+        /* ── Logo ── */
+        .adm-logo { display: flex; align-items: center; gap: 0.75rem; padding: 1.4rem 1.25rem; border-bottom: 1px solid rgba(255,255,255,0.08); text-decoration: none; }
+        .adm-logo-icon { width: 44px; height: 44px; background: linear-gradient(135deg,#3b82f6,#2563eb); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.35rem; flex-shrink: 0; }
+        .adm-logo-name { font-size: 1.25rem; font-weight: 800; color: #f8fafc; line-height: 1.2; }
+        .adm-logo-sub { font-size: 0.7rem; color: #64748b; margin-top: 1px; }
+        /* ── User ── */
+        .adm-sidebar-user { display: flex; align-items: center; gap: 0.75rem; padding: 1rem 1.25rem; border-bottom: 1px solid rgba(255,255,255,0.07); }
+        .adm-user-avatar-wrap { position: relative; flex-shrink: 0; }
+        .adm-user-avatar { width: 42px; height: 42px; background: linear-gradient(135deg,#3b82f6,#1d4ed8); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 700; color: #fff; }
+        .adm-user-online-dot { position: absolute; bottom: 1px; left: 1px; width: 11px; height: 11px; background: #22c55e; border-radius: 50%; border: 2px solid #1a2332; }
+        .adm-user-info { flex: 1; min-width: 0; }
+        .adm-user-name { font-size: 0.9rem; font-weight: 700; color: #f1f5f9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .adm-user-role { font-size: 0.72rem; color: #64748b; margin-top: 1px; }
+        /* ── Nav ── */
+        .adm-nav { flex: 1; padding: 0.75rem 0; }
+        .adm-nav-section { font-size: 0.68rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.06em; padding: 0.9rem 1.25rem 0.3rem; }
+        .adm-nav-item { display: flex; align-items: center; gap: 0.7rem; padding: 0.62rem 1rem; margin: 0.08rem 0.5rem; color: #94a3b8; text-decoration: none; font-size: 0.88rem; font-weight: 500; border-radius: 9px; cursor: pointer; border: none; background: none; width: calc(100% - 1rem); text-align: right; font-family: inherit; transition: background 0.15s, color 0.15s; }
+        .adm-nav-item:hover { background: rgba(59,130,246,0.1); color: #e2e8f0; }
+        .adm-nav-item.active { background: #3b82f6; color: #fff; }
+        .adm-nav-icon { font-size: 1rem; flex-shrink: 0; width: 20px; text-align: center; }
+        .adm-nav-label { flex: 1; }
+        .adm-nav-badge { background: #ef4444; color: #fff; font-size: 0.68rem; font-weight: 700; padding: 0.12rem 0.42rem; border-radius: 9999px; min-width: 1.25rem; text-align: center; line-height: 1.4; }
+        .adm-nav-badge.yellow { background: #f59e0b; }
+        .adm-nav-badge.green  { background: #10b981; }
+        .adm-nav-badge.blue   { background: #3b82f6; }
+        /* ── Logout ── */
+        .adm-sidebar-footer { padding: 1rem 1.25rem; border-top: 1px solid rgba(255,255,255,0.07); }
+        .adm-logout-btn { display: flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%; padding: 0.7rem 1rem; background: linear-gradient(135deg,#dc2626,#ef4444); color: #fff; border: none; border-radius: 10px; cursor: pointer; font-size: 0.88rem; font-weight: 700; font-family: inherit; transition: opacity 0.15s; }
+        .adm-logout-btn:hover { opacity: 0.88; }
+        /* ── Topbar ── */
+        .adm-topbar { background: rgba(255,255,255,0.07); backdrop-filter: blur(18px) saturate(180%); -webkit-backdrop-filter: blur(18px) saturate(180%); padding: 0.9rem 1.5rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 24px rgba(0,0,0,0.25); }
+        .adm-topbar-left { display: flex; align-items: center; gap: 0.75rem; }
+        .adm-sidebar-toggle { display: none; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.4rem 0.55rem; cursor: pointer; font-size: 1.1rem; color: #64748b; }
+        .adm-page-title { font-size: 1.25rem; font-weight: 800; color: #f1f5f9; margin: 0; text-shadow: 0 1px 8px rgba(0,0,0,0.3); }
+        .adm-page-date { font-size: 0.78rem; color: rgba(255,255,255,0.5); margin: 0; }
+        .adm-topbar-right { display: flex; align-items: center; gap: 0.65rem; }
+        .adm-topbar-avatar { width: 36px; height: 36px; background: linear-gradient(135deg,#3b82f6,#1d4ed8); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.82rem; font-weight: 700; flex-shrink: 0; box-shadow: 0 0 14px rgba(59,130,246,0.5); }
+        .adm-topbar-name { font-weight: 600; color: rgba(255,255,255,0.85); font-size: 0.88rem; }
+        .adm-refresh-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.7); border-radius: 8px; padding: 0.4rem 0.55rem; cursor: pointer; font-size: 1rem; transition: background 0.15s; }
+        .adm-refresh-btn:hover { background: rgba(255,255,255,0.18); }
+        /* ── Content ── */
+        .adm-content { flex: 1; padding: 1.5rem; position: relative; z-index: 1; }
+        /* ── Stats ── */
+        .adm-stats-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(170px,1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+        .adm-stat-card { background: rgba(255,255,255,0.09); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.13); border-radius: 18px; padding: 1.25rem 1.1rem; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 8px 32px rgba(0,0,0,0.25); position: relative; overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; }
+        .adm-stat-card:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(0,0,0,0.35); }
+        .adm-stat-info { position: relative; z-index: 1; }
+        .adm-stat-num { font-size: 1.65rem; font-weight: 800; color: #f1f5f9; line-height: 1; text-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+        .adm-stat-label { font-size: 0.78rem; color: rgba(255,255,255,0.6); margin-top: 0.35rem; }
+        .adm-stat-icon-wrap { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; position: relative; z-index: 1; flex-shrink: 0; }
+        .adm-stat-deco { position: absolute; width: 90px; height: 90px; border-radius: 50%; top: -22px; left: -22px; opacity: 0.22; }
+        .adm-stat-blue   .adm-stat-icon-wrap { background: #dbeafe; } .adm-stat-blue   .adm-stat-deco { background: #93c5fd; }
+        .adm-stat-green  .adm-stat-icon-wrap { background: #dcfce7; } .adm-stat-green  .adm-stat-deco { background: #86efac; }
+        .adm-stat-purple .adm-stat-icon-wrap { background: #ede9fe; } .adm-stat-purple .adm-stat-deco { background: #c4b5fd; }
+        .adm-stat-yellow .adm-stat-icon-wrap { background: #fef3c7; } .adm-stat-yellow .adm-stat-deco { background: #fde68a; }
+        .adm-stat-red    .adm-stat-icon-wrap { background: #fee2e2; } .adm-stat-red    .adm-stat-deco { background: #fca5a5; }
+        /* ── Overview grid ── */
+        .adm-overview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+        .adm-ov-card { background: rgba(255,255,255,0.07); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.11); border-radius: 18px; padding: 1.25rem; box-shadow: 0 8px 32px rgba(0,0,0,0.22); }
+        .adm-ov-card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .adm-ov-card-title { font-size: 0.95rem; font-weight: 700; color: #f1f5f9; display: flex; align-items: center; gap: 0.4rem; }
+        .adm-view-all { font-size: 0.78rem; color: #60a5fa; text-decoration: none; font-weight: 500; }
+        .adm-ov-item { display: flex; align-items: center; gap: 0.65rem; padding: 0.55rem 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 0.83rem; }
+        .adm-ov-item:last-child { border-bottom: none; }
+        .adm-ov-avatar { width: 32px; height: 32px; background: linear-gradient(135deg,#6366f1,#4f46e5); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.72rem; font-weight: 700; flex-shrink: 0; box-shadow: 0 0 10px rgba(99,102,241,0.4); }
+        .adm-ov-name { font-weight: 600; color: #e2e8f0; }
+        .adm-ov-meta { color: rgba(255,255,255,0.45); font-size: 0.75rem; }
+        .adm-ov-status { margin-right: auto; font-size: 0.72rem; font-weight: 600; padding: 0.15rem 0.5rem; border-radius: 6px; }
+        .adm-ov-status.pending  { background: #fef3c7; color: #92400e; }
+        .adm-ov-status.accepted { background: #dcfce7; color: #166534; }
+        .adm-ov-status.rejected { background: #fee2e2; color: #991b1b; }
+        .adm-loading-row { display: flex; align-items: center; gap: 0.5rem; color: rgba(255,255,255,0.4); font-size: 0.82rem; padding: 0.75rem 0; }
+        /* ── Jobs dist bar ── */
+        .adm-dist-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; font-size: 0.82rem; }
+        .adm-dist-label { width: 120px; text-align: right; color: rgba(255,255,255,0.7); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .adm-dist-bar-wrap { flex: 1; background: rgba(255,255,255,0.1); border-radius: 9999px; height: 10px; overflow: hidden; }
+        .adm-dist-bar { height: 100%; border-radius: 9999px; background: linear-gradient(90deg,#3b82f6,#6366f1); transition: width 0.6s ease; }
+        .adm-dist-count { min-width: 28px; text-align: left; font-weight: 700; color: #e2e8f0; }
+        /* ── Mobile overlay ── */
+        .adm-sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 190; }
+        /* ═══════════════════════════════════════════════
+           DARK THEME OVERRIDES FOR ALL PANELS & TABLES
+           ═══════════════════════════════════════════════ */
+
+        /* ── Cards ── */
+        .adm-content .dash-card {
+            background: rgba(15,23,42,0.7) !important;
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
+            border: 1px solid rgba(148,163,184,0.12) !important;
+            border-radius: 18px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+            margin-bottom: 1.5rem;
+            color: #e2e8f0;
+        }
+        .adm-content .dash-card-header {
+            border-bottom: 1px solid rgba(148,163,184,0.12) !important;
+            padding: 1rem 1.25rem !important;
+        }
+        .adm-content .dash-card-title { color: #f1f5f9 !important; font-size: 1rem !important; }
+
+        /* ── Table wrapper: remove the white box ── */
+        .adm-content .dashboard-table-wrap {
+            background: transparent !important;
+            border: 1px solid rgba(148,163,184,0.12) !important;
+            box-shadow: none !important;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        /* ── Table headers ── */
+        .adm-content .dashboard-table thead tr {
+            background: rgba(99,102,241,0.18) !important;
+        }
+        .adm-content .dashboard-table th {
+            color: #c7d2fe !important;
+            background: transparent !important;
+            font-weight: 700 !important;
+            font-size: 0.82rem !important;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(148,163,184,0.15) !important;
+            padding: 0.75rem 0.85rem !important;
+        }
+
+        /* ── Table rows ── */
+        .adm-content .dashboard-table td {
+            color: #e2e8f0 !important;
+            font-size: 0.88rem !important;
+            border-bottom: 1px solid rgba(148,163,184,0.08) !important;
+            padding: 0.7rem 0.85rem !important;
+        }
+        .adm-content .dashboard-table tbody tr:hover td {
+            background: rgba(99,102,241,0.08) !important;
+        }
+
+        /* ── Search & filters ── */
+        .adm-content .admin-search,
+        .adm-content .admin-select,
+        .adm-content .admin-select-sm {
+            background: rgba(255,255,255,0.07) !important;
+            border: 1px solid rgba(148,163,184,0.2) !important;
+            color: #e2e8f0 !important;
+            border-radius: 8px;
+        }
+        .adm-content .admin-search::placeholder { color: rgba(255,255,255,0.3) !important; }
+        .adm-content .admin-select option,
+        .adm-content .admin-select-sm option { background: #1e2d4a; color: #e2e8f0; }
+
+        /* ── Empty state ── */
+        .adm-content .no-data-msg { color: rgba(255,255,255,0.35) !important; font-style: italic; }
+
+        /* ── Form inputs (add course form etc.) ── */
+        .adm-content input,
+        .adm-content textarea {
+            background: rgba(255,255,255,0.07) !important;
+            border: 1px solid rgba(148,163,184,0.2) !important;
+            color: #e2e8f0 !important;
+            border-radius: 8px;
+        }
+        .adm-content input::placeholder,
+        .adm-content textarea::placeholder { color: rgba(255,255,255,0.28) !important; }
+        .adm-content label { color: rgba(255,255,255,0.7) !important; font-size: 0.85rem; }
+
+        /* ── Badges: make readable on dark ── */
+        .adm-content .badge-role-seeker  { background: rgba(99,102,241,0.25) !important; color: #a5b4fc !important; border: 1px solid rgba(99,102,241,0.35) !important; }
+        .adm-content .badge-role-company { background: rgba(14,165,233,0.2)  !important; color: #7dd3fc !important; border: 1px solid rgba(14,165,233,0.3)  !important; }
+        .adm-content .badge-role-admin   { background: rgba(245,158,11,0.2)  !important; color: #fcd34d !important; border: 1px solid rgba(245,158,11,0.3)  !important; }
+        .adm-content .badge-accepted, .adm-content .badge-pending-status.badge-accepted,
+        .adm-content .badge.badge-accepted { background: rgba(16,185,129,0.2) !important; color: #6ee7b7 !important; border: 1px solid rgba(16,185,129,0.35) !important; }
+        .adm-content .badge-rejected { background: rgba(239,68,68,0.2) !important; color: #fca5a5 !important; border: 1px solid rgba(239,68,68,0.3) !important; }
+        .adm-content .badge-pending-status { background: rgba(245,158,11,0.18) !important; color: #fcd34d !important; border: 1px solid rgba(245,158,11,0.28) !important; }
+        .adm-content .badge { border-radius: 999px; padding: 0.22rem 0.7rem; font-size: 0.78rem; font-weight: 600; white-space: nowrap; }
+
+        /* ── Links inside table ── */
+        .adm-content .btn-link { color: #7dd3fc !important; }
+        .adm-content .phone-link { color: #a5b4fc !important; }
+
+        /* ── Role select inside table ── */
+        .adm-content .role-select { background: rgba(255,255,255,0.07) !important; border: 1px solid rgba(148,163,184,0.2) !important; color: #e2e8f0 !important; font-size: 0.8rem; border-radius: 6px; padding: 0.25rem 0.4rem; }
+
+        /* ── Buttons inside table ── */
+        .adm-content .dashboard-btn { border-radius: 8px !important; font-size: 0.78rem !important; font-weight: 600 !important; padding: 0.32rem 0.72rem !important; }
+        .adm-content .dashboard-btn-edit   { background: rgba(99,102,241,0.18) !important; color: #a5b4fc !important; }
+        .adm-content .dashboard-btn-delete { background: rgba(239,68,68,0.18)  !important; color: #fca5a5 !important; }
+        .adm-content .dashboard-btn-accept { background: rgba(16,185,129,0.18) !important; color: #6ee7b7 !important; }
+        .adm-content .dashboard-btn-reject { background: rgba(239,68,68,0.18)  !important; color: #fca5a5 !important; }
+        .adm-content .dashboard-btn-export { background: rgba(59,130,246,0.2)  !important; color: #93c5fd !important; border: 1px solid rgba(59,130,246,0.3) !important; }
+        .adm-content .dashboard-btn-reset-pwd { background: rgba(245,158,11,0.18) !important; color: #fcd34d !important; }
+
+        /* ── Admin filter row ── */
+        .adm-content .admin-filter-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+
+        /* ── PRQ Promo Requests ── */
+        .adm-content .prq-panel { background: transparent; }
+        .adm-content .prq-panel-head {
+            background: rgba(15,23,42,0.7) !important;
+            border: 1px solid rgba(148,163,184,0.12) !important;
+            border-radius: 16px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1.25rem;
+            backdrop-filter: blur(20px);
+        }
+        .adm-content .prq-panel-title { color: #f1f5f9 !important; font-size: 1.1rem !important; font-weight: 800 !important; }
+        .adm-content .prq-panel-sub   { color: rgba(255,255,255,0.45) !important; font-size: 0.82rem !important; }
+        .adm-content .prq-panel-icon  { font-size: 2rem; }
+        .adm-content .prq-panel-title-wrap { display: flex; align-items: center; gap: 1rem; }
+        .adm-content .prq-stats { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1rem; }
+        .adm-content .prq-stat {
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(148,163,184,0.15);
+            border-radius: 12px;
+            padding: 0.6rem 1rem;
+            text-align: center;
+            min-width: 70px;
+        }
+        .adm-content .prq-stat-num { display: block; font-size: 1.4rem; font-weight: 800; color: #e2e8f0; }
+        .adm-content .prq-stat-lbl { font-size: 0.7rem; color: rgba(255,255,255,0.45); }
+        .adm-content .prq-stat--pending  .prq-stat-num { color: #fcd34d; }
+        .adm-content .prq-stat--approved .prq-stat-num { color: #6ee7b7; }
+        .adm-content .prq-stat--rejected .prq-stat-num { color: #fca5a5; }
+
+        .adm-content .prq-cards-wrap { display: flex; flex-direction: column; gap: 1rem; }
+        .adm-content .prq-card {
+            background: rgba(15,23,42,0.7) !important;
+            border: 1px solid rgba(148,163,184,0.12) !important;
+            border-radius: 14px;
+            padding: 1.25rem 1.5rem;
+            backdrop-filter: blur(16px);
+        }
+        .adm-content .prq-card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .adm-content .prq-date  { font-size: 0.78rem; color: rgba(255,255,255,0.4); }
+        .adm-content .prq-status { font-size: 0.8rem; font-weight: 700; padding: 0.25rem 0.75rem; border-radius: 999px; }
+        .adm-content .prq-status--pending  { background: rgba(245,158,11,0.2);  color: #fcd34d; border: 1px solid rgba(245,158,11,0.3); }
+        .adm-content .prq-status--approved { background: rgba(16,185,129,0.2); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.3); }
+        .adm-content .prq-status--rejected { background: rgba(239,68,68,0.2);   color: #fca5a5; border: 1px solid rgba(239,68,68,0.3); }
+        .adm-content .prq-card-mid { display: flex; gap: 1.5rem; align-items: flex-start; flex-wrap: wrap; }
+        .adm-content .prq-party { flex: 1; min-width: 180px; }
+        .adm-content .prq-party-lbl  { font-size: 0.7rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+        .adm-content .prq-party-name { font-size: 0.95rem; font-weight: 700; color: #f1f5f9; margin: 0.3rem 0; }
+        .adm-content .prq-party-meta { font-size: 0.78rem; color: rgba(255,255,255,0.5); margin: 0.15rem 0; }
+        .adm-content .prq-party-meta a { color: #7dd3fc; }
+        .adm-content .prq-party-role { margin-top: 0.4rem; }
+        .adm-content .prq-arrow { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 0.5rem; color: rgba(255,255,255,0.3); font-size: 1.5rem; }
+        .adm-content .prq-arrow-label { font-size: 0.7rem; color: rgba(255,255,255,0.3); text-align: center; }
+        .adm-content .prq-avatar { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff; font-size: 0.9rem; }
+        .adm-content .prq-avatar--req { background: linear-gradient(135deg,#6366f1,#4f46e5); box-shadow: 0 0 14px rgba(99,102,241,0.4); }
+        .adm-content .prq-avatar--tgt { background: linear-gradient(135deg,#f59e0b,#d97706); box-shadow: 0 0 14px rgba(245,158,11,0.4); }
+        .adm-content .prq-card-actions { display: flex; gap: 0.75rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(148,163,184,0.1); }
+        .adm-content .prq-btn-approve { padding: 0.45rem 1.2rem; background: linear-gradient(135deg,#10b981,#059669); color: #fff; border: none; border-radius: 9px; font-weight: 700; font-size: 0.85rem; cursor: pointer; font-family: inherit; }
+        .adm-content .prq-btn-reject  { padding: 0.45rem 1.2rem; background: rgba(239,68,68,0.2); color: #fca5a5; border: 1px solid rgba(239,68,68,0.3); border-radius: 9px; font-weight: 700; font-size: 0.85rem; cursor: pointer; font-family: inherit; }
+        .adm-content .prq-empty { text-align: center; padding: 3rem 1rem; }
+        .adm-content .prq-empty-icon { font-size: 3rem; margin-bottom: 0.75rem; }
+        .adm-content .prq-empty-text  { color: rgba(255,255,255,0.35); font-size: 0.9rem; }
+        .adm-content .prq-loading { text-align: center; padding: 2rem; color: rgba(255,255,255,0.4); }
+        /* ── Responsive ── */
+        @media (max-width: 900px) {
+            .adm-sidebar { transform: translateX(100%); }
+            .adm-sidebar.open { transform: translateX(0); }
+            .adm-sidebar-overlay.open { display: block; }
+            .adm-main { margin-right: 0; }
+            .adm-sidebar-toggle { display: flex !important; }
+            .adm-overview-grid { grid-template-columns: 1fr; }
+            .adm-stats-grid { grid-template-columns: repeat(2,1fr); }
+        }
+        @media (max-width: 480px) {
+            .adm-stats-grid { grid-template-columns: 1fr 1fr; }
+            .adm-content { padding: 1rem; }
+            .adm-topbar { padding: 0.75rem 1rem; }
+            .adm-topbar-name { display: none; }
+        }
+    </style>
 </head>
-<body>
-    <header class="main-header">
-        <div class="container header-inner">
-            <div class="header-main-group">
-                <a href="index.html" class="logo">
-                    <img src="assets/images/ksu1.png" alt="&#x634;&#x639;&#x627;&#x631; &#x627;&#x644;&#x645;&#x646;&#x635;&#x629;" class="logo-img">
-                </a>
-                <nav class="main-nav" id="mainNav"></nav>
+<body class="adm-body">
+
+<div class="adm-sidebar-overlay" id="admOverlay"></div>
+
+<div class="adm-layout">
+
+    <!-- ═══════════════ SIDEBAR ═══════════════ -->
+    <aside class="adm-sidebar" id="admSidebar">
+
+        <a href="index.html" class="adm-logo">
+            <div class="adm-logo-icon">🎓</div>
+            <div>
+                <div class="adm-logo-name">ماهر</div>
+                <div class="adm-logo-sub">لوحة التحكم</div>
             </div>
-            <div class="lang-switch">
-                <button class="lang-btn" data-lang="ar">&#x627;&#x644;&#x639;&#x631;&#x628;&#x64a;&#x629;</button>
-                <button class="lang-btn" data-lang="en">English</button>
+        </a>
+
+        <div class="adm-sidebar-user">
+            <div class="adm-user-avatar-wrap">
+                <div class="adm-user-avatar" id="sidebarAdminInitials">م</div>
+                <div class="adm-user-online-dot"></div>
+            </div>
+            <div class="adm-user-info">
+                <div class="adm-user-name" id="sidebarAdminName">جاري التحميل...</div>
+                <div class="adm-user-role">مشرف النظام</div>
             </div>
         </div>
-    </header>
 
-    <main class="section">
-        <div class="container">
+        <nav class="adm-nav">
 
-            <!-- Hero -->
-            <div class="admin-hero">
+            <div class="adm-nav-section">الرئيسية</div>
+            <button class="adm-nav-item dash-tab active" data-tab="overview">
+                <span class="adm-nav-icon">📊</span><span class="adm-nav-label">نظرة عامة</span>
+            </button>
+
+            <div class="adm-nav-section">إدارة المستخدمين</div>
+            <button class="adm-nav-item dash-tab" data-tab="users">
+                <span class="adm-nav-icon">👥</span><span class="adm-nav-label">المستخدمون</span>
+                <span class="adm-nav-badge blue" id="navBadgeUsers">0</span>
+            </button>
+            <button class="adm-nav-item dash-tab" id="promoReqTab" style="display:none;" data-tab="promo-requests">
+                <span class="adm-nav-icon">🔑</span><span class="adm-nav-label">طلبات الترقية</span>
+                <span class="adm-nav-badge yellow" id="navBadgePromo">0</span>
+            </button>
+
+            <div class="adm-nav-section">إدارة الوظائف</div>
+            <button class="adm-nav-item dash-tab" data-tab="jobs">
+                <span class="adm-nav-icon">💼</span><span class="adm-nav-label">الوظائف</span>
+                <span class="adm-nav-badge blue" id="navBadgeJobs">0</span>
+            </button>
+            <button class="adm-nav-item dash-tab" data-tab="applications">
+                <span class="adm-nav-icon">📋</span><span class="adm-nav-label">الطلبات</span>
+                <span class="adm-nav-badge" id="navBadgeApps">0</span>
+            </button>
+            <button class="adm-nav-item dash-tab" data-tab="staff-requests">
+                <span class="adm-nav-icon">👔</span><span class="adm-nav-label">طلبات التوظيف</span>
+            </button>
+
+            <div class="adm-nav-section">إدارة الدورات</div>
+            <button class="adm-nav-item dash-tab" data-tab="courses">
+                <span class="adm-nav-icon">📚</span><span class="adm-nav-label">الدورات</span>
+            </button>
+            <button class="adm-nav-item dash-tab" data-tab="course-requests">
+                <span class="adm-nav-icon">📝</span><span class="adm-nav-label">طلبات الدورات</span>
+            </button>
+
+        </nav>
+
+        <div class="adm-sidebar-footer">
+            <button class="adm-logout-btn" id="admLogoutBtn">
+                <span>→</span><span>تسجيل الخروج</span>
+            </button>
+        </div>
+
+    </aside>
+
+    <!-- ═══════════════ MAIN ═══════════════ -->
+    <main class="adm-main">
+
+        <!-- Topbar -->
+        <div class="adm-topbar">
+            <div class="adm-topbar-left">
+                <button class="adm-sidebar-toggle" id="admSidebarToggle">☰</button>
                 <div>
-                    <p class="company-dash-welcome" data-i18n="adm.hero.badge">&#x644;&#x648;&#x62d;&#x629; &#x62a;&#x62d;&#x643;&#x645; &#x627;&#x644;&#x645;&#x634;&#x631;&#x641; &#x627;&#x644;&#x639;&#x627;&#x645;</p>
-                    <h1 id="adminName">&#x62c;&#x627;&#x631;&#x64a; &#x627;&#x644;&#x62a;&#x62d;&#x645;&#x64a;&#x644;...</h1>
-                    <p class="company-dash-sub" data-i18n="adm.hero.sub">&#x625;&#x62f;&#x627;&#x631;&#x629; &#x643;&#x627;&#x645;&#x644;&#x629; &#x644;&#x644;&#x645;&#x633;&#x62a;&#x62e;&#x62f;&#x645;&#x64a;&#x646; &#x648;&#x627;&#x644;&#x648;&#x638;&#x627;&#x626;&#x641; &#x648;&#x627;&#x644;&#x637;&#x644;&#x628;&#x627;&#x62a;</p>
+                    <h1 class="adm-page-title" id="admPageTitle">نظرة عامة</h1>
+                    <p class="adm-page-date" id="admPageDate"></p>
                 </div>
-                <div class="company-dash-stats">
-                    <div class="company-dash-stat"><span class="company-dash-stat-num" id="statSeekers">&mdash;</span><span class="company-dash-stat-label">&#x628;&#x627;&#x62d;&#x62b;</span></div>
-                    <div class="company-dash-stat"><span class="company-dash-stat-num" id="statCompanies">&mdash;</span><span class="company-dash-stat-label">&#x634;&#x631;&#x643;&#x629;</span></div>
-                    <div class="company-dash-stat"><span class="company-dash-stat-num" id="statJobs">&mdash;</span><span class="company-dash-stat-label">&#x648;&#x638;&#x64a;&#x641;&#x629;</span></div>
-                    <div class="company-dash-stat"><span class="company-dash-stat-num" id="statApplications">&mdash;</span><span class="company-dash-stat-label">&#x637;&#x644;&#x628;</span></div>
+            </div>
+            <div class="adm-topbar-right">
+                <div class="adm-topbar-avatar" id="admTopbarInitials">م</div>
+                <span class="adm-topbar-name" id="admTopbarName">المدير</span>
+                <button class="adm-refresh-btn" id="admRefreshBtn" title="تحديث البيانات">↻</button>
+            </div>
+        </div>
+
+        <!-- Content panels -->
+        <div class="adm-content">
+
+            <!-- ── OVERVIEW ── -->
+            <div class="dash-tab-content" id="tab-overview">
+                <div class="adm-stats-grid">
+                    <div class="adm-stat-card adm-stat-blue">
+                        <div class="adm-stat-deco"></div>
+                        <div class="adm-stat-info">
+                            <div class="adm-stat-num" id="statTotalUsers">—</div>
+                            <div class="adm-stat-label">إجمالي المستخدمين</div>
+                        </div>
+                        <div class="adm-stat-icon-wrap">👥</div>
+                    </div>
+                    <div class="adm-stat-card adm-stat-green">
+                        <div class="adm-stat-deco"></div>
+                        <div class="adm-stat-info">
+                            <div class="adm-stat-num" id="statJobs">—</div>
+                            <div class="adm-stat-label">الوظائف النشطة</div>
+                        </div>
+                        <div class="adm-stat-icon-wrap">💼</div>
+                    </div>
+                    <div class="adm-stat-card adm-stat-purple">
+                        <div class="adm-stat-deco"></div>
+                        <div class="adm-stat-info">
+                            <div class="adm-stat-num" id="statApplications">—</div>
+                            <div class="adm-stat-label">الطلبات</div>
+                        </div>
+                        <div class="adm-stat-icon-wrap">📋</div>
+                    </div>
+                    <div class="adm-stat-card adm-stat-yellow">
+                        <div class="adm-stat-deco"></div>
+                        <div class="adm-stat-info">
+                            <div class="adm-stat-num" id="statSeekers">—</div>
+                            <div class="adm-stat-label">الباحثون عن عمل</div>
+                        </div>
+                        <div class="adm-stat-icon-wrap">🧑‍💼</div>
+                    </div>
+                    <div class="adm-stat-card adm-stat-red">
+                        <div class="adm-stat-deco"></div>
+                        <div class="adm-stat-info">
+                            <div class="adm-stat-num" id="statCompanies">—</div>
+                            <div class="adm-stat-label">الشركات</div>
+                        </div>
+                        <div class="adm-stat-icon-wrap">🏢</div>
+                    </div>
+                </div>
+
+                <div class="adm-overview-grid">
+                    <div class="adm-ov-card">
+                        <div class="adm-ov-card-head">
+                            <div class="adm-ov-card-title"><span>📋</span> آخر الطلبات</div>
+                            <a href="#" class="adm-view-all dash-tab" data-tab="applications">عرض الكل ←</a>
+                        </div>
+                        <div id="overviewRecentApps"><div class="adm-loading-row">⏳ جاري التحميل...</div></div>
+                    </div>
+                    <div class="adm-ov-card">
+                        <div class="adm-ov-card-head">
+                            <div class="adm-ov-card-title"><span>👤</span> آخر التسجيلات</div>
+                            <a href="#" class="adm-view-all dash-tab" data-tab="users">عرض الكل ←</a>
+                        </div>
+                        <div id="overviewRecentUsers"><div class="adm-loading-row">⏳ جاري التحميل...</div></div>
+                    </div>
+                </div>
+
+                <div class="adm-ov-card">
+                    <div class="adm-ov-card-head">
+                        <div class="adm-ov-card-title">📊 توزيع الوظائف حسب النوع</div>
+                    </div>
+                    <div id="overviewJobsDist"><div class="adm-loading-row">⏳ جاري التحميل...</div></div>
                 </div>
             </div>
 
-            <!-- Tabs -->
-            <div class="dash-tabs">
-                <button class="dash-tab active" data-tab="users" data-i18n="adm.tab.users">&#x627;&#x644;&#x645;&#x633;&#x62a;&#x62e;&#x62f;&#x645;&#x648;&#x646;</button>
-                <button class="dash-tab" data-tab="jobs" data-i18n="adm.tab.jobs">&#x627;&#x644;&#x648;&#x638;&#x627;&#x626;&#x641;</button>
-                <button class="dash-tab" data-tab="applications" data-i18n="adm.tab.applications">&#x627;&#x644;&#x637;&#x644;&#x628;&#x627;&#x62a;</button>
-                <button class="dash-tab" data-tab="staff-requests" data-i18n="adm.tab.staffRequests">&#x637;&#x644;&#x628;&#x627;&#x62a; &#x627;&#x644;&#x62a;&#x648;&#x638;&#x64a;&#x641;</button>
-                <button class="dash-tab" data-tab="course-requests" data-i18n="adm.tab.courseRequests">&#x637;&#x644;&#x628;&#x627;&#x62a; &#x627;&#x644;&#x62f;&#x648;&#x631;&#x627;&#x62a;</button>
-                <button class="dash-tab" data-tab="courses" data-i18n="adm.tab.courses">&#x627;&#x644;&#x62f;&#x648;&#x631;&#x627;&#x62a;</button>
-                <button class="dash-tab" data-tab="promo-requests" id="promoReqTab" style="display:none;" data-i18n="adm.tab.promoRequests">&#x1f511; &#x637;&#x644;&#x628;&#x627;&#x62a; &#x627;&#x644;&#x62a;&#x631;&#x642;&#x64a;&#x629;</button>
-            </div>
-
-            <!-- Users Tab -->
-            <div class="dash-tab-content" id="tab-users">
+            <!-- ── USERS ── -->
+            <div class="dash-tab-content" id="tab-users" style="display:none;">
                 <div class="dash-card">
                     <div class="dash-card-header">
-                        <h2 class="dash-card-title" data-i18n="adm.users.title">&#x625;&#x62f;&#x627;&#x631;&#x629; &#x627;&#x644;&#x645;&#x633;&#x62a;&#x62e;&#x62f;&#x645;&#x64a;&#x646;</h2>
+                        <h2 class="dash-card-title" data-i18n="adm.users.title">إدارة المستخدمين</h2>
                         <div class="admin-filter-row">
-                            <input type="text" id="usersSearch" class="admin-search" placeholder="&#x628;&#x62d;&#x62b; &#x628;&#x627;&#x644;&#x627;&#x633;&#x645; &#x623;&#x648; &#x627;&#x644;&#x625;&#x64a;&#x645;&#x64a;&#x644;..." data-i18n-placeholder="adm.users.searchPlaceholder" />
+                            <input type="text" id="usersSearch" class="admin-search" placeholder="بحث بالاسم أو الإيميل..." data-i18n-placeholder="adm.users.searchPlaceholder" />
                             <select id="usersRoleFilter" class="admin-select">
-                                <option value="" data-i18n="adm.users.filter.all">&#x643;&#x644; &#x627;&#x644;&#x645;&#x633;&#x62a;&#x62e;&#x62f;&#x645;&#x64a;&#x646; &#x25be;</option>
-                                <option value="job_seeker" data-i18n="adm.users.filter.seeker">&#x628;&#x627;&#x62d;&#x62b; &#x639;&#x646; &#x639;&#x645;&#x644;</option>
-                                <option value="company" data-i18n="adm.users.filter.company">&#x634;&#x631;&#x643;&#x629;</option>
-                                <option value="super_admin" data-i18n="adm.users.filter.admin">&#x623;&#x62f;&#x645;&#x646;</option>
+                                <option value="" data-i18n="adm.users.filter.all">كل المستخدمين ▾</option>
+                                <option value="job_seeker" data-i18n="adm.users.filter.seeker">باحث عن عمل</option>
+                                <option value="company" data-i18n="adm.users.filter.company">شركة</option>
+                                <option value="super_admin" data-i18n="adm.users.filter.admin">أدمن</option>
                             </select>
                         </div>
                     </div>
@@ -89,206 +523,201 @@
                 </div>
             </div>
 
-            <!-- Jobs Tab -->
+            <!-- ── JOBS ── -->
             <div class="dash-tab-content" id="tab-jobs" style="display:none;">
                 <div class="dash-card">
                     <div class="dash-card-header">
-                        <h2 class="dash-card-title" data-i18n="adm.jobs.title">&#x625;&#x62f;&#x627;&#x631;&#x629; &#x627;&#x644;&#x648;&#x638;&#x627;&#x626;&#x641;</h2>
-                        <input type="text" id="jobsSearch" class="admin-search" placeholder="&#x628;&#x62d;&#x62b; &#x628;&#x627;&#x633;&#x645; &#x627;&#x644;&#x648;&#x638;&#x64a;&#x641;&#x629; &#x623;&#x648; &#x627;&#x644;&#x634;&#x631;&#x643;&#x629;..." data-i18n-placeholder="adm.jobs.searchPlaceholder" />
+                        <h2 class="dash-card-title" data-i18n="adm.jobs.title">إدارة الوظائف</h2>
+                        <input type="text" id="jobsSearch" class="admin-search" placeholder="بحث باسم الوظيفة أو الشركة..." data-i18n-placeholder="adm.jobs.searchPlaceholder" />
                     </div>
                     <div class="dashboard-table-wrap">
                         <table class="dashboard-table">
                             <thead>
                                 <tr>
-                                    <th data-i18n="adm.th.jobTitle">&#x627;&#x633;&#x645; &#x627;&#x644;&#x648;&#x638;&#x64a;&#x641;&#x629;</th>
-                                    <th data-i18n="adm.th.company">&#x627;&#x644;&#x634;&#x631;&#x643;&#x629;</th>
-                                    <th data-i18n="adm.th.location">&#x627;&#x644;&#x645;&#x648;&#x642;&#x639;</th>
-                                    <th data-i18n="adm.th.type">&#x627;&#x644;&#x646;&#x648;&#x639;</th>
-                                    <th data-i18n="adm.th.postedAt">&#x62a;&#x627;&#x631;&#x64a;&#x62e; &#x627;&#x644;&#x646;&#x634;&#x631;</th>
-                                    <th data-i18n="adm.th.actions">&#x627;&#x644;&#x625;&#x62c;&#x631;&#x627;&#x621;&#x627;&#x62a;</th>
+                                    <th data-i18n="adm.th.jobTitle">اسم الوظيفة</th>
+                                    <th data-i18n="adm.th.company">الشركة</th>
+                                    <th data-i18n="adm.th.location">الموقع</th>
+                                    <th data-i18n="adm.th.type">النوع</th>
+                                    <th data-i18n="adm.th.postedAt">تاريخ النشر</th>
+                                    <th data-i18n="adm.th.actions">الإجراءات</th>
                                 </tr>
                             </thead>
-                            <tbody id="jobsTableBody"><tr><td colspan="6" class="no-data-msg">&#x62c;&#x627;&#x631;&#x64a; &#x627;&#x644;&#x62a;&#x62d;&#x645;&#x64a;&#x644;...</td></tr></tbody>
+                            <tbody id="jobsTableBody"><tr><td colspan="6" class="no-data-msg">جاري التحميل...</td></tr></tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
-            <!-- Applications Tab -->
+            <!-- ── APPLICATIONS ── -->
             <div class="dash-tab-content" id="tab-applications" style="display:none;">
                 <div class="dash-card">
                     <div class="dash-card-header">
-                        <h2 class="dash-card-title" data-i18n="adm.apps.title">&#x625;&#x62f;&#x627;&#x631;&#x629; &#x627;&#x644;&#x637;&#x644;&#x628;&#x627;&#x62a;</h2>
+                        <h2 class="dash-card-title" data-i18n="adm.apps.title">إدارة الطلبات</h2>
                         <div class="admin-filter-row">
                             <select id="appJobFilter" class="admin-select">
-                                <option value="" data-i18n="adm.apps.filter.allJobs">&#x643;&#x644; &#x627;&#x644;&#x648;&#x638;&#x627;&#x626;&#x641; &#x25be;</option>
+                                <option value="" data-i18n="adm.apps.filter.allJobs">كل الوظائف ▾</option>
                             </select>
                             <select id="appStatusFilter" class="admin-select">
-                                <option value="" data-i18n="adm.apps.filter.allStatus">&#x643;&#x644; &#x627;&#x644;&#x62d;&#x627;&#x644;&#x627;&#x62a;</option>
-                                <option value="pending" data-i18n="adm.apps.filter.pending">&#x642;&#x64a;&#x62f; &#x627;&#x644;&#x645;&#x631;&#x627;&#x62c;&#x639;&#x629;</option>
-                                <option value="accepted" data-i18n="adm.apps.filter.accepted">&#x645;&#x642;&#x628;&#x648;&#x644;</option>
-                                <option value="rejected" data-i18n="adm.apps.filter.rejected">&#x645;&#x631;&#x641;&#x648;&#x636;</option>
+                                <option value="" data-i18n="adm.apps.filter.allStatus">كل الحالات</option>
+                                <option value="pending" data-i18n="adm.apps.filter.pending">قيد المراجعة</option>
+                                <option value="accepted" data-i18n="adm.apps.filter.accepted">مقبول</option>
+                                <option value="rejected" data-i18n="adm.apps.filter.rejected">مرفوض</option>
                             </select>
-                            <button id="exportAppsBtn" class="dashboard-btn dashboard-btn-export" data-i18n="adm.export.csv">&#x2b07;&#xfe0f; &#x62a;&#x635;&#x62f;&#x64a;&#x631; CSV</button>
+                            <button id="exportAppsBtn" class="dashboard-btn dashboard-btn-export" data-i18n="adm.export.csv">⬇️ تصدير CSV</button>
                         </div>
                     </div>
                     <div class="dashboard-table-wrap">
                         <table class="dashboard-table">
                             <thead>
                                 <tr>
-                                    <th data-i18n="adm.th.name">&#x627;&#x644;&#x627;&#x633;&#x645;</th>
-                                    <th data-i18n="adm.th.email">&#x627;&#x644;&#x628;&#x631;&#x64a;&#x62f;</th>
-                                    <th data-i18n="adm.th.phone">&#x631;&#x642;&#x645; &#x627;&#x644;&#x62c;&#x648;&#x627;&#x644;</th>
-                                    <th data-i18n="adm.th.specialization">&#x627;&#x644;&#x62a;&#x62e;&#x635;&#x635;</th>
-                                    <th data-i18n="adm.th.job">&#x627;&#x644;&#x648;&#x638;&#x64a;&#x641;&#x629;</th>
-                                    <th data-i18n="adm.th.appliedAt">&#x62a;&#x627;&#x631;&#x64a;&#x62e; &#x627;&#x644;&#x62a;&#x642;&#x62f;&#x64a;&#x645;</th>
-                                    <th data-i18n="adm.th.status">&#x627;&#x644;&#x62d;&#x627;&#x644;&#x629;</th>
+                                    <th data-i18n="adm.th.name">الاسم</th>
+                                    <th data-i18n="adm.th.email">البريد</th>
+                                    <th data-i18n="adm.th.phone">رقم الجوال</th>
+                                    <th data-i18n="adm.th.specialization">التخصص</th>
+                                    <th data-i18n="adm.th.job">الوظيفة</th>
+                                    <th data-i18n="adm.th.appliedAt">تاريخ التقديم</th>
+                                    <th data-i18n="adm.th.status">الحالة</th>
                                     <th>CV</th>
-                                    <th data-i18n="adm.th.actions">&#x625;&#x62c;&#x631;&#x627;&#x621;</th>
+                                    <th data-i18n="adm.th.actions">إجراء</th>
                                 </tr>
                             </thead>
-                            <tbody id="applicationsTableBody"><tr><td colspan="9" class="no-data-msg">&#x62c;&#x627;&#x631;&#x64a; &#x627;&#x644;&#x62a;&#x62d;&#x645;&#x64a;&#x644;...</td></tr></tbody>
+                            <tbody id="applicationsTableBody"><tr><td colspan="9" class="no-data-msg">جاري التحميل...</td></tr></tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
-            <!-- Staff Requests Tab (Admin only) -->
+            <!-- ── STAFF REQUESTS ── -->
             <div class="dash-tab-content" id="tab-staff-requests" style="display:none;">
                 <div class="dash-card">
                     <div class="dash-card-header">
-                        <h2 class="dash-card-title" data-i18n="adm.staffReq.title">&#x637;&#x644;&#x628;&#x627;&#x62a; &#x627;&#x644;&#x62a;&#x648;&#x638;&#x64a;&#x641; &#x645;&#x646; &#x627;&#x644;&#x634;&#x631;&#x643;&#x627;&#x62a;</h2>
+                        <h2 class="dash-card-title" data-i18n="adm.staffReq.title">طلبات التوظيف من الشركات</h2>
                         <select id="staffReqStatusFilter" class="admin-select">
-                            <option value="" data-i18n="adm.staffReq.filter.all">&#x643;&#x644; &#x627;&#x644;&#x62d;&#x627;&#x644;&#x627;&#x62a;</option>
-                            <option value="pending" data-i18n="adm.staffReq.filter.pending">&#x642;&#x64a;&#x62f; &#x627;&#x644;&#x645;&#x631;&#x627;&#x62c;&#x639;&#x629;</option>
-                            <option value="reviewed" data-i18n="adm.staffReq.filter.reviewed">&#x62a;&#x645;&#x62a; &#x627;&#x644;&#x645;&#x631;&#x627;&#x62c;&#x639;&#x629;</option>
-                            <option value="rejected" data-i18n="adm.staffReq.filter.rejected">&#x645;&#x631;&#x641;&#x648;&#x636;</option>
+                            <option value="" data-i18n="adm.staffReq.filter.all">كل الحالات</option>
+                            <option value="pending" data-i18n="adm.staffReq.filter.pending">قيد المراجعة</option>
+                            <option value="reviewed" data-i18n="adm.staffReq.filter.reviewed">تمت المراجعة</option>
+                            <option value="rejected" data-i18n="adm.staffReq.filter.rejected">مرفوض</option>
                         </select>
                     </div>
                     <div class="dashboard-table-wrap">
                         <table class="dashboard-table">
                             <thead>
                                 <tr>
-                                    <th data-i18n="adm.th.company">&#x627;&#x644;&#x634;&#x631;&#x643;&#x629;</th>
-                                    <th data-i18n="adm.th.jobTitle">&#x627;&#x644;&#x645;&#x633;&#x645;&#x649; &#x627;&#x644;&#x648;&#x638;&#x64a;&#x641;&#x64a;</th>
-                                    <th data-i18n="adm.th.count">&#x627;&#x644;&#x639;&#x62f;&#x62f;</th>
-                                    <th data-i18n="adm.th.specialization">&#x627;&#x644;&#x62a;&#x62e;&#x635;&#x635;</th>
-                                    <th data-i18n="adm.th.workType">&#x646;&#x648;&#x639; &#x627;&#x644;&#x639;&#x645;&#x644;</th>
-                                    <th data-i18n="adm.th.salary">&#x627;&#x644;&#x631;&#x627;&#x62a;&#x628;</th>
-                                    <th data-i18n="adm.th.requestedAt">&#x62a;&#x627;&#x631;&#x64a;&#x62e; &#x627;&#x644;&#x637;&#x644;&#x628;</th>
-                                    <th data-i18n="adm.th.status">&#x627;&#x644;&#x62d;&#x627;&#x644;&#x629;</th>
-                                    <th data-i18n="adm.th.actions">&#x627;&#x644;&#x625;&#x62c;&#x631;&#x627;&#x621;&#x627;&#x62a;</th>
+                                    <th data-i18n="adm.th.company">الشركة</th>
+                                    <th data-i18n="adm.th.jobTitle">المسمى الوظيفي</th>
+                                    <th data-i18n="adm.th.count">العدد</th>
+                                    <th data-i18n="adm.th.specialization">التخصص</th>
+                                    <th data-i18n="adm.th.workType">نوع العمل</th>
+                                    <th data-i18n="adm.th.salary">الراتب</th>
+                                    <th data-i18n="adm.th.requestedAt">تاريخ الطلب</th>
+                                    <th data-i18n="adm.th.status">الحالة</th>
+                                    <th data-i18n="adm.th.actions">الإجراءات</th>
                                 </tr>
                             </thead>
-                            <tbody id="staffRequestsTableBody"><tr><td colspan="9" class="no-data-msg">&#x62c;&#x627;&#x631;&#x64a; &#x627;&#x644;&#x62a;&#x62d;&#x645;&#x64a;&#x644;...</td></tr></tbody>
+                            <tbody id="staffRequestsTableBody"><tr><td colspan="9" class="no-data-msg">جاري التحميل...</td></tr></tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
-            <!-- Course Requests Tab (Admin only) -->
+            <!-- ── COURSE REQUESTS ── -->
             <div class="dash-tab-content" id="tab-course-requests" style="display:none;">
                 <div class="dash-card">
                     <div class="dash-card-header">
-                        <h2 class="dash-card-title" data-i18n="adm.courseReq.title">&#x637;&#x644;&#x628;&#x627;&#x62a; &#x641;&#x62a;&#x62d; &#x62f;&#x648;&#x631;&#x627;&#x62a; &#x645;&#x646; &#x627;&#x644;&#x634;&#x631;&#x643;&#x627;&#x62a;</h2>
+                        <h2 class="dash-card-title" data-i18n="adm.courseReq.title">طلبات فتح دورات من الشركات</h2>
                         <select id="courseReqStatusFilter" class="admin-select">
-                            <option value="" data-i18n="adm.courseReq.filter.all">&#x643;&#x644; &#x627;&#x644;&#x62d;&#x627;&#x644;&#x627;&#x62a;</option>
-                            <option value="pending" data-i18n="adm.courseReq.filter.pending">&#x642;&#x64a;&#x62f; &#x627;&#x644;&#x645;&#x631;&#x627;&#x62c;&#x639;&#x629;</option>
-                            <option value="approved" data-i18n="adm.courseReq.filter.approved">&#x645;&#x648;&#x627;&#x641;&#x642; &#x639;&#x644;&#x64a;&#x647;</option>
-                            <option value="rejected" data-i18n="adm.courseReq.filter.rejected">&#x645;&#x631;&#x641;&#x648;&#x636;</option>
+                            <option value="" data-i18n="adm.courseReq.filter.all">كل الحالات</option>
+                            <option value="pending" data-i18n="adm.courseReq.filter.pending">قيد المراجعة</option>
+                            <option value="approved" data-i18n="adm.courseReq.filter.approved">موافق عليه</option>
+                            <option value="rejected" data-i18n="adm.courseReq.filter.rejected">مرفوض</option>
                         </select>
                     </div>
                     <div class="dashboard-table-wrap">
                         <table class="dashboard-table">
                             <thead>
                                 <tr>
-                                    <th data-i18n="adm.th.company">&#x627;&#x634;&#x631;&#x643;&#x629;</th>
-                                    <th data-i18n="adm.th.courseName">&#x627;&#x633;&#x645; &#x627;&#x644;&#x62f;&#x648;&#x631;&#x629;</th>
-                                    <th data-i18n="adm.th.category">&#x627;&#x644;&#x641;&#x626;&#x629;</th>
-                                    <th data-i18n="adm.th.count">&#x627;&#x644;&#x645;&#x642;&#x627;&#x639;&#x62f;</th>
-                                    <th data-i18n="adm.th.duration">&#x627;&#x644;&#x645;&#x62f;&#x629;</th>
-                                    <th data-i18n="adm.th.expectedDate">&#x62a;&#x627;&#x631;&#x64a;&#x62e; &#x627;&#x644;&#x628;&#x62f;&#x621; &#x627;&#x644;&#x645;&#x62a;&#x648;&#x642;&#x639;</th>
-                                    <th data-i18n="adm.th.requestedAt">&#x62a;&#x627;&#x631;&#x64a;&#x62e; &#x627;&#x644;&#x637;&#x644;&#x628;</th>
-                                    <th data-i18n="adm.th.status">&#x627;&#x644;&#x62d;&#x627;&#x644;&#x629;</th>
-                                    <th data-i18n="adm.th.actions">&#x627;&#x644;&#x625;&#x62c;&#x631;&#x627;&#x621;&#x627;&#x62a;</th>
+                                    <th data-i18n="adm.th.company">الشركة</th>
+                                    <th data-i18n="adm.th.courseName">اسم الدورة</th>
+                                    <th data-i18n="adm.th.category">الفئة</th>
+                                    <th data-i18n="adm.th.count">المقاعد</th>
+                                    <th data-i18n="adm.th.duration">المدة</th>
+                                    <th data-i18n="adm.th.expectedDate">تاريخ البدء المتوقع</th>
+                                    <th data-i18n="adm.th.requestedAt">تاريخ الطلب</th>
+                                    <th data-i18n="adm.th.status">الحالة</th>
+                                    <th data-i18n="adm.th.actions">الإجراءات</th>
                                 </tr>
                             </thead>
-                            <tbody id="courseRequestsTableBody"><tr><td colspan="9" class="no-data-msg">&#x62c;&#x627;&#x631;&#x64a; &#x627;&#x644;&#x62a;&#x62d;&#x645;&#x64a;&#x644;...</td></tr></tbody>
+                            <tbody id="courseRequestsTableBody"><tr><td colspan="9" class="no-data-msg">جاري التحميل...</td></tr></tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
-            <!-- Courses Tab (Admin only) -->
+            <!-- ── COURSES ── -->
             <div class="dash-tab-content" id="tab-courses" style="display:none;">
-                <!-- Add course form -->
                 <div class="dash-card" style="margin-bottom:1.5rem;">
                     <div class="dash-card-header">
-                        <h2 class="dash-card-title" data-i18n="adm.course.addTitle">&#x646;&#x634;&#x631; &#x62f;&#x648;&#x631;&#x629; &#x62c;&#x62f;&#x64a;&#x62f;&#x629;</h2>
+                        <h2 class="dash-card-title" data-i18n="adm.course.addTitle">نشر دورة جديدة</h2>
                     </div>
                     <form id="addCourseForm" class="admin-course-form">
                         <div class="admin-course-form-grid">
                             <div class="auth-form-group">
-                                <label data-i18n="adm.course.titleLabel">&#x639;&#x646;&#x648;&#x627;&#x646; &#x627;&#x644;&#x62f;&#x648;&#x631;&#x629; *</label>
-                                <input type="text" id="courseTitle" placeholder="&#x645;&#x62b;&#x627;&#x644;: &#x623;&#x633;&#x627;&#x633;&#x64a;&#x627;&#x62a; HTML &amp; CSS" data-i18n-placeholder="adm.course.titlePlaceholder" required />
+                                <label data-i18n="adm.course.titleLabel">عنوان الدورة *</label>
+                                <input type="text" id="courseTitle" placeholder="مثال: أساسيات HTML &amp; CSS" required />
                             </div>
                             <div class="auth-form-group">
-                                <label data-i18n="adm.course.instructorLabel">&#x627;&#x644;&#x645;&#x62f;&#x631;&#x628;</label>
-                                <input type="text" id="courseInstructor" placeholder="&#x627;&#x633;&#x645; &#x627;&#x644;&#x645;&#x62f;&#x631;&#x628;" data-i18n-placeholder="adm.course.instructorPlaceholder" />
+                                <label data-i18n="adm.course.instructorLabel">المدرب</label>
+                                <input type="text" id="courseInstructor" placeholder="اسم المدرب" />
                             </div>
                             <div class="auth-form-group">
-                                <label data-i18n="adm.course.durationLabel">&#x627;&#x644;&#x645;&#x62f;&#x629;</label>
-                                <input type="text" id="courseDuration" placeholder="&#x645;&#x62b;&#x627;&#x644;: 10 &#x633;&#x627;&#x639;&#x627;&#x62a;" data-i18n-placeholder="adm.course.durationPlaceholder" />
+                                <label data-i18n="adm.course.durationLabel">المدة</label>
+                                <input type="text" id="courseDuration" placeholder="مثال: 10 ساعات" />
                             </div>
                             <div class="auth-form-group">
-                                <label data-i18n="adm.course.categoryLabel">&#x627;&#x644;&#x641;&#x626;&#x629;</label>
-                                <input type="text" id="courseCategory" placeholder="&#x645;&#x62b;&#x627;&#x644;: &#x62a;&#x642;&#x646;&#x64a;&#x629;&#x60c; &#x623;&#x639;&#x645;&#x627;&#x644;" data-i18n-placeholder="adm.course.categoryPlaceholder" />
+                                <label data-i18n="adm.course.categoryLabel">الفئة</label>
+                                <input type="text" id="courseCategory" placeholder="مثال: تقنية، أعمال" />
                             </div>
                             <div class="auth-form-group">
-                                <label data-i18n="adm.course.seatsLabel">&#x639;&#x62f;&#x62f; &#x627;&#x644;&#x645;&#x642;&#x627;&#x639;&#x62f; (0 = &#x62b;&#x64a;&#x631; &#x645;&#x62d;&#x62f;&#x648;&#x62f;)</label>
+                                <label data-i18n="adm.course.seatsLabel">عدد المقاعد (0 = غير محدود)</label>
                                 <input type="number" id="courseSeats" placeholder="0" min="0" value="0" />
                             </div>
                         </div>
                         <div class="auth-form-group">
-                            <label data-i18n="adm.course.descLabel">&#x648;&#x635;&#x641; &#x627;&#x644;&#x62f;&#x648;&#x631;&#x629;</label>
-                            <textarea id="courseDescription" rows="3" placeholder="&#x648;&#x635;&#x641; &#x645;&#x62e;&#x62a;&#x635;&#x631; &#x639;&#x646; &#x645;&#x62d;&#x62a;&#x648;&#x649; &#x627;&#x644;&#x62f;&#x648;&#x631;&#x629;" data-i18n-placeholder="adm.course.descPlaceholder"></textarea>
+                            <label data-i18n="adm.course.descLabel">وصف الدورة</label>
+                            <textarea id="courseDescription" rows="3" placeholder="وصف مختصر عن محتوى الدورة"></textarea>
                         </div>
                         <div style="text-align:left; margin-top:0.5rem;">
-                            <button type="submit" class="dashboard-btn dashboard-btn-export" data-i18n="adm.course.publishBtn">&#x2795; &#x646;&#x634;&#x631; &#x627;&#x644;&#x62f;&#x648;&#x631;&#x629;</button>
+                            <button type="submit" class="dashboard-btn dashboard-btn-export" data-i18n="adm.course.publishBtn">➕ نشر الدورة</button>
                             <span id="addCourseMsg" style="margin-right:1rem;font-size:0.85rem;"></span>
                         </div>
                     </form>
                 </div>
-
-                <!-- Courses table -->
                 <div class="dash-card">
                     <div class="dash-card-header">
-                        <h2 class="dash-card-title" data-i18n="adm.courses.tableTitle">&#x62c;&#x645;&#x64a;&#x639; &#x627;&#x644;&#x62f;&#x648;&#x631;&#x627;&#x62a;</h2>
+                        <h2 class="dash-card-title" data-i18n="adm.courses.tableTitle">جميع الدورات</h2>
                     </div>
                     <div class="dashboard-table-wrap">
                         <table class="dashboard-table">
                             <thead>
                                 <tr>
-                                    <th data-i18n="adm.th.courseTitle">&#x627;&#x644;&#x639;&#x646;&#x648;&#x627;&#x646;</th>
-                                    <th data-i18n="adm.th.instructor">&#x627;&#x644;&#x645;&#x62f;&#x631;&#x628;</th>
-                                    <th data-i18n="adm.th.duration">&#x627;&#x644;&#x645;&#x62f;&#x629;</th>
-                                    <th data-i18n="adm.th.category">&#x627;&#x644;&#x641;&#x626;&#x629;</th>
-                                    <th data-i18n="adm.th.enrolled">&#x627;&#x644;&#x645;&#x633;&#x62c;&#x644;&#x648;&#x646;</th>
-                                    <th data-i18n="adm.th.publishedAt">&#x62a;&#x627;&#x631;&#x64a;&#x62e; &#x627;&#x646;&#x634;&#x631;</th>
-                                    <th data-i18n="adm.th.actions">&#x627;&#x644;&#x625;&#x62c;&#x631;&#x627;&#x621;&#x627;&#x62a;</th>
+                                    <th data-i18n="adm.th.courseTitle">العنوان</th>
+                                    <th data-i18n="adm.th.instructor">المدرب</th>
+                                    <th data-i18n="adm.th.duration">المدة</th>
+                                    <th data-i18n="adm.th.category">الفئة</th>
+                                    <th data-i18n="adm.th.enrolled">المسجلون</th>
+                                    <th data-i18n="adm.th.publishedAt">تاريخ النشر</th>
+                                    <th data-i18n="adm.th.actions">الإجراءات</th>
                                 </tr>
                             </thead>
-                            <tbody id="coursesTableBody"><tr><td colspan="7" class="no-data-msg">&#x62c;&#x627;&#x631;&#x64a; &#x627;&#x644;&#x62a;&#x62d;&#x645;&#x64a;&#x644;...</td></tr></tbody>
+                            <tbody id="coursesTableBody"><tr><td colspan="7" class="no-data-msg">جاري التحميل...</td></tr></tbody>
                         </table>
                     </div>
                 </div>
-
-                <!-- Enrollments sub-panel -->
                 <div id="courseEnrollmentsPanel" class="dash-card" style="margin-top:1.5rem;display:none;">
                     <div class="dash-card-header">
                         <h2 class="dash-card-title" id="enrollmentsPanelTitle">المسجلون في الدورة</h2>
                         <div style="display:flex;gap:0.6rem;align-items:center;">
-                            <button id="exportEnrollmentsBtn" class="dashboard-btn" style="background:rgba(21,128,61,0.1);color:#15803d;border:1px solid rgba(21,128,61,0.25);" data-i18n="adm.enrollments.exportBtn">&#x2B07; تصدير Excel</button>
+                            <button id="exportEnrollmentsBtn" class="dashboard-btn" style="background:rgba(21,128,61,0.1);color:#15803d;border:1px solid rgba(21,128,61,0.25);" data-i18n="adm.enrollments.exportBtn">⬇ تصدير Excel</button>
                             <button id="closeEnrollmentsPanel" class="dashboard-btn" data-i18n="adm.enrollments.closeBtn">✕ إغلاق</button>
                         </div>
                     </div>
@@ -310,7 +739,7 @@
                 </div>
             </div>
 
-            <!-- Promotion Requests Tab — primary admin only -->
+            <!-- ── PROMO REQUESTS ── -->
             <div class="dash-tab-content" id="tab-promo-requests" style="display:none;">
                 <div class="prq-panel">
                     <div class="prq-panel-head">
@@ -327,47 +756,20 @@
                 </div>
             </div>
 
-        </div>
+        </div><!-- /adm-content -->
+
     </main>
 
-    <footer class="main-footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <img src="assets/images/ksu1.png" alt="Ø´Ø¹Ø§Ø± Ù…Ø§Ù‡Ø±" class="footer-logo-img">
-                    <h3 class="footer-logo" data-i18n="footer.logo">ماهر</h3>
-                    <p class="footer-about" data-i18n="footer.about">منصة عربية للتوظيف والتدريب وتطوير المهارات.</p>
-                    <a class="footer-site-link" href="https://www.maher.edu.sa" target="_blank" rel="noopener">🌐 www.maher.edu.sa</a>
-                </div>
-                <div class="footer-col">
-                    <h4 class="footer-col-title" data-i18n="footer.quickLinks">روابط سريعة</h4>
-                    <div class="footer-links">
-                        <a href="jobs.html" data-i18n="footer.jobs">الوظائف</a>
-                        <a href="courses.html" data-i18n="footer.courses">الدورات</a>
-                        <a href="contact.html" data-i18n="footer.contact">تواصل معنا</a>
-                    </div>
-                </div>
-                <div class="footer-col">
-                    <h4 class="footer-col-title" data-i18n="footer.contact">تواصل معنا</h4>
-                    <ul class="footer-contact-list">
-                        <li>📞 <a href="tel:920016798">920016798</a> <span class="footer-contact-note" data-i18n="footer.landline">(أرضي)</span></li>
-                        <li>📱 <a href="tel:0539600050">0539600050</a></li>
-                        <li>📱 <a href="tel:0539600080">0539600080</a></li>
-                        <li>✉️ <a href="mailto:info@maher.edu.sa">info@maher.edu.sa</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <span data-i18n="footer.copy">© <span id="year"></span> ماهر. جميع الحقوق محفوظة.</span>
-            </div>
-        </div>
-    </footer>
+</div><!-- /adm-layout -->
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-    <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
-    <script src="assets/js/supabaseClient.js" defer></script>
-    <script src="assets/js/auth.js" defer></script>
-    <script src="assets/js/main.js" defer></script>
-    <script src="assets/js/dashboard.js" defer></script>
+<!-- backward-compat hidden element -->
+<span id="adminName" style="display:none;"></span>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<script src="assets/js/supabaseClient.js" defer></script>
+<script src="assets/js/auth.js" defer></script>
+<script src="assets/js/main.js" defer></script>
+<script src="assets/js/dashboard.js" defer></script>
 </body>
 </html>

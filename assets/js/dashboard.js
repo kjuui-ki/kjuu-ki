@@ -22,6 +22,54 @@ document.addEventListener("DOMContentLoaded", async function () {
     var nameEl = document.getElementById("adminName");
     if (nameEl) nameEl.textContent = displayName;
 
+    /* ── Sidebar + topbar names ───────────────────────────── */
+    var sidebarName = document.getElementById("sidebarAdminName");
+    if (sidebarName) sidebarName.textContent = displayName;
+    var topbarName = document.getElementById("admTopbarName");
+    if (topbarName) topbarName.textContent = displayName;
+    var adminInitial = (displayName || "م")[0];
+    var sidebarInitEl = document.getElementById("sidebarAdminInitials");
+    if (sidebarInitEl) sidebarInitEl.textContent = adminInitial;
+    var topbarInitEl = document.getElementById("admTopbarInitials");
+    if (topbarInitEl) topbarInitEl.textContent = adminInitial;
+
+    /* ── Date ─────────────────────────────────────────────── */
+    var dateEl = document.getElementById("admPageDate");
+    if (dateEl) {
+        dateEl.textContent = new Date().toLocaleDateString("ar-SA", {
+            weekday: "long", year: "numeric", month: "long", day: "numeric"
+        });
+    }
+
+    /* ── Logout ───────────────────────────────────────────── */
+    var logoutBtn = document.getElementById("admLogoutBtn");
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", async function () {
+            logoutBtn.disabled = true;
+            logoutBtn.textContent = "جاري الخروج...";
+            await sb.auth.signOut();
+            window.location.href = "index.html";
+        });
+    }
+
+    /* ── Refresh ──────────────────────────────────────────── */
+    var refreshBtn = document.getElementById("admRefreshBtn");
+    if (refreshBtn) {
+        refreshBtn.addEventListener("click", function () {
+            refreshBtn.style.opacity = "0.5";
+            loadAll().then(function () { refreshBtn.style.opacity = ""; });
+        });
+    }
+
+    /* ── Mobile sidebar toggle ────────────────────────────── */
+    var _sidebar  = document.getElementById("admSidebar");
+    var _overlay  = document.getElementById("admOverlay");
+    var toggleBtn = document.getElementById("admSidebarToggle");
+    function _openSidebar()  { if (_sidebar) _sidebar.classList.add("open"); if (_overlay) _overlay.classList.add("open"); }
+    function _closeSidebar() { if (_sidebar) _sidebar.classList.remove("open"); if (_overlay) _overlay.classList.remove("open"); }
+    if (toggleBtn) toggleBtn.addEventListener("click", _openSidebar);
+    if (_overlay)  _overlay.addEventListener("click", _closeSidebar);
+
     /* helpers */
     function esc(v) {
         return String(v || "")
@@ -75,6 +123,17 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (_promoTab) _promoTab.style.display = "";
     }
 
+    var _tabTitles = {
+        "overview":        "نظرة عامة",
+        "users":           "إدارة المستخدمين",
+        "jobs":            "إدارة الوظائف",
+        "applications":    "إدارة الطلبات",
+        "staff-requests":  "طلبات التوظيف",
+        "course-requests": "طلبات الدورات",
+        "courses":         "الدورات",
+        "promo-requests":  "طلبات الترقية"
+    };
+
     tabs.forEach(function (tab) {
         tab.addEventListener("click", function () {
             tabs.forEach(function (t) { t.classList.remove("active"); });
@@ -86,6 +145,11 @@ document.addEventListener("DOMContentLoaded", async function () {
             if (tab.dataset.tab === "course-requests") loadCourseRequests();
             if (tab.dataset.tab === "courses")         loadCourses();
             if (tab.dataset.tab === "promo-requests")  loadPromoRequests();
+            /* update topbar title */
+            var ttEl = document.getElementById("admPageTitle");
+            if (ttEl && _tabTitles[tab.dataset.tab]) ttEl.textContent = _tabTitles[tab.dataset.tab];
+            /* close mobile sidebar */
+            _closeSidebar();
         });
     });
 
@@ -119,10 +183,88 @@ document.addEventListener("DOMContentLoaded", async function () {
     function renderStats() {
         var seekers   = allProfiles.filter(function (p) { return p.role === "job_seeker"; }).length;
         var companies = allProfiles.filter(function (p) { return p.role === "company"; }).length;
-        document.getElementById("statSeekers").textContent      = seekers;
-        document.getElementById("statCompanies").textContent    = companies;
-        document.getElementById("statJobs").textContent         = allJobs.length;
-        document.getElementById("statApplications").textContent = allApps.length;
+        var totalUsers = allProfiles.length;
+        var statTotal = document.getElementById("statTotalUsers");
+        if (statTotal) statTotal.textContent = totalUsers;
+        var skEl = document.getElementById("statSeekers"); if (skEl) skEl.textContent = seekers;
+        var coEl = document.getElementById("statCompanies"); if (coEl) coEl.textContent = companies;
+        var jbEl = document.getElementById("statJobs"); if (jbEl) jbEl.textContent = allJobs.length;
+        var apEl = document.getElementById("statApplications"); if (apEl) apEl.textContent = allApps.length;
+        /* nav badges */
+        var nbU = document.getElementById("navBadgeUsers"); if (nbU) nbU.textContent = totalUsers;
+        var nbJ = document.getElementById("navBadgeJobs");  if (nbJ) nbJ.textContent = allJobs.length;
+        var nbA = document.getElementById("navBadgeApps");  if (nbA) nbA.textContent = allApps.length;
+        /* overview panel */
+        renderOverview();
+    }
+
+    /* ── Overview panel ────────────────────────────────────── */
+    function renderOverview() {
+        /* recent applications */
+        var appsEl = document.getElementById("overviewRecentApps");
+        if (appsEl) {
+            var r5a = allApps.slice(0, 5);
+            if (!r5a.length) {
+                appsEl.innerHTML = '<div class="adm-loading-row">لا توجد طلبات بعد.</div>';
+            } else {
+                appsEl.innerHTML = r5a.map(function (a) {
+                    var seeker = profileMap[a.user_id] || {};
+                    var name   = a.full_name || seeker.full_name || "—";
+                    var job    = jobMap[a.job_id] || {};
+                    var ini    = esc((name || "?")[0]);
+                    var sCls   = a.status === "accepted" ? "accepted" : a.status === "rejected" ? "rejected" : "pending";
+                    var sTxt   = a.status === "accepted" ? "مقبول" : a.status === "rejected" ? "مرفوض" : "قيد المراجعة";
+                    return '<div class="adm-ov-item">' +
+                        '<div class="adm-ov-avatar">' + ini + '</div>' +
+                        '<div><div class="adm-ov-name">' + esc(name) + '</div>' +
+                        '<div class="adm-ov-meta">' + esc(job.title || "—") + '</div></div>' +
+                        '<span class="adm-ov-status ' + sCls + '">' + sTxt + '</span>' +
+                    '</div>';
+                }).join("");
+            }
+        }
+        /* recent users */
+        var usersEl = document.getElementById("overviewRecentUsers");
+        if (usersEl) {
+            var r5u = allProfiles.slice(0, 5);
+            if (!r5u.length) {
+                usersEl.innerHTML = '<div class="adm-loading-row">لا يوجد مستخدمون بعد.</div>';
+            } else {
+                var roleClr = { job_seeker: "#6366f1,#4f46e5", company: "#0ea5e9,#0284c7", super_admin: "#f59e0b,#d97706" };
+                var roleText = { job_seeker: "باحث", company: "شركة", super_admin: "أدمن" };
+                usersEl.innerHTML = r5u.map(function (p) {
+                    var ini  = esc((p.full_name || p.email || "?")[0]);
+                    var clr  = roleClr[p.role] || "#6366f1,#4f46e5";
+                    var role = roleText[p.role] || p.role || "";
+                    return '<div class="adm-ov-item">' +
+                        '<div class="adm-ov-avatar" style="background:linear-gradient(135deg,' + clr + ')">' + ini + '</div>' +
+                        '<div><div class="adm-ov-name">' + esc(p.full_name || p.email || "—") + '</div>' +
+                        '<div class="adm-ov-meta">' + role + ' · ' + fmtDate(p.created_at) + '</div></div>' +
+                    '</div>';
+                }).join("");
+            }
+        }
+        /* jobs distribution */
+        var distEl = document.getElementById("overviewJobsDist");
+        if (distEl) {
+            if (!allJobs.length) {
+                distEl.innerHTML = '<div class="adm-loading-row">لا توجد وظائف بعد.</div>';
+            } else {
+                var typeCounts = {};
+                allJobs.forEach(function (j) { var tp = j.job_type || "غير محدد"; typeCounts[tp] = (typeCounts[tp] || 0) + 1; });
+                var maxVal = Math.max.apply(null, Object.keys(typeCounts).map(function (k) { return typeCounts[k]; })) || 1;
+                var barColors = ["#3b82f6,#6366f1","#10b981,#059669","#f59e0b,#d97706","#ef4444,#dc2626","#8b5cf6,#7c3aed"];
+                distEl.innerHTML = Object.keys(typeCounts).sort(function (a,b) { return typeCounts[b]-typeCounts[a]; }).map(function (tp, i) {
+                    var pct = Math.round((typeCounts[tp] / maxVal) * 100);
+                    var clr = barColors[i % barColors.length];
+                    return '<div class="adm-dist-row">' +
+                        '<div class="adm-dist-label">' + esc(tp) + '</div>' +
+                        '<div class="adm-dist-bar-wrap"><div class="adm-dist-bar" style="width:' + pct + '%;background:linear-gradient(90deg,' + clr + ')"></div></div>' +
+                        '<div class="adm-dist-count">' + typeCounts[tp] + '</div>' +
+                    '</div>';
+                }).join("");
+            }
+        }
     }
 
     /* users */
