@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html class="maher-loading" lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="preconnect" href="https://jgvfcievyfkyldryatlk.supabase.co" crossorigin />
+    <link rel="dns-prefetch" href="https://jgvfcievyfkyldryatlk.supabase.co" />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>المسارات التدريبية | ماهر</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+    <header class="main-header">
+        <div class="container header-inner">
+            <div class="header-main-group">
+                <a href="index.html" class="logo">
+                    <img src="assets/images/sh.png" alt="شعار المنصة" class="logo-img">
+                </a>
+                <nav class="main-nav" id="mainNav">
+                    <a href="index.html" class="nav-link" data-i18n="nav.home"></a>
+                    <a href="courses.html" class="nav-link" data-i18n="nav.catalog"></a>
+                    <a href="training-paths.html" class="nav-link active" data-i18n="nav.trainingPaths"></a>
+                    <a href="about-academy.html" class="nav-link" data-i18n="nav.aboutAcademy"></a>
+                    <a href="login.html" class="nav-link" data-i18n="nav.login"></a>
+                </nav>
+            </div>
+            <div class="lang-switch">
+                <button type="button" class="lang-btn" data-lang="ar" data-i18n="header.langAr">العربية</button>
+                <button type="button" class="lang-btn" data-lang="en" data-i18n="header.langEn">English</button>
+            </div>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <section class="courses-hero">
+            <div class="ch-blob ch-blob-1"></div>
+            <div class="ch-blob ch-blob-2"></div>
+            <div class="ch-blob ch-blob-3"></div>
+            <div class="container ch-inner">
+                <span class="ch-badge" data-i18n="paths.hero.badge">مسارات تعليمية متكاملة</span>
+                <h1 class="ch-title" id="tpHeroTitle" data-i18n="paths.hero.title">المسارات <em class="ch-accent">التدريبية</em></h1>
+                <p class="ch-sub" id="tpHeroSub" data-i18n="paths.hero.sub">اختر مسارك ثم سجّل في الدورات أو الدبلومات التي تناسب أهدافك المهنية.</p>
+                <div class="ch-search-wrap" style="max-width:420px;margin-inline:auto;margin-top:1rem;">
+                    <svg class="ch-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                        <circle cx="11" cy="11" r="7"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    <input class="ch-search-input" id="tpSearchInput" type="search" autocomplete="off"
+                           data-i18n-placeholder="paths.search.placeholder"
+                           placeholder="ابحث عن مسار..." />
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div id="tpMsg" class="section-intro" style="text-align:center;padding:2rem 0;display:none;"></div>
+                <div id="tpPathsGrid" class="tp-grid"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <img src="assets/images/sh.png" alt="شعار ماهر" class="footer-logo-img">
+                    <h3 class="footer-logo" data-i18n="footer.logo">ماهر</h3>
+                    <p class="footer-about" data-i18n="footer.about">منصة عربية للتوظيف والتدريب وتطوير المهارات.</p>
+                    <a class="footer-site-link" href="https://www.maher.edu.sa" target="_blank" rel="noopener">🌐 www.maher.edu.sa</a>
+                </div>
+                <div class="footer-col">
+                    <h4 class="footer-col-title" data-i18n="footer.quickLinks">روابط سريعة</h4>
+                    <div class="footer-links">
+                        <a href="training-paths.html" data-i18n="nav.trainingPaths">المسارات التدريبية</a>
+                        <a href="courses.html" data-i18n="footer.courses">الدورات</a>
+                        <a href="contact.html" data-i18n="footer.contact">تواصل معنا</a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4 class="footer-col-title" data-i18n="footer.contact">تواصل معنا</h4>
+                    <ul class="footer-contact-list">
+                        <li>📞 <a href="tel:920016798">920016798</a> <span class="footer-contact-note" data-i18n="footer.landline">(أرضي)</span></li>
+                        <li>📞 <a href="tel:0539600050">0539600050</a></li>
+                        <li>📞 <a href="tel:0539600080">0539600080</a></li>
+                        <li>✉️ <a href="mailto:info@maher.edu.sa">info@maher.edu.sa</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span data-i18n="footer.copy">© <span id="year"></span> ماهر. جميع الحقوق محفوظة.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="assets/js/supabaseClient.js" defer></script>
+    <script src="assets/js/auth.js" defer></script>
+    <script src="assets/js/main.js" defer></script>
+    <script src="assets/js/training_paths_catalog.js" defer></script>
+    <script defer>
+    (function () {
+        var sb, allPaths = [], pathsFilterTerm = "", usedCatalogFallback = false;
+
+        function t(key) {
+            var lang = localStorage.getItem("maherLang") || "ar";
+            var dict = (window.maherTranslations || {})[lang] || (window.maherTranslations || {}).ar || {};
+            return dict[key] !== undefined ? dict[key] : key;
+        }
+        function esc(v) {
+            return String(v || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+        }
+        function showMsg(msg) {
+            var el = document.getElementById("tpMsg");
+            if (el) { el.textContent = msg; el.style.display = "block"; }
+        }
+        function hideMsg() {
+            var el = document.getElementById("tpMsg");
+            if (el) el.style.display = "none";
+        }
+
+        function filterPathsList(paths) {
+            var q = pathsFilterTerm;
+            if (!q) return paths.slice();
+            return paths.filter(function (p) {
+                var hay = ((p.name_ar || "") + " " + (p.slug || "")).toLowerCase();
+                return hay.indexOf(q) !== -1;
+            });
+        }
+
+        function renderPaths(paths) {
+            var grid = document.getElementById("tpPathsGrid");
+            if (!grid) return;
+            var ht = document.getElementById("tpHeroTitle");
+            var hs = document.getElementById("tpHeroSub");
+            if (ht) ht.innerHTML = t("paths.hero.title");
+            if (hs) hs.textContent = t("paths.hero.sub");
+            grid.style.display = "grid";
+            var filtered = filterPathsList(paths);
+            if (!paths.length) {
+                grid.innerHTML = "";
+                showMsg(t("paths.none"));
+                return;
+            }
+            if (!filtered.length) {
+                grid.innerHTML = "";
+                showMsg(t("paths.searchEmpty"));
+                return;
+            }
+            hideMsg();
+            grid.innerHTML = filtered.map(function (p) {
+                return '<a class="tp-card course-card" href="courses.html?path=' + esc(p.id) + '">' +
+                    '<div class="course-card-header"><span class="course-card-icon">' + esc(p.icon || "📘") + "</span></div>" +
+                    '<div class="course-card-body">' +
+                    "<h3 class=\"course-card-title\">" + esc(p.name_ar) + "</h3>" +
+                    "<p class=\"course-card-desc\">" + t("paths.cardHint") + "</p>" +
+                    '</div><div class="course-card-footer">' +
+                    '<span class="btn btn-outline btn-full">' + t("paths.openPath") + "</span></div></a>";
+            }).join("");
+            if (typeof window.maherFloatingLinesRefresh === "function") window.maherFloatingLinesRefresh();
+        }
+
+        function redirectLegacyCatalogParams() {
+            var p = new URLSearchParams(window.location.search);
+            var pathId = (p.get("path") || "").trim();
+            var enroll = (p.get("enroll") || "").trim();
+            if (!pathId && !enroll) return;
+            var dest = "courses.html";
+            var q = [];
+            if (pathId) q.push("path=" + encodeURIComponent(pathId));
+            if (enroll) q.push("enroll=" + encodeURIComponent(enroll));
+            if (q.length) dest += "?" + q.join("&");
+            window.location.replace(dest);
+        }
+
+        async function fetchPaths() {
+            try {
+                sb = window.supabaseClient;
+                var pres = await sb.from("training_paths")
+                    .select("id, slug, name_ar, icon, sort_order")
+                    .eq("is_active", true)
+                    .order("sort_order", { ascending: true });
+                if (pres.error) {
+                    console.error("training_paths list", pres.error);
+                    showMsg(t("paths.loadError") + " (" + (pres.error.message || pres.error.code || "") + ")");
+                    allPaths = [];
+                    return;
+                }
+                allPaths = pres.data || [];
+                usedCatalogFallback = false;
+                if (!allPaths.length && window.maherDefaultTrainingPaths && window.maherDefaultTrainingPaths.length) {
+                    allPaths = window.maherDefaultTrainingPaths.slice();
+                    usedCatalogFallback = true;
+                }
+                renderPaths(allPaths);
+            } catch (e) {
+                console.error(e);
+                showMsg(t("paths.loadError"));
+            }
+        }
+
+        function boot() {
+            redirectLegacyCatalogParams();
+            if (window.supabaseClient) {
+                void fetchPaths();
+                return;
+            }
+            document.addEventListener("maherSupabaseReady", function () { void fetchPaths(); }, { once: true });
+            setTimeout(function () {
+                if (!allPaths.length && window.supabaseClient) void fetchPaths();
+            }, 4500);
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            boot();
+            var si = document.getElementById("tpSearchInput");
+            if (si) {
+                si.addEventListener("input", function () {
+                    pathsFilterTerm = (si.value || "").trim().toLowerCase();
+                    renderPaths(allPaths);
+                });
+            }
+        });
+        document.addEventListener("maherLangChanged", function () {
+            renderPaths(allPaths);
+        });
+    })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html class="maher-loading" lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="preconnect" href="https://jgvfcievyfkyldryatlk.supabase.co" crossorigin />
+    <link rel="dns-prefetch" href="https://jgvfcievyfkyldryatlk.supabase.co" />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>إنشاء حساب | ماهر</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+    <header class="main-header">
+        <div class="container header-inner">
+            <div class="header-main-group">
+                <a href="index.html" class="logo">
+                    <img src="assets/images/sh.png" alt="شعار المنصة" class="logo-img">
+                </a>
+                <nav class="main-nav" id="mainNav">
+                    <a href="index.html" class="nav-link" data-i18n="nav.home">الرئيسية</a>
+                    <a href="seeker-login.html" class="nav-link" data-i18n="nav.seekers">الباحثون عن العمل</a>
+                    <a href="employer-login.html" class="nav-link" data-i18n="nav.employers">أصحاب الأعمال والشركات</a>
+                    <a href="jobs.html" class="nav-link" data-i18n="nav.jobs">الوظائف</a>
+                    <a href="courses.html" class="nav-link" data-i18n="nav.courses">الدورات التدريبية</a>
+                </nav>
+            </div>
+
+            <div class="lang-switch">
+                <button class="lang-btn" data-lang="ar" data-i18n="header.langAr">العربية</button>
+                <button class="lang-btn" data-lang="en" data-i18n="header.langEn">English</button>
+            </div>
+
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <main class="auth-page register-page">
+        <div class="container">
+            <div class="auth-card register-card">
+                <h1 class="auth-title" data-i18n="page.register.title">إنشاء حساب</h1>
+                <p class="auth-subtitle" data-i18n="page.register.subtitle">اختر نوع الحساب وأكمل بياناتك لإنشاء حساب جديد.</p>
+
+                <div class="register-type-switch">
+                    <button type="button" class="register-type-btn active" id="registerTypeSeeker" data-type="seeker" data-i18n="register.type.seeker">باحث عن عمل</button>
+                    <button type="button" class="register-type-btn" id="registerTypeEmployer" data-type="employer" data-i18n="register.type.employer">شركة / صاحب عمل</button>
+                </div>
+
+                <div class="register-forms">
+                    <form id="registerSeekerForm" class="register-form">
+                        <div class="auth-form-group">
+                            <label for="seekerFullName" data-i18n="register.seeker.fullName.label">الاسم الكامل</label>
+                            <input id="seekerFullName" type="text" data-i18n-placeholder="register.seeker.fullName.placeholder" placeholder="الاسم الثلاثي" />
+                        </div>
+                        <div class="auth-form-group">
+                            <label for="seekerEmail" data-i18n="form.email.label">البريد الإلكتروني</label>
+                            <input id="seekerEmail" type="email" data-i18n-placeholder="form.email.placeholder" placeholder="example@domain.com" />
+                        </div>
+                        <div class="auth-form-group">
+                            <label for="seekerPhone" data-i18n="register.common.phone.label">رقم الجوال</label>
+                            <input id="seekerPhone" type="tel" data-i18n-placeholder="register.common.phone.placeholder" placeholder="مثال: 05XXXXXXXX" />
+                        </div>
+                        <div class="auth-form-group">
+                            <label for="seekerCity" data-i18n="register.common.city.label">المدينة</label>
+                            <input id="seekerCity" type="text" data-i18n-placeholder="register.common.city.placeholder" placeholder="مثال: الرياض" />
+                        </div>
+                        <div class="auth-form-group">
+                            <label for="seekerPassword" data-i18n="form.password.label">كلمة المرور</label>
+                            <input id="seekerPassword" type="password" data-i18n-placeholder="form.password.placeholder" placeholder="••••••••" />
+                        </div>
+                        <div class="auth-form-group">
+                            <label for="seekerPasswordConfirm" data-i18n="register.common.confirmPassword.label">تأكيد كلمة المرور</label>
+                            <input id="seekerPasswordConfirm" type="password" data-i18n-placeholder="register.common.confirmPassword.placeholder" placeholder="أعد إدخال كلمة المرور" />
+                        </div>
+
+                        <div class="auth-submit">
+                            <button type="submit" class="btn btn-primary btn-full" data-i18n="register.submit">إنشاء الحساب</button>
+                        </div>
+
+                        <p class="auth-footer-text">
+                            <span data-i18n="register.haveAccount">لديك حساب بالفعل؟</span>
+                            <a href="seeker-login.html" data-i18n="register.login">تسجيل الدخول</a>
+                        </p>
+                    </form>
+
+                    <form id="registerEmployerForm" class="register-form" style="display: none;">
+                        <div class="auth-form-group">
+                            <label for="employerCompanyName" data-i18n="register.employer.companyName.label">اسم الشركة</label>
+                            <input id="employerCompanyName" type="text" data-i18n-placeholder="register.employer.companyName.placeholder" placeholder="اسم الشركة" />
+                        </div>
+                        <div class="auth-form-group">
+                            <label for="employerEmail" data-i18n="form.email.label">البريد الإلكتروني</label>
+                            <input id="employerEmail" type="email" data-i18n-placeholder="form.email.placeholder" placeholder="example@domain.com" />
+                        </div>
+                        <div class="auth-form-group">
+                            <label for="employerPhone" data-i18n="register.common.phone.label">رقم الجوال</label>
+                            <input id="employerPhone" type="tel" data-i18n-placeholder="register.common.phone.placeholder" placeholder="مثال: 05XXXXXXXX" />
+                        </div>
+                        <div class="auth-form-group">
+                            <label for="employerCity" data-i18n="register.common.city.label">المدينة</label>
+                            <input id="employerCity" type="text" data-i18n-placeholder="register.common.city.placeholder" placeholder="مثال: الرياض" />
+                        </div>
+                        <div class="auth-form-group">
+                            <label for="employerPassword" data-i18n="form.password.label">كلمة المرور</label>
+                            <input id="employerPassword" type="password" data-i18n-placeholder="form.password.placeholder" placeholder="••••••••" />
+                        </div>
+                        <div class="auth-form-group">
+                            <label for="employerPasswordConfirm" data-i18n="register.common.confirmPassword.label">تأكيد كلمة المرور</label>
+                            <input id="employerPasswordConfirm" type="password" data-i18n-placeholder="register.common.confirmPassword.placeholder" placeholder="أعد إدخال كلمة المرور" />
+                        </div>
+
+                        <div class="auth-submit">
+                            <button type="submit" class="btn btn-primary btn-full" data-i18n="register.submit">إنشاء الحساب</button>
+                        </div>
+
+                        <p class="auth-footer-text">
+                            <span data-i18n="register.haveAccount">لديك حساب بالفعل؟</span>
+                            <a href="employer-login.html" data-i18n="register.login">تسجيل الدخول</a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <img src="assets/images/sh.png" alt="شعار ماهر" class="footer-logo-img">
+                    <h3 class="footer-logo" data-i18n="footer.logo">ماهر</h3>
+                    <p class="footer-about" data-i18n="footer.about">منصة عربية للتوظيف والتدريب وتطوير المهارات.</p>
+                    <a class="footer-site-link" href="https://www.maher.edu.sa" target="_blank" rel="noopener">🌐 www.maher.edu.sa</a>
+                </div>
+                <div class="footer-col">
+                    <h4 class="footer-col-title" data-i18n="footer.quickLinks">روابط سريعة</h4>
+                    <div class="footer-links">
+                        <a href="jobs.html" data-i18n="footer.jobs">الوظائف</a>
+                        <a href="courses.html" data-i18n="footer.courses">الدورات</a>
+                        <a href="contact.html" data-i18n="footer.contact">تواصل معنا</a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4 class="footer-col-title" data-i18n="footer.contact">تواصل معنا</h4>
+                    <ul class="footer-contact-list">
+                        <li>📞 <a href="tel:920016798">920016798</a> <span class="footer-contact-note" data-i18n="footer.landline">(أرضي)</span></li>
+                        <li>📞 <a href="tel:0539600050">0539600050</a></li>
+                        <li>📞 <a href="tel:0539600080">0539600080</a></li>
+                        <li>✉️ <a href="mailto:info@maher.edu.sa">info@maher.edu.sa</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span data-i18n="footer.copy">© <span id="year"></span> ماهر. جميع الحقوق محفوظة.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="assets/js/auth.js" defer></script>
+    <script src="assets/js/main.js" defer></script>
+</body>
+</html>
+

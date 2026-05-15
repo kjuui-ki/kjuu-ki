@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html class="maher-loading" lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="preconnect" href="https://jgvfcievyfkyldryatlk.supabase.co" crossorigin />
+    <link rel="dns-prefetch" href="https://jgvfcievyfkyldryatlk.supabase.co" />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>نشر وظيفة | ماهر</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+    <header class="main-header">
+        <div class="container header-inner">
+            <div class="header-main-group">
+                <a href="index.html" class="logo">
+                    <img src="assets/images/sh.png" alt="شعار المنصة" class="logo-img">
+                </a>
+                <nav class="main-nav" id="mainNav">
+                    <a href="index.html" class="nav-link" data-i18n="nav.home">الرئيسية</a>
+                    <a href="seeker-login.html" class="nav-link" data-i18n="nav.seekers">الباحثون عن العمل</a>
+                    <a href="employer-login.html" class="nav-link" data-i18n="nav.employers">أصحاب الأعمال والشركات</a>
+                    <a href="jobs.html" class="nav-link" data-i18n="nav.jobs">الوظائف</a>
+                    <a href="courses.html" class="nav-link" data-i18n="nav.courses">الدورات التدريبية</a>
+                </nav>
+            </div>
+
+            <div class="lang-switch">
+                <button class="lang-btn" data-lang="ar" data-i18n="header.langAr">العربية</button>
+                <button class="lang-btn" data-lang="en" data-i18n="header.langEn">English</button>
+            </div>
+
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <main class="section">
+        <div class="container">
+            <h1 data-i18n="page.postJob.title">نشر وظيفة</h1>
+            
+            <form id="postJobForm" class="form-box" style="max-width: 700px; margin: 2rem auto;">
+                <div class="form-group">
+                    <label for="jobTitle" data-i18n="form.jobTitle">اسم الوظيفة *</label>
+                    <input 
+                        type="text" 
+                        id="jobTitle" 
+                        name="jobTitle" 
+                        required 
+                        placeholder="أدخل اسم الوظيفة"
+                        style="width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;"
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label for="jobDescription" data-i18n="form.jobDescription">وصف الوظيفة *</label>
+                    <textarea 
+                        id="jobDescription" 
+                        name="jobDescription" 
+                        required 
+                        rows="6"
+                        placeholder="أدخل وصف الوظيفة"
+                        style="width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; font-family: inherit;"
+                    ></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="jobRequirements" data-i18n="form.jobRequirements">المتطلبات *</label>
+                    <textarea 
+                        id="jobRequirements" 
+                        name="jobRequirements" 
+                        required 
+                        rows="4"
+                        placeholder="أدخل المتطلبات"
+                        style="width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; font-family: inherit;"
+                    ></textarea>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label for="jobSalary" data-i18n="form.jobSalary">الراتب المتوقع</label>
+                        <input 
+                            type="text" 
+                            id="jobSalary" 
+                            name="jobSalary" 
+                            placeholder="أدخل الراتب المتوقع"
+                            style="width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;"
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="jobLocation" data-i18n="form.jobLocation">الموقع *</label>
+                        <input 
+                            type="text" 
+                            id="jobLocation" 
+                            name="jobLocation" 
+                            required
+                            placeholder="أدخل الموقع"
+                            style="width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;"
+                        />
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label for="jobType" data-i18n="form.jobType">نوع التوظيف *</label>
+                        <select 
+                            id="jobType" 
+                            name="jobType" 
+                            required
+                            style="width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;"
+                        >
+                            <option value="اختر نوع التوظيف" data-i18n="opt.jobType.select">اختر نوع التوظيف</option>
+                            <option value="دوام كامل" data-i18n="opt.jobType.fullTime">دوام كامل</option>
+                            <option value="دوام جزئي" data-i18n="opt.jobType.partTime">دوام جزئي</option>
+                            <option value="عقد مؤقت" data-i18n="opt.jobType.contract">عقد مؤقت</option>
+                            <option value="تدريب" data-i18n="opt.jobType.internship">تدريب</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="jobCategory" data-i18n="form.jobCategory">المجال *</label>
+                        <select 
+                            id="jobCategory" 
+                            name="jobCategory" 
+                            required
+                            style="width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;"
+                        >
+                            <option value="اختر المجال" data-i18n="opt.jobCategory.select">اختر المجال</option>
+                            <option value="تقنية المعلومات" data-i18n="opt.jobCategory.it">تقنية المعلومات</option>
+                            <option value="التسويق" data-i18n="opt.jobCategory.marketing">التسويق</option>
+                            <option value="المبيعات" data-i18n="opt.jobCategory.sales">المبيعات</option>
+                            <option value="الموارد البشرية" data-i18n="opt.jobCategory.hr">الموارد البشرية</option>
+                            <option value="التصميم" data-i18n="opt.jobCategory.design">التصميم</option>
+                            <option value="الهندسة" data-i18n="opt.jobCategory.engineering">الهندسة</option>
+                            <option value="التعليم" data-i18n="opt.jobCategory.education">التعليم</option>
+                            <option value="أخرى" data-i18n="opt.jobCategory.other">أخرى</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="jobDeadline" data-i18n="form.jobDeadline">آخر موعد للتقديم</label>
+                    <input 
+                        type="date" 
+                        id="jobDeadline" 
+                        name="jobDeadline"
+                        style="width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;"
+                    />
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1.5rem; padding: 14px;" data-i18n="form.postJob.submit">نشر الوظيفة</button>
+            </form>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <img src="assets/images/sh.png" alt="شعار ماهر" class="footer-logo-img">
+                    <h3 class="footer-logo" data-i18n="footer.logo">ماهر</h3>
+                    <p class="footer-about" data-i18n="footer.about">منصة عربية للتوظيف والتدريب وتطوير المهارات.</p>
+                    <a class="footer-site-link" href="https://www.maher.edu.sa" target="_blank" rel="noopener">🌐 www.maher.edu.sa</a>
+                </div>
+                <div class="footer-col">
+                    <h4 class="footer-col-title" data-i18n="footer.quickLinks">روابط سريعة</h4>
+                    <div class="footer-links">
+                        <a href="jobs.html" data-i18n="footer.jobs">الوظائف</a>
+                        <a href="courses.html" data-i18n="footer.courses">الدورات</a>
+                        <a href="contact.html" data-i18n="footer.contact">تواصل معنا</a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4 class="footer-col-title" data-i18n="footer.contact">تواصل معنا</h4>
+                    <ul class="footer-contact-list">
+                        <li>📞 <a href="tel:920016798">920016798</a> <span class="footer-contact-note" data-i18n="footer.landline">(أرضي)</span></li>
+                        <li>📞 <a href="tel:0539600050">0539600050</a></li>
+                        <li>📞 <a href="tel:0539600080">0539600080</a></li>
+                        <li>✉️ <a href="mailto:info@maher.edu.sa">info@maher.edu.sa</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span data-i18n="footer.copy">© <span id="year"></span> ماهر. جميع الحقوق محفوظة.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="assets/js/auth.js" defer></script>
+    <script src="assets/js/main.js" defer></script>
+</body>
+</html>
+

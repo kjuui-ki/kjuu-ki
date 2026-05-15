@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html class="maher-loading" lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="preconnect" href="https://jgvfcievyfkyldryatlk.supabase.co" crossorigin />
+    <link rel="dns-prefetch" href="https://jgvfcievyfkyldryatlk.supabase.co" />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ماهر | طوّر مهاراتك وابنِ مسارك المهني</title>
+    <meta name="description" content="ماهر | طوّر مهاراتك وابنِ مسارك المهني">
+    <!-- Open Graph / WhatsApp / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kjuui-ki.github.io/kjuu-ki/">
+    <meta property="og:title" content="ماهر | طوّر مهاراتك وابنِ مسارك المهني">
+    <meta property="og:description" content="ماهر | طوّر مهاراتك وابنِ مسارك المهني">
+    <meta property="og:image" content="https://kjuui-ki.github.io/kjuu-ki/assets/images/sh.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="ar_SA">
+    <meta property="og:site_name" content="ماهر">
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ماهر | طوّر مهاراتك وابنِ مسارك المهني">
+    <meta name="twitter:description" content="ماهر | طوّر مهاراتك وابنِ مسارك المهني">
+    <meta name="twitter:image" content="https://kjuui-ki.github.io/kjuu-ki/assets/images/sh.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+    <header class="main-header">
+        <div class="container header-inner">
+            <div class="header-main-group">
+                <a href="index.html" class="logo">
+                    <img src="assets/images/sh.png" alt="شعار ماهر" class="logo-img">
+                </a>
+
+                <nav class="main-nav" id="mainNav">
+                    <a href="index.html" class="nav-link" data-i18n="nav.home">الرئيسية</a>
+                    <a href="seeker-login.html" class="nav-link" data-i18n="nav.seekers">الباحثون عن العمل</a>
+                    <a href="employer-login.html" class="nav-link" data-i18n="nav.employers">أصحاب الأعمال والشركات</a>
+                    <a href="jobs.html" class="nav-link" data-i18n="nav.jobs">الوظائف</a>
+                    <a href="courses.html" class="nav-link" data-i18n="nav.courses">الدورات التدريبية</a>
+                </nav>
+            </div>
+
+            <div class="lang-switch">
+                <button class="lang-btn" data-lang="ar" data-i18n="header.langAr">العربية</button>
+                <button class="lang-btn" data-lang="en" data-i18n="header.langEn">English</button>
+            </div>
+
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container hero-inner">
+                <div class="hero-content">
+                    <h1 data-i18n="hero.title">طوّر مهاراتك، وابنِ مسارك المهني مع <span>ماهر</span></h1>
+                    <p data-i18n="hero.subtitle">منصة ماهر تجمع بين فرص التوظيف والدورات التدريبية لمساعدتك على بناء مستقبل مهني أقوى.</p>
+
+                    <div class="smart-search-box" id="smartSearchBox">
+                        <div class="ssb-main">
+                            <div class="ssb-input-wrap">
+                                <svg class="ssb-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                                <input type="text" id="ssb-keyword" class="ssb-input"
+                                       placeholder="المسمى الوظيفي، المهارة، الشركة"
+                                       data-i18n-placeholder="hero.search.keywordPlaceholder"
+                                       autocomplete="off" />
+                            </div>
+                            <div class="ssb-divider"></div>
+                            <div class="ssb-select-wrap">
+                                <svg class="ssb-pin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2C8.686 2 6 4.686 6 8c0 5.25 6 13 6 13s6-7.75 6-13c0-3.314-2.686-6-6-6z"/><circle cx="12" cy="8" r="2.5"/></svg>
+                                <select id="ssb-city" class="ssb-select">
+                                    <option value="كل المدن" data-i18n="hero.search.city.any">كل المدن</option>
+                                    <option value="الرياض" data-i18n="hero.search.city.riyadh">الرياض</option>
+                                    <option value="جدة" data-i18n="hero.search.city.jeddah">جدة</option>
+                                    <option value="الدمام" data-i18n="hero.search.city.dammam">الدمام</option>
+                                    <option value="مكة" data-i18n="hero.search.city.mecca">مكة</option>
+                                </select>
+                            </div>
+                            <button class="ssb-btn" id="ssb-submit" type="button">
+                                <span data-i18n="hero.search.submit">بحث</span>
+                                <svg class="ssb-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                            </button>
+                        </div>
+                        <div class="ssb-dropdown" id="ssb-dropdown" hidden></div>
+                        <div class="ssb-tags">
+                            <span class="ssb-tag-label" data-i18n="search.trending">الأكثر بحثًا:</span>
+                            <button class="ssb-tag" type="button" data-value="💻 مطور" data-i18n="search.tag.developer">💻 مطور</button>
+                            <button class="ssb-tag" type="button" data-value="💰 محاسب" data-i18n="search.tag.accountant">💰 محاسب</button>
+                            <button class="ssb-tag" type="button" data-value="📋 إدارة" data-i18n="search.tag.management">📋 إدارة</button>
+                            <button class="ssb-tag" type="button" data-value="📣 تسويق" data-i18n="search.tag.marketing">📣 تسويق</button>
+                        </div>
+                    </div>
+
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <span class="stat-number" data-count="120">0</span>
+                            <span class="stat-label" data-i18n="hero.stats.jobs">وظيفة متاحة</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number" data-count="40">0</span>
+                            <span class="stat-label" data-i18n="hero.stats.companies">شركة مسجّلة</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number" data-count="60">0</span>
+                            <span class="stat-label" data-i18n="hero.stats.courses">دورة تدريبية</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="section" id="features">
+            <div class="container">
+                <div class="section-header reveal">
+                    <h2 data-i18n="section.why.title">لماذا <span>ماهر</span>؟</h2>
+                    <p data-i18n="section.why.subtitle">منصة متكاملة تساعدك في كل مراحل رحلتك المهنية.</p>
+                </div>
+                <div class="grid grid-3">
+                    <div class="feature-card reveal reveal-delay-1">
+                        <div class="feature-card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3H8L6 7h12l-2-4z"/><circle cx="12" cy="14" r="2.5"/></svg>
+                        </div>
+                        <h3 data-i18n="section.why.card1.title">فرص وظيفية مميزة</h3>
+                        <p data-i18n="section.why.card1.text">اكتشف وظائف من شركات وشركاء موثوقين في مختلف المدن.</p>
+                    </div>
+                    <div class="feature-card reveal reveal-delay-2">
+                        <div class="feature-card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                        </div>
+                        <h3 data-i18n="section.why.card2.title">دورات تدريبية عملية</h3>
+                        <p data-i18n="section.why.card2.text">تعلّم مهارات جديدة من خلال دورات مجانية ومدفوعة.</p>
+                    </div>
+                    <div class="feature-card reveal reveal-delay-3">
+                        <div class="feature-card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M21 21v-2a4 4 0 0 0-3-3.87"/></svg>
+                        </div>
+                        <h3 data-i18n="section.why.card3.title">ملف مهني احترافي</h3>
+                        <p data-i18n="section.why.card3.text">ابنِ ملفك المهني وشارك سيرتك الذاتية مع الشركات.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Job Categories Section -->
+        <section class="section section-alt" id="job-categories">
+            <div class="container">
+                <div class="section-header reveal">
+                    <h2 data-i18n="section.jobCats.title">استكشف مجالات التوظيف</h2>
+                    <p data-i18n="section.jobCats.subtitle">تصفّح الوظائف حسب التخصص وابحث عن الفرصة الأنسب لك.</p>
+                </div>
+                <div class="job-categories-grid">
+                    <a href="jobs.html" class="jcat-card reveal reveal-delay-1">
+                        <span class="jcat-icon">•</span>
+                        <div class="jcat-content">
+                            <h3 class="jcat-title" data-i18n="cat.tech">تقنية المعلومات</h3>
+                        </div>
+                        <span class="jcat-arrow">?</span>
+                    </a>
+                    <a href="jobs.html" class="jcat-card reveal reveal-delay-2">
+                        <span class="jcat-icon">•</span>
+                        <div class="jcat-content">
+                            <h3 class="jcat-title" data-i18n="cat.finance">المالية والمحاسبة</h3>
+                        </div>
+                        <span class="jcat-arrow">?</span>
+                    </a>
+                    <a href="jobs.html" class="jcat-card reveal reveal-delay-3">
+                        <span class="jcat-icon">•</span>
+                        <div class="jcat-content">
+                            <h3 class="jcat-title" data-i18n="cat.hr">الموارد البشرية</h3>
+                        </div>
+                        <span class="jcat-arrow">?</span>
+                    </a>
+                    <a href="jobs.html" class="jcat-card reveal reveal-delay-1">
+                        <span class="jcat-icon">•</span>
+                        <div class="jcat-content">
+                            <h3 class="jcat-title" data-i18n="cat.marketing">التسويق والإعلان</h3>
+                        </div>
+                        <span class="jcat-arrow">?</span>
+                    </a>
+                    <a href="jobs.html" class="jcat-card reveal reveal-delay-2">
+                        <span class="jcat-icon">•</span>
+                        <div class="jcat-content">
+                            <h3 class="jcat-title" data-i18n="cat.engineering">الهندسة والتشغيل</h3>
+                        </div>
+                        <span class="jcat-arrow">?</span>
+                    </a>
+                    <a href="jobs.html" class="jcat-card reveal reveal-delay-3">
+                        <span class="jcat-icon">•</span>
+                        <div class="jcat-content">
+                            <h3 class="jcat-title" data-i18n="cat.admin">الإدارة والأعمال</h3>
+                        </div>
+                        <span class="jcat-arrow">?</span>
+                    </a>
+                </div>
+                <div class="jcat-cta reveal">
+                    <a href="jobs.html" class="btn-primary" data-i18n="section.jobCats.btn">استعراض جميع الوظائف</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Learning Paths Section -->
+        <section class="section" id="learning-paths">
+            <div class="container">
+                <div class="section-header reveal">
+                    <h2 data-i18n="section.learningPaths.title">مسارات التدريب والتطوير</h2>
+                    <p data-i18n="section.learningPaths.subtitle">مسارات مهنية متكاملة تبني كفاءتك وتؤهلك لسوق العمل.</p>
+                </div>
+                <div class="grid grid-3">
+                    <div class="lpath-card reveal reveal-delay-1">
+                        <div class="lpath-icon">•</div>
+                        <h3 class="lpath-title" data-i18n="path.tech.title">المسار التقني</h3>
+                        <p class="lpath-desc" data-i18n="path.tech.desc">دورات في البرمجة وتطوير الويب والذكاء الاصطناعي وأمن المعلومات.</p>
+                        <a href="courses.html" class="lpath-btn" data-i18n="path.explore">استكشف المسار</a>
+                    </div>
+                    <div class="lpath-card lpath-featured reveal reveal-delay-2">
+                        <div class="lpath-icon">•</div>
+                        <h3 class="lpath-title" data-i18n="path.admin.title">المسار الإداري</h3>
+                        <p class="lpath-desc" data-i18n="path.admin.desc">مهارات القيادة وإدارة المشاريع والتخطيط الاستراتيجي للمهنيين.</p>
+                        <a href="courses.html" class="lpath-btn" data-i18n="path.explore">استكشف المسار</a>
+                    </div>
+                    <div class="lpath-card reveal reveal-delay-3">
+                        <div class="lpath-icon">•</div>
+                        <h3 class="lpath-title" data-i18n="path.career.title">مهارات التوظيف</h3>
+                        <p class="lpath-desc" data-i18n="path.career.desc">إعداد السيرة الذاتية والتحضير للمقابلات وبناء الحضور المهني.</p>
+                        <a href="courses.html" class="lpath-btn" data-i18n="path.explore">استكشف المسار</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section class="section section-alt" id="how-it-works">
+            <div class="container">
+                <div class="section-header reveal">
+                    <h2 data-i18n="section.howItWorks.title">كيف تعمل منصة ماهر؟</h2>
+                </div>
+                <div class="grid grid-3 steps-grid">
+                    <div class="step-card reveal reveal-delay-1">
+                        <span class="step-number">1</span>
+                        <h3 data-i18n="how.step1.title">إنشاء حساب</h3>
+                        <p data-i18n="how.step1.text">قم بإنشاء حساب كباحث عن عمل أو كمسؤول شركة.</p>
+                    </div>
+                    <div class="step-card reveal reveal-delay-2">
+                        <span class="step-number">2</span>
+                        <h3 data-i18n="how.step2.title">استعراض الفرص</h3>
+                        <p data-i18n="how.step2.text">تصفّح الوظائف أو الدورات التدريبية المناسبة لك.</p>
+                    </div>
+                    <div class="step-card reveal reveal-delay-3">
+                        <span class="step-number">3</span>
+                        <h3 data-i18n="how.step3.title">ابدأ رحلتك</h3>
+                        <p data-i18n="how.step3.text">قدّم على الوظائف أو التحق بالدورات وابدأ التطوير.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Partners Marquee Section -->
+        <section class="section partners-section">
+            <div class="container">
+                <div class="section-header reveal">
+                    <h2 data-i18n="section.partners.title">شركاء النجاح</h2>
+                </div>
+            </div>
+            <div class="marquee-wrapper">
+                <div class="marquee-track">
+                    <img src="assets/images/cab99/p01.png" alt="صورة">
+                    <img src="assets/images/cab99/p02.png" alt="صورة">
+                    <img src="assets/images/cab99/p03.png" alt="صورة">
+                    <img src="assets/images/cab99/p04.png" alt="صورة">
+                    <img src="assets/images/cab99/p05.png" alt="صورة">
+                    <img src="assets/images/cab99/p06.png" alt="صورة">
+                    <img src="assets/images/cab99/p07.png" alt="صورة">
+                    <img src="assets/images/cab99/p08.png" alt="صورة">
+                    <img src="assets/images/cab99/p09.png" alt="صورة">
+                    <img src="assets/images/cab99/p10.png" alt="صورة">
+                    <img src="assets/images/cab99/p11.png" alt="صورة">
+                    <img src="assets/images/cab99/p12.png" alt="صورة">
+                    <img src="assets/images/cab99/p13.png" alt="صورة">
+                    <img src="assets/images/cab99/p14.png" alt="صورة">
+                    <img src="assets/images/cab99/p15.png" alt="صورة">
+                    <img src="assets/images/cab99/p16.png" alt="صورة">
+                    <img src="assets/images/cab99/p17.png" alt="صورة">
+                    <img src="assets/images/cab99/p18.png" alt="صورة">
+                    <img src="assets/images/cab99/p19.png" alt="صورة">
+                    <img src="assets/images/cab99/p20.png" alt="صورة">
+                    <img src="assets/images/cab99/p21.png" alt="صورة">
+                    <img src="assets/images/cab99/p22.png" alt="صورة">
+                    <img src="assets/images/cab99/p23.png" alt="صورة">
+                    <img src="assets/images/cab99/p24.png" alt="صورة">
+                    <img src="assets/images/cab99/p25.png" alt="صورة">
+                    <img src="assets/images/cab99/p26.png" alt="صورة">
+                    <img src="assets/images/cab99/p27.png" alt="صورة">
+                    <img src="assets/images/cab99/p28.png" alt="صورة">
+                    <img src="assets/images/cab99/p29.png" alt="صورة">
+                    <img src="assets/images/cab99/p30.png" alt="صورة">
+                    <img src="assets/images/cab99/p31.png" alt="صورة">
+                    <img src="assets/images/cab99/p32.png" alt="صورة">
+                    <img src="assets/images/cab99/p33.png" alt="صورة">
+                    <img src="assets/images/cab99/p34.png" alt="صورة">
+                    <img src="assets/images/cab99/p35.png" alt="صورة">
+                    <img src="assets/images/cab99/p36.png" alt="صورة">
+                    <img src="assets/images/cab99/p37.png" alt="صورة">
+                    <img src="assets/images/cab99/p38.png" alt="صورة">
+                    <img src="assets/images/cab99/p39.png" alt="صورة">
+                    <img src="assets/images/cab99/p40.png" alt="صورة">
+                    <!-- duplicate for seamless loop -->
+                    <img src="assets/images/cab99/p01.png" alt="صورة">
+                    <img src="assets/images/cab99/p02.png" alt="صورة">
+                    <img src="assets/images/cab99/p03.png" alt="صورة">
+                    <img src="assets/images/cab99/p04.png" alt="صورة">
+                    <img src="assets/images/cab99/p05.png" alt="صورة">
+                    <img src="assets/images/cab99/p06.png" alt="صورة">
+                    <img src="assets/images/cab99/p07.png" alt="صورة">
+                    <img src="assets/images/cab99/p08.png" alt="صورة">
+                    <img src="assets/images/cab99/p09.png" alt="صورة">
+                    <img src="assets/images/cab99/p10.png" alt="صورة">
+                    <img src="assets/images/cab99/p11.png" alt="صورة">
+                    <img src="assets/images/cab99/p12.png" alt="صورة">
+                    <img src="assets/images/cab99/p13.png" alt="صورة">
+                    <img src="assets/images/cab99/p14.png" alt="صورة">
+                    <img src="assets/images/cab99/p15.png" alt="صورة">
+                    <img src="assets/images/cab99/p16.png" alt="صورة">
+                    <img src="assets/images/cab99/p17.png" alt="صورة">
+                    <img src="assets/images/cab99/p18.png" alt="صورة">
+                    <img src="assets/images/cab99/p19.png" alt="صورة">
+                    <img src="assets/images/cab99/p20.png" alt="صورة">
+                    <img src="assets/images/cab99/p21.png" alt="صورة">
+                    <img src="assets/images/cab99/p22.png" alt="صورة">
+                    <img src="assets/images/cab99/p23.png" alt="صورة">
+                    <img src="assets/images/cab99/p24.png" alt="صورة">
+                    <img src="assets/images/cab99/p25.png" alt="صورة">
+                    <img src="assets/images/cab99/p26.png" alt="صورة">
+                    <img src="assets/images/cab99/p27.png" alt="صورة">
+                    <img src="assets/images/cab99/p28.png" alt="صورة">
+                    <img src="assets/images/cab99/p29.png" alt="صورة">
+                    <img src="assets/images/cab99/p30.png" alt="صورة">
+                    <img src="assets/images/cab99/p31.png" alt="صورة">
+                    <img src="assets/images/cab99/p32.png" alt="صورة">
+                    <img src="assets/images/cab99/p33.png" alt="صورة">
+                    <img src="assets/images/cab99/p34.png" alt="صورة">
+                    <img src="assets/images/cab99/p35.png" alt="صورة">
+                    <img src="assets/images/cab99/p36.png" alt="صورة">
+                    <img src="assets/images/cab99/p37.png" alt="صورة">
+                    <img src="assets/images/cab99/p38.png" alt="صورة">
+                    <img src="assets/images/cab99/p39.png" alt="صورة">
+                    <img src="assets/images/cab99/p40.png" alt="صورة">
+                </div>
+            </div>
+                    <!-- duplicate for seamless loop -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Career Banner Section -->
+        <section class="career-banner">
+            <div class="container career-banner-inner">
+                <h2 data-i18n="section.careerBanner.title">ابدأ رحلتك المهنية مع ماهر</h2>
+                <p data-i18n="section.careerBanner.text">انضم إلى منصة ماهر لبناء ملف مهني قوي، استكشف فرص التوظيف والدورات التدريبية التي تناسب طموحاتك، وابدأ اليوم أول خطوة في مسارك المهني.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <!-- ?????? ?????: ?????? ?????? -->
+                <div class="footer-col">
+                    <img src="assets/images/sh.png" alt="صورة" class="footer-logo-img">
+                    <h3 class="footer-logo" data-i18n="footer.logo">ماهر</h3>
+                    <p class="footer-about" data-i18n="footer.about">منصة عربية للتوظيف والتدريب وتطوير المهارات.</p>
+                    <a class="footer-site-link" href="https://www.maher.edu.sa" target="_blank" rel="noopener">🌐 www.maher.edu.sa</a>
+                </div>
+
+                <!-- ?????? ??????: ????? ????? -->
+                <div class="footer-col">
+                    <h4 class="footer-col-title" data-i18n="footer.quickLinks">روابط سريعة</h4>
+                    <div class="footer-links">
+                        <a href="jobs.html" data-i18n="footer.jobs">الوظائف</a>
+                        <a href="courses.html" data-i18n="footer.courses">الدورات</a>
+                        <a href="contact.html" data-i18n="footer.contact">تواصل معنا</a>
+                    </div>
+                </div>
+
+                <!-- ?????? ??????: ??????? ??????? -->
+                <div class="footer-col">
+                    <h4 class="footer-col-title" data-i18n="footer.contact">تواصل معنا</h4>
+                    <ul class="footer-contact-list">
+                        <li>📞 <a href="tel:920016798">920016798</a> <span class="footer-contact-note" data-i18n="footer.landline">(أرضي)</span></li>
+                        <li>📞 <a href="tel:0539600050">0539600050</a></li>
+                        <li>📞 <a href="tel:0539600080">0539600080</a></li>
+                        <li>✉️ <a href="mailto:info@maher.edu.sa">info@maher.edu.sa</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <span data-i18n="footer.copy">© <span id="year"></span> ماهر. جميع الحقوق محفوظة.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="assets/js/auth.js" defer></script>
+    <script src="assets/js/main.js" defer></script>
+    <script>
+    (function () {
+        var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+                if (e.isIntersecting) {
+                    e.target.classList.add("revealed");
+                    io.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
+    })();
+    </script>
+    <script src="assets/js/hero-search.js" defer></script>
+    <script>
+    /* -- Animated stat counters ----------------------------------- */
+    (function () {
+        function animateCounter(el) {
+            var target = parseInt(el.getAttribute("data-count"), 10);
+            if (!target) return;
+            var duration = 1800;
+            var start    = performance.now();
+            el.textContent = "0";
+            function step(now) {
+                var elapsed  = Math.min(now - start, duration);
+                var progress = elapsed / duration;
+                /* ease-out cubic */
+                var eased = 1 - Math.pow(1 - progress, 3);
+                var current = Math.floor(eased * target);
+                el.textContent = "+" + current;
+                if (elapsed < duration) { requestAnimationFrame(step); }
+                else { el.textContent = "+" + target; }
+            }
+            requestAnimationFrame(step);
+        }
+
+        var observed = new Set();
+        var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+                if (e.isIntersecting && !observed.has(e.target)) {
+                    observed.add(e.target);
+                    animateCounter(e.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll(".stat-number[data-count]").forEach(function (el) {
+            io.observe(el);
+        });
+    })();
+    </script>
+</body>
+</html>
+

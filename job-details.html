@@ -1,48 +1,96 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html class="maher-loading" lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="preconnect" href="https://jgvfcievyfkyldryatlk.supabase.co" crossorigin />
     <link rel="dns-prefetch" href="https://jgvfcievyfkyldryatlk.supabase.co" />
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>تفاصيل الوظيفة | منصة ماهر</title>
+    <title id="courseDetailPageTitle">تفاصيل الدورة | ماهر</title>
     <link rel="stylesheet" href="assets/css/style.css" />
+    <style>
+        .cd-wrap { padding: 2.5rem 0 3rem; min-height: 50vh; }
+        .cd-card { max-width: 720px; margin: 0 auto; }
+        .cd-card-inner {
+            background: linear-gradient(145deg, rgba(30,41,80,0.92), rgba(15,23,42,0.95));
+            border: 1px solid rgba(148,163,184,0.18);
+            border-radius: 22px;
+            padding: 2rem 1.75rem;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+        }
+        .cd-kicker { font-size: 0.82rem; font-weight: 700; color: #38bdf8; letter-spacing: 0.04em; margin: 0 0 0.5rem; }
+        .cd-title { font-size: 1.75rem; font-weight: 800; color: #f8fafc; margin: 0 0 1rem; line-height: 1.35; }
+        .cd-meta-row { display: flex; flex-wrap: wrap; gap: 0.5rem 0.75rem; align-items: center; margin-bottom: 1.25rem; }
+        .cd-chip { background: rgba(56,189,248,0.15); color: #7dd3fc; padding: 0.25rem 0.65rem; border-radius: 999px; font-size: 0.78rem; font-weight: 600; border: 1px solid rgba(56,189,248,0.35); }
+        .cd-meta { font-size: 0.88rem; color: rgba(226,232,240,0.75); }
+        .cd-desc { font-size: 0.95rem; line-height: 1.75; color: rgba(241,245,249,0.88); margin-bottom: 1.5rem; }
+        .cd-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1rem; }
+        .cd-footnote { font-size: 0.82rem; color: rgba(148,163,184,0.85); line-height: 1.6; margin: 0; }
+        .cd-error { text-align: center; padding: 3rem 1rem; color: rgba(248,250,252,0.85); font-size: 1rem; }
+        .cd-loading-card {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 2rem 1.75rem;
+            border-radius: 22px;
+            border: 1px solid rgba(148,163,184,0.14);
+            background: linear-gradient(145deg, rgba(30,41,80,0.55), rgba(15,23,42,0.65));
+        }
+        .cd-loading-label {
+            text-align: center;
+            font-size: 0.9rem;
+            color: rgba(148, 163, 184, 0.9);
+            margin: 0 0 1.25rem;
+        }
+        .cd-skeleton-line {
+            height: 14px;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            background: linear-gradient(90deg, rgba(51,65,85,0.5) 0%, rgba(100,116,139,0.35) 50%, rgba(51,65,85,0.5) 100%);
+            background-size: 200% 100%;
+            animation: cdShimmer 1.2s ease-in-out infinite;
+        }
+        .cd-skeleton-line.w40 { width: 40%; }
+        .cd-skeleton-line.w55 { width: 55%; }
+        .cd-skeleton-line.w70 { width: 70%; }
+        .cd-skeleton-line.w85 { width: 85%; }
+        .cd-skeleton-line.w100 { width: 100%; height: 18px; }
+        @keyframes cdShimmer {
+            0% { background-position: 100% 0; }
+            100% { background-position: -100% 0; }
+        }
+    </style>
 </head>
 <body>
     <header class="main-header">
         <div class="container header-inner">
             <div class="header-main-group">
                 <a href="index.html" class="logo">
-                    <img src="assets/images/ksu1.png" alt="Ø´Ø¹Ø§Ø± Ø§Ù„Ù…Ù†ØµØ©" class="logo-img">
+                    <img src="assets/images/sh.png" alt="شعار المنصة" class="logo-img">
                 </a>
                 <nav class="main-nav" id="mainNav">
                     <a href="index.html" class="nav-link" data-i18n="nav.home"></a>
-                    <a href="seeker-login.html" class="nav-link" data-i18n="nav.seekers"></a>
-                    <a href="employer-login.html" class="nav-link" data-i18n="nav.employers"></a>
-                    <a href="jobs.html" class="nav-link" data-i18n="nav.jobs"></a>
-                    <a href="courses.html" class="nav-link" data-i18n="nav.courses"></a>
+                    <a href="courses.html" class="nav-link" data-i18n="nav.catalog"></a>
+                    <a href="training-paths.html" class="nav-link" data-i18n="nav.trainingPaths"></a>
+                    <a href="about-academy.html" class="nav-link" data-i18n="nav.aboutAcademy"></a>
+                    <a href="login.html" class="nav-link" data-i18n="nav.login"></a>
                 </nav>
             </div>
-
             <div class="lang-switch">
-                <button class="lang-btn" data-lang="ar" data-i18n="header.langAr">العربية</button>
-                <button class="lang-btn" data-lang="en" data-i18n="header.langEn">English</button>
+                <button type="button" class="lang-btn" data-lang="ar" data-i18n="header.langAr">العربية</button>
+                <button type="button" class="lang-btn" data-lang="en" data-i18n="header.langEn">English</button>
             </div>
-
-            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
-                <span></span>
-                <span></span>
-                <span></span>
+            <button class="nav-toggle" id="navToggle" aria-label="فتح القائمة">
+                <span></span><span></span><span></span>
             </button>
         </div>
     </header>
 
-    <main class="section">
+    <main class="section cd-wrap">
         <div class="container">
-            <h1 data-i18n="page.jobDetails.title">تفاصيل الوظيفة</h1>
-            <p data-i18n="page.jobDetails.text">سيتم ربط هذه الصفحة ببيانات Supabase لاحقًا.</p>
+            <p style="margin:0 0 1rem;"><a href="courses.html" class="btn-link" data-i18n="courses.backToList">← العودة إلى الدورات</a></p>
+            <div id="courseDetailRoot" class="cd-loading" aria-busy="true" aria-live="polite"></div>
         </div>
     </main>
 
@@ -50,37 +98,38 @@
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-col">
-                    <img src="assets/images/ksu1.png" alt="Ø´Ø¹Ø§Ø± Ù…Ø§Ù‡Ø±" class="footer-logo-img">
+                    <img src="assets/images/sh.png" alt="شعار ماهر" class="footer-logo-img">
                     <h3 class="footer-logo" data-i18n="footer.logo">ماهر</h3>
-                    <p class="footer-about" data-i18n="footer.about">منصة عربية للتوظيف والتدريب وتطوير المهارات.</p>
-                    <a class="footer-site-link" href="https://www.maher.edu.sa" target="_blank" rel="noopener">🌐 www.maher.edu.sa</a>
+                    <p class="footer-about" data-i18n="footer.about"></p>
+                    <a class="footer-site-link" href="https://www.maher.edu.sa" target="_blank" rel="noopener">www.maher.edu.sa</a>
                 </div>
                 <div class="footer-col">
-                    <h4 class="footer-col-title" data-i18n="footer.quickLinks">روابط سريعة</h4>
+                    <h4 class="footer-col-title" data-i18n="footer.quickLinks"></h4>
                     <div class="footer-links">
-                        <a href="jobs.html" data-i18n="footer.jobs">الوظائف</a>
-                        <a href="courses.html" data-i18n="footer.courses">الدورات</a>
-                        <a href="contact.html" data-i18n="footer.contact">تواصل معنا</a>
+                        <a href="courses.html" data-i18n="footer.catalog"></a>
+                        <a href="contact.html" data-i18n="footer.contact"></a>
                     </div>
                 </div>
                 <div class="footer-col">
-                    <h4 class="footer-col-title" data-i18n="footer.contact">تواصل معنا</h4>
+                    <h4 class="footer-col-title" data-i18n="footer.contact"></h4>
                     <ul class="footer-contact-list">
-                        <li>📞 <a href="tel:920016798">920016798</a> <span class="footer-contact-note" data-i18n="footer.landline">(أرضي)</span></li>
-                        <li>📱 <a href="tel:0539600050">0539600050</a></li>
-                        <li>📱 <a href="tel:0539600080">0539600080</a></li>
-                        <li>✉️ <a href="mailto:info@maher.edu.sa">info@maher.edu.sa</a></li>
+                        <li><a href="tel:920016798">920016798</a> <span class="footer-contact-note" data-i18n="footer.landline"></span></li>
+                        <li><a href="mailto:info@maher.edu.sa">info@maher.edu.sa</a></li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <span data-i18n="footer.copy">© <span id="year"></span> ماهر. جميع الحقوق محفوظة.</span>
+                <span data-i18n="footer.copy"></span>
             </div>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="assets/js/supabaseClient.js" defer></script>
     <script src="assets/js/auth.js" defer></script>
     <script src="assets/js/main.js" defer></script>
+    <script src="assets/js/training_paths_catalog.js" defer></script>
+    <script src="assets/js/courses_catalog.js" defer></script>
+    <script src="assets/js/course-details-page.js" defer></script>
 </body>
 </html>

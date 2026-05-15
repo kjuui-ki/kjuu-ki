@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 
 document.addEventListener("DOMContentLoaded", async function () {
 
@@ -113,6 +113,252 @@ document.addEventListener("DOMContentLoaded", async function () {
         return '<span class="badge">' + esc(r) + '</span>';
     }
 
+    var allTrainingPaths = [];
+    var pathMapById = {};
+    var cachedTpPathCounts = {};
+
+    function filterTrainingPathsForAdmin(paths) {
+        var el = document.getElementById("tpAdminSearch");
+        var q = el ? (el.value || "").trim().toLowerCase() : "";
+        if (!q) return paths.slice();
+        return paths.filter(function (p) {
+            var hay = ((p.name_ar || "") + " " + (p.slug || "")).toLowerCase();
+            return hay.indexOf(q) !== -1;
+        });
+    }
+
+    function renderTrainingPathsAdminRows() {
+        var tbody = document.getElementById("trainingPathsTableBody");
+        if (!tbody) return;
+        var impBtn = document.getElementById("importDefaultPathsBtn");
+        var filtered = filterTrainingPathsForAdmin(allTrainingPaths);
+        if (!allTrainingPaths.length) {
+            tbody.innerHTML = '<tr><td colspan="7" class="no-data-msg">لا توجد مسارات بعد. انقر «استيراد 17 مساراً من المرجع» أو نفّذ ملف database/seed_training_catalog.sql في Supabase.</td></tr>';
+            if (impBtn) impBtn.style.display = "inline-flex";
+            return;
+        }
+        if (impBtn) impBtn.style.display = "none";
+        if (!filtered.length) {
+            tbody.innerHTML = '<tr><td colspan="7" class="no-data-msg">لا نتائج مطابقة لبحثك عن المسارات.</td></tr>';
+            return;
+        }
+        tbody.innerHTML = filtered.map(function (p) {
+            var n = cachedTpPathCounts[p.id] || 0;
+            var vis = p.is_active ? "مفعّل" : "مخفي";
+            return '<tr>' +
+                '<td style="font-size:1.4rem;">' + esc(p.icon || "📘") + "</td>" +
+                "<td>" + esc(p.name_ar) + "</td>" +
+                "<td><code style=\"font-size:0.78rem;\">" + esc(p.slug) + "</code></td>" +
+                "<td>" + esc(String(p.sort_order)) + "</td>" +
+                "<td><strong>" + n + "</strong></td>" +
+                "<td>" + vis + "</td>" +
+                '<td><div class="dashboard-actions">' +
+                '<button type="button" class="dashboard-btn dashboard-btn-edit" data-action="tp-toggle" data-id="' + esc(p.id) + '" data-active="' + (p.is_active ? "1" : "0") + '">' +
+                    (p.is_active ? "إخفاء عن المتدربين" : "إظهار للمتدربين") + "</button>" +
+                '<button type="button" class="dashboard-btn dashboard-btn-delete" data-action="tp-del" data-id="' + esc(p.id) + '">حذف</button>' +
+                "</div></td></tr>";
+        }).join("");
+    }
+
+    async function loadTrainingPathsAdmin() {
+        var tbody = document.getElementById("trainingPathsTableBody");
+        if (!tbody) return;
+        tbody.innerHTML = '<tr><td colspan="7" class="no-data-msg">جاري التحميل...</td></tr>';
+        var res = await sb.from("training_paths").select("*").order("sort_order", { ascending: true });
+        allTrainingPaths = res.data || [];
+        allTrainingPaths.forEach(function (p) { pathMapById[p.id] = p; });
+        populateCoursePathSelect();
+
+        var cntRes = await sb.from("courses").select("training_path_id");
+        cachedTpPathCounts = {};
+        (cntRes.data || []).forEach(function (r) {
+            if (!r.training_path_id) return;
+            cachedTpPathCounts[r.training_path_id] = (cachedTpPathCounts[r.training_path_id] || 0) + 1;
+        });
+
+        renderTrainingPathsAdminRows();
+    }
+
+    var importPathsBtn = document.getElementById("importDefaultPathsBtn");
+    if (importPathsBtn) {
+        importPathsBtn.addEventListener("click", async function () {
+            if (!window.maherDefaultTrainingPaths || !window.maherDefaultTrainingPaths.length) {
+                showToast("ملف المرجع غير محمّل.", "error");
+                return;
+            }
+            importPathsBtn.disabled = true;
+            var rows = window.maherDefaultTrainingPaths.map(function (p) {
+                return {
+                    id: p.id,
+                    slug: p.slug,
+                    name_ar: p.name_ar,
+                    icon: p.icon || "📘",
+                    sort_order: p.sort_order,
+                    is_active: true
+                };
+            });
+            var res = await sb.from("training_paths").upsert(rows, { onConflict: "id" });
+            importPathsBtn.disabled = false;
+            if (res.error) {
+                var hint = (res.error.message || "").indexOf("row-level security") !== -1
+                    ? " — نفّذ في Supabase الملف database/fix_training_paths_rls.sql ثم أعد المحاولة."
+                    : "";
+                showToast("تعذّر الاستيراد: " + res.error.message + hint, "error");
+                return;
+            }
+            showToast("تم استيراد / تحديث المسارات الـ17.", "success");
+            await loadTrainingPathsAdmin();
+            await loadCourses();
+            await loadAll();
+        });
+    }
+
+    var tpAdminSearch = document.getElementById("tpAdminSearch");
+    if (tpAdminSearch) {
+        tpAdminSearch.addEventListener("input", function () {
+            renderTrainingPathsAdminRows();
+        });
+    }
+
+    function populateCoursePathSelect() {
+        var sel = document.getElementById("courseTrainingPathId");
+        if (!sel) return;
+        var cur = sel.value;
+        sel.innerHTML = '<option value="">— بدون مسار —</option>' +
+            allTrainingPaths.map(function (p) {
+                var suffix = p.is_active ? "" : " (معطّل للمتدربين)";
+                return '<option value="' + esc(p.id) + '">' + esc(p.name_ar) + suffix + "</option>";
+            }).join("");
+        if (cur) sel.value = cur;
+    }
+
+    var addTpForm = document.getElementById("addTrainingPathForm");
+    if (addTpForm) {
+        addTpForm.addEventListener("submit", async function (e) {
+            e.preventDefault();
+            var msg = document.getElementById("addTpMsg");
+            var slug = (document.getElementById("tpSlug") || {}).value || "";
+            var name = (document.getElementById("tpNameAr") || {}).value || "";
+            var icon = (document.getElementById("tpIcon") || {}).value || "📘";
+            var sort = parseInt((document.getElementById("tpSort") || {}).value || "0", 10);
+            if (!slug.trim() || !name.trim()) {
+                if (msg) { msg.textContent = "أدخل slug واسم المسار"; msg.style.color = "#f87171"; }
+                return;
+            }
+            var res = await sb.from("training_paths").insert({
+                slug: slug.trim().toLowerCase().replace(/\s+/g, "-"),
+                name_ar: name.trim(),
+                icon: icon.trim() || "📘",
+                sort_order: isNaN(sort) ? 0 : sort,
+                is_active: true
+            });
+            if (res.error) {
+                if (msg) { msg.textContent = "خطأ: " + res.error.message; msg.style.color = "#f87171"; }
+                return;
+            }
+            if (msg) { msg.textContent = "تم الحفظ"; msg.style.color = "#4ade80"; }
+            addTpForm.reset();
+            await loadTrainingPathsAdmin();
+            await loadCourses();
+        });
+    }
+
+    var tpTable = document.getElementById("trainingPathsTableBody");
+    if (tpTable) {
+        tpTable.addEventListener("click", async function (e) {
+            var tgl = e.target.closest("[data-action='tp-toggle']");
+            if (tgl) {
+                var pid = tgl.getAttribute("data-id");
+                var cur = tgl.getAttribute("data-active") === "1";
+                var resT = await sb.from("training_paths").update({ is_active: !cur }).eq("id", pid);
+                if (resT.error) { alert("تعذّر تحديث المسار"); return; }
+                await loadTrainingPathsAdmin();
+                await loadAll();
+                await loadCourses();
+                return;
+            }
+            var btn = e.target.closest("[data-action='tp-del']");
+            if (!btn) return;
+            if (!confirm("حذف المسار؟ ستُزال ربط الدورات به (دون حذف الدورات).")) return;
+            var res = await sb.from("training_paths").delete().eq("id", btn.getAttribute("data-id"));
+            if (res.error) { alert("تعذّر الحذف"); return; }
+            await loadTrainingPathsAdmin();
+            await loadCourses();
+            await loadAll();
+        });
+    }
+
+    /* admin notifications */
+    async function loadAdminNotifications() {
+        var listEl = document.getElementById("admNotifyList");
+        var badge = document.getElementById("admNotifyBadge");
+        if (!listEl) return;
+        var res = await sb.from("admin_notifications")
+            .select("id, title, body, meta, read_at, created_at")
+            .order("created_at", { ascending: false })
+            .limit(25);
+        var rows = res.data || [];
+        var unread = rows.filter(function (r) { return !r.read_at; }).length;
+        if (badge) {
+            badge.style.display = unread ? "inline-block" : "none";
+            badge.textContent = unread > 99 ? "99+" : String(unread);
+        }
+        if (!rows.length) {
+            listEl.innerHTML = '<div class="adm-notify-item" style="cursor:default;color:rgba(255,255,255,0.35);">لا إشعارات</div>';
+            return;
+        }
+        listEl.innerHTML = rows.map(function (r) {
+            var dim = r.read_at ? "opacity:0.55;" : "";
+            return '<div class="adm-notify-item" style="' + dim + '" data-nid="' + esc(r.id) + '">' +
+                "<strong>" + esc(r.title || "") + "</strong>" +
+                "<small>" + esc(r.body || "") + " · " + fmtDate(r.created_at) + "</small></div>";
+        }).join("");
+    }
+
+    async function markNotificationRead(id) {
+        await sb.from("admin_notifications").update({ read_at: new Date().toISOString() }).eq("id", id);
+        await loadAdminNotifications();
+    }
+
+    async function markAllNotificationsRead() {
+        var r = await sb.from("admin_notifications").select("id").is("read_at", null);
+        var ids = (r.data || []).map(function (x) { return x.id; });
+        var iso = new Date().toISOString();
+        for (var i = 0; i < ids.length; i++) {
+            await sb.from("admin_notifications").update({ read_at: iso }).eq("id", ids[i]);
+        }
+        await loadAdminNotifications();
+    }
+
+    var admNotifyBtn = document.getElementById("admNotifyBtn");
+    var admNotifyDropdown = document.getElementById("admNotifyDropdown");
+    if (admNotifyBtn && admNotifyDropdown) {
+        admNotifyBtn.addEventListener("click", function (ev) {
+            ev.stopPropagation();
+            admNotifyDropdown.classList.toggle("open");
+            admNotifyDropdown.setAttribute("aria-hidden", admNotifyDropdown.classList.contains("open") ? "false" : "true");
+            void loadAdminNotifications();
+        });
+        document.addEventListener("click", function () {
+            admNotifyDropdown.classList.remove("open");
+        });
+        admNotifyDropdown.addEventListener("click", function (e) { e.stopPropagation(); });
+    }
+    var admNotifyList = document.getElementById("admNotifyList");
+    if (admNotifyList) {
+        admNotifyList.addEventListener("click", async function (e) {
+            var row = e.target.closest(".adm-notify-item[data-nid]");
+            if (!row) return;
+            await markNotificationRead(row.getAttribute("data-nid"));
+        });
+    }
+    var admNotifyMarkAll = document.getElementById("admNotifyMarkAll");
+    if (admNotifyMarkAll) admNotifyMarkAll.addEventListener("click", function () { void markAllNotificationsRead(); });
+
+    setInterval(function () {
+        if (document.visibilityState === "visible") void loadAdminNotifications();
+    }, 20000);
+
     /* tab management */
     var tabs     = document.querySelectorAll(".dash-tab");
     var contents = document.querySelectorAll(".dash-tab-content");
@@ -125,12 +371,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     var _tabTitles = {
         "overview":        "نظرة عامة",
-        "users":           "إدارة المستخدمين",
-        "jobs":            "إدارة الوظائف",
-        "applications":    "إدارة الطلبات",
-        "staff-requests":  "طلبات التوظيف",
-        "course-requests": "طلبات الدورات",
-        "courses":         "الدورات",
+        "users":           "إدارة المتدربين والمستخدمين",
+        "training-paths":  "المسارات التدريبية",
+        "courses":         "الدورات والدبلومات",
         "promo-requests":  "طلبات الترقية"
     };
 
@@ -141,9 +384,8 @@ document.addEventListener("DOMContentLoaded", async function () {
             tab.classList.add("active");
             var panel = document.getElementById("tab-" + tab.dataset.tab);
             if (panel) panel.style.display = "block";
-            if (tab.dataset.tab === "staff-requests")  loadStaffRequests();
-            if (tab.dataset.tab === "course-requests") loadCourseRequests();
-            if (tab.dataset.tab === "courses")         loadCourses();
+            if (tab.dataset.tab === "training-paths") loadTrainingPathsAdmin();
+            if (tab.dataset.tab === "courses")         void loadCourses(false);
             if (tab.dataset.tab === "promo-requests")  loadPromoRequests();
             /* update topbar title */
             var ttEl = document.getElementById("admPageTitle");
@@ -154,70 +396,80 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 
     /* data */
-    var allProfiles      = [];
-    var allJobs          = [];
-    var allApps          = [];
-    var allStaffRequests = [];
-    var profileMap       = {};
-    var jobMap      = {};
+    var allProfiles       = [];
+    var allJobs           = [];
+    var allApps           = [];
+    var allStaffRequests  = [];
+    var allCourseRows     = [];
+    var allEnrollmentRows = [];
+    var allTrainingPathsStats = [];
+    var profileMap        = {};
+    var jobMap            = {};
+    var courseMapDash     = {};
 
     async function loadAll() {
         var results = await Promise.all([
             sb.from("profiles").select("id, full_name, email, role, phone, specialization, cv_url, created_at").order("created_at", { ascending: false }),
-            sb.from("jobs").select("id, title, location, job_type, company_id, created_at").order("created_at", { ascending: false }),
-            sb.from("applications").select("id, user_id, job_id, full_name, phone, specialization, status, cv_url, created_at").order("created_at", { ascending: false })
+            sb.from("courses").select("id, title, category, instructor, is_active, created_at, training_path_id").order("created_at", { ascending: false }),
+            sb.from("course_enrollments").select("id, user_id, course_id, status, created_at").order("created_at", { ascending: false }),
+            sb.from("training_paths").select("id, name_ar, is_active, sort_order").order("sort_order", { ascending: true })
         ]);
-        allProfiles = results[0].data || [];
-        allJobs     = results[1].data || [];
-        allApps     = results[2].data || [];
+        allProfiles       = results[0].data || [];
+        allCourseRows     = results[1].data || [];
+        allEnrollmentRows = results[2].data || [];
+        allTrainingPathsStats = results[3].data || [];
+        allJobs           = [];
+        allApps           = [];
         allProfiles.forEach(function (p) { profileMap[p.id] = p; });
-        allJobs.forEach(function (j) { jobMap[j.id] = j; });
+        allCourseRows.forEach(function (c) { courseMapDash[c.id] = c; });
+        jobMap = {};
         renderStats();
         renderUsers(allProfiles);
-        renderJobs(allJobs);
-        populateJobFilter();
-        filterApps();
+        if (document.getElementById("jobsTableBody")) renderJobs(allJobs);
+        if (document.getElementById("appJobFilter")) populateJobFilter();
+        if (document.getElementById("applicationsTableBody")) filterApps();
     }
 
     /* stats */
     function renderStats() {
-        var seekers   = allProfiles.filter(function (p) { return p.role === "job_seeker"; }).length;
-        var companies = allProfiles.filter(function (p) { return p.role === "company"; }).length;
+        var trainees = allProfiles.filter(function (p) { return p.role === "job_seeker"; }).length;
+        var admins   = allProfiles.filter(function (p) { return p.role === "super_admin"; }).length;
         var totalUsers = allProfiles.length;
         var statTotal = document.getElementById("statTotalUsers");
         if (statTotal) statTotal.textContent = totalUsers;
-        var skEl = document.getElementById("statSeekers"); if (skEl) skEl.textContent = seekers;
-        var coEl = document.getElementById("statCompanies"); if (coEl) coEl.textContent = companies;
-        var jbEl = document.getElementById("statJobs"); if (jbEl) jbEl.textContent = allJobs.length;
-        var apEl = document.getElementById("statApplications"); if (apEl) apEl.textContent = allApps.length;
-        /* nav badges */
+        var skEl = document.getElementById("statSeekers"); if (skEl) skEl.textContent = trainees;
+        var coEl = document.getElementById("statCompanies"); if (coEl) coEl.textContent = allCourseRows.length;
+        var jbEl = document.getElementById("statJobs"); if (jbEl) jbEl.textContent = allEnrollmentRows.length;
+        var apEl = document.getElementById("statApplications"); if (apEl) apEl.textContent = allCourseRows.filter(function (c) { return c.is_active; }).length;
+        var spEl = document.getElementById("statTrainingPaths"); if (spEl) spEl.textContent = allTrainingPathsStats.length;
+        var spaEl = document.getElementById("statTrainingPathsActive"); if (spaEl) spaEl.textContent = allTrainingPathsStats.filter(function (p) { return p.is_active; }).length;
         var nbU = document.getElementById("navBadgeUsers"); if (nbU) nbU.textContent = totalUsers;
-        var nbJ = document.getElementById("navBadgeJobs");  if (nbJ) nbJ.textContent = allJobs.length;
-        var nbA = document.getElementById("navBadgeApps");  if (nbA) nbA.textContent = allApps.length;
-        /* overview panel */
+        var nbJ = document.getElementById("navBadgeJobs");  if (nbJ) nbJ.textContent = allCourseRows.length;
+        var nbA = document.getElementById("navBadgeApps");  if (nbA) nbA.textContent = allEnrollmentRows.length;
         renderOverview();
     }
 
     /* ── Overview panel ────────────────────────────────────── */
     function renderOverview() {
-        /* recent applications */
+        /* recent enrollments */
         var appsEl = document.getElementById("overviewRecentApps");
         if (appsEl) {
-            var r5a = allApps.slice(0, 5);
-            if (!r5a.length) {
-                appsEl.innerHTML = '<div class="adm-loading-row">لا توجد طلبات بعد.</div>';
+            var r5e = allEnrollmentRows.slice(0, 5);
+            if (!r5e.length) {
+                appsEl.innerHTML = '<div class="adm-loading-row">لا توجد تسجيلات بعد.</div>';
             } else {
-                appsEl.innerHTML = r5a.map(function (a) {
-                    var seeker = profileMap[a.user_id] || {};
-                    var name   = a.full_name || seeker.full_name || "—";
-                    var job    = jobMap[a.job_id] || {};
+                appsEl.innerHTML = r5e.map(function (e) {
+                    var seeker = profileMap[e.user_id] || {};
+                    var name   = seeker.full_name || seeker.email || "—";
+                    var crs    = courseMapDash[e.course_id] || {};
                     var ini    = esc((name || "?")[0]);
-                    var sCls   = a.status === "accepted" ? "accepted" : a.status === "rejected" ? "rejected" : "pending";
-                    var sTxt   = a.status === "accepted" ? "مقبول" : a.status === "rejected" ? "مرفوض" : "قيد المراجعة";
+                    var st     = (e.status || "enrolled").toLowerCase();
+                    var sTxt   = st === "completed" ? "مكتمل" : st === "cancelled" ? "ملغى" : "مسجّل";
+                    var sCls   = st === "completed" ? "accepted" : st === "cancelled" ? "rejected" : "pending";
                     return '<div class="adm-ov-item">' +
                         '<div class="adm-ov-avatar">' + ini + '</div>' +
                         '<div><div class="adm-ov-name">' + esc(name) + '</div>' +
-                        '<div class="adm-ov-meta">' + esc(job.title || "—") + '</div></div>' +
+                        '<div class="adm-ov-meta">' + esc(crs.title || "—") + '</div></div>' +
                         '<span class="adm-ov-status ' + sCls + '">' + sTxt + '</span>' +
                     '</div>';
                 }).join("");
@@ -231,7 +483,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 usersEl.innerHTML = '<div class="adm-loading-row">لا يوجد مستخدمون بعد.</div>';
             } else {
                 var roleClr = { job_seeker: "#6366f1,#4f46e5", company: "#0ea5e9,#0284c7", super_admin: "#f59e0b,#d97706" };
-                var roleText = { job_seeker: "باحث", company: "شركة", super_admin: "أدمن" };
+                var roleText = { job_seeker: "متدرب", company: "قديم", super_admin: "أدمن" };
                 usersEl.innerHTML = r5u.map(function (p) {
                     var ini  = esc((p.full_name || p.email || "?")[0]);
                     var clr  = roleClr[p.role] || "#6366f1,#4f46e5";
@@ -244,23 +496,39 @@ document.addEventListener("DOMContentLoaded", async function () {
                 }).join("");
             }
         }
-        /* jobs distribution */
+        var pes = document.getElementById("overviewPathsSummary");
+        if (pes) {
+            if (!allTrainingPathsStats.length) {
+                pes.innerHTML = '<div class="adm-loading-row">لا توجد مسارات — نفّذ ملفات الهجرة والبذور في Supabase.</div>';
+            } else {
+                var pAct = allTrainingPathsStats.filter(function (p) { return p.is_active; }).length;
+                var cTot = allCourseRows.length;
+                var cAct = allCourseRows.filter(function (c) { return c.is_active; }).length;
+                pes.innerHTML =
+                    '<div class="adm-loading-row" style="flex-direction:column;align-items:flex-start;gap:0.45rem;line-height:1.5;">' +
+                    "<div>المسارات: <strong>" + allTrainingPathsStats.length + "</strong> — مفعّلة للمتدربين: <strong>" + pAct + "</strong></div>" +
+                    "<div>الدورات والدبلومات: <strong>" + cTot + "</strong> — معروضة في الموقع: <strong>" + cAct + "</strong></div>" +
+                    "<div style=\"font-size:0.78rem;opacity:0.75;\">يمكنك إخفاء المسار أو الدورة من تبويب المسارات / الدورات.</div>" +
+                    "</div>";
+            }
+        }
+        /* courses by category */
         var distEl = document.getElementById("overviewJobsDist");
         if (distEl) {
-            if (!allJobs.length) {
-                distEl.innerHTML = '<div class="adm-loading-row">لا توجد وظائف بعد.</div>';
+            if (!allCourseRows.length) {
+                distEl.innerHTML = '<div class="adm-loading-row">لا توجد دورات بعد.</div>';
             } else {
-                var typeCounts = {};
-                allJobs.forEach(function (j) { var tp = j.job_type || "غير محدد"; typeCounts[tp] = (typeCounts[tp] || 0) + 1; });
-                var maxVal = Math.max.apply(null, Object.keys(typeCounts).map(function (k) { return typeCounts[k]; })) || 1;
+                var catCounts = {};
+                allCourseRows.forEach(function (c) { var tp = c.category || "عام"; catCounts[tp] = (catCounts[tp] || 0) + 1; });
+                var maxVal = Math.max.apply(null, Object.keys(catCounts).map(function (k) { return catCounts[k]; })) || 1;
                 var barColors = ["#3b82f6,#6366f1","#10b981,#059669","#f59e0b,#d97706","#ef4444,#dc2626","#8b5cf6,#7c3aed"];
-                distEl.innerHTML = Object.keys(typeCounts).sort(function (a,b) { return typeCounts[b]-typeCounts[a]; }).map(function (tp, i) {
-                    var pct = Math.round((typeCounts[tp] / maxVal) * 100);
+                distEl.innerHTML = Object.keys(catCounts).sort(function (a,b) { return catCounts[b]-catCounts[a]; }).map(function (tp, i) {
+                    var pct = Math.round((catCounts[tp] / maxVal) * 100);
                     var clr = barColors[i % barColors.length];
                     return '<div class="adm-dist-row">' +
                         '<div class="adm-dist-label">' + esc(tp) + '</div>' +
                         '<div class="adm-dist-bar-wrap"><div class="adm-dist-bar" style="width:' + pct + '%;background:linear-gradient(90deg,' + clr + ')"></div></div>' +
-                        '<div class="adm-dist-count">' + typeCounts[tp] + '</div>' +
+                        '<div class="adm-dist-count">' + catCounts[tp] + '</div>' +
                     '</div>';
                 }).join("");
             }
@@ -281,7 +549,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                 actionsHtml =
                     '<select class="admin-select-sm role-select" data-uid="' + esc(p.id) + '">' +
                         '<option value="job_seeker"'  + (p.role === "job_seeker"  ? " selected" : "") + '>' + t("adm.dyn.roleSeeker")  + '</option>' +
-                        '<option value="company"'     + (p.role === "company"     ? " selected" : "") + '>' + t("adm.dyn.roleCompany") + '</option>' +
                         '<option value="super_admin"' + (p.role === "super_admin" ? " selected" : "") + '>' + t("adm.dyn.roleAdmin")   + '</option>' +
                     '</select>' +
                     '<button class="dashboard-btn dashboard-btn-reset-pwd" data-action="reset-pwd" data-uid="' + esc(p.id) + '" data-email="' + esc(p.email || "") + '" title="' + t("adm.dyn.assign") + '">' + t("adm.dyn.assign") + '</button>' +
@@ -693,46 +960,225 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     /* ── courses (admin) ──────────────────────────────────────────── */
     var coursesBody  = document.getElementById("coursesTableBody");
+    var coursesPaginationEl = document.getElementById("coursesPagination");
     var addCourseForm = document.getElementById("addCourseForm");
     var addCourseMsg  = document.getElementById("addCourseMsg");
     var allCourses   = [];
     var enrollCountMap = {};
+    var coursesCacheReady = false;
+    var coursesAdminPage = 0;
+    var COURSES_PAGE_SIZE = 35;
+    var coursesSearchTimer = null;
+    var coursesLoadInFlight = null;
 
-    async function loadCourses() {
-        if (!coursesBody) return;
-        coursesBody.innerHTML = '<tr><td colspan="7" class="no-data-msg">\u062c\u0627\u0631\u064a \u0627\u0644\u062a\u062d\u0645\u064a\u0644...</td></tr>';
-
-        var results = await Promise.all([
-            sb.from("courses").select("id, title, instructor, duration, category, max_seats, is_active, created_at").order("created_at", { ascending: false }),
-            sb.from("course_enrollments").select("course_id")
-        ]);
-        allCourses = results[0].data || [];
-        var enrollments = results[1].data || [];
-
-        enrollCountMap = {};
-        enrollments.forEach(function (e) {
-            enrollCountMap[e.course_id] = (enrollCountMap[e.course_id] || 0) + 1;
+    function buildEnrollCountMap(rows) {
+        var map = {};
+        (rows || []).forEach(function (e) {
+            if (!e || !e.course_id) return;
+            map[e.course_id] = (map[e.course_id] || 0) + 1;
         });
-        renderCourses(allCourses);
+        return map;
     }
 
-    function renderCourses(list) {
+    function parseCourseEnrollCount(c) {
+        if (c._enrollCount != null) return c._enrollCount;
+        var rel = c.course_enrollments;
+        if (Array.isArray(rel) && rel[0] && rel[0].count != null) return rel[0].count;
+        return enrollCountMap[c.id] || 0;
+    }
+
+    function getFilteredAdminCourses() {
+        var el = document.getElementById("coursesAdminSearch");
+        var q = el ? (el.value || "").trim().toLowerCase() : "";
+        if (!q) return allCourses;
+        return allCourses.filter(function (c) {
+            var p = c.training_path_id ? pathMapById[c.training_path_id] : null;
+            var pn = p ? (p.name_ar || "") : "";
+            var hay = (c.title || "") + " " + (c.instructor || "") + " " + (c.category || "") + " " + pn;
+            return hay.toLowerCase().indexOf(q) !== -1;
+        });
+    }
+
+    function syncOverviewFromCourses() {
+        allCourseRows = allCourses.map(function (c) {
+            return {
+                id: c.id,
+                title: c.title,
+                category: c.category,
+                instructor: c.instructor,
+                is_active: c.is_active,
+                created_at: c.created_at,
+                training_path_id: c.training_path_id
+            };
+        });
+        courseMapDash = {};
+        allCourseRows.forEach(function (c) { courseMapDash[c.id] = c; });
+        renderStats();
+    }
+
+    async function ensurePathsForCourses() {
+        if (allTrainingPaths.length && Object.keys(pathMapById).length) {
+            populateCoursePathSelect();
+            return;
+        }
+        var pathRes = await sb.from("training_paths").select("id, name_ar, slug, icon, sort_order, is_active").order("sort_order", { ascending: true });
+        allTrainingPaths = pathRes.data || [];
+        pathMapById = {};
+        allTrainingPaths.forEach(function (p) { pathMapById[p.id] = p; });
+        populateCoursePathSelect();
+    }
+
+    function renderCoursesPagination(totalFiltered, totalPages) {
+        if (!coursesPaginationEl) return;
+        if (!totalFiltered) {
+            coursesPaginationEl.innerHTML = "";
+            return;
+        }
+        var from = coursesAdminPage * COURSES_PAGE_SIZE + 1;
+        var to = Math.min(totalFiltered, (coursesAdminPage + 1) * COURSES_PAGE_SIZE);
+        coursesPaginationEl.innerHTML =
+            '<span>عرض ' + from + "–" + to + " من " + totalFiltered + " دورة</span>" +
+            '<div class="adm-courses-pagination-btns">' +
+                '<button type="button" data-cpage="prev"' + (coursesAdminPage <= 0 ? " disabled" : "") + ">السابق</button>" +
+                '<span style="padding:0 0.5rem;">صفحة ' + (coursesAdminPage + 1) + " / " + totalPages + "</span>" +
+                '<button type="button" data-cpage="next"' + (coursesAdminPage >= totalPages - 1 ? " disabled" : "") + ">التالي</button>" +
+            "</div>";
+    }
+
+    function renderCoursesPage() {
+        var filtered = getFilteredAdminCourses();
+        var total = filtered.length;
+        var totalPages = Math.max(1, Math.ceil(total / COURSES_PAGE_SIZE) || 1);
+        if (coursesAdminPage >= totalPages) coursesAdminPage = totalPages - 1;
+        if (coursesAdminPage < 0) coursesAdminPage = 0;
+        var slice = filtered.slice(coursesAdminPage * COURSES_PAGE_SIZE, (coursesAdminPage + 1) * COURSES_PAGE_SIZE);
+        renderCourses(slice, total, totalPages);
+    }
+
+    async function loadCourses(forceReload) {
         if (!coursesBody) return;
-        if (!list.length) { coursesBody.innerHTML = '<tr><td colspan="7" class="no-data-msg">' + t("adm.dyn.noCourses") + '</td></tr>'; return; }
-        coursesBody.innerHTML = list.map(function (c) {
+        if (coursesCacheReady && !forceReload) {
+            renderCoursesPage();
+            return;
+        }
+        if (coursesLoadInFlight) {
+            await coursesLoadInFlight;
+            if (coursesCacheReady) renderCoursesPage();
+            return;
+        }
+
+        coursesBody.innerHTML = '<tr><td colspan="11" class="no-data-msg">\u062c\u0627\u0631\u064a \u0627\u0644\u062a\u062d\u0645\u064a\u0644...</td></tr>';
+        if (coursesPaginationEl) coursesPaginationEl.innerHTML = "";
+
+        coursesLoadInFlight = (async function () {
+            await ensurePathsForCourses();
+
+            var coursesRes = await sb.from("courses")
+                .select("id, title, instructor, duration, category, max_seats, is_active, created_at, training_path_id, content_type, price_type, price_amount, course_enrollments(count)")
+                .order("created_at", { ascending: false });
+
+            if (coursesRes.error) {
+                coursesRes = await sb.from("courses")
+                    .select("id, title, instructor, duration, category, max_seats, is_active, created_at, training_path_id, content_type, price_type, price_amount")
+                    .order("created_at", { ascending: false });
+            }
+
+            allCourses = coursesRes.data || [];
+            enrollCountMap = {};
+            allCourses.forEach(function (c) {
+                c._enrollCount = parseCourseEnrollCount(c);
+                enrollCountMap[c.id] = c._enrollCount;
+                delete c.course_enrollments;
+            });
+
+            if (!coursesRes.error && allCourses.length && !Object.keys(enrollCountMap).some(function (k) { return enrollCountMap[k] > 0; })) {
+                if (allEnrollmentRows.length) {
+                    enrollCountMap = buildEnrollCountMap(allEnrollmentRows);
+                } else {
+                    var er = await sb.from("course_enrollments").select("course_id");
+                    enrollCountMap = buildEnrollCountMap(er.data);
+                }
+                allCourses.forEach(function (c) {
+                    c._enrollCount = enrollCountMap[c.id] || 0;
+                });
+            }
+
+            coursesCacheReady = true;
+            coursesAdminPage = 0;
+            renderCoursesPage();
+        })();
+
+        try {
+            await coursesLoadInFlight;
+        } finally {
+            coursesLoadInFlight = null;
+        }
+    }
+
+    if (coursesPaginationEl) {
+        coursesPaginationEl.addEventListener("click", function (e) {
+            var btn = e.target.closest("[data-cpage]");
+            if (!btn || btn.disabled) return;
+            if (btn.getAttribute("data-cpage") === "prev") coursesAdminPage--;
+            else coursesAdminPage++;
+            renderCoursesPage();
+        });
+    }
+
+    var coursesAdminSearch = document.getElementById("coursesAdminSearch");
+    if (coursesAdminSearch) {
+        coursesAdminSearch.addEventListener("input", function () {
+            if (!coursesBody) return;
+            clearTimeout(coursesSearchTimer);
+            coursesSearchTimer = setTimeout(function () {
+                coursesAdminPage = 0;
+                renderCoursesPage();
+            }, 280);
+        });
+    }
+
+    function renderCourses(list, totalFiltered, totalPages) {
+        if (!coursesBody) return;
+        if (!list.length) {
+            var inp = document.getElementById("coursesAdminSearch");
+            var hasFilter = inp && (inp.value || "").trim();
+            var msg = (allCourses.length && hasFilter)
+                ? "لا نتائج مطابقة لبحثك في الدورات."
+                : t("adm.dyn.noCourses");
+            coursesBody.innerHTML = '<tr><td colspan="11" class="no-data-msg">' + esc(msg) + '</td></tr>';
+            renderCoursesPagination(totalFiltered || 0, totalPages || 1);
+            return;
+        }
+        var html = list.map(function (c) {
+            var p = c.training_path_id ? pathMapById[c.training_path_id] : null;
+            var pName = p ? p.name_ar : "—";
+            var typ = c.content_type === "diploma" ? "دبلوم" : "دورة";
+            var pr = c.price_type === "paid" && Number(c.price_amount) > 0 ? String(c.price_amount) + " ر.س" : "مجاني";
+            var visBadge = c.is_active
+                ? '<span class="badge badge-accepted">معروض</span>'
+                : '<span class="badge badge-rejected">مخفي</span>';
             return '<tr>' +
+                "<td>" + esc(pName) + "</td>" +
+                "<td>" + esc(typ) + "</td>" +
+                "<td>" + esc(pr) + "</td>" +
                 '<td>' + esc(c.title || "\u2014") + '</td>' +
                 '<td>' + esc(c.instructor || "\u2014") + '</td>' +
                 '<td>' + esc(c.duration || "\u2014") + '</td>' +
                 '<td>' + esc(c.category || "\u2014") + '</td>' +
-                '<td><strong>' + (enrollCountMap[c.id] || 0) + '</strong></td>' +
+                '<td><strong>' + (c._enrollCount != null ? c._enrollCount : (enrollCountMap[c.id] || 0)) + '</strong></td>' +
                 '<td>' + fmtDate(c.created_at) + '</td>' +
+                "<td>" + visBadge + "</td>" +
                 '<td><div class="dashboard-actions">' +
+                    '<button type="button" class="dashboard-btn dashboard-btn-edit" data-action="course-toggle-active" data-cid="' + esc(c.id) + '" data-active="' + (c.is_active ? "1" : "0") + '">' +
+                    (c.is_active ? "إخفاء عن الموقع" : "إظهار في الموقع") + "</button>" +
+                    '<button class="dashboard-btn dashboard-btn-edit" data-action="edit-course" data-cid="' + esc(c.id) + '" data-title="' + esc(c.title || "") + '" data-inst="' + esc(c.instructor || "") + '" data-cat="' + esc(c.category || "") + '" data-dur="' + esc(c.duration || "") + '">' + t("adm.dyn.edit") + '</button>' +
                     '<button class="dashboard-btn dashboard-btn-edit" data-action="view-enrollments" data-cid="' + esc(c.id) + '" data-ctitle="' + esc(c.title || "") + '">' + t("adm.dyn.viewEnrollments") + '</button>' +
                     '<button class="dashboard-btn dashboard-btn-delete" data-action="delete-course" data-cid="' + esc(c.id) + '">' + t("adm.dyn.delete") + '</button>' +
                 '</div></td>' +
             '</tr>';
         }).join("");
+        coursesBody.innerHTML = html;
+        renderCoursesPagination(totalFiltered || list.length, totalPages || 1);
     }
 
     if (addCourseForm) {
@@ -744,43 +1190,85 @@ document.addEventListener("DOMContentLoaded", async function () {
             var category    = (document.getElementById("courseCategory") || {}).value || "";
             var seats       = parseInt((document.getElementById("courseSeats") || {}).value || "0", 10);
             var description = (document.getElementById("courseDescription") || {}).value || "";
+            var pathId      = (document.getElementById("courseTrainingPathId") || {}).value || "";
+            var contentType = (document.getElementById("courseContentType") || {}).value || "course";
+            var priceType   = (document.getElementById("coursePriceType") || {}).value || "free";
+            var priceAmt    = parseFloat((document.getElementById("coursePriceAmount") || {}).value || "0");
             if (!title.trim()) { if (addCourseMsg) { addCourseMsg.textContent = t("adm.course.titleRequired"); addCourseMsg.style.color="#f87171"; } return; }
-            var res = await sb.from("courses").insert({
+            var row = {
                 title: title.trim(),
                 instructor: instructor.trim() || null,
                 duration: duration.trim() || null,
                 category: category.trim() || null,
                 max_seats: isNaN(seats) ? 0 : seats,
                 description: description.trim() || null,
-                created_by: user.id
-            });
+                created_by: user.id,
+                training_path_id: pathId || null,
+                content_type: contentType === "diploma" ? "diploma" : "course",
+                price_type: priceType === "paid" ? "paid" : "free",
+                price_amount: priceType === "paid" && !isNaN(priceAmt) ? priceAmt : 0,
+                is_active: true
+            };
+            var res = await sb.from("courses").insert(row);
             if (res.error) {
                 if (addCourseMsg) { addCourseMsg.textContent = t("adm.course.publishError") + ": " + res.error.message; addCourseMsg.style.color="#f87171"; }
                 return;
             }
             if (addCourseMsg) { addCourseMsg.textContent = t("adm.course.publishSuccess"); addCourseMsg.style.color="#4ade80"; }
             addCourseForm.reset();
-            await loadCourses();
+            coursesCacheReady = false;
+            await loadCourses(true);
+            syncOverviewFromCourses();
         });
     }
 
     if (coursesBody) {
         coursesBody.addEventListener("click", async function (e) {
+            var actBtn = e.target.closest("[data-action='course-toggle-active']");
+            if (actBtn) {
+                var cid0 = actBtn.getAttribute("data-cid");
+                var curA = actBtn.getAttribute("data-active") === "1";
+                var resA = await sb.from("courses").update({ is_active: !curA }).eq("id", cid0);
+                if (resA.error) { alert("تعذّر تحديث حالة الظهور"); return; }
+                coursesCacheReady = false;
+                await loadCourses(true);
+                syncOverviewFromCourses();
+                return;
+            }
+            var editBtn = e.target.closest("[data-action='edit-course']");
             var delBtn  = e.target.closest("[data-action='delete-course']");
             var viewBtn = e.target.closest("[data-action='view-enrollments']");
+            if (editBtn) {
+                var cid = editBtn.dataset.cid;
+                var nt = prompt("عنوان الدورة:", editBtn.dataset.title || "");
+                if (!nt || !nt.trim()) return;
+                var ni = prompt("المدرب (اختياري):", editBtn.dataset.inst || "");
+                var nc = prompt("الفئة (اختياري):", editBtn.dataset.cat || "");
+                var nd = prompt("المدة (اختياري):", editBtn.dataset.dur || "");
+                var res = await sb.from("courses").update({
+                    title: nt.trim(),
+                    instructor: ni ? ni.trim() : null,
+                    category: nc ? nc.trim() : null,
+                    duration: nd ? nd.trim() : null
+                }).eq("id", cid);
+                if (res.error) { alert("تعذّر التعديل."); return; }
+                coursesCacheReady = false;
+                await loadCourses(true);
+                syncOverviewFromCourses();
+            }
             if (delBtn) {
                 if (!confirm("\u0647\u0644 \u0623\u0646\u062a \u0645\u062a\u0623\u0643\u062f \u0645\u0646 \u062d\u0630\u0641 \u0647\u0630\u0647 \u0627\u0644\u062f\u0648\u0631\u0629\u061f")) return;
-                var res = await sb.from("courses").delete().eq("id", delBtn.dataset.cid);
-                if (res.error) { alert("\u062a\u0639\u0630\u0651\u0631 \u0627\u0644\u062d\u0630\u0641."); return; }
-                await loadCourses();
+                var resDel = await sb.from("courses").delete().eq("id", delBtn.dataset.cid);
+                if (resDel.error) { alert("\u062a\u0639\u0630\u0651\u0631 \u0627\u0644\u062d\u0630\u0641."); return; }
+                coursesCacheReady = false;
+                await loadCourses(true);
+                syncOverviewFromCourses();
             }
             if (viewBtn) {
                 await loadCourseEnrollments(viewBtn.dataset.cid, viewBtn.dataset.ctitle);
             }
         });
     }
-
-    var currentEnrollmentRows  = [];
     var currentEnrollmentTitle = "";
 
     async function loadCourseEnrollments(courseId, courseTitle) {
@@ -791,6 +1279,21 @@ document.addEventListener("DOMContentLoaded", async function () {
         currentEnrollmentTitle = courseTitle || "دورة";
         panel.style.display = "block";
         if (titleEl) titleEl.textContent = t("adm.enrollments.title") + ": " + currentEnrollmentTitle;
+        var pathLine = document.getElementById("enrollmentsPathLine");
+        var cr0 = allCourses.find(function (x) { return x.id === courseId; });
+        var pst = "";
+        if (cr0 && cr0.training_path_id) {
+            var pm = pathMapById[cr0.training_path_id];
+            if (pm && pm.name_ar) pst = "المسار: " + pm.name_ar;
+            else if (window.maherDefaultTrainingPaths) {
+                var fd = window.maherDefaultTrainingPaths.find(function (x) { return x.id === cr0.training_path_id; });
+                if (fd) pst = "المسار: " + fd.name_ar;
+            }
+        }
+        if (pathLine) {
+            pathLine.textContent = pst;
+            pathLine.style.display = pst ? "block" : "none";
+        }
         tbody.innerHTML = '<tr><td colspan="6" class="no-data-msg">' + t("adm.dyn.loading") + '</td></tr>';
         panel.scrollIntoView({ behavior: "smooth", block: "start" });
 
@@ -827,7 +1330,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             if (!currentEnrollmentRows.length) return;
 
             var statusMap = { completed: "مكتمل", cancelled: "ملغى", enrolled: "مسجّل" };
-            var roleMap   = { company: "شركة", super_admin: "أدمن", job_seeker: "باحث" };
+            var roleMap   = { company: "قديم", super_admin: "أدمن", job_seeker: "متدرب" };
 
             // Build data array (header + rows)
             var data = [["#", "الاسم الكامل", "البريد الإلكتروني", "رقم الجوال", "الدور", "تاريخ التسجيل", "الحالة"]];
@@ -1007,19 +1510,17 @@ document.addEventListener("DOMContentLoaded", async function () {
     /* ── Re-render on language change ─────────────────────────────── */
     document.addEventListener("maherLangChanged", function () {
         filterUsers();
-        populateJobFilter();
+        if (document.getElementById("appJobFilter")) populateJobFilter();
         var activeTab = document.querySelector(".dash-tab.active");
         if (activeTab) {
             var tabName = activeTab.dataset.tab;
-            if (tabName === "jobs")            renderJobs(allJobs);
-            if (tabName === "applications")    filterApps();
-            if (tabName === "staff-requests")  renderStaffRequests(staffReqFilter && staffReqFilter.value ? allStaffRequests.filter(function (r) { return r.status === staffReqFilter.value; }) : allStaffRequests);
-            if (tabName === "course-requests") renderCourseRequests(courseReqFilter && courseReqFilter.value ? allCourseRequests.filter(function (r) { return r.status === courseReqFilter.value; }) : allCourseRequests);
-            if (tabName === "courses")         renderCourses(allCourses);
-            if (tabName === "promo-requests")  renderPromoReqs(allPromoReqs);
+            if (tabName === "courses")        renderCoursesPage();
+            if (tabName === "promo-requests") renderPromoReqs(allPromoReqs);
         }
     });
 
     /* init */
     await loadAll();
+    await loadTrainingPathsAdmin();
+    void loadAdminNotifications();
 });

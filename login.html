@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html class="maher-loading" lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8" />
@@ -7,96 +7,136 @@
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>تسجيل الدخول | منصة ماهر</title>
+    <title>تسجيل الدخول | ماهر</title>
     <link rel="stylesheet" href="assets/css/style.css" />
 </head>
-<body>
-    <header class="main-header">
-        <div class="container header-inner">
-            <div class="header-main-group">
-                <a href="index.html" class="logo">
-                    <img src="assets/images/ksu1.png" alt="Ø´Ø¹Ø§Ø± Ø§Ù„Ù…Ù†ØµØ©" class="logo-img">
-                </a>
-                <nav class="main-nav" id="mainNav">
-                    <a href="index.html" class="nav-link" data-i18n="nav.home"></a>
-                    <a href="seeker-login.html" class="nav-link" data-i18n="nav.seekers"></a>
-                    <a href="employer-login.html" class="nav-link" data-i18n="nav.employers"></a>
-                    <a href="jobs.html" class="nav-link" data-i18n="nav.jobs"></a>
-                    <a href="courses.html" class="nav-link" data-i18n="nav.courses"></a>
-                </nav>
-            </div>
-
-            <div class="lang-switch">
-                <button class="lang-btn" data-lang="ar" data-i18n="header.langAr">العربية</button>
-                <button class="lang-btn" data-lang="en" data-i18n="header.langEn">English</button>
-            </div>
-
-            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
-    </header>
-
-    <main class="auth-page">
-        <div class="container">
-            <div class="auth-card">
-                <h1 class="auth-title" data-i18n="page.generic.login.title">تسجيل الدخول</h1>
-                <p class="auth-subtitle" data-i18n="page.generic.login.subtitle">ادخل بياناتك وسيتم تحويلك تلقائيًا حسب نوع الحساب.</p>
-
-                <form id="genericLoginForm" novalidate>
-                    <div class="auth-form-group">
-                        <label for="loginEmail" data-i18n="form.emailOrPhone.label">البريد الإلكتروني أو رقم الجوال</label>
-                        <input id="loginEmail" type="text" autocomplete="username" required placeholder="example@domain.com أو 0512345678" />
-                    </div>
-                    <div class="auth-form-group">
-                        <label for="loginPassword" data-i18n="form.password.label">كلمة المرور</label>
-                        <input id="loginPassword" type="password" autocomplete="current-password" required data-i18n-placeholder="form.password.placeholder" placeholder="••••••••" />
-                    </div>
-
-                    <div class="auth-submit">
-                        <button type="submit" class="btn btn-primary btn-full" data-i18n="form.login.submit">تسجيل الدخول</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </main>
-
-    <footer class="main-footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <img src="assets/images/ksu1.png" alt="Ø´Ø¹Ø§Ø± Ù…Ø§Ù‡Ø±" class="footer-logo-img">
-                    <h3 class="footer-logo" data-i18n="footer.logo">ماهر</h3>
-                    <p class="footer-about" data-i18n="footer.about">منصة عربية للتوظيف والتدريب وتطوير المهارات.</p>
-                    <a class="footer-site-link" href="https://www.maher.edu.sa" target="_blank" rel="noopener">🌐 www.maher.edu.sa</a>
+<body class="auth-split-page">
+    <div class="auth-page-bg" aria-hidden="true">
+        <img src="assets/images/oo.png" alt="" />
+    </div>
+    <div class="auth-floating-lines-wrap" aria-hidden="true"><canvas id="authFloatingLines"></canvas></div>
+    <div class="auth-split">
+        <aside class="auth-split-brand" aria-hidden="false">
+            <div class="auth-split-brand-inner">
+                <div class="auth-split-brand-logo">
+                    <img src="assets/images/sh.png" alt="" width="120" height="44" />
                 </div>
-                <div class="footer-col">
-                    <h4 class="footer-col-title" data-i18n="footer.quickLinks">روابط سريعة</h4>
-                    <div class="footer-links">
-                        <a href="jobs.html" data-i18n="footer.jobs">الوظائف</a>
-                        <a href="courses.html" data-i18n="footer.courses">الدورات</a>
-                        <a href="contact.html" data-i18n="footer.contact">تواصل معنا</a>
+                <h2 class="auth-split-brand-title" data-i18n="authSplit.brandTitle"></h2>
+                <p class="auth-split-brand-lead" data-i18n="authSplit.brandLead"></p>
+                <ul class="auth-split-features">
+                    <li class="auth-split-feature">
+                        <span class="auth-split-feature-ic" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+                        </span>
+                        <span data-i18n="authSplit.f1"></span>
+                    </li>
+                    <li class="auth-split-feature">
+                        <span class="auth-split-feature-ic" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                        </span>
+                        <span data-i18n="authSplit.f2"></span>
+                    </li>
+                    <li class="auth-split-feature">
+                        <span class="auth-split-feature-ic" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>
+                        </span>
+                        <span data-i18n="authSplit.f3"></span>
+                    </li>
+                    <li class="auth-split-feature">
+                        <span class="auth-split-feature-ic" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 3v18h18"/><path d="M7 16l4-4 4 4 6-6"/></svg>
+                        </span>
+                        <span data-i18n="authSplit.f4"></span>
+                    </li>
+                </ul>
+                <div class="auth-split-stats">
+                    <div class="auth-split-stat">
+                        <div class="auth-split-stat-val" data-i18n="authSplit.stat1v"></div>
+                        <div class="auth-split-stat-lbl" data-i18n="authSplit.stat1l"></div>
+                    </div>
+                    <div class="auth-split-stat">
+                        <div class="auth-split-stat-val" data-i18n="authSplit.stat2v"></div>
+                        <div class="auth-split-stat-lbl" data-i18n="authSplit.stat2l"></div>
+                    </div>
+                    <div class="auth-split-stat">
+                        <div class="auth-split-stat-val" data-i18n="authSplit.stat3v"></div>
+                        <div class="auth-split-stat-lbl" data-i18n="authSplit.stat3l"></div>
                     </div>
                 </div>
-                <div class="footer-col">
-                    <h4 class="footer-col-title" data-i18n="footer.contact">تواصل معنا</h4>
-                    <ul class="footer-contact-list">
-                        <li>📞 <a href="tel:920016798">920016798</a> <span class="footer-contact-note" data-i18n="footer.landline">(أرضي)</span></li>
-                        <li>📱 <a href="tel:0539600050">0539600050</a></li>
-                        <li>📱 <a href="tel:0539600080">0539600080</a></li>
-                        <li>✉️ <a href="mailto:info@maher.edu.sa">info@maher.edu.sa</a></li>
-                    </ul>
+            </div>
+            <div class="auth-split-quote">
+                <p data-i18n="authSplit.quote"></p>
+                <cite data-i18n="authSplit.quoteName"></cite>
+                <span data-i18n="authSplit.quoteRole"></span>
+            </div>
+        </aside>
+
+        <div class="auth-split-panel">
+            <div class="auth-split-panel-inner">
+                <div class="auth-split-toolbar">
+                    <a href="index.html" class="auth-split-back">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+                        <span data-i18n="authSplit.backHome"></span>
+                    </a>
+                    <div class="lang-switch">
+                        <button type="button" class="lang-btn" data-lang="ar" data-i18n="header.langAr">???????</button>
+                        <button type="button" class="lang-btn" data-lang="en" data-i18n="header.langEn">English</button>
+                    </div>
+                </div>
+
+                <div class="auth-split-card">
+                    <div class="auth-split-badge">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        <span data-i18n="authSplit.traineeBadge"></span>
+                    </div>
+                    <h1 class="auth-title" data-i18n="authSplit.welcomeLogin"></h1>
+                    <p class="auth-subtitle" data-i18n="authSplit.loginLead"></p>
+
+                    <form id="genericLoginForm" novalidate>
+                        <div class="auth-form-group">
+                            <label for="loginEmail" data-i18n="form.emailOrPhone.label">?????? ?? ??????</label>
+                            <div class="auth-split-input-wrap">
+                                <input id="loginEmail" type="text" autocomplete="username" required placeholder="example@domain.com" dir="ltr" />
+                                <span class="auth-split-input-ic" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="auth-form-group">
+                            <label for="loginPassword" data-i18n="form.password.label">???? ??????</label>
+                            <div class="auth-split-input-wrap">
+                                <input id="loginPassword" type="password" autocomplete="current-password" required data-i18n-placeholder="form.password.placeholder" placeholder="????????" />
+                                <button type="button" class="auth-split-pw-toggle" data-toggle-password="loginPassword" aria-pressed="false" aria-label="????? ???? ??????">
+                                    <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                </button>
+                                <span class="auth-split-input-ic" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M12 15v2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="auth-split-row">
+                            <a href="reset-password.html" class="auth-forgot" data-i18n="resetPwd.forgotLink">???? ???? ???????</a>
+                        </div>
+                        <div class="auth-submit">
+                            <button type="submit" class="btn btn-primary btn-full" data-i18n="form.login.submit">????? ??????</button>
+                        </div>
+                    </form>
+
+                    <p class="auth-split-switch">
+                        <span data-i18n="register.noAccount">??? ???? ?????</span>
+                        <a href="register.html" data-i18n="register.createAccount">????? ???? ????</a>
+                    </p>
+                </div>
+
+                <div class="auth-split-foot">
+                    <span data-i18n="footer.copy"></span>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <span data-i18n="footer.copy">© <span id="year"></span> ماهر. جميع الحقوق محفوظة.</span>
-            </div>
         </div>
-    </footer>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="assets/js/supabaseClient.js" defer></script>
     <script src="assets/js/auth.js" defer></script>
     <script src="assets/js/main.js" defer></script>
 </body>

@@ -1,7 +1,8 @@
-﻿<!DOCTYPE html>
-<html class="maher-loading" lang="ar" dir="rtl">
+<!DOCTYPE html>
+<html class="maher-loading" lang="ar" dir="rtl" data-i18n-doc-title="dashboard.docTitle">
 <head>
     <meta charset="UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="preconnect" href="https://jgvfcievyfkyldryatlk.supabase.co" crossorigin />
     <link rel="dns-prefetch" href="https://jgvfcievyfkyldryatlk.supabase.co" />
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
@@ -366,25 +367,13 @@
                 <span class="adm-nav-badge yellow" id="navBadgePromo">0</span>
             </button>
 
-            <div class="adm-nav-section">إدارة الوظائف</div>
-            <button class="adm-nav-item dash-tab" data-tab="jobs">
-                <span class="adm-nav-icon">💼</span><span class="adm-nav-label">الوظائف</span>
-                <span class="adm-nav-badge blue" id="navBadgeJobs">0</span>
+            <div class="adm-nav-section">إدارة المحتوى</div>
+            <button class="adm-nav-item dash-tab" data-tab="training-paths">
+                <span class="adm-nav-icon">🛤️</span><span class="adm-nav-label">المسارات التدريبية</span>
+                <span class="adm-nav-badge green" id="navBadgePaths" style="display:none;">0</span>
             </button>
-            <button class="adm-nav-item dash-tab" data-tab="applications">
-                <span class="adm-nav-icon">📋</span><span class="adm-nav-label">الطلبات</span>
-                <span class="adm-nav-badge" id="navBadgeApps">0</span>
-            </button>
-            <button class="adm-nav-item dash-tab" data-tab="staff-requests">
-                <span class="adm-nav-icon">👔</span><span class="adm-nav-label">طلبات التوظيف</span>
-            </button>
-
-            <div class="adm-nav-section">إدارة الدورات</div>
             <button class="adm-nav-item dash-tab" data-tab="courses">
-                <span class="adm-nav-icon">📚</span><span class="adm-nav-label">الدورات</span>
-            </button>
-            <button class="adm-nav-item dash-tab" data-tab="course-requests">
-                <span class="adm-nav-icon">📝</span><span class="adm-nav-label">طلبات الدورات</span>
+                <span class="adm-nav-icon">📚</span><span class="adm-nav-label">الدورات والدبلومات</span>
             </button>
 
         </nav>
@@ -410,6 +399,17 @@
                 </div>
             </div>
             <div class="adm-topbar-right">
+                <div class="adm-notify-wrap" id="admNotifyWrap">
+                    <button type="button" class="adm-refresh-btn" id="admNotifyBtn" title="الإشعارات">🔔</button>
+                    <span class="adm-nav-badge" id="admNotifyBadge" style="display:none;position:absolute;top:-6px;left:-4px;min-width:1.1rem;padding:0.1rem 0.35rem;">0</span>
+                    <div class="adm-notify-dropdown" id="admNotifyDropdown" aria-hidden="true">
+                        <div class="adm-notify-head">آخر الإشعارات</div>
+                        <div id="admNotifyList"></div>
+                        <div style="padding:0.5rem 1rem;text-align:center;">
+                            <button type="button" class="dashboard-btn dashboard-btn-export" id="admNotifyMarkAll" style="font-size:0.78rem;">تعليم الكل كمقروء</button>
+                        </div>
+                    </div>
+                </div>
                 <div class="adm-topbar-avatar" id="admTopbarInitials">م</div>
                 <span class="adm-topbar-name" id="admTopbarName">المدير</span>
                 <button class="adm-refresh-btn" id="admRefreshBtn" title="تحديث البيانات">↻</button>
@@ -434,7 +434,7 @@
                         <div class="adm-stat-deco"></div>
                         <div class="adm-stat-info">
                             <div class="adm-stat-num" id="statJobs">—</div>
-                            <div class="adm-stat-label">الوظائف النشطة</div>
+                            <div class="adm-stat-label">التسجيلات في الدورات</div>
                         </div>
                         <div class="adm-stat-icon-wrap">💼</div>
                     </div>
@@ -442,7 +442,7 @@
                         <div class="adm-stat-deco"></div>
                         <div class="adm-stat-info">
                             <div class="adm-stat-num" id="statApplications">—</div>
-                            <div class="adm-stat-label">الطلبات</div>
+                            <div class="adm-stat-label">الدورات المفعّلة</div>
                         </div>
                         <div class="adm-stat-icon-wrap">📋</div>
                     </div>
@@ -450,7 +450,7 @@
                         <div class="adm-stat-deco"></div>
                         <div class="adm-stat-info">
                             <div class="adm-stat-num" id="statSeekers">—</div>
-                            <div class="adm-stat-label">الباحثون عن عمل</div>
+                            <div class="adm-stat-label">المتدربون</div>
                         </div>
                         <div class="adm-stat-icon-wrap">🧑‍💼</div>
                     </div>
@@ -458,32 +458,55 @@
                         <div class="adm-stat-deco"></div>
                         <div class="adm-stat-info">
                             <div class="adm-stat-num" id="statCompanies">—</div>
-                            <div class="adm-stat-label">الشركات</div>
+                            <div class="adm-stat-label">الدورات المنشورة</div>
                         </div>
                         <div class="adm-stat-icon-wrap">🏢</div>
+                    </div>
+                    <div class="adm-stat-card adm-stat-blue">
+                        <div class="adm-stat-deco"></div>
+                        <div class="adm-stat-info">
+                            <div class="adm-stat-num" id="statTrainingPaths">—</div>
+                            <div class="adm-stat-label">المسارات التدريبية</div>
+                        </div>
+                        <div class="adm-stat-icon-wrap">🛤️</div>
+                    </div>
+                    <div class="adm-stat-card adm-stat-green">
+                        <div class="adm-stat-deco"></div>
+                        <div class="adm-stat-info">
+                            <div class="adm-stat-num" id="statTrainingPathsActive">—</div>
+                            <div class="adm-stat-label">مسارات مفعّلة للمتدربين</div>
+                        </div>
+                        <div class="adm-stat-icon-wrap">✅</div>
                     </div>
                 </div>
 
                 <div class="adm-overview-grid">
                     <div class="adm-ov-card">
                         <div class="adm-ov-card-head">
-                            <div class="adm-ov-card-title"><span>📋</span> آخر الطلبات</div>
-                            <a href="#" class="adm-view-all dash-tab" data-tab="applications">عرض الكل ←</a>
+                            <div class="adm-ov-card-title"><span>📚</span> آخر التسجيلات في الدورات</div>
+                            <a href="#" class="adm-view-all dash-tab" data-tab="courses">عرض الكل ←</a>
                         </div>
                         <div id="overviewRecentApps"><div class="adm-loading-row">⏳ جاري التحميل...</div></div>
                     </div>
                     <div class="adm-ov-card">
                         <div class="adm-ov-card-head">
-                            <div class="adm-ov-card-title"><span>👤</span> آخر التسجيلات</div>
+                            <div class="adm-ov-card-title"><span>👤</span> آخر المتدربين</div>
                             <a href="#" class="adm-view-all dash-tab" data-tab="users">عرض الكل ←</a>
                         </div>
                         <div id="overviewRecentUsers"><div class="adm-loading-row">⏳ جاري التحميل...</div></div>
+                    </div>
+                    <div class="adm-ov-card">
+                        <div class="adm-ov-card-head">
+                            <div class="adm-ov-card-title"><span>🛤️</span> المسارات والدورات</div>
+                            <a href="#" class="adm-view-all dash-tab" data-tab="training-paths">المسارات ←</a>
+                        </div>
+                        <div id="overviewPathsSummary"><div class="adm-loading-row">⏳ جاري التحميل...</div></div>
                     </div>
                 </div>
 
                 <div class="adm-ov-card">
                     <div class="adm-ov-card-head">
-                        <div class="adm-ov-card-title">📊 توزيع الوظائف حسب النوع</div>
+                        <div class="adm-ov-card-title">📊 توزيع الدورات حسب المجال</div>
                     </div>
                     <div id="overviewJobsDist"><div class="adm-loading-row">⏳ جاري التحميل...</div></div>
                 </div>
@@ -498,8 +521,7 @@
                             <input type="text" id="usersSearch" class="admin-search" placeholder="بحث بالاسم أو الإيميل..." data-i18n-placeholder="adm.users.searchPlaceholder" />
                             <select id="usersRoleFilter" class="admin-select">
                                 <option value="" data-i18n="adm.users.filter.all">كل المستخدمين ▾</option>
-                                <option value="job_seeker" data-i18n="adm.users.filter.seeker">باحث عن عمل</option>
-                                <option value="company" data-i18n="adm.users.filter.company">شركة</option>
+                                <option value="job_seeker" data-i18n="adm.users.filter.seeker">متدرب</option>
                                 <option value="super_admin" data-i18n="adm.users.filter.admin">أدمن</option>
                             </select>
                         </div>
@@ -523,131 +545,63 @@
                 </div>
             </div>
 
-            <!-- ── JOBS ── -->
-            <div class="dash-tab-content" id="tab-jobs" style="display:none;">
-                <div class="dash-card">
+            <!-- ── TRAINING PATHS ── -->
+            <div class="dash-tab-content" id="tab-training-paths" style="display:none;">
+                <div class="dash-card" style="margin-bottom:1.5rem;">
                     <div class="dash-card-header">
-                        <h2 class="dash-card-title" data-i18n="adm.jobs.title">إدارة الوظائف</h2>
-                        <input type="text" id="jobsSearch" class="admin-search" placeholder="بحث باسم الوظيفة أو الشركة..." data-i18n-placeholder="adm.jobs.searchPlaceholder" />
+                        <h2 class="dash-card-title">إضافة مسار تدريبي</h2>
                     </div>
-                    <div class="dashboard-table-wrap">
-                        <table class="dashboard-table">
-                            <thead>
-                                <tr>
-                                    <th data-i18n="adm.th.jobTitle">اسم الوظيفة</th>
-                                    <th data-i18n="adm.th.company">الشركة</th>
-                                    <th data-i18n="adm.th.location">الموقع</th>
-                                    <th data-i18n="adm.th.type">النوع</th>
-                                    <th data-i18n="adm.th.postedAt">تاريخ النشر</th>
-                                    <th data-i18n="adm.th.actions">الإجراءات</th>
-                                </tr>
-                            </thead>
-                            <tbody id="jobsTableBody"><tr><td colspan="6" class="no-data-msg">جاري التحميل...</td></tr></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ── APPLICATIONS ── -->
-            <div class="dash-tab-content" id="tab-applications" style="display:none;">
-                <div class="dash-card">
-                    <div class="dash-card-header">
-                        <h2 class="dash-card-title" data-i18n="adm.apps.title">إدارة الطلبات</h2>
-                        <div class="admin-filter-row">
-                            <select id="appJobFilter" class="admin-select">
-                                <option value="" data-i18n="adm.apps.filter.allJobs">كل الوظائف ▾</option>
-                            </select>
-                            <select id="appStatusFilter" class="admin-select">
-                                <option value="" data-i18n="adm.apps.filter.allStatus">كل الحالات</option>
-                                <option value="pending" data-i18n="adm.apps.filter.pending">قيد المراجعة</option>
-                                <option value="accepted" data-i18n="adm.apps.filter.accepted">مقبول</option>
-                                <option value="rejected" data-i18n="adm.apps.filter.rejected">مرفوض</option>
-                            </select>
-                            <button id="exportAppsBtn" class="dashboard-btn dashboard-btn-export" data-i18n="adm.export.csv">⬇️ تصدير CSV</button>
+                    <form id="addTrainingPathForm" class="admin-course-form">
+                        <div class="admin-course-form-grid">
+                            <div class="auth-form-group">
+                                <label>المعرّف الفني (slug) *</label>
+                                <input type="text" id="tpSlug" required placeholder="مثال: al-qiyada" dir="ltr" />
+                            </div>
+                            <div class="auth-form-group">
+                                <label>اسم المسار بالعربية *</label>
+                                <input type="text" id="tpNameAr" required placeholder="مثال: مسار القيادة" />
+                            </div>
+                            <div class="auth-form-group">
+                                <label>الأيقونة (Emoji)</label>
+                                <input type="text" id="tpIcon" placeholder="🎯" maxlength="8" />
+                            </div>
+                            <div class="auth-form-group">
+                                <label>ترتيب العرض</label>
+                                <input type="number" id="tpSort" value="0" min="0" />
+                            </div>
                         </div>
-                    </div>
-                    <div class="dashboard-table-wrap">
-                        <table class="dashboard-table">
-                            <thead>
-                                <tr>
-                                    <th data-i18n="adm.th.name">الاسم</th>
-                                    <th data-i18n="adm.th.email">البريد</th>
-                                    <th data-i18n="adm.th.phone">رقم الجوال</th>
-                                    <th data-i18n="adm.th.specialization">التخصص</th>
-                                    <th data-i18n="adm.th.job">الوظيفة</th>
-                                    <th data-i18n="adm.th.appliedAt">تاريخ التقديم</th>
-                                    <th data-i18n="adm.th.status">الحالة</th>
-                                    <th>CV</th>
-                                    <th data-i18n="adm.th.actions">إجراء</th>
-                                </tr>
-                            </thead>
-                            <tbody id="applicationsTableBody"><tr><td colspan="9" class="no-data-msg">جاري التحميل...</td></tr></tbody>
-                        </table>
-                    </div>
+                        <div style="text-align:left;margin-top:0.5rem;">
+                            <button type="submit" class="dashboard-btn dashboard-btn-export">➕ حفظ المسار</button>
+                            <span id="addTpMsg" style="margin-right:1rem;font-size:0.85rem;"></span>
+                        </div>
+                    </form>
                 </div>
-            </div>
-
-            <!-- ── STAFF REQUESTS ── -->
-            <div class="dash-tab-content" id="tab-staff-requests" style="display:none;">
                 <div class="dash-card">
                     <div class="dash-card-header">
-                        <h2 class="dash-card-title" data-i18n="adm.staffReq.title">طلبات التوظيف من الشركات</h2>
-                        <select id="staffReqStatusFilter" class="admin-select">
-                            <option value="" data-i18n="adm.staffReq.filter.all">كل الحالات</option>
-                            <option value="pending" data-i18n="adm.staffReq.filter.pending">قيد المراجعة</option>
-                            <option value="reviewed" data-i18n="adm.staffReq.filter.reviewed">تمت المراجعة</option>
-                            <option value="rejected" data-i18n="adm.staffReq.filter.rejected">مرفوض</option>
-                        </select>
+                        <h2 class="dash-card-title">المسارات المنشورة</h2>
                     </div>
+                    <div class="dash-toolbar" style="display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;margin:0 0 1rem;padding:0 0.25rem;">
+                        <input type="search" id="tpAdminSearch" placeholder="بحث في المسارات (اسم، slug)…" dir="rtl"
+                               style="flex:1;min-width:200px;max-width:360px;padding:0.55rem 0.85rem;border-radius:12px;border:1px solid rgba(148,163,184,0.35);background:rgba(15,23,42,0.55);color:#f1f5f9;font-size:0.9rem;" />
+                        <button type="button" id="importDefaultPathsBtn" class="dashboard-btn dashboard-btn-export" style="white-space:nowrap;">استيراد 17 مساراً من المرجع</button>
+                    </div>
+                    <p id="importTpHint" style="font-size:0.82rem;color:rgba(226,232,240,0.55);margin:-0.5rem 0 1rem;padding:0 0.25rem;line-height:1.5;">
+                        إذا كان الجدول فارغاً، يستورد الزر المسارات الافتراضية (نفس معرّفات seed). الدورات تبقى تُحمَّل من ملف <code style="font-size:0.78rem;">database/seed_training_catalog.sql</code> في Supabase.
+                    </p>
                     <div class="dashboard-table-wrap">
                         <table class="dashboard-table">
                             <thead>
                                 <tr>
-                                    <th data-i18n="adm.th.company">الشركة</th>
-                                    <th data-i18n="adm.th.jobTitle">المسمى الوظيفي</th>
-                                    <th data-i18n="adm.th.count">العدد</th>
-                                    <th data-i18n="adm.th.specialization">التخصص</th>
-                                    <th data-i18n="adm.th.workType">نوع العمل</th>
-                                    <th data-i18n="adm.th.salary">الراتب</th>
-                                    <th data-i18n="adm.th.requestedAt">تاريخ الطلب</th>
-                                    <th data-i18n="adm.th.status">الحالة</th>
-                                    <th data-i18n="adm.th.actions">الإجراءات</th>
+                                    <th>الأيقونة</th>
+                                    <th>الاسم</th>
+                                    <th>slug</th>
+                                    <th>الترتيب</th>
+                                    <th>عدد الدورات</th>
+                                    <th>للمتدربين</th>
+                                    <th>إجراءات</th>
                                 </tr>
                             </thead>
-                            <tbody id="staffRequestsTableBody"><tr><td colspan="9" class="no-data-msg">جاري التحميل...</td></tr></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ── COURSE REQUESTS ── -->
-            <div class="dash-tab-content" id="tab-course-requests" style="display:none;">
-                <div class="dash-card">
-                    <div class="dash-card-header">
-                        <h2 class="dash-card-title" data-i18n="adm.courseReq.title">طلبات فتح دورات من الشركات</h2>
-                        <select id="courseReqStatusFilter" class="admin-select">
-                            <option value="" data-i18n="adm.courseReq.filter.all">كل الحالات</option>
-                            <option value="pending" data-i18n="adm.courseReq.filter.pending">قيد المراجعة</option>
-                            <option value="approved" data-i18n="adm.courseReq.filter.approved">موافق عليه</option>
-                            <option value="rejected" data-i18n="adm.courseReq.filter.rejected">مرفوض</option>
-                        </select>
-                    </div>
-                    <div class="dashboard-table-wrap">
-                        <table class="dashboard-table">
-                            <thead>
-                                <tr>
-                                    <th data-i18n="adm.th.company">الشركة</th>
-                                    <th data-i18n="adm.th.courseName">اسم الدورة</th>
-                                    <th data-i18n="adm.th.category">الفئة</th>
-                                    <th data-i18n="adm.th.count">المقاعد</th>
-                                    <th data-i18n="adm.th.duration">المدة</th>
-                                    <th data-i18n="adm.th.expectedDate">تاريخ البدء المتوقع</th>
-                                    <th data-i18n="adm.th.requestedAt">تاريخ الطلب</th>
-                                    <th data-i18n="adm.th.status">الحالة</th>
-                                    <th data-i18n="adm.th.actions">الإجراءات</th>
-                                </tr>
-                            </thead>
-                            <tbody id="courseRequestsTableBody"><tr><td colspan="9" class="no-data-msg">جاري التحميل...</td></tr></tbody>
+                            <tbody id="trainingPathsTableBody"><tr><td colspan="7" class="no-data-msg">—</td></tr></tbody>
                         </table>
                     </div>
                 </div>
@@ -678,8 +632,28 @@
                                 <input type="text" id="courseCategory" placeholder="مثال: تقنية، أعمال" />
                             </div>
                             <div class="auth-form-group">
-                                <label data-i18n="adm.course.seatsLabel">عدد المقاعد (0 = غير محدود)</label>
-                                <input type="number" id="courseSeats" placeholder="0" min="0" value="0" />
+                                <label>المسار التدريبي</label>
+                                <select id="courseTrainingPathId" class="admin-select-sm" style="width:100%;">
+                                    <option value="">— بدون مسار —</option>
+                                </select>
+                            </div>
+                            <div class="auth-form-group">
+                                <label>نوع المحتوى</label>
+                                <select id="courseContentType" class="admin-select-sm" style="width:100%;">
+                                    <option value="course">دورة</option>
+                                    <option value="diploma">دبلوم</option>
+                                </select>
+                            </div>
+                            <div class="auth-form-group">
+                                <label>التسعير</label>
+                                <select id="coursePriceType" class="admin-select-sm" style="width:100%;">
+                                    <option value="free">مجاني</option>
+                                    <option value="paid">مدفوع</option>
+                                </select>
+                            </div>
+                            <div class="auth-form-group">
+                                <label>السعر (ر.س)</label>
+                                <input type="number" id="coursePriceAmount" min="0" step="0.01" value="0" />
                             </div>
                         </div>
                         <div class="auth-form-group">
@@ -696,26 +670,38 @@
                     <div class="dash-card-header">
                         <h2 class="dash-card-title" data-i18n="adm.courses.tableTitle">جميع الدورات</h2>
                     </div>
-                    <div class="dashboard-table-wrap">
-                        <table class="dashboard-table">
+                    <div style="margin:0 0 1rem;padding:0 0.25rem;">
+                        <input type="search" id="coursesAdminSearch" placeholder="بحث: عنوان الدورة، المسار، المدرب، الفئة…" dir="rtl"
+                               style="width:100%;max-width:440px;padding:0.55rem 0.85rem;border-radius:12px;border:1px solid rgba(148,163,184,0.35);background:rgba(15,23,42,0.55);color:#f1f5f9;font-size:0.9rem;" />
+                    </div>
+                    <div class="dashboard-table-wrap dashboard-table-wrap--courses">
+                        <table class="dashboard-table dashboard-table--courses">
                             <thead>
                                 <tr>
+                                    <th>المسار</th>
+                                    <th>النوع</th>
+                                    <th>السعر</th>
                                     <th data-i18n="adm.th.courseTitle">العنوان</th>
                                     <th data-i18n="adm.th.instructor">المدرب</th>
                                     <th data-i18n="adm.th.duration">المدة</th>
                                     <th data-i18n="adm.th.category">الفئة</th>
                                     <th data-i18n="adm.th.enrolled">المسجلون</th>
                                     <th data-i18n="adm.th.publishedAt">تاريخ النشر</th>
+                                    <th>ظهور في الموقع</th>
                                     <th data-i18n="adm.th.actions">الإجراءات</th>
                                 </tr>
                             </thead>
-                            <tbody id="coursesTableBody"><tr><td colspan="7" class="no-data-msg">جاري التحميل...</td></tr></tbody>
+                            <tbody id="coursesTableBody"><tr><td colspan="11" class="no-data-msg">جاري التحميل...</td></tr></tbody>
                         </table>
                     </div>
+                    <div id="coursesPagination" class="adm-courses-pagination" aria-live="polite"></div>
                 </div>
                 <div id="courseEnrollmentsPanel" class="dash-card" style="margin-top:1.5rem;display:none;">
                     <div class="dash-card-header">
-                        <h2 class="dash-card-title" id="enrollmentsPanelTitle">المسجلون في الدورة</h2>
+                        <div>
+                            <h2 class="dash-card-title" id="enrollmentsPanelTitle">المسجلون في الدورة</h2>
+                            <p id="enrollmentsPathLine" style="display:none;margin:0.35rem 0 0;font-size:0.88rem;color:rgba(148,197,255,0.9);font-weight:600;"></p>
+                        </div>
                         <div style="display:flex;gap:0.6rem;align-items:center;">
                             <button id="exportEnrollmentsBtn" class="dashboard-btn" style="background:rgba(21,128,61,0.1);color:#15803d;border:1px solid rgba(21,128,61,0.25);" data-i18n="adm.enrollments.exportBtn">⬇ تصدير Excel</button>
                             <button id="closeEnrollmentsPanel" class="dashboard-btn" data-i18n="adm.enrollments.closeBtn">✕ إغلاق</button>
@@ -770,6 +756,7 @@
 <script src="assets/js/supabaseClient.js" defer></script>
 <script src="assets/js/auth.js" defer></script>
 <script src="assets/js/main.js" defer></script>
+<script src="assets/js/training_paths_catalog.js" defer></script>
 <script src="assets/js/dashboard.js" defer></script>
 </body>
 </html>

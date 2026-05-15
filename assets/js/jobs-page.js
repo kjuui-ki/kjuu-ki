@@ -147,6 +147,16 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             jobsGrid.appendChild(card);
         });
+
+        if (typeof window.maherFloatingLinesRefresh === "function") {
+            window.maherFloatingLinesRefresh();
+        } else {
+            setTimeout(function () {
+                if (typeof window.maherFloatingLinesRefresh === "function") {
+                    window.maherFloatingLinesRefresh();
+                }
+            }, 120);
+        }
     }
 
     /* ── Client-side filter ────────────────────────────────── */

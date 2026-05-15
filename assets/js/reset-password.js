@@ -214,7 +214,7 @@ function init(sb) {
             setBtnLoading("fpSaveBtn", false, "حفظ كلمة المرور الجديدة", "");
 
             setTimeout(function () {
-                window.location.href = "seeker-login.html";
+                window.location.href = "login.html";
             }, 1800);
         });
     }

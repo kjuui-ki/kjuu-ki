@@ -1,4 +1,4 @@
-﻿/**
+/**
  * auth.js — SINGLE authority for:
  *   - Supabase client creation (falls back to window.supabaseClient from supabaseClient.js)
  *   - User resolution and header update
@@ -36,16 +36,49 @@
         return window.location.pathname.split("/").pop() || "index.html";
     }
 
+    /** Safe return URL after login/register — same-site .html only (no open redirect). */
+    function getSafeNextRedirectUrl() {
+        try {
+            var u = new URLSearchParams(window.location.search);
+            var raw = u.get("next");
+            if (!raw) return null;
+            var n = decodeURIComponent(raw).trim();
+            if (!n || n.length > 800) return null;
+            if (/[\u0000-\u001f<>]/.test(n)) return null;
+            if (/^https?:\/\//i.test(n)) return null;
+            if (n.indexOf("//") === 0) return null;
+            if (n.indexOf("..") !== -1) return null;
+            var pathPart = n.split("?")[0];
+            if (!/^[a-zA-Z0-9._-]+\.html$/.test(pathPart)) return null;
+            return n;
+        } catch (e) {
+            return null;
+        }
+    }
+
+    function preserveNextInAuthLinks() {
+        try {
+            var sp = window.location.search;
+            if (!sp || sp.indexOf("next=") === -1) return;
+            document.querySelectorAll('a[href="register.html"], a[href="seeker-register.html"], a[href="login.html"]').forEach(function (a) {
+                var h = a.getAttribute("href");
+                if (!h) return;
+                var path = h.split("?")[0];
+                a.setAttribute("href", path + sp);
+            });
+        } catch (e2) {}
+    }
+
     function role2label(role) {
-        if (role === "job_seeker") return "باحث عن عمل";
-        if (role === "company")    return "شركة";
+        if (role === "job_seeker") return "متدرب";
+        if (role === "company")    return "حساب قديم";
         if (role === "super_admin") return "مشرف عام";
         return "";
     }
 
     function role2home(role) {
         if (role === "job_seeker")  return "profile.html";
-        if (role === "company")     return "company-dashboard.html";
+        if (role === "company")     return "index.html";
         if (role === "super_admin") return "dashboard.html";
         return "index.html";
     }
@@ -94,23 +127,22 @@
         var links;
         if (role === "job_seeker") {
             links = [
-                { href: "index.html",           i18n: "nav.home",           text: "الرئيسية" },
-                { href: "jobs.html",             i18n: "nav.jobs",           text: "الوظائف" },
-                { href: "profile.html",          i18n: "nav.profile",        text: "ملفي" },
-                { href: "my-applications.html",  i18n: "nav.myApplications", text: "طلباتي" },
-                { href: "courses.html",          i18n: "nav.courses",        text: "الدورات" }
+                { href: "index.html",             i18n: "nav.home",             text: "الرئيسية" },
+                { href: "courses.html",           i18n: "nav.catalog",          text: "الدورات والدبلومات" },
+                { href: "profile.html",           i18n: "nav.profile",          text: "ملفي" },
+                { href: "my-applications.html",   i18n: "nav.myApplications",   text: "تسجيلاتي" },
+                { href: "training-paths.html", i18n: "nav.trainingPaths", text: "المسارات التدريبية" },
             ];
         } else if (role === "company") {
             links = [
-                { href: "index.html",                          i18n: "nav.home",             text: "الرئيسية" },
-                { href: "company-dashboard.html",              i18n: "nav.companyDashboard",  text: "لوحة الشركة" },
-                { href: "company-dashboard.html?tab=my-jobs",  i18n: "nav.myJobs",           text: "وظائفي" },
-                { href: "courses.html",                        i18n: "nav.courses",           text: "الدورات" }
+                { href: "index.html",     i18n: "nav.home",    text: "الرئيسية" },
+                { href: "courses.html",   i18n: "nav.catalog", text: "الدورات والدبلومات" },
+                { href: "training-paths.html",   i18n: "nav.trainingPaths", text: "المسارات التدريبية" },
             ];
         } else if (role === "super_admin") {
             links = [
                 { href: "dashboard.html", i18n: "nav.adminDashboard", text: "لوحة الأدمن" },
-                { href: "jobs.html",      i18n: "nav.jobs",           text: "الوظائف" },
+                { href: "courses.html",   i18n: "nav.catalog",        text: "الدورات والدبلومات" },
                 { href: "index.html",     i18n: "nav.home",           text: "الرئيسية" }
             ];
         } else {
@@ -139,12 +171,12 @@
         var existing = document.getElementById("authUserMenu");
         if (existing) existing.remove();
 
-        var profileHref = role === "company" ? "company-profile.html" : (role === "job_seeker" ? "profile.html" : "");
+        var profileHref = role === "job_seeker" ? "profile.html" : "";
         var profileBtn = profileHref
-            ? '<a href="' + profileHref + '" class="btn btn-settings" title="\u0625\u0639\u062f\u0627\u062f\u0627\u062a \u0627\u0644\u062d\u0633\u0627\u0628" aria-label="\u0625\u0639\u062f\u0627\u062f\u0627\u062a \u0627\u0644\u062d\u0633\u0627\u0628">&#9881;</a>'
-            : '';
+            ? '<a href="' + profileHref + '" class="btn-settings" title="\u0625\u0639\u062f\u0627\u062f\u0627\u062a \u0627\u0644\u062d\u0633\u0627\u0628" aria-label="\u0625\u0639\u062f\u0627\u062f\u0627\u062a \u0627\u0644\u062d\u0633\u0627\u0628">&#9881;</a>'
+            : "";
 
-        var roleI18nKey = role === "job_seeker" ? "role.jobSeeker" : (role === "company" ? "role.company" : "role.superAdmin");
+        var roleI18nKey = role === "job_seeker" ? "role.trainee" : (role === "company" ? "role.legacyCompany" : "role.superAdmin");
 
         var menu = document.createElement("div");
         menu.id = "authUserMenu";
@@ -156,7 +188,7 @@
                 '<div class="user-role" data-i18n="' + roleI18nKey + '">' + role2label(role) + '</div>' +
             '</div>' +
             profileBtn +
-            '<button type="button" id="authLogoutBtn" class="btn btn-outline" data-i18n="header.logout">\u062a\u0633\u062c\u064a\u0644 \u0627\u0644\u062e\u0631\u0648\u062c</button>';
+            '<button type="button" id="authLogoutBtn" class="btn btn-outline header-logout-btn" data-i18n="header.logout">\u062e\u0631\u0648\u062c</button>';
         var langSwitch = headerInner.querySelector(".lang-switch");
         if (langSwitch) {
             headerInner.insertBefore(menu, langSwitch);
@@ -212,6 +244,18 @@
     }
 
     document.addEventListener("click", function (e) {
+        var btn = e.target && e.target.closest && e.target.closest("[data-toggle-password]");
+        if (!btn) return;
+        var id = btn.getAttribute("data-toggle-password");
+        if (!id) return;
+        var input = document.getElementById(id);
+        if (!input) return;
+        var show = input.getAttribute("type") === "password";
+        input.setAttribute("type", show ? "text" : "password");
+        btn.setAttribute("aria-pressed", show ? "true" : "false");
+    });
+
+    document.addEventListener("click", function (e) {
         var btn = e.target && e.target.closest &&
                   e.target.closest("#authLogoutBtn, #authLogoutBtnMobile, #adminHeaderLogout, [data-logout='true']");
         if (!btn) return;
@@ -246,7 +290,8 @@
         var profile = await getProfile(user);
         if (!profile) return { error: new Error("لم يتم العثور على بيانات المستخدم") };
 
-        window.location.href = role2home(profile.role);
+        var nextU = getSafeNextRedirectUrl();
+        window.location.href = nextU || role2home(profile.role);
         return { error: null };
     }
 
@@ -359,7 +404,7 @@
                 // Signup succeeded but auto-login failed — send to login page
                 showStatus(form, "success", "تم إنشاء الحساب. يرجى تسجيل الدخول.");
                 setTimeout(function () {
-                    window.location.href = role === "company" ? "employer-login.html" : "seeker-login.html";
+                    window.location.href = "login.html";
                 }, 1200);
                 return;
             }
@@ -373,7 +418,8 @@
 
             // Fetch profile then redirect
             var profile = await getProfile(newUser);
-            window.location.href = role2home(profile ? profile.role : role);
+            var nextU = getSafeNextRedirectUrl();
+            window.location.href = nextU || role2home(profile ? profile.role : role);
         });
     }
 
@@ -498,7 +544,7 @@
         });
     }
 
-    /* ── 10. My-applications page ────────────────────────────────── */
+    /* ── 10. My-applications page (تسجيلات الدورات) ─────────────── */
     async function initMyApplicationsPage(user) {
         var list = document.getElementById("myApplicationsList");
         if (!list || !user) return;
@@ -506,28 +552,34 @@
         var profile = await getProfile(user);
         if (!profile || profile.role !== "job_seeker") return;
 
-        var appsRes = await sb.from("applications")
-            .select("id, job_id, status, created_at")
+        var enrRes = await sb.from("course_enrollments")
+            .select("id, course_id, status, created_at")
             .eq("user_id", user.id)
             .order("created_at", { ascending: false });
 
-        var items = appsRes.data || [];
+        var items = enrRes.data || [];
 
-        // Update hero counts
+        function rawToUiStatus(st) {
+            var s = (st || "enrolled").toLowerCase();
+            if (s === "completed") return "approved";
+            if (s === "cancelled") return "rejected";
+            if (s === "enrolled")  return "pending";
+            return "pending";
+        }
+
         var totalEl    = document.getElementById("appsTotal");
         var pendingEl  = document.getElementById("appsPending");
         var approvedEl = document.getElementById("appsApproved");
         var counts = { all: items.length, pending: 0, approved: 0, reviewing: 0, rejected: 0 };
         items.forEach(function (a) {
-            var s = (a.status || "pending").toLowerCase();
-            if (counts[s] !== undefined) counts[s]++;
+            var ui = rawToUiStatus(a.status);
+            if (counts[ui] !== undefined) counts[ui]++;
             else counts.pending++;
         });
         if (totalEl)    totalEl.textContent    = counts.all;
-        if (pendingEl)  pendingEl.textContent  = counts.pending + counts.reviewing;
+        if (pendingEl)  pendingEl.textContent  = counts.pending;
         if (approvedEl) approvedEl.textContent = counts.approved;
 
-        // Update filter badges
         var fbAll      = document.getElementById("fbAll");
         var fbPending  = document.getElementById("fbPending");
         var fbApproved = document.getElementById("fbApproved");
@@ -541,40 +593,47 @@
 
         if (!items.length) {
             list.innerHTML = '<div class="apps-empty">' +
-                '<div class="apps-empty-icon">📭</div>' +
-                '<h3 class="apps-empty-title">لم تتقدم على أي وظيفة بعد</h3>' +
-                '<p class="apps-empty-sub">ابدأ رحلتك المهنية وتصفح الوظائف المتاحة الآن.</p>' +
-                '<a href="jobs.html" class="apps-empty-btn">🔍 تصفح الوظائف</a>' +
+                '<div class="apps-empty-icon">📚</div>' +
+                '<h3 class="apps-empty-title">لم تسجّل في أي دورة بعد</h3>' +
+                '<p class="apps-empty-sub">استعرض الدورات والدبلومات المتاحة واختر ما يناسبك.</p>' +
+                '<a href="courses.html" class="apps-empty-btn">استعراض الدورات</a>' +
                 '</div>';
             return;
         }
 
-        var jobIds = items.map(function (a) { return a.job_id; }).filter(Boolean);
-        var jobsRes = await sb.from("jobs").select("id, title").in("id", jobIds);
-        var jobMap = new Map();
-        (jobsRes.data || []).forEach(function (j) { jobMap.set(j.id, j); });
+        var courseIds = items.map(function (a) { return a.course_id; }).filter(Boolean);
+        var courseMap = new Map();
+        if (courseIds.length) {
+            var cr = await sb.from("courses").select("id, title").in("id", courseIds);
+            (cr.data || []).forEach(function (c) { courseMap.set(c.id, c); });
+        }
 
-        // Status label/class map
         var statusMap = {
-            pending:   { cls: "app-status-pending",   label: "قيد المراجعة" },
-            approved:  { cls: "app-status-approved",  label: "مقبول" },
-            rejected:  { cls: "app-status-rejected",  label: "مرفوض" },
+            pending:   { cls: "app-status-pending",   label: "مسجّل" },
+            approved:  { cls: "app-status-approved",  label: "مكتمل" },
+            rejected:  { cls: "app-status-rejected",  label: "ملغى" },
             reviewing: { cls: "app-status-reviewing", label: "تحت المراجعة" }
         };
 
         list.innerHTML = "";
-        items.forEach(function (app) {
-            var j = jobMap.get(app.job_id);
-            var title  = j ? j.title : "وظيفة";
-            var date   = app.created_at ? new Date(app.created_at).toLocaleDateString("ar-SA") : "-";
-            var status = (app.status || "pending").toLowerCase();
-            var sm     = statusMap[status] || statusMap.pending;
+        function escHtml(v) {
+            return String(v || "")
+                .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+        }
+
+        items.forEach(function (row) {
+            var c = courseMap.get(row.course_id);
+            var title  = escHtml(c ? c.title : "دورة");
+            var date   = row.created_at ? new Date(row.created_at).toLocaleDateString("ar-SA") : "-";
+            var uiSt   = rawToUiStatus(row.status);
+            var sm     = statusMap[uiSt] || statusMap.pending;
 
             var el = document.createElement("article");
             el.className = "app-card";
-            el.dataset.status = status;
+            el.dataset.status = uiSt;
             el.innerHTML =
-                '<div class="app-card-logo">💼</div>' +
+                '<div class="app-card-logo">📚</div>' +
                 '<div class="app-card-body">' +
                     '<h3 class="app-card-title">' + title + '</h3>' +
                     '<div class="app-card-meta">' +
@@ -586,12 +645,11 @@
                     '</div>' +
                 '</div>' +
                 '<div class="app-card-actions">' +
-                    '<a href="jobs.html" class="app-card-btn">عرض الوظائف</a>' +
+                    '<a href="job-details.html?course_id=' + encodeURIComponent(row.course_id) + '" class="app-card-btn">تفاصيل الدورة</a>' +
                 '</div>';
             list.appendChild(el);
         });
 
-        // Wire filter buttons
         var filterBar = document.getElementById("appsFilterBar");
         if (filterBar) {
             filterBar.addEventListener("click", function (e) {
@@ -631,15 +689,13 @@
         }
 
         // Wire login forms (safe to call on every page — only runs if form exists)
+        preserveNextInAuthLinks();
         wireLoginForm("seekerLoginForm",   "seekerEmail",   "seekerPassword");
-        wireLoginForm("employerLoginForm", "employerEmail", "employerPassword");
         wireLoginForm("genericLoginForm",  "loginEmail",    "loginPassword");
 
-        // Wire register forms
+        // Wire register forms (متدربون فقط — الدور job_seeker في قاعدة البيانات)
         wireRegisterForm("registerSeekerForm",   "seekerFullName",       "seekerEmail",   "seekerPassword",   "seekerPasswordConfirm",   "job_seeker");
-        wireRegisterForm("registerEmployerForm", "employerCompanyName",  "employerEmail", "employerPassword", "employerPasswordConfirm", "company");
         wireRegisterForm("seekerOnlyRegisterForm",   "seekerFullName",      "seekerEmail",   "seekerPassword",   "seekerPasswordConfirm",   "job_seeker");
-        wireRegisterForm("employerOnlyRegisterForm", "employerCompanyName", "employerEmail", "employerPassword", "employerPasswordConfirm", "company");
 
         // Get current user once
         var user = await getCurrentUser();
@@ -647,9 +703,9 @@
 
         // Protected-page redirect — send anonymous users to login
         var PROTECTED = [
-            "profile.html", "dashboard.html", "company-dashboard.html",
-            "my-applications.html", "post-job.html", "company-profile.html",
-            "apply.html", "course-access.html"
+            "profile.html", "dashboard.html",
+            "my-applications.html",
+            "apply.html"
         ];
         if (!user && PROTECTED.indexOf(page()) !== -1) {
             window.location.href = "login.html";

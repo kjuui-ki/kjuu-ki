@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html class="maher-loading" lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="preconnect" href="https://jgvfcievyfkyldryatlk.supabase.co" crossorigin />
+    <link rel="dns-prefetch" href="https://jgvfcievyfkyldryatlk.supabase.co" />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>???? ?????? | ???? ????</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+    <header class="main-header">
+        <div class="container header-inner">
+            <div class="header-main-group">
+                <a href="index.html" class="logo">
+                    <img src="assets/images/sh.png" alt="شعار المنصة" class="logo-img">
+                </a>
+                <nav class="main-nav" id="mainNav"></nav>
+            </div>
+
+            <div class="lang-switch">
+                <button class="lang-btn" data-lang="ar" data-i18n="header.langAr">Ø§ÙØ¹Ø±Ø¨ÙØ©</button>
+                <button class="lang-btn" data-lang="en" data-i18n="header.langEn">English</button>
+            </div>
+
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <main class="cdash-page">
+
+        <!-- -- Hero -------------------------------------------- -->
+        <div class="cdash-hero">
+            <div class="cdash-hero-blob cdash-hero-blob-1"></div>
+            <div class="cdash-hero-blob cdash-hero-blob-2"></div>
+            <div class="cdash-hero-blob cdash-hero-blob-3"></div>
+            <div class="container cdash-hero-inner">
+                <div class="cdash-avatar-wrap">
+                    <div class="cdash-avatar" id="cdashAvatar">??</div>
+                    <div class="cdash-avatar-ring"></div>
+                </div>
+                <div class="cdash-hero-text">
+                    <p class="cdash-welcome" data-i18n="companyDash.welcome">ÙØ±Ø­Ø¨Ø§Ù Ø¨Ù ÙÙ ÙÙØ­Ø© Ø§ÙØªØ­ÙÙ</p>
+                    <h1 class="cdash-company-name" id="companyDashName">?????</h1>
+                    <p class="cdash-sub" data-i18n="companyDash.sub">Ø¥Ø¯Ø§Ø±Ø© Ø§ÙÙØ¸Ø§Ø¦Ù ÙÙØ±Øµ Ø§ÙØªÙØ¸ÙÙ ÙÙØ¹ÙÙÙØ§Øª Ø´Ø±ÙØªÙ</p>
+                </div>
+                <div class="cdash-stats-strip" id="companyDashStats">
+                    <div class="cdash-stat">
+                        <span class="cdash-stat-num" id="statJobCount"></span>
+                        <span class="cdash-stat-lbl" data-i18n="companyDash.stat.jobs">ÙØ¸ÙÙØ© ÙÙØ´ÙØ±Ø©</span>
+                    </div>
+                    <div class="cdash-stat-divider"></div>
+                    <div class="cdash-stat">
+                        <span class="cdash-stat-num">??</span>
+                        <span class="cdash-stat-lbl">???? ???</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container cdash-body">
+
+            <!-- -- Tab Bar ------------------------------------- -->
+            <div class="cdash-tabs-wrap">
+                <div class="dash-tabs cdash-tabs">
+                    <button class="dash-tab cdash-tab active" data-tab="post-job">
+                        <span class="cdash-tab-icon">??</span><span data-i18n="tab.postJob">ÙØ´Ø± ÙØ¸ÙÙØ© Ø¬Ø¯ÙØ¯Ø©</span>
+                    </button>
+                    <button class="dash-tab cdash-tab" data-tab="my-jobs">
+                        <span class="cdash-tab-icon">??</span><span data-i18n="tab.myJobs">ÙØ¸Ø§Ø¦ÙÙ</span>
+                    </button>
+                    <button class="dash-tab cdash-tab" data-tab="request-staff">
+                        <span class="cdash-tab-icon">??</span><span data-i18n="tab.requestStaff">Ø·ÙØ¨ ÙÙØ¸ÙÙÙ</span>
+                    </button>
+                    <button class="dash-tab cdash-tab" data-tab="request-course">
+                        <span class="cdash-tab-icon">??</span><span data-i18n="tab.requestCourse">Ø·ÙØ¨ Ø¯ÙØ±Ø©</span>
+                    </button>
+                    <button class="dash-tab cdash-tab" data-tab="company-info">
+                        <span class="cdash-tab-icon">??</span><span data-i18n="tab.companyInfo">ÙØ¹ÙÙÙØ§Øª Ø§ÙØ´Ø±ÙØ©</span>
+                    </button>
+                </div>
+            </div>
+
+
+            <!-- -- Post Job Tab -------------------------------- -->
+            <div class="dash-tab-content" id="tab-post-job">
+                <div class="cdash-card">
+                    <div class="cdash-card-head">
+                        <div class="cdash-card-icon" style="background:rgba(99,102,241,0.12);color:#6366f1;">??</div>
+                        <div>
+                            <h2 class="cdash-card-title" data-i18n="cd.postJob.title">ÙØ´Ø± ÙØ¸ÙÙØ© Ø¬Ø¯ÙØ¯Ø©</h2>
+                            <p class="cdash-card-sub">??? ????? ?????? ????? ???????? ?? ???</p>
+                        </div>
+                    </div>
+                    <form id="companyPostJobForm">
+                        <div class="cdash-form-grid">
+                            <div class="prf-field cdash-full">
+                                <label class="prf-label" for="cdJobTitle" data-i18n="cd.jobTitle.label">Ø§Ø³Ù Ø§ÙÙØ¸ÙÙØ© *</label>
+                                <div class="prf-input-wrap">
+                                    <svg class="prf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+                                    <input id="cdJobTitle" class="prf-input" type="text" placeholder="????: ????? ?????????" required />
+                                </div>
+                            </div>
+                            <div class="prf-field cdash-full">
+                                <label class="prf-label" for="cdJobDescription" data-i18n="cd.jobDescription.label">ÙØµÙ Ø§ÙÙØ¸ÙÙØ© *</label>
+                                <textarea id="cdJobDescription" class="prf-textarea" rows="4" placeholder="???? ????? ???????? ??????? ????? ?????" required></textarea>
+                            </div>
+                            <div class="prf-field cdash-full">
+                                <label class="prf-label" for="cdJobRequirements" data-i18n="cd.jobRequirements.label">Ø§ÙÙØªØ·ÙØ¨Ø§Øª *</label>
+                                <textarea id="cdJobRequirements" class="prf-textarea" rows="3" placeholder="??? ????????? ????????? ????????" required></textarea>
+                            </div>
+                            <div class="prf-field">
+                                <label class="prf-label" for="cdJobSalary" data-i18n="cd.salary.label">Ø§ÙØ±Ø§ØªØ¨ Ø§ÙÙØªÙÙØ¹</label>
+                                <div class="prf-input-wrap">
+                                    <svg class="prf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 6v2m0 8v2M9 9h4a2 2 0 010 4H9m0 0h5"/></svg>
+                                    <input id="cdJobSalary" class="prf-input" type="text" placeholder="????: 5000 - 8000 ????" />
+                                </div>
+                            </div>
+                            <div class="prf-field">
+                                <label class="prf-label" for="cdJobLocation" data-i18n="cd.location.label">Ø§ÙÙÙÙØ¹ *</label>
+                                <div class="prf-input-wrap">
+                                    <svg class="prf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                                    <input id="cdJobLocation" class="prf-input" type="text" placeholder="????: ??????" required />
+                                </div>
+                            </div>
+                            <div class="prf-field">
+                                <label class="prf-label" for="cdJobType" data-i18n="cd.jobType.label">ÙÙØ¹ Ø§ÙØªÙØ¸ÙÙ *</label>
+                                <select id="cdJobType" class="prf-input" required>
+                                    <option value="" data-i18n="opt.jobType.select">Ø§Ø®ØªØ± ÙÙØ¹ Ø§ÙØªÙØ¸ÙÙ</option>
+                                    <option value="???? ????" data-i18n="opt.jobType.fullTime">Ø¯ÙØ§Ù ÙØ§ÙÙ</option>
+                                    <option value="???? ????" data-i18n="opt.jobType.partTime">Ø¯ÙØ§Ù Ø¬Ø²Ø¦Ù</option>
+                                    <option value="??? ????" data-i18n="opt.jobType.contract">Ø¹ÙØ¯ ÙØ¤ÙØª</option>
+                                    <option value="?????" data-i18n="opt.jobType.internship">ØªØ¯Ø±ÙØ¨</option>
+                                </select>
+                            </div>
+                            <div class="prf-field">
+                                <label class="prf-label" for="cdJobCategory" data-i18n="cd.category.label">Ø§ÙÙØ¬Ø§Ù *</label>
+                                <select id="cdJobCategory" class="prf-input" required>
+                                    <option value="" data-i18n="opt.jobCategory.select">Ø§Ø®ØªØ± Ø§ÙÙØ¬Ø§Ù</option>
+                                    <option value="????? ?????????" data-i18n="opt.jobCategory.it">ØªÙÙÙØ© Ø§ÙÙØ¹ÙÙÙØ§Øª</option>
+                                    <option value="???????" data-i18n="opt.jobCategory.marketing">Ø§ÙØªØ³ÙÙÙ</option>
+                                    <option value="????????" data-i18n="opt.jobCategory.sales">Ø§ÙÙØ¨ÙØ¹Ø§Øª</option>
+                                    <option value="??????? ???????" data-i18n="opt.jobCategory.hr">Ø§ÙÙÙØ§Ø±Ø¯ Ø§ÙØ¨Ø´Ø±ÙØ©</option>
+                                    <option value="???????" data-i18n="opt.jobCategory.design">Ø§ÙØªØµÙÙÙ</option>
+                                    <option value="???????" data-i18n="opt.jobCategory.engineering">Ø§ÙÙÙØ¯Ø³Ø©</option>
+                                    <option value="???????" data-i18n="opt.jobCategory.education">Ø§ÙØªØ¹ÙÙÙ</option>
+                                    <option value="????" data-i18n="opt.jobCategory.other">Ø£Ø®Ø±Ù</option>
+                                </select>
+                            </div>
+                            <div class="prf-field">
+                                <label class="prf-label" for="cdJobDeadline" data-i18n="cd.deadline.label">Ø¢Ø®Ø± ÙÙØ¹Ø¯ ÙÙØªÙØ¯ÙÙ</label>
+                                <input id="cdJobDeadline" class="prf-input" type="date" />
+                            </div>
+                        </div>
+                        <div id="postJobStatus" class="form-status" style="display:none;"></div>
+                        <button type="submit" class="prf-save-btn" data-i18n="cd.postJob.btn">ÙØ´Ø± Ø§ÙÙØ¸ÙÙØ©</svg>
+                            ??? ???????
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- -- My Jobs Tab --------------------------------- -->
+            <div class="dash-tab-content" id="tab-my-jobs" style="display:none;">
+                <div class="cdash-card">
+                    <div class="cdash-card-head">
+                        <div class="cdash-card-icon" style="background:rgba(16,185,129,0.10);color:#059669;">??</div>
+                        <div style="flex:1;">
+                            <h2 class="cdash-card-title" data-i18n="cd.myJobs.title">Ø§ÙÙØ¸Ø§Ø¦Ù Ø§ÙÙÙØ´ÙØ±Ø©</h2>
+                            <p class="cdash-card-sub">???? ??????? ???? ?????? ??? ??????</p>
+                        </div>
+                        <button type="button" class="cdash-add-btn" id="btnGoPostJob" data-i18n="cd.myJobs.addBtn">+ ÙØ´Ø± ÙØ¸ÙÙØ© Ø¬Ø¯ÙØ¯Ø©</svg>
+                            ??? ????? ?????
+                        </button>
+                    </div>
+                    <div id="companyJobsList"><p class="cdash-no-data">???? ???????...</p></div>
+                </div>
+            </div>
+
+            <!-- -- Request Staff Tab --------------------------- -->
+            <div class="dash-tab-content" id="tab-request-staff" style="display:none;">
+                <div class="cdash-card">
+                    <div class="cdash-card-head">
+                        <div class="cdash-card-icon" style="background:rgba(245,158,11,0.10);color:#d97706;">??</div>
+                        <div>
+                            <h2 class="cdash-card-title" data-i18n="cd.requestStaff.title">Ø·ÙØ¨ ÙÙØ¸ÙÙÙ</h2>
+                            <p class="cdash-card-sub" data-i18n="cd.requestStaff.sub">Ø£Ø±Ø³Ù Ø·ÙØ¨Ù ÙØ¥Ø¯Ø§Ø±Ø© Ø§ÙÙÙØµØ© ÙÙØ­ØµÙÙ Ø¹ÙÙ ÙÙØ¸ÙÙÙ ÙÙØ§Ø³Ø¨ÙÙ â ÙØ·ÙÙØ¹ Ø¹ÙÙ ÙØ°Ù Ø§ÙØ·ÙØ¨Ø§Øª ÙØ±ÙÙ Ø§ÙØ¥Ø¯Ø§Ø±Ø© ÙÙØ·.</p>
+                        </div>
+                    </div>
+                    <form id="requestStaffForm">
+                        <div class="cdash-form-grid">
+                            <div class="prf-field">
+                                <label class="prf-label" for="rsJobTitle" data-i18n="cd.requestStaff.jobTitle.label">Ø§ÙÙØ³ÙÙ Ø§ÙÙØ¸ÙÙÙ Ø§ÙÙØ·ÙÙØ¨ *</label>
+                                <div class="prf-input-wrap">
+                                    <svg class="prf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+                                    <input id="rsJobTitle" class="prf-input" type="text" placeholder="????: ?????? ?????? ???? ??????" required />
+                                </div>
+                            </div>
+                            <div class="prf-field">
+                                <label class="prf-label" for="rsCount" data-i18n="cd.requestStaff.count.label">Ø¹Ø¯Ø¯ Ø§ÙÙÙØ¸ÙÙÙ Ø§ÙÙØ·ÙÙØ¨ÙÙ *</label>
+                                <div class="prf-input-wrap">
+                                    <svg class="prf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+                                    <input id="rsCount" class="prf-input" type="number" min="1" placeholder="????: 3" required />
+                                </div>
+                            </div>
+                            <div class="prf-field">
+                                <label class="prf-label" for="rsSpecialization" data-i18n="cd.requestStaff.spec.label">Ø§ÙØªØ®ØµØµ Ø§ÙÙØ·ÙÙØ¨ *</label>
+                                <div class="prf-input-wrap">
+                                    <svg class="prf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/></svg>
+                                    <input id="rsSpecialization" class="prf-input" type="text" placeholder="????: ????? ?????????? ????????" required />
+                                </div>
+                            </div>
+                            <div class="prf-field">
+                                <label class="prf-label" for="rsWorkType" data-i18n="cd.requestStaff.workType.label">ÙÙØ¹ Ø§ÙØ¹ÙÙ</label>
+                                <select id="rsWorkType" class="prf-input">
+                                    <option value="" data-i18n="opt.workType.select">Ø§Ø®ØªØ±</option>
+                                    <option value="???? ????" data-i18n="opt.jobType.fullTime">Ø¯ÙØ§Ù ÙØ§ÙÙ</option>
+                                    <option value="???? ????" data-i18n="opt.jobType.partTime">Ø¯ÙØ§Ù Ø¬Ø²Ø¦Ù</option>
+                                    <option value="??? ????" data-i18n="opt.jobType.contract">Ø¹ÙØ¯ ÙØ¤ÙØª</option>
+                                    <option value="?????" data-i18n="opt.jobType.internship">ØªØ¯Ø±ÙØ¨</option>
+                                </select>
+                            </div>
+                            <div class="prf-field">
+                                <label class="prf-label" for="rsSalary" data-i18n="cd.requestStaff.salary.label">Ø§ÙØ±Ø§ØªØ¨ Ø§ÙÙØªÙÙØ¹</label>
+                                <div class="prf-input-wrap">
+                                    <svg class="prf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 6v2m0 8v2M9 9h4a2 2 0 010 4H9m0 0h5"/></svg>
+                                    <input id="rsSalary" class="prf-input" type="text" placeholder="????: 5000 - 8000 ????" />
+                                </div>
+                            </div>
+                            <div class="prf-field">
+                                <label class="prf-label" for="rsDeadline" data-i18n="cd.requestStaff.deadline.label">Ø¢Ø®Ø± ÙÙØ¹Ø¯ ÙÙØ­Ø§Ø¬Ø©</label>
+                                <input id="rsDeadline" class="prf-input" type="date" />
+                            </div>
+                            <div class="prf-field cdash-full">
+                                <label class="prf-label" for="rsSkills" data-i18n="cd.requestStaff.skills.label">Ø§ÙÙÙØ§Ø±Ø§Øª ÙØ§ÙÙØªØ·ÙØ¨Ø§Øª *</label>
+                                <textarea id="rsSkills" class="prf-textarea" rows="3" placeholder="???? ???????? ???????? ???????? ?? ??????" required></textarea>
+                            </div>
+                            <div class="prf-field cdash-full">
+                                <label class="prf-label" for="rsNotes" data-i18n="cd.requestStaff.notes.label">ÙÙØ§Ø­Ø¸Ø§Øª Ø¥Ø¶Ø§ÙÙØ©</label>
+                                <textarea id="rsNotes" class="prf-textarea" rows="2" placeholder="?? ??????? ?????? ???? ?? ??????? ???????"></textarea>
+                            </div>
+                        </div>
+                        <div id="requestStaffStatus" class="form-status" style="display:none;"></div>
+                        <button type="submit" class="prf-save-btn" data-i18n="cd.requestStaff.submit">Ø¥Ø±Ø³Ø§Ù Ø§ÙØ·ÙØ¨</svg>
+                            ????? ?????
+                        </button>
+                    </form>
+                    <div class="cdash-prev-section">
+                        <h3 class="cdash-prev-title" data-i18n="cd.requestStaff.prevTitle">Ø·ÙØ¨Ø§ØªÙ Ø§ÙØ³Ø§Ø¨ÙØ©</span> ?????? ???????
+                        </h3>
+                        <div id="myStaffRequestsList"><p class="cdash-no-data">???? ???????...</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- -- Request Course Tab -------------------------- -->
+            <div class="dash-tab-content" id="tab-request-course" style="display:none;">
+                <div class="cdash-card">
+                    <div class="cdash-card-head">
+                        <div class="cdash-card-icon" style="background:rgba(79,209,255,0.10);color:#0ea5e9;">??</div>
+                        <div>
+                            <h2 class="cdash-card-title">??? ??? ???? ???????</h2>
+                            <p class="cdash-card-sub" data-i18n="cd.requestCourse.sub">Ø£Ø±Ø³Ù Ø·ÙØ¨Ù ÙØ¥Ø¯Ø§Ø±Ø© Ø§ÙÙÙØµØ© ÙÙØªØ­ Ø¯ÙØ±Ø© ØªØ¯Ø±ÙØ¨ÙØ© ÙÙÙØ¸ÙÙÙ â ÙØ·ÙÙØ¹ Ø¹ÙÙ ÙØ°Ù Ø§ÙØ·ÙØ¨Ø§Øª ÙØ±ÙÙ Ø§ÙØ¥Ø¯Ø§Ø±Ø© ÙÙØ·.</p>
+                        </div>
+                    </div>
+                    <form id="requestCourseForm">
+                        <div class="cdash-form-grid">
+                            <div class="prf-field">
+                                <label class="prf-label" for="rcCourseName" data-i18n="cd.requestCourse.name.label">Ø§Ø³Ù Ø§ÙØ¯ÙØ±Ø© Ø§ÙÙØ·ÙÙØ¨Ø© *</label>
+                                <div class="prf-input-wrap">
+                                    <svg class="prf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                                    <input id="rcCourseName" class="prf-input" type="text" placeholder="????: ???? ?? ????? ????????" required />
+                                </div>
+                            </div>
+                            <div class="prf-field">
+                                <label class="prf-label" for="rcCategory" data-i18n="cd.requestCourse.category.label">Ø§ÙÙØ¬Ø§Ù / Ø§ÙÙØ¦Ø©</label>
+                                <div class="prf-input-wrap">
+                                    <svg class="prf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h8m-8 6h16"/></svg>
+                                    <input id="rcCategory" class="prf-input" type="text" placeholder="????: ?????? ?????? ?????" />
+                                </div>
+                            </div>
+                            <div class="prf-field">
+                                <label class="prf-label" for="rcSeats" data-i18n="cd.requestCourse.seats.label">Ø¹Ø¯Ø¯ Ø§ÙÙÙØ§Ø¹Ø¯ Ø§ÙÙØ·ÙÙØ¨Ø© *</label>
+                                <div class="prf-input-wrap">
+                                    <svg class="prf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+                                    <input id="rcSeats" class="prf-input" type="number" min="1" value="1" placeholder="????: 10" required />
+                                </div>
+                            </div>
+                            <div class="prf-field">
+                                <label class="prf-label" for="rcDuration" data-i18n="cd.requestCourse.duration.label">Ø§ÙÙØ¯Ø© Ø§ÙØ²ÙÙÙØ© Ø§ÙÙØªÙÙØ¹Ø©</label>
+                                <div class="prf-input-wrap">
+                                    <svg class="prf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                    <input id="rcDuration" class="prf-input" type="text" placeholder="????: 3 ????? 40 ????" />
+                                </div>
+                            </div>
+                            <div class="prf-field">
+                                <label class="prf-label" for="rcExpectedDate" data-i18n="cd.requestCourse.expectedDate.label">ØªØ§Ø±ÙØ® Ø§ÙØ¨Ø¯Ø¡ Ø§ÙÙØªÙÙØ¹</label>
+                                <input id="rcExpectedDate" class="prf-input" type="date" />
+                            </div>
+                            <div class="prf-field">
+                                <label class="prf-label" for="rcAudience" data-i18n="cd.requestCourse.audience.label">Ø§ÙÙØ¦Ø© Ø§ÙÙØ³ØªÙØ¯ÙØ©</label>
+                                <div class="prf-input-wrap">
+                                    <svg class="prf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+                                    <input id="rcAudience" class="prf-input" type="text" placeholder="????: ?????? ???? ????? ???" />
+                                </div>
+                            </div>
+                            <div class="prf-field cdash-full">
+                                <label class="prf-label" for="rcDescription" data-i18n="cd.requestCourse.description.label">ÙØµÙ Ø§ÙØ¯ÙØ±Ø© ÙÙØ­ØªÙØ§ÙØ§ Ø§ÙÙØ·ÙÙØ¨ *</label>
+                                <textarea id="rcDescription" class="prf-textarea" rows="4" placeholder="???? ??????? ???????? ???????? ???? ?????? ??????" required></textarea>
+                            </div>
+                            <div class="prf-field cdash-full">
+                                <label class="prf-label" for="rcNotes" data-i18n="cd.requestCourse.notes.label">ÙÙØ§Ø­Ø¸Ø§Øª Ø¥Ø¶Ø§ÙÙØ©</label>
+                                <textarea id="rcNotes" class="prf-textarea" rows="2" placeholder="?? ??????? ?????? ???? ?? ??????? ???????"></textarea>
+                            </div>
+                        </div>
+                        <div id="requestCourseStatus" class="form-status" style="display:none;"></div>
+                        <button type="submit" class="prf-save-btn" data-i18n="cd.requestCourse.submit">Ø¥Ø±Ø³Ø§Ù Ø§ÙØ·ÙØ¨</svg>
+                            ????? ?????
+                        </button>
+                    </form>
+                    <div class="cdash-prev-section">
+                        <h3 class="cdash-prev-title" data-i18n="cd.requestCourse.prevTitle">Ø·ÙØ¨Ø§ØªÙ Ø§ÙØ³Ø§Ø¨ÙØ©</span> ?????? ???????
+                        </h3>
+                        <div id="myCourseRequestsList"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- -- Company Info Tab ---------------------------- -->
+            <div class="dash-tab-content" id="tab-company-info" style="display:none;">
+                <div class="cdash-card">
+                    <div class="cdash-card-head">
+                        <div class="cdash-card-icon" style="background:rgba(10,51,184,0.10);color:#0a33b8;">??</div>
+                        <div>
+                            <h2 class="cdash-card-title" data-i18n="cd.companyInfo.title">ÙØ¹ÙÙÙØ§Øª Ø§ÙØ´Ø±ÙØ©</h2>
+                            <p class="cdash-card-sub">?????? ????? ??????? ??? ??????</p>
+                        </div>
+                    </div>
+                    <form id="companyDashProfileForm">
+                        <div class="cdash-form-grid">
+                            <div class="prf-field">
+                                <label class="prf-label" for="cdCompanyName" data-i18n="cd.companyName.label">Ø§Ø³Ù Ø§ÙØ´Ø±ÙØ©</label>
+                                <div class="prf-input-wrap">
+                                    <svg class="prf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="8" width="20" height="14"/><path d="M15 8V4H9v4"/><line x1="12" y1="12" x2="12" y2="16"/></svg>
+                                    <input id="cdCompanyName" class="prf-input" type="text" placeholder="??? ??????" />
+                                </div>
+                            </div>
+                            <div class="prf-field">
+                                <label class="prf-label" for="cdCompanyPhone" data-i18n="cd.companyPhone.label">Ø±ÙÙ Ø§ÙØ¬ÙØ§Ù</label>
+                                <div class="prf-input-wrap">
+                                    <svg class="prf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg>
+                                    <input id="cdCompanyPhone" class="prf-input" type="tel" placeholder="????: 05XXXXXXXX" />
+                                </div>
+                            </div>
+                            <div class="prf-field">
+                                <label class="prf-label" for="cdCompanySpec" data-i18n="cd.companySpec.label">Ø§ÙØªØ®ØµØµ / Ø§ÙÙØ·Ø§Ø¹</label>
+                                <div class="prf-input-wrap">
+                                    <svg class="prf-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/></svg>
+                                    <input id="cdCompanySpec" class="prf-input" type="text" placeholder="????: ????? ?????????" />
+                                </div>
+                            </div>
+                            <div class="prf-field cdash-full">
+                                <label class="prf-label" for="cdCompanyServices" data-i18n="cd.companyServices.label">ÙØµÙ Ø§ÙØ´Ø±ÙØ© / Ø§ÙØ®Ø¯ÙØ§Øª</label>
+                                <textarea id="cdCompanyServices" class="prf-textarea" rows="4" placeholder="???? ????? ?? ?????? ????????"></textarea>
+                            </div>
+                        </div>
+                        <div id="profileStatus" class="form-status" style="display:none;"></div>
+                        <button type="submit" class="prf-save-btn" data-i18n="cd.companyInfo.save">Ø­ÙØ¸ Ø§ÙØ¨ÙØ§ÙØ§Øª</svg>
+                            ??? ????????
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <img src="assets/images/sh.png" alt="شعار ماهر" class="footer-logo-img">
+                    <h3 class="footer-logo" data-i18n="footer.logo">ÙØ§ÙØ±</h3>
+                    <p class="footer-about" data-i18n="footer.about">ÙÙØµØ© Ø¹Ø±Ø¨ÙØ© ÙÙØªÙØ¸ÙÙ ÙØ§ÙØªØ¯Ø±ÙØ¨ ÙØªØ·ÙÙØ± Ø§ÙÙÙØ§Ø±Ø§Øª.</p>
+                    <a class="footer-site-link" href="https://www.maher.edu.sa" target="_blank" rel="noopener">?? www.maher.edu.sa</a>
+                </div>
+                <div class="footer-col">
+                    <h4 class="footer-col-title" data-i18n="footer.quickLinks">Ø±ÙØ§Ø¨Ø· Ø³Ø±ÙØ¹Ø©</h4>
+                    <div class="footer-links">
+                        <a href="jobs.html" data-i18n="footer.jobs">Ø§ÙÙØ¸Ø§Ø¦Ù</a>
+                        <a href="courses.html" data-i18n="footer.courses">Ø§ÙØ¯ÙØ±Ø§Øª</a>
+                        <a href="contact.html" data-i18n="footer.contact">ØªÙØ§ØµÙ ÙØ¹ÙØ§</a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4 class="footer-col-title" data-i18n="footer.contact">ØªÙØ§ØµÙ ÙØ¹ÙØ§</h4>
+                    <ul class="footer-contact-list">
+                        <li>?? <a href="tel:920016798">920016798</a> <span class="footer-contact-note" data-i18n="footer.landline">(Ø£Ø±Ø¶Ù)</span></li>
+                        <li>?? <a href="tel:0539600050">0539600050</a></li>
+                        <li>?? <a href="tel:0539600080">0539600080</a></li>
+                        <li>?? <a href="mailto:info@maher.edu.sa">info@maher.edu.sa</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span data-i18n="footer.copy">Â© <span id="year"></span> ÙØ§ÙØ±. Ø¬ÙÙØ¹ Ø§ÙØ­ÙÙÙ ÙØ­ÙÙØ¸Ø©.</span> ÙØ§ÙØ±. Ø¬ÙÙØ¹ Ø§ÙØ­ÙÙÙ ÙØ­ÙÙØ¸Ø©.</span> ????. ???? ?????? ??????.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="assets/js/auth.js" defer></script>
+    <script src="assets/js/main.js" defer></script>
+    <script src="assets/js/company-dashboard.js" defer></script>
+</body>
+</html>
+

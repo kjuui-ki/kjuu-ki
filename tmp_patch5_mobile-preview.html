@@ -1,0 +1,96 @@
+<!DOCTYPE html>&#8226;<html lang="ar" dir="rtl">&#8226;<head>&#8226;<meta charset="UTF-8">&#8226;<title>معاينة الجوال</title>&#8226;<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0d1117;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px;
+    font-family: system-ui, sans-serif;
+    gap: 16px;
+  }
+  .controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .controls button {
+    padding: 8px 18px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .controls button:hover, .controls button.active {
+    background: #0a33b8;
+    border-color: #0a33b8;
+  }
+  .label {
+    color: rgba(255,255,255,0.45);
+    font-size: 0.8rem;
+    text-align: center;
+  }
+  .phone-wrap {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  /* Phone shell */
+  .phone-shell {
+    background: #1c1c1e;
+    border-radius: 48px;
+    padding: 12px 10px;
+    box-shadow: 0 0 0 2px #3a3a3c, 0 30px 80px rgba(0,0,0,0.7);
+    position: relative;
+  }
+  /* Notch */
+  .phone-shell::before {
+    content: '';
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 26px;
+    background: #1c1c1e;
+    border-radius: 0 0 14px 14px;
+    z-index: 10;
+  }
+  .phone-screen {
+    overflow: hidden;
+    border-radius: 38px;
+    background: #fff;
+    position: relative;
+  }
+  iframe {
+    display: block;
+    border: none;
+  }
+  /* Side buttons */
+  .btn-side-left, .btn-side-right {
+    position: absolute;
+    width: 3px;
+    background: #3a3a3c;
+    border-radius: 2px;
+  }
+  .btn-side-left { left: -3px; top: 100px; height: 30px; }
+  .btn-side-right { right: -3px; top: 110px; height: 60px; }
+</style>&#8226;</head>&#8226;<body>&#8226;<div class="controls">&#8226;<button onclick="loadPage('index.html')" class="active">الرئيسية</button>&#8226;<button onclick="loadPage('jobs.html')">الوظائف</button>&#8226;<button onclick="loadPage('courses.html')">الدورات</button>&#8226;<button onclick="loadPage('seeker-login.html')">دخول باحث</button>&#8226;<button onclick="loadPage('employer-login.html')">دخول شركة</button>&#8226;<button onclick="loadPage('register.html')">تسجيل</button>&#8226;</div>&#8226;<div class="label">iPhone 14 Pro — 390 × 844</div>&#8226;<div class="phone-wrap">&#8226;<div class="phone-shell">&#8226;<div class="btn-side-left"></div>&#8226;<div class="btn-side-right"></div>&#8226;<div class="phone-screen">&#8226;<iframe
+        id="previewFrame"
+        src="index.html"
+        width="390"
+        height="844"
+        scrolling="yes"
+      ></iframe>&#8226;</div>&#8226;</div>&#8226;</div>&#8226;<script>
+  function loadPage(url) {
+    document.getElementById('previewFrame').src = url;
+    document.querySelectorAll('.controls button').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+</script>&#8226;</body>&#8226;</html>

@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", async function () {
-    const form = document.getElementById("jobApplyForm");
-    const statusBox = document.getElementById("applyFormStatus");
-    const submitBtn = document.getElementById("submitApplicationBtn");
-    const summary = document.getElementById("applyJobSummary");
+    var form = document.getElementById("jobApplyForm");
+    var statusBox = document.getElementById("applyFormStatus");
+    var submitBtn = document.getElementById("submitApplicationBtn");
+    var summary = document.getElementById("applyJobSummary");
 
     if (!form || !statusBox || !submitBtn || !summary) return;
 
@@ -15,22 +15,18 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
         statusBox.textContent = message;
         statusBox.style.display = "block";
-        if (type === "error") {
-            statusBox.classList.add("form-status-error");
-        }
-        if (type === "success") {
-            statusBox.classList.add("form-status-success");
-        }
+        if (type === "error") statusBox.classList.add("form-status-error");
+        if (type === "success") statusBox.classList.add("form-status-success");
     }
 
     function setLoading(isLoading) {
         submitBtn.disabled = isLoading;
-        submitBtn.textContent = isLoading ? "جاري إرسال الطلب..." : "إرسال الطلب";
+        submitBtn.textContent = isLoading ? "جاري إرسال التسجيل..." : "تأكيد التسجيل";
     }
 
-    function getJobId() {
-        const params = new URLSearchParams(window.location.search);
-        return params.get("job_id") || "";
+    function getCourseId() {
+        var params = new URLSearchParams(window.location.search);
+        return (params.get("course_id") || params.get("job_id") || "").trim();
     }
 
     function escapeText(value) {
@@ -38,117 +34,97 @@ document.addEventListener("DOMContentLoaded", async function () {
             .replace(/&/g, "&amp;")
             .replace(/</g, "&lt;")
             .replace(/>/g, "&gt;")
-            .replace(/\"/g, "&quot;")
+            .replace(/"/g, "&quot;")
             .replace(/'/g, "&#39;");
     }
 
     async function getUserRole(user) {
         if (!user) return null;
         try {
-            const { data } = await supabaseClient
+            var res = await supabaseClient
                 .from("profiles")
                 .select("role")
                 .eq("id", user.id)
                 .single();
-            return data && data.role ? String(data.role).trim().toLowerCase() : null;
-        } catch (error) {
+            return res.data && res.data.role ? String(res.data.role).trim().toLowerCase() : null;
+        } catch (e) {
             return null;
         }
     }
 
-    async function loadJobDetails(jobId) {
-        const { data, error } = await supabaseClient
-            .from("jobs")
-            .select("id, title, description, company_id")
-            .eq("id", jobId)
+    async function loadCourse(courseId) {
+        var res = await supabaseClient
+            .from("courses")
+            .select("id, title, description, instructor, duration, category")
+            .eq("id", courseId)
             .single();
-
-        if (error || !data) {
-            return null;
-        }
-
-        let companyName = "";
-        if (data.company_id) {
-            const { data: profile } = await supabaseClient
-                .from("profiles")
-                .select("full_name")
-                .eq("id", data.company_id)
-                .single();
-            companyName = profile && profile.full_name ? profile.full_name : "";
-        }
-
-        return {
-            id: data.id,
-            title: data.title || "",
-            description: data.description || "",
-            companyName: companyName
-        };
+        if (res.error || !res.data) return null;
+        return res.data;
     }
 
-    async function loadSeekerProfile(userId) {
+    async function loadProfile(userId) {
         try {
-            const { data, error } = await supabaseClient
+            var res = await supabaseClient
                 .from("profiles")
                 .select("full_name, phone, specialization, skills, cv_url")
                 .eq("id", userId)
                 .single();
-
-            if (error) {
-                return null;
-            }
-
-            return data || null;
-        } catch (error) {
+            return res.data || null;
+        } catch (e) {
             return null;
         }
     }
 
     try {
         if (typeof supabaseClient === "undefined" || !supabaseClient) {
-            summary.innerHTML = '<h1>التقديم على وظيفة</h1><p>تعذر الاتصال بقاعدة البيانات.</p>';
+            summary.innerHTML = "<h1>التسجيل في دورة</h1><p>تعذر الاتصال بقاعدة البيانات.</p>";
             form.style.display = "none";
             return;
         }
 
-        const jobId = getJobId();
-        if (!jobId) {
-            summary.innerHTML = '<h1>التقديم على وظيفة</h1><p>رابط الوظيفة غير صحيح.</p>';
+        var courseId = getCourseId();
+        if (!courseId) {
+            summary.innerHTML = "<h1>التسجيل في دورة</h1><p>رابط الدورة غير صحيح.</p>";
             form.style.display = "none";
             return;
         }
 
-        const { data: userData } = await supabaseClient.auth.getUser();
-        const user = userData && userData.user ? userData.user : null;
+        var userRes = await supabaseClient.auth.getUser();
+        var user = userRes.data && userRes.data.user ? userRes.data.user : null;
         if (!user) {
-            window.location.href = "seeker-login.html";
+            window.location.href = "login.html?next=" + encodeURIComponent("apply.html?course_id=" + courseId);
             return;
         }
 
-        const role = await getUserRole(user);
+        var role = await getUserRole(user);
         if (role !== "job_seeker") {
             window.location.href = "login.html";
             return;
         }
 
-        const job = await loadJobDetails(jobId);
-        if (!job) {
-            summary.innerHTML = '<h1>التقديم على وظيفة</h1><p>لم يتم العثور على الوظيفة المطلوبة.</p>';
+        var course = await loadCourse(courseId);
+        if (!course) {
+            summary.innerHTML = "<h1>التسجيل في دورة</h1><p>لم يتم العثور على الدورة المطلوبة.</p>";
             form.style.display = "none";
             return;
         }
 
         summary.innerHTML =
-            '<h1>' + escapeText(job.title) + '</h1>' +
-            '<p>' + escapeText(job.companyName || 'شركة') + (job.description ? ' - ' + escapeText(job.description) : '') + '</p>';
+            "<h1>" + escapeText(course.title) + "</h1>" +
+            "<p>" +
+            (course.instructor ? "المدرّب: " + escapeText(course.instructor) + " — " : "") +
+            (course.duration ? escapeText(course.duration) + " — " : "") +
+            (course.description ? escapeText(course.description) : "") +
+            "</p>";
 
-        const fullNameInput = document.getElementById("fullName");
-        const phoneInput = document.getElementById("phone");
-        const specializationInput = document.getElementById("specialization");
-        const skillsInput = document.getElementById("skills");
-        const cvInput = document.getElementById("cvFile");
+        var fullNameInput = document.getElementById("fullName");
+        var phoneInput = document.getElementById("phone");
+        var specializationInput = document.getElementById("specialization");
+        var skillsInput = document.getElementById("skills");
+        var cvInput = document.getElementById("cvFile");
 
-        const profileData = await loadSeekerProfile(user.id);
-        let profileCvUrl = profileData && profileData.cv_url ? profileData.cv_url : "";
+        var profileData = await loadProfile(user.id);
+        var profileCvUrl = profileData && profileData.cv_url ? profileData.cv_url : "";
 
         if (fullNameInput) {
             fullNameInput.value =
@@ -156,44 +132,34 @@ document.addEventListener("DOMContentLoaded", async function () {
                 (user && user.email) ||
                 "";
         }
-        if (phoneInput) {
-            phoneInput.value = (profileData && profileData.phone) || "";
-        }
-        if (specializationInput) {
-            specializationInput.value = (profileData && profileData.specialization) || "";
-        }
-        if (skillsInput) {
-            skillsInput.value = (profileData && profileData.skills) || "";
-        }
+        if (phoneInput) phoneInput.value = (profileData && profileData.phone) || "";
+        if (specializationInput) specializationInput.value = (profileData && profileData.specialization) || "";
+        if (skillsInput) skillsInput.value = (profileData && profileData.skills) || "";
 
         if (cvInput) {
             cvInput.required = false;
             cvInput.disabled = true;
-            cvInput.title = "يتم استخدام السيرة الذاتية المحفوظة في الملف الشخصي";
+            cvInput.title = "السيرة الذاتية اختيارية للتسجيل؛ يمكنك رفعها من ملفك لاحقاً.";
         }
 
         if (profileCvUrl) {
             var cvNote = document.createElement("p");
             cvNote.className = "page-note";
-            cvNote.innerHTML = 'تم إرفاق السيرة الذاتية تلقائيًا: <a href="' + escapeText(profileCvUrl) + '" target="_blank" rel="noopener noreferrer">عرض CV</a>';
-            form.appendChild(cvNote);
-        } else {
-            setStatus("error", "لا يوجد CV مرفوع في ملفك الشخصي. يرجى رفع السيرة الذاتية من صفحة الملف الشخصي أولاً.");
-            submitBtn.disabled = true;
-            submitBtn.textContent = "ارفع CV من الملف الشخصي";
+            cvNote.innerHTML = "السيرة المحفوظة: <a href=\"" + escapeText(profileCvUrl) + "\" target=\"_blank\" rel=\"noopener noreferrer\">عرض</a>";
+            form.insertBefore(cvNote, form.firstChild);
         }
 
-        const duplicateCheck = await supabaseClient
-            .from("applications")
-            .select("id, status")
-            .eq("job_id", jobId)
+        var dupRes = await supabaseClient
+            .from("course_enrollments")
+            .select("id")
+            .eq("course_id", courseId)
             .eq("user_id", user.id)
             .limit(1);
 
-        if (!duplicateCheck.error && Array.isArray(duplicateCheck.data) && duplicateCheck.data.length > 0) {
-            setStatus("success", "تم التقديم على هذه الوظيفة مسبقاً.");
+        if (!dupRes.error && Array.isArray(dupRes.data) && dupRes.data.length > 0) {
+            setStatus("success", "أنت مسجّل في هذه الدورة مسبقاً.");
             setLoading(true);
-            submitBtn.textContent = "تم التقديم";
+            submitBtn.textContent = "مسجّل";
             return;
         }
 
@@ -201,88 +167,71 @@ document.addEventListener("DOMContentLoaded", async function () {
             event.preventDefault();
             setStatus(null, "");
 
-            const fullName = fullNameInput ? fullNameInput.value.trim() : "";
-            const phone = phoneInput ? phoneInput.value.trim() : "";
-            const specialization = specializationInput ? specializationInput.value.trim() : "";
-            const skills = skillsInput ? skillsInput.value.trim() : "";
+            var fullName = fullNameInput ? fullNameInput.value.trim() : "";
+            var phone = phoneInput ? phoneInput.value.trim() : "";
+            var specialization = specializationInput ? specializationInput.value.trim() : "";
+            var skills = skillsInput ? skillsInput.value.trim() : "";
 
-            if (!fullName || !phone || !specialization || !skills) {
-                setStatus("error", "يرجى تعبئة جميع الحقول المطلوبة.");
-                return;
-            }
-
-            if (!profileCvUrl) {
-                setStatus("error", "يجب رفع السيرة الذاتية من صفحة الملف الشخصي قبل التقديم.");
+            if (!fullName || !phone) {
+                setStatus("error", "يرجى إدخال الاسم الكامل ورقم الجوال.");
                 return;
             }
 
             setLoading(true);
 
             try {
-                const beforeInsert = await supabaseClient
-                    .from("applications")
+                var dup2 = await supabaseClient
+                    .from("course_enrollments")
                     .select("id")
-                    .eq("job_id", jobId)
+                    .eq("course_id", courseId)
                     .eq("user_id", user.id)
                     .limit(1);
 
-                if (!beforeInsert.error && Array.isArray(beforeInsert.data) && beforeInsert.data.length > 0) {
-                    setStatus("error", "لقد قدّمت على هذه الوظيفة مسبقاً.");
+                if (!dup2.error && Array.isArray(dup2.data) && dup2.data.length > 0) {
+                    setStatus("error", "لقد سجّلت في هذه الدورة مسبقاً.");
                     setLoading(false);
                     return;
                 }
 
-                const profileUpdate = await supabaseClient
+                await supabaseClient
                     .from("profiles")
                     .update({
                         full_name: fullName,
                         phone: phone,
-                        specialization: specialization,
-                        skills: skills
+                        specialization: specialization || null,
+                        skills: skills || null
                     })
                     .eq("id", user.id);
 
-                if (profileUpdate.error) {
-                    console.warn("Profile quick update failed", profileUpdate.error);
-                }
-
-                const insertResult = await supabaseClient.from("applications").insert([
+                var ins = await supabaseClient.from("course_enrollments").insert([
                     {
+                        course_id: courseId,
                         user_id: user.id,
-                        job_id: jobId,
-                        full_name: fullName,
-                        phone: phone,
-                        specialization: specialization,
-                        skills: skills,
-                        cv_url: profileCvUrl,
-                        status: "pending"
+                        enrolled_by: user.id,
+                        status: "enrolled"
                     }
                 ]);
 
-                if (insertResult.error) {
-                    throw insertResult.error;
-                }
+                if (ins.error) throw ins.error;
 
-                setStatus("success", "تم إرسال طلبك بنجاح");
+                setStatus("success", "تم تسجيلك في الدورة بنجاح.");
                 setTimeout(function () {
-                    if (window.authApi && typeof window.authApi.navigate === "function") {
-                        window.authApi.navigate("my-applications.html");
-                    }
-                }, 1400);
+                    window.location.href = "my-applications.html";
+                }, 1200);
             } catch (error) {
-                console.error("Error submitting application", error);
-                const rawMessage = String(error && error.message ? error.message : "");
-                const lower = rawMessage.toLowerCase();
-                let message = rawMessage || "حدث خطأ غير معروف";
-                if (lower.indexOf("already exists") !== -1 || lower.indexOf("duplicate") !== -1) {
-                    message = "لقد قدّمت على هذه الوظيفة مسبقاً.";
+                console.error("course enroll error", error);
+                var raw = String(error && error.message ? error.message : "");
+                var lower = raw.toLowerCase();
+                var message = raw || "حدث خطأ غير معروف";
+                if (lower.indexOf("duplicate") !== -1 || lower.indexOf("23505") !== -1) {
+                    message = "لقد سجّلت في هذه الدورة مسبقاً.";
                 }
                 setStatus("error", message);
                 setLoading(false);
             }
         });
     } catch (error) {
-        console.error("Error loading application page", error);
+        console.error("apply page", error);
         setStatus("error", "حدث خطأ غير متوقع.");
         setLoading(false);
     }

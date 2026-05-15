@@ -1,23 +1,20 @@
 /**
- * hero-search.js — Live autocomplete search for the homepage hero.
- * Depends on window.supabaseClient (set by auth.js via defer).
+ * hero-search.js — بحث الدورات والدبلومات من الصفحة الرئيسية
  */
 (function () {
     "use strict";
 
     var input      = document.getElementById("ssb-keyword");
-    var citySelect = document.getElementById("ssb-city");
     var dropdown   = document.getElementById("ssb-dropdown");
     var submitBtn  = document.getElementById("ssb-submit");
 
     if (!input || !dropdown || !submitBtn) return;
 
     var debounceTimer = null;
-    var allJobs       = [];
-    var companyMap    = {};   /* company_id → full_name */
+    var allCourses    = [];
+    var pathNameById  = {};
     var ready         = false;
 
-    /* ── Security helpers ─────────────────────────────────────────── */
     function esc(s) {
         return String(s || "")
             .replace(/&/g, "&amp;")
@@ -27,35 +24,52 @@
             .replace(/'/g, "&#39;");
     }
 
-    /* ── Prefetch jobs (runs once after Supabase is ready) ─────────── */
+    function courseIcon(cat) {
+        if (!cat) return "📚";
+        var c = cat.toLowerCase();
+        if (c.indexOf("تقن") !== -1 || c.indexOf("it") !== -1) return "💻";
+        if (c.indexOf("مال") !== -1 || c.indexOf("محاس") !== -1) return "💰";
+        if (c.indexOf("موارد") !== -1 || c.indexOf("hr") !== -1) return "👥";
+        if (c.indexOf("قياد") !== -1) return "🎯";
+        return "📚";
+    }
+
     async function prefetch() {
         var sb = window.supabaseClient;
         if (!sb) return;
 
         try {
             var res = await sb
-                .from("jobs")
-                .select("id, title, location, job_type, company_id")
+                .from("courses")
+                .select("id, title, description, category, instructor, training_path_id, training_paths(name_ar)")
+                .eq("is_active", true)
                 .order("created_at", { ascending: false })
-                .limit(200);
+                .limit(250);
 
-            if (!res.data || res.data.length === 0) { ready = true; return; }
-            allJobs = res.data;
-
-            var ids = [];
-            allJobs.forEach(function (j) {
-                if (j.company_id && ids.indexOf(j.company_id) === -1) ids.push(j.company_id);
-            });
-
-            if (ids.length > 0) {
-                var profRes = await sb
-                    .from("profiles")
-                    .select("id, full_name")
-                    .in("id", ids);
-                if (Array.isArray(profRes.data)) {
-                    profRes.data.forEach(function (p) { companyMap[p.id] = p.full_name || ""; });
-                }
+            if (res.error) {
+                var fallback = await sb
+                    .from("courses")
+                    .select("id, title, description, category, instructor, training_path_id")
+                    .eq("is_active", true)
+                    .order("created_at", { ascending: false })
+                    .limit(250);
+                allCourses = fallback.data || [];
+            } else {
+                allCourses = res.data || [];
             }
+            if (!allCourses.length && window.maherDefaultCourses && window.maherDefaultCourses.length) {
+                allCourses = window.maherDefaultCourses.slice();
+            }
+
+            pathNameById = {};
+            (window.maherDefaultTrainingPaths || []).forEach(function (p) {
+                pathNameById[p.id] = p.name_ar;
+            });
+            allCourses.forEach(function (c) {
+                if (c.training_paths && c.training_paths.name_ar) {
+                    pathNameById[c.training_path_id] = c.training_paths.name_ar;
+                }
+            });
 
             ready = true;
         } catch (e) {
@@ -63,81 +77,82 @@
         }
     }
 
-    /* ── Filter helper ─────────────────────────────────────────────── */
-    function filterJobs(keyword, city) {
+    function pathLabel(c) {
+        var id = c.training_path_id;
+        if (!id) return c.category || "";
+        return pathNameById[id] || c.category || "";
+    }
+
+    function filterCourses(keyword) {
         var k = (keyword || "").trim().toLowerCase();
-        var c = (city || "").trim();
-        return allJobs.filter(function (j) {
-            var titleOk   = !k || (j.title || "").toLowerCase().includes(k)
-                                || (companyMap[j.company_id] || "").toLowerCase().includes(k);
-            var cityOk    = !c || (j.location || "").includes(c);
-            return titleOk && cityOk;
+        return allCourses.filter(function (c) {
+            if (!k) return true;
+            var pn = pathLabel(c);
+            return (c.title && c.title.toLowerCase().includes(k)) ||
+                (c.description && c.description.toLowerCase().includes(k)) ||
+                (c.category && c.category.toLowerCase().includes(k)) ||
+                (c.instructor && c.instructor.toLowerCase().includes(k)) ||
+                (pn && pn.toLowerCase().includes(k));
         });
     }
 
-    /* ── Render dropdown ───────────────────────────────────────────── */
-    function renderDropdown(jobs) {
-        if (!jobs.length) {
+    function renderDropdown(list) {
+        if (!list.length) {
             dropdown.innerHTML = '<div class="ssb-no-results">لا توجد نتائج مطابقة</div>';
             dropdown.hidden = false;
             return;
         }
 
-        var topFive = jobs.slice(0, 5);
-        var html = topFive.map(function (job) {
-            var company  = esc(companyMap[job.company_id] || "");
-            var location = esc(job.location || "");
-            var type     = esc(job.job_type  || "");
-            var href     = "apply.html?job_id=" + encodeURIComponent(job.id);
-
-            return '<div class="ssb-result" data-href="' + href + '">'
-                + '<div class="ssb-result-icon">💼</div>'
+        var top = list.slice(0, 20);
+        var html = '<div class="ssb-dropdown-head">نتائج البحث (' + list.length + ")</div>";
+        html += top.map(function (c) {
+            var path = pathLabel(c);
+            var href = "job-details.html?course_id=" + encodeURIComponent(c.id);
+            return '<div class="ssb-result" role="option" tabindex="0" data-href="' + href + '">'
+                + '<div class="ssb-result-icon" aria-hidden="true">' + courseIcon(c.category) + '</div>'
                 + '<div class="ssb-result-content">'
-                + '<div class="ssb-result-title">' + esc(job.title) + '</div>'
-                + '<div class="ssb-result-meta">'
-                + (company  ? company  : "")
-                + (location ? " &bull; " + location : "")
+                + '<div class="ssb-result-title">' + esc(c.title) + '</div>'
+                + (path ? '<div class="ssb-result-path">' + esc(path) + '</div>' : '')
+                + (c.instructor ? '<div class="ssb-result-meta">' + esc(c.instructor) + '</div>' : '')
                 + '</div>'
-                + '</div>'
-                + (type ? '<span class="ssb-result-badge">' + type + '</span>' : '')
+                + '<div class="ssb-result-arrow" aria-hidden="true">←</div>'
                 + '</div>';
         }).join("");
 
-        if (jobs.length > 5) {
-            html += '<div class="ssb-result-all" id="ssb-view-all">'
-                  + '← عرض كل النتائج (' + jobs.length + ')'
-                  + '</div>';
+        if (list.length > 20) {
+            html += '<div class="ssb-result-all" id="ssb-view-all" role="button" tabindex="0">'
+                + 'عرض كل النتائج (' + list.length + ')'
+                + '</div>';
         }
 
         dropdown.innerHTML = html;
         dropdown.hidden = false;
 
         dropdown.querySelectorAll(".ssb-result").forEach(function (el) {
-            el.addEventListener("click", function () {
-                window.location.href = el.getAttribute("data-href");
+            function go() { window.location.href = el.getAttribute("data-href"); }
+            el.addEventListener("click", go);
+            el.addEventListener("keydown", function (e) {
+                if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); }
             });
         });
 
         var viewAll = document.getElementById("ssb-view-all");
         if (viewAll) {
             viewAll.addEventListener("click", navigate);
+            viewAll.addEventListener("keydown", function (e) {
+                if (e.key === "Enter" || e.key === " ") { e.preventDefault(); navigate(); }
+            });
         }
     }
 
-    /* ── Navigate to jobs.html with filters ──────────────────────── */
     function navigate() {
         dropdown.hidden = true;
         var k = input.value.trim();
-        var c = citySelect ? citySelect.value : "";
-        var url = "jobs.html";
-        var p   = [];
-        if (k) p.push("q="    + encodeURIComponent(k));
-        if (c) p.push("city=" + encodeURIComponent(c));
-        if (p.length) url += "?" + p.join("&");
+        var url = "courses.html";
+        if (k) url += "?q=" + encodeURIComponent(k);
         window.location.href = url;
     }
 
-    /* ── Input event — live search ────────────────────────────────── */
     input.addEventListener("input", function () {
         var val = input.value.trim();
         clearTimeout(debounceTimer);
@@ -154,51 +169,36 @@
         dropdown.hidden = false;
 
         debounceTimer = setTimeout(function () {
-            renderDropdown(filterJobs(val, citySelect ? citySelect.value : ""));
-        }, 260);
+            renderDropdown(filterCourses(val));
+        }, 200);
     });
 
-    /* ── Keyboard ──────────────────────────────────────────────────── */
     input.addEventListener("keydown", function (e) {
         if (e.key === "Enter")  { e.preventDefault(); navigate(); }
         if (e.key === "Escape") { dropdown.hidden = true; }
     });
 
-    /* ── Submit button ─────────────────────────────────────────────── */
     submitBtn.addEventListener("click", navigate);
 
-    /* ── City change — refresh dropdown if open ───────────────────── */
-    if (citySelect) {
-        citySelect.addEventListener("change", function () {
-            var val = input.value.trim();
-            if (val && ready && !dropdown.hidden) {
-                renderDropdown(filterJobs(val, citySelect.value));
-            }
-        });
-    }
-
-    /* ── Close on outside click ────────────────────────────────────── */
     document.addEventListener("click", function (e) {
         if (!e.target.closest("#smartSearchBox")) { dropdown.hidden = true; }
     });
 
-    /* ── Quick-tag chips ───────────────────────────────────────────── */
     var box = document.getElementById("smartSearchBox");
     if (box) {
         box.querySelectorAll(".ssb-tag").forEach(function (tag) {
             tag.addEventListener("click", function () {
                 input.value = tag.getAttribute("data-value");
                 input.focus();
-                if (ready) renderDropdown(filterJobs(input.value, citySelect ? citySelect.value : ""));
+                if (ready) renderDropdown(filterCourses(input.value));
             });
         });
     }
 
-    /* ── Start prefetch when Supabase client is ready ─────────────── */
-    function tryPrefetch() {
-        if (window.supabaseClient) { prefetch(); }
-        else { setTimeout(tryPrefetch, 150); }
+    function startPrefetch() {
+        if (window.supabaseClient) prefetch();
+        else document.addEventListener("maherSupabaseReady", prefetch, { once: true });
     }
-    tryPrefetch();
+    startPrefetch();
 
 })();
