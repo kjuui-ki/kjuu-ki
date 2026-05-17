@@ -251,11 +251,11 @@ img {
     box-shadow: 0 0 24px rgba(59, 130, 246, 0.15);
 }
 
-/* Logout button specifically sits inside the dark header */
+/* Logout button in header user menu */
 .user-menu .btn-outline,
 .user-menu .header-logout-btn {
     color: rgba(248, 250, 252, 0.92);
-    border: 1px solid rgba(148, 163, 184, 0.28);
+    border: 1px solid var(--header-border);
     background: rgba(15, 23, 42, 0.45);
     font-size: 0.78rem;
     font-weight: 600;
@@ -302,19 +302,26 @@ img {
     width: 100%;
 }
 
-/* ── Site header (modern glass bar) ───────────────────────────── */
+/* ── Site header (فحمي زجاجي — متناسق مع الموقع + شعار أزرق) ─ */
 .main-header {
-    --header-h: 80px;
+    --header-h: 92px;
+    --header-surface: rgba(22, 30, 46, 0.94);
+    --header-surface-muted: rgba(15, 23, 42, 0.72);
+    --header-border: rgba(148, 163, 184, 0.16);
     position: sticky;
     top: 0;
     z-index: 100;
-    border-bottom: 1px solid rgba(148, 163, 184, 0.12);
-    background: rgba(2, 6, 23, 0.55);
-    backdrop-filter: blur(20px) saturate(160%);
-    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border-bottom: 1px solid var(--header-border);
+    background: linear-gradient(
+        180deg,
+        rgba(30, 41, 59, 0.96) 0%,
+        rgba(17, 24, 39, 0.98) 100%
+    );
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
     box-shadow:
         0 1px 0 rgba(255, 255, 255, 0.06) inset,
-        0 12px 40px rgba(2, 6, 23, 0.35);
+        0 12px 36px rgba(2, 6, 23, 0.42);
 }
 
 .main-header::after {
@@ -323,7 +330,7 @@ img {
     inset-inline: 0;
     bottom: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.35), transparent);
+    background: linear-gradient(90deg, transparent, rgba(96, 165, 250, 0.35), transparent);
     pointer-events: none;
 }
 
@@ -354,13 +361,13 @@ img {
 
 .logo-img {
     width: auto;
-    height: 56px;
-    max-height: 60px;
+    height: 72px;
+    max-height: 76px;
     display: block;
     object-fit: contain;
-    filter: brightness(0) invert(1) drop-shadow(0 2px 8px rgba(0, 0, 0, 0.25));
-    opacity: 0.96;
-    transition: opacity 0.2s ease, transform 0.2s ease;
+    filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.35));
+    opacity: 1;
+    transition: opacity 0.2s ease, transform 0.2s ease, filter 0.2s ease;
 }
 
 .logo-text {
@@ -373,6 +380,7 @@ img {
 
 .logo:hover .logo-img {
     opacity: 1;
+    filter: drop-shadow(0 4px 14px rgba(59, 130, 246, 0.35));
 }
 
 .main-nav {
@@ -399,7 +407,7 @@ img {
     padding: 0.5rem 0.85rem;
     font-size: 0.875rem;
     font-weight: 600;
-    color: rgba(226, 232, 240, 0.78);
+    color: rgba(226, 232, 240, 0.82);
     text-decoration: none;
     border-radius: 10px;
     white-space: nowrap;
@@ -421,7 +429,7 @@ img {
 
 .nav-link:hover {
     color: #f8fafc;
-    background: rgba(148, 163, 184, 0.08);
+    background: rgba(148, 163, 184, 0.1);
 }
 
 .nav-link:hover::after {
@@ -430,7 +438,7 @@ img {
 
 .nav-link.active {
     color: #f8fafc;
-    background: rgba(56, 189, 248, 0.1);
+    background: rgba(59, 130, 246, 0.18);
     box-shadow: none;
 }
 
@@ -454,9 +462,9 @@ html[dir="ltr"] .logo {
     flex-shrink: 0;
     padding: 0.28rem 0.35rem 0.28rem 0.45rem;
     border-radius: 14px;
-    border: 1px solid rgba(148, 163, 184, 0.18);
-    background: rgba(15, 23, 42, 0.55);
-    box-shadow: 0 4px 20px rgba(2, 6, 23, 0.25);
+    border: 1px solid var(--header-border);
+    background: var(--header-surface-muted);
+    box-shadow: 0 4px 20px rgba(2, 6, 23, 0.28);
 }
 
 .user-chip {
@@ -471,7 +479,7 @@ html[dir="ltr"] .logo {
 }
 
 a.user-chip:hover {
-    background: rgba(148, 163, 184, 0.08);
+    background: rgba(148, 163, 184, 0.1);
 }
 
 .user-avatar {
@@ -530,8 +538,8 @@ a.user-chip:hover {
     gap: 0;
     padding: 3px;
     border-radius: 11px;
-    border: 1px solid rgba(148, 163, 184, 0.2);
-    background: rgba(15, 23, 42, 0.5);
+    border: 1px solid var(--header-border);
+    background: var(--header-surface-muted);
 }
 
 .lang-switch::before {
@@ -547,7 +555,7 @@ a.user-chip:hover {
     font-size: 0.75rem;
     font-weight: 600;
     line-height: 1.4;
-    color: rgba(203, 213, 225, 0.85);
+    color: rgba(203, 213, 225, 0.88);
     cursor: pointer;
     white-space: nowrap;
     transition: color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
@@ -561,7 +569,7 @@ a.user-chip:hover {
     background: rgba(248, 250, 252, 0.95);
     color: #0f172a !important;
     font-weight: 700;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
 }
 
 .nav-toggle {
@@ -574,16 +582,16 @@ a.user-chip:hover {
     height: 42px;
     flex-shrink: 0;
     padding: 0;
-    border: 1px solid rgba(148, 163, 184, 0.25);
+    border: 1px solid var(--header-border);
     border-radius: 11px;
-    background: rgba(15, 23, 42, 0.55);
+    background: var(--header-surface-muted);
     cursor: pointer;
     transition: border-color 0.2s ease, background 0.2s ease;
 }
 
 .nav-toggle:hover {
-    border-color: rgba(56, 189, 248, 0.45);
-    background: rgba(56, 189, 248, 0.1);
+    border-color: rgba(96, 165, 250, 0.45);
+    background: rgba(59, 130, 246, 0.12);
 }
 
 .nav-toggle span {
@@ -1363,7 +1371,7 @@ html.lang-en button[data-i18n] {
 
 /* ── قبل تسجيل الدخول: هيدر ونص وبحث أوضح وأكبر ── */
 body:not(.role-job-seeker):not(.role-company):not(.role-super-admin) .main-header {
-    --header-h: 94px;
+    --header-h: 108px;
 }
 
 body:not(.role-job-seeker):not(.role-company):not(.role-super-admin) .header-inner {
@@ -1372,8 +1380,8 @@ body:not(.role-job-seeker):not(.role-company):not(.role-super-admin) .header-inn
 }
 
 body:not(.role-job-seeker):not(.role-company):not(.role-super-admin) .logo-img {
-    height: 64px;
-    max-height: 68px;
+    height: 82px;
+    max-height: 86px;
 }
 
 body:not(.role-job-seeker):not(.role-company):not(.role-super-admin) .nav-link {
@@ -1478,7 +1486,7 @@ body:not(.role-job-seeker):not(.role-company):not(.role-super-admin) .stat-label
 
 @media (max-width: 768px) {
     body:not(.role-job-seeker):not(.role-company):not(.role-super-admin) .main-header {
-        --header-h: 70px;
+        --header-h: 80px;
     }
 
     body:not(.role-job-seeker):not(.role-company):not(.role-super-admin) .hero-content h1 {
@@ -3429,7 +3437,7 @@ html.lang-en .aa-nav-item:hover {
 }
 
 .footer-logo-img {
-    width: 175px;
+    width: 210px;
     height: auto;
     object-fit: contain;
     margin-bottom: 0.6rem;
@@ -5213,7 +5221,11 @@ body.role-super-admin {
 body.role-job-seeker .main-header,
 body.role-company .main-header,
 body.role-super-admin .main-header {
-    background: rgba(2, 6, 23, 0.62);
+    background: linear-gradient(
+        180deg,
+        rgba(30, 41, 59, 0.97) 0%,
+        rgba(17, 24, 39, 0.99) 100%
+    );
 }
 
 body.role-job-seeker .role-home-hero {
@@ -5426,9 +5438,9 @@ body.role-super-admin .role-home-hero-admin {
 
     .logo-img {
         width: auto;
-        height: 50px;
-        max-height: 54px;
-        max-width: 120px;
+        height: 62px;
+        max-height: 66px;
+        max-width: 150px;
     }
 
     .lang-switch {
@@ -5859,9 +5871,9 @@ body.role-super-admin .role-home-hero-admin {
 
     /* --- Logo على الجوال الصغير ----------------------------- */
     .logo-img {
-        height: 46px;
-        max-height: 50px;
-        max-width: 108px;
+        height: 54px;
+        max-height: 58px;
+        max-width: 132px;
     }
 
     /* --- Stats ------------------------------------------------ */
