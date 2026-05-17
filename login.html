@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="maher-loading" lang="ar" dir="rtl">
+<html class="maher-loading" lang="ar" dir="rtl" data-i18n-doc-title="page.login.docTitle">
 <head>
     <meta charset="UTF-8" />
     <link rel="preconnect" href="https://jgvfcievyfkyldryatlk.supabase.co" crossorigin />
@@ -79,7 +79,7 @@
                         <span data-i18n="authSplit.backHome"></span>
                     </a>
                     <div class="lang-switch">
-                        <button type="button" class="lang-btn" data-lang="ar" data-i18n="header.langAr">???????</button>
+                        <button type="button" class="lang-btn" data-lang="ar" data-i18n="header.langAr">العربية</button>
                         <button type="button" class="lang-btn" data-lang="en" data-i18n="header.langEn">English</button>
                     </div>
                 </div>
@@ -94,7 +94,7 @@
 
                     <form id="genericLoginForm" novalidate>
                         <div class="auth-form-group">
-                            <label for="loginEmail" data-i18n="form.emailOrPhone.label">?????? ?? ??????</label>
+                            <label for="loginEmail" data-i18n="form.emailOrPhone.label">البريد الإلكتروني أو رقم الجوال</label>
                             <div class="auth-split-input-wrap">
                                 <input id="loginEmail" type="text" autocomplete="username" required placeholder="example@domain.com" dir="ltr" />
                                 <span class="auth-split-input-ic" aria-hidden="true">
@@ -103,10 +103,10 @@
                             </div>
                         </div>
                         <div class="auth-form-group">
-                            <label for="loginPassword" data-i18n="form.password.label">???? ??????</label>
+                            <label for="loginPassword" data-i18n="form.password.label">كلمة المرور</label>
                             <div class="auth-split-input-wrap">
-                                <input id="loginPassword" type="password" autocomplete="current-password" required data-i18n-placeholder="form.password.placeholder" placeholder="????????" />
-                                <button type="button" class="auth-split-pw-toggle" data-toggle-password="loginPassword" aria-pressed="false" aria-label="????? ???? ??????">
+                                <input id="loginPassword" type="password" autocomplete="current-password" required data-i18n-placeholder="form.password.placeholder" placeholder="••••••••" />
+                                <button type="button" class="auth-split-pw-toggle" data-toggle-password="loginPassword" aria-pressed="false" aria-label="إظهار/إخفاء كلمة المرور">
                                     <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                                 </button>
                                 <span class="auth-split-input-ic" aria-hidden="true">
@@ -115,16 +115,16 @@
                             </div>
                         </div>
                         <div class="auth-split-row">
-                            <a href="reset-password.html" class="auth-forgot" data-i18n="resetPwd.forgotLink">???? ???? ???????</a>
+                            <a href="reset-password.html" class="auth-forgot" data-i18n="resetPwd.forgotLink">نسيت كلمة المرور؟</a>
                         </div>
                         <div class="auth-submit">
-                            <button type="submit" class="btn btn-primary btn-full" data-i18n="form.login.submit">????? ??????</button>
+                            <button type="submit" class="btn btn-primary btn-full" data-i18n="form.login.submit">تسجيل الدخول</button>
                         </div>
                     </form>
 
                     <p class="auth-split-switch">
-                        <span data-i18n="register.noAccount">??? ???? ?????</span>
-                        <a href="register.html" data-i18n="register.createAccount">????? ???? ????</a>
+                        <span data-i18n="register.noAccount">ليس لديك حساب؟</span>
+                        <a href="register.html" data-i18n="register.createAccount">إنشاء حساب جديد</a>
                     </p>
                 </div>
 

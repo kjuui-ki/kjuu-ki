@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="maher-loading" lang="ar" dir="rtl">
+<html class="maher-loading" lang="ar" dir="rtl" data-i18n-doc-title="page.register.docTitle">
 <head>
     <meta charset="UTF-8" />
     <link rel="preconnect" href="https://jgvfcievyfkyldryatlk.supabase.co" crossorigin />
@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>????? ???? | ????</title>
+    <title>إنشاء حساب | ماهر</title>
     <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body class="auth-split-page">
@@ -79,7 +79,7 @@
                         <span data-i18n="authSplit.backHome"></span>
                     </a>
                     <div class="lang-switch">
-                        <button type="button" class="lang-btn" data-lang="ar" data-i18n="header.langAr">???????</button>
+                        <button type="button" class="lang-btn" data-lang="ar" data-i18n="header.langAr">العربية</button>
                         <button type="button" class="lang-btn" data-lang="en" data-i18n="header.langEn">English</button>
                     </div>
                 </div>
@@ -95,16 +95,16 @@
                     <div class="auth-split-scroll">
                         <form id="registerSeekerForm" class="register-form">
                             <div class="auth-form-group">
-                                <label for="seekerFullName" data-i18n="register.seeker.fullName.label">????? ??????</label>
+                                <label for="seekerFullName" data-i18n="register.seeker.fullName.label">الاسم الكامل</label>
                                 <div class="auth-split-input-wrap">
-                                    <input id="seekerFullName" type="text" data-i18n-placeholder="register.seeker.fullName.placeholder" placeholder="????? ???????" />
+                                    <input id="seekerFullName" type="text" data-i18n-placeholder="register.seeker.fullName.placeholder" placeholder="الاسم الثلاثي" />
                                     <span class="auth-split-input-ic" aria-hidden="true">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                                     </span>
                                 </div>
                             </div>
                             <div class="auth-form-group">
-                                <label for="seekerEmail" data-i18n="form.email.label">?????? ??????????</label>
+                                <label for="seekerEmail" data-i18n="form.email.label">البريد الإلكتروني</label>
                                 <div class="auth-split-input-wrap">
                                     <input id="seekerEmail" type="email" data-i18n-placeholder="form.email.placeholder" placeholder="example@domain.com" dir="ltr" />
                                     <span class="auth-split-input-ic" aria-hidden="true">
@@ -113,7 +113,7 @@
                                 </div>
                             </div>
                             <div class="auth-form-group">
-                                <label for="seekerPhone" data-i18n="register.common.phone.label">??? ??????</label>
+                                <label for="seekerPhone" data-i18n="register.common.phone.label">رقم الجوال</label>
                                 <div class="auth-split-input-wrap">
                                     <input id="seekerPhone" type="tel" data-i18n-placeholder="register.common.phone.placeholder" placeholder="05XXXXXXXX" dir="ltr" />
                                     <span class="auth-split-input-ic" aria-hidden="true">
@@ -122,19 +122,19 @@
                                 </div>
                             </div>
                             <div class="auth-form-group">
-                                <label for="seekerCity" data-i18n="register.common.city.label">???????</label>
+                                <label for="seekerCity" data-i18n="register.common.city.label">المدينة</label>
                                 <div class="auth-split-input-wrap">
-                                    <input id="seekerCity" type="text" data-i18n-placeholder="register.common.city.placeholder" placeholder="????: ??????" />
+                                    <input id="seekerCity" type="text" data-i18n-placeholder="register.common.city.placeholder" placeholder="مثال: الرياض" />
                                     <span class="auth-split-input-ic" aria-hidden="true">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
                                     </span>
                                 </div>
                             </div>
                             <div class="auth-form-group">
-                                <label for="seekerPassword" data-i18n="form.password.label">???? ??????</label>
+                                <label for="seekerPassword" data-i18n="form.password.label">كلمة المرور</label>
                                 <div class="auth-split-input-wrap">
-                                    <input id="seekerPassword" type="password" data-i18n-placeholder="form.password.placeholder" placeholder="????????" />
-                                    <button type="button" class="auth-split-pw-toggle" data-toggle-password="seekerPassword" aria-pressed="false" aria-label="????? ???? ??????">
+                                    <input id="seekerPassword" type="password" data-i18n-placeholder="form.password.placeholder" placeholder="••••••••" />
+                                    <button type="button" class="auth-split-pw-toggle" data-toggle-password="seekerPassword" aria-pressed="false" aria-label="إظهار/إخفاء كلمة المرور">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                                     </button>
                                     <span class="auth-split-input-ic" aria-hidden="true">
@@ -143,10 +143,10 @@
                                 </div>
                             </div>
                             <div class="auth-form-group">
-                                <label for="seekerPasswordConfirm" data-i18n="register.common.confirmPassword.label">????? ???? ??????</label>
+                                <label for="seekerPasswordConfirm" data-i18n="register.common.confirmPassword.label">تأكيد كلمة المرور</label>
                                 <div class="auth-split-input-wrap">
-                                    <input id="seekerPasswordConfirm" type="password" data-i18n-placeholder="register.common.confirmPassword.placeholder" placeholder="??? ????? ???? ??????" />
-                                    <button type="button" class="auth-split-pw-toggle" data-toggle-password="seekerPasswordConfirm" aria-pressed="false" aria-label="????? ???? ??????">
+                                    <input id="seekerPasswordConfirm" type="password" data-i18n-placeholder="register.common.confirmPassword.placeholder" placeholder="أعد إدخال كلمة المرور" />
+                                    <button type="button" class="auth-split-pw-toggle" data-toggle-password="seekerPasswordConfirm" aria-pressed="false" aria-label="إظهار/إخفاء كلمة المرور">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                                     </button>
                                     <span class="auth-split-input-ic" aria-hidden="true">
@@ -156,14 +156,14 @@
                             </div>
 
                             <div class="auth-submit">
-                                <button type="submit" class="btn btn-primary btn-full" data-i18n="register.submit">????? ??????</button>
+                                <button type="submit" class="btn btn-primary btn-full" data-i18n="register.submit">إنشاء الحساب</button>
                             </div>
                         </form>
                     </div>
 
                     <p class="auth-split-switch">
-                        <span data-i18n="register.haveAccount">???? ???? ???????</span>
-                        <a href="login.html" data-i18n="register.login">????? ??????</a>
+                        <span data-i18n="register.haveAccount">لديك حساب بالفعل؟</span>
+                        <a href="login.html" data-i18n="register.login">تسجيل الدخول</a>
                     </p>
                 </div>
 

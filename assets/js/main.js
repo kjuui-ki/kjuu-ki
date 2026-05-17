@@ -73,7 +73,7 @@ const maherTranslations = {
         "header.langEn": "English",
 
         "hero.title": "تعلّم بثقة — دبلومات ودورات عملية مع <span>ماهر</span>",
-        "hero.subtitle": "منصة تعليمية عربية تركّز على الدبلومات والدورات التدريبية لتطوير مهاراتك المهنية والأكاديمية.",
+        "hero.subtitle": "أكاديمية ماهر العالي للتدريب أكاديمية سعودية متخصصة في التدريب والتطوير وبناء المهارات المهنية، ووجهتك نحو التميّز عبر برامج تدريبية ودبلومات نوعية بمعايير عالية",
         "hero.search.keywordLabel": "ابحث عن دورة أو دبلوم",
         "hero.search.keywordPlaceholder": "اسم الدورة، المجال، المدرب",
         "hero.search.cityLabel": "المدينة",
@@ -153,9 +153,9 @@ const maherTranslations = {
         "how.step3.title": "تعلّم وتطوّر",
         "how.step3.text": "تابع تسجيلاتك من لوحتك، وتواصل معنا عبر الواتساب عند الحاجة.",
 
-        "footer.logo": "ماهر",
+        "footer.logo": "أكاديمية ماهر العالي للتدريب",
         "footer.quickLinks": "روابط سريعة",
-        "footer.about": "منصة عربية للدورات والدبلومات التدريبية وتطوير المهارات.",
+        "footer.about": "أكاديمية سعودية متخصصة في التدريب والتطوير وبناء المهارات المهنية، ووجهتك نحو التميّز عبر برامج تدريبية ودبلومات نوعية بمعايير عالية.",
         "footer.jobs": "الدورات والدبلومات",
         "footer.catalog": "الدورات والدبلومات",
         "footer.courses": "الدورات",
@@ -163,9 +163,11 @@ const maherTranslations = {
         "footer.landline": "(أرضي)",
         "footer.copy": "© <span id=\"year\"></span> ماهر. جميع الحقوق محفوظة.",
 
+        "page.courses.docTitle": "الدورات والدبلومات | ماهر",
         "page.courses.title": "الدورات والدبلومات",
         "page.courses.text": "تصفّح البرامج المتاحة وفلترة حسب المجال أو البحث بالاسم.",
 
+        "page.contact.docTitle": "تواصل معنا | ماهر",
         "page.contact.title": "تواصل معنا",
         "page.contact.text": "سيتم إضافة نموذج تواصل وربطه بالبريد أو قاعدة البيانات لاحقًا.",
 
@@ -184,6 +186,7 @@ const maherTranslations = {
         "auth.noAccount": "ليس لديك حساب؟",
         "auth.createAccount": "إنشاء حساب",
 
+        "page.courseAccess.docTitle": "الدخول إلى الدورات | ماهر",
         "page.courseAccess.title": "اختر نوع الدخول إلى الدورات التدريبية",
         "page.courseAccess.subtitle": "اختر نوع الحساب الذي تود استخدامه للدخول إلى الدورات.",
         "page.courseAccess.seeker.title": "باحث عن عمل",
@@ -191,6 +194,7 @@ const maherTranslations = {
         "page.courseAccess.employer.title": "شركة",
         "page.courseAccess.employer.text": "الدخول إلى الدورات كصاحب عمل أو شركة.",
 
+        "page.apply.docTitle": "التسجيل في دورة | ماهر",
         "page.apply.title": "التسجيل في دورة",
         "page.apply.text": "راجع تفاصيل الدورة ثم أكمل بياناتك لتأكيد التسجيل.",
         "page.myApplications.title": "تسجيلاتي",
@@ -210,11 +214,14 @@ const maherTranslations = {
         "dashboard.docTitle": "لوحة التحكم | ماهر",
         "page.jobDetails.title": "تفاصيل الدورة",
         "page.jobDetails.text": "عرض كامل لمعلومات الدورة أو الدبلوم وروابط التسجيل.",
+        "page.postJob.docTitle": "نشر محتوى تدريبي | ماهر",
         "page.postJob.title": "نشر محتوى تدريبي",
         "page.postJob.text": "تم نقل نشر الدورات إلى لوحة المشرف.",
 
+        "page.login.docTitle": "تسجيل الدخول | ماهر",
         "page.generic.login.title": "تسجيل الدخول",
         "page.generic.login.text": "سيتم ربط هذه الصفحة بنظام Supabase Auth في الخطوات القادمة.",
+        "page.register.docTitle": "إنشاء حساب | ماهر",
         "page.register.title": "إنشاء حساب متدرب",
         "page.register.subtitle": "أكمل بياناتك للانضمام إلى منصة ماهر التعليمية.",
         "page.register.seeker.title": "إنشاء حساب متدرب",
@@ -305,13 +312,17 @@ const maherTranslations = {
         "profile.tips.4": "راجع رقم الجوال ليصلك التواصل",
         "profile.linkApps.sub": "تابع حالة طلباتك وفرص التدريب",
         "profile.docTitle": "ملفي الشخصي | ماهر",
+        "profile.formTitle": "أكمل بياناتك",
         "profile.academyReq.title": "متطلبات الأكاديمية",
-        "profile.academyReq.intro": "أكمل البيانات التالية ليتم اعتبار ملفك جاهزاً للتسجيل في الدورات والدبلومات وفق سياسات أكاديمية ماهر.",
-        "profile.academyReq.r1": "الاسم الكامل ورقم الجوال الصحيحين للتواصل الرسمي.",
-        "profile.academyReq.r2": "التخصص والمهارات بصيغة واضحة تساعد فريق القبول.",
-        "profile.academyReq.r3": "رفع السيرة الذاتية بصيغة PDF أو Word وبحد أقصى 5 ميجابايت.",
-        "profile.academyReq.r4": "متابعة التسجيلات من صفحة «تسجيلاتي» بعد القبول في أي برنامج.",
-        "profile.academyReq.r5": "الالتزام بسياسات المنصة والشهادات الصادرة عن أكاديمية ماهر للتدريب.",
+        "profile.academyReq.intro": "أكمل البيانات التالية ليتم اعتبار ملفك جاهزاً للتسجيل في الدورات والدبلومات وفق سياسات أكاديمية ماهر العالي للتدريب.",
+        "profile.academyReq.c1.title": "البيانات الأساسية",
+        "profile.academyReq.c1.text": "الاسم الكامل ورقم الجوال الصحيحين للتواصل الرسمي مع الأكاديمية.",
+        "profile.academyReq.c2.title": "التخصص والمهارات",
+        "profile.academyReq.c2.text": "التخصص والمهارات بصيغة واضحة تساعد فريق القبول على تقييم ملفك.",
+        "profile.academyReq.c3.title": "متابعة التسجيلات",
+        "profile.academyReq.c3.text": "متابعة حالة تسجيلاتك من صفحة «تسجيلاتي» بعد القبول في أي برنامج.",
+        "profile.academyReq.c4.title": "السياسات والشهادات",
+        "profile.academyReq.c4.text": "الالتزام بسياسات المنصة والشهادات الصادرة عن أكاديمية ماهر العالي للتدريب.",
         "btn.save": "حفظ",
 
         /* ── Company Profile page ─────────────────────── */
@@ -338,6 +349,7 @@ const maherTranslations = {
         "apply.note": "التسجيل مرة واحدة لكل دورة. للاستفسارات والشهادات راسلنا عبر واتساب أو صفحة التواصل.",
 
         /* ── Reset Password page ──────────────────────── */
+        "resetPwd.docTitle": "نسيت كلمة المرور | ماهر",
         "resetPwd.step1.title": "نسيت كلمة المرور؟",
         "resetPwd.step1.subtitle": "أدخل بريدك الإلكتروني وسنرسل لك رمز تحقق مكوّن من 8 أرقام.",
         "resetPwd.step1.submit": "إرسال رمز التحقق",
@@ -782,7 +794,7 @@ const maherTranslations = {
         "header.langEn": "English",
 
         "hero.title": "Learn with confidence — diplomas & courses with <span>Maher</span>",
-        "hero.subtitle": "An Arabic learning platform focused on diplomas and professional training.",
+        "hero.subtitle": "Maher Al-Ali Training Academy — a Saudi academy specialized in training, development, and professional skills, guiding you toward excellence through high-quality programs and diplomas.",
         "hero.search.keywordLabel": "Search courses",
         "hero.search.keywordPlaceholder": "Course name, field, instructor",
         "hero.search.cityLabel": "City",
@@ -862,8 +874,8 @@ const maherTranslations = {
         "how.step3.title": "Learn & grow",
         "how.step3.text": "Track your registrations from your dashboard and message us on WhatsApp when needed.",
 
-        "footer.logo": "Maher",
-        "footer.about": "An Arabic platform for diplomas, training courses, and skill development.",
+        "footer.logo": "Maher Al-Ali Training Academy",
+        "footer.about": "A Saudi academy specialized in training, development, and professional skills—your path to excellence through high-quality programs and diplomas.",
         "footer.quickLinks": "Quick Links",
         "footer.jobs": "Courses & diplomas",
         "footer.catalog": "Courses & diplomas",
@@ -872,9 +884,11 @@ const maherTranslations = {
         "footer.landline": "(Landline)",
         "footer.copy": "© <span id=\"year\"></span> Maher. All rights reserved.",
 
+        "page.courses.docTitle": "Courses & diplomas | Maher",
         "page.courses.title": "Courses & diplomas",
         "page.courses.text": "Browse available programs and filter by topic or search by name.",
 
+        "page.contact.docTitle": "Contact Us | Maher",
         "page.contact.title": "Contact Us",
         "page.contact.text": "A contact form linked to email or database will be added later.",
 
@@ -893,6 +907,7 @@ const maherTranslations = {
         "auth.noAccount": "Don't have an account?",
         "auth.createAccount": "Create account",
 
+        "page.courseAccess.docTitle": "Course access | Maher",
         "page.courseAccess.title": "Choose how to access training courses",
         "page.courseAccess.subtitle": "Select the account type you want to use to access courses.",
         "page.courseAccess.seeker.title": "Job Seeker",
@@ -900,6 +915,7 @@ const maherTranslations = {
         "page.courseAccess.employer.title": "Company",
         "page.courseAccess.employer.text": "Access courses as an employer or company.",
 
+        "page.apply.docTitle": "Course registration | Maher",
         "page.apply.title": "Course registration",
         "page.apply.text": "Review the course details, then confirm your registration.",
         "page.myApplications.title": "My registrations",
@@ -919,11 +935,14 @@ const maherTranslations = {
         "dashboard.docTitle": "Dashboard | Maher",
         "page.jobDetails.title": "Course details",
         "page.jobDetails.text": "Full information about the course or diploma and registration links.",
+        "page.postJob.docTitle": "Publishing | Maher",
         "page.postJob.title": "Publishing",
         "page.postJob.text": "Course publishing is handled from the admin dashboard.",
 
+        "page.login.docTitle": "Sign in | Maher",
         "page.generic.login.title": "Login",
         "page.generic.login.text": "Sign in with your email or phone and password.",
+        "page.register.docTitle": "Create account | Maher",
         "page.register.title": "Create trainee account",
         "page.register.subtitle": "Join Maher as a trainee to enroll in courses.",
         "page.register.seeker.title": "Create trainee account",
@@ -1014,13 +1033,17 @@ const maherTranslations = {
         "profile.tips.4": "Double-check your phone number for contact",
         "profile.linkApps.sub": "Track your applications and training opportunities",
         "profile.docTitle": "My profile | Maher",
+        "profile.formTitle": "Complete your details",
         "profile.academyReq.title": "Academy requirements",
-        "profile.academyReq.intro": "Complete the following so your profile is ready to enroll in courses and diplomas under Maher Academy policies.",
-        "profile.academyReq.r1": "Full name and a correct mobile number for official contact.",
-        "profile.academyReq.r2": "Clear specialization and skills to help the admissions team.",
-        "profile.academyReq.r3": "Upload your CV as PDF or Word, up to 5 MB.",
-        "profile.academyReq.r4": "Follow your enrollments on the “My registrations” page after acceptance.",
-        "profile.academyReq.r5": "Comply with platform policies and certificates issued by Maher Training Academy.",
+        "profile.academyReq.intro": "Complete the following so your profile is ready to enroll in courses and diplomas under Maher Al-Ali Training Academy policies.",
+        "profile.academyReq.c1.title": "Basic information",
+        "profile.academyReq.c1.text": "Full name and a correct mobile number for official contact with the academy.",
+        "profile.academyReq.c2.title": "Specialization & skills",
+        "profile.academyReq.c2.text": "Clear specialization and skills to help the admissions team evaluate your profile.",
+        "profile.academyReq.c3.title": "Track enrollments",
+        "profile.academyReq.c3.text": "Follow your enrollment status on “My registrations” after acceptance into any program.",
+        "profile.academyReq.c4.title": "Policies & certificates",
+        "profile.academyReq.c4.text": "Comply with platform policies and certificates issued by Maher Al-Ali Training Academy.",
         "btn.save": "Save",
 
         /* ── Company Profile page ─────────────────────── */
@@ -1047,6 +1070,7 @@ const maherTranslations = {
         "apply.note": "One registration per course. For certificates, please contact us via WhatsApp or the contact page.",
 
         /* ── Reset Password page ──────────────────────── */
+        "resetPwd.docTitle": "Forgot Password | Maher",
         "resetPwd.step1.title": "Forgot Password?",
         "resetPwd.step1.subtitle": "Enter your email and we'll send you an 8-digit verification code.",
         "resetPwd.step1.submit": "Send Verification Code",

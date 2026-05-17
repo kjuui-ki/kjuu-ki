@@ -435,14 +435,16 @@
         var phoneEl    = document.getElementById("profilePhone");
         var specEl     = document.getElementById("profileSpecialization");
         var skillsEl   = document.getElementById("profileSkills");
-        var cvInput    = document.getElementById("profileCv");
-        var cvContainer= document.getElementById("profileCvLinkContainer");
-        var cvLink     = document.getElementById("profileCvLink");
-
         // Load data
         var dataRes = await sb.from("profiles")
-            .select("full_name, phone, specialization, skills, cv_url")
+            .select("full_name, phone, specialization, skills")
             .eq("id", user.id).single();
+
+        function profileCompletionPct(d) {
+            var fields = [d.full_name, d.phone, d.specialization, d.skills];
+            var filled = fields.filter(function (v) { return v && String(v).trim(); }).length;
+            return Math.round((filled / fields.length) * 100);
+        }
 
         if (dataRes.data) {
             var d = dataRes.data;
@@ -450,9 +452,6 @@
             if (phoneEl)    phoneEl.value    = d.phone || "";
             if (specEl)     specEl.value     = d.specialization || "";
             if (skillsEl)   skillsEl.value   = d.skills || "";
-            if (cvContainer && cvLink && d.cv_url) {
-                cvLink.href = d.cv_url; cvContainer.style.display = "flex";
-            }
 
             // Hero name
             var heroName = document.getElementById("prfHeroName");
@@ -467,24 +466,12 @@
             }
 
             // Completion bar
-            var fields = [d.full_name, d.phone, d.specialization, d.skills, d.cv_url];
-            var filled = fields.filter(function (v) { return v && v.trim(); }).length;
-            var pct = Math.round((filled / fields.length) * 100);
+            var pct = profileCompletionPct(d);
             var pctEl  = document.getElementById("prfCompletionPct");
             var fillEl = document.getElementById("prfProgressFill");
             if (pctEl)  pctEl.textContent = pct + "%";
             if (fillEl) fillEl.style.width = pct + "%";
         }
-
-        // Load stat: application count
-        var appsRes = await sb.from("applications").select("id", { count: "exact" }).eq("user_id", user.id);
-        var appCountEl = document.getElementById("prfAppCount");
-        if (appCountEl) appCountEl.textContent = appsRes.count != null ? appsRes.count : 0;
-
-        // Load stat: course count (course_requests table)
-        var coursesRes = await sb.from("course_requests").select("id", { count: "exact" }).eq("user_id", user.id);
-        var courseCountEl = document.getElementById("prfCourseCount");
-        if (courseCountEl) courseCountEl.textContent = coursesRes.count != null ? coursesRes.count : 0;
 
         form.addEventListener("submit", async function (e) {
             e.preventDefault();
@@ -493,17 +480,6 @@
             showStatus(form, null, "");
 
             try {
-                var cvUrl = null;
-                var file = cvInput && cvInput.files ? cvInput.files[0] : null;
-                if (file) {
-                    var safeName = file.name.replace(/[^a-zA-Z0-9._-]+/g, "_");
-                    var path = user.id + "/" + Date.now() + "-" + safeName;
-                    var up = await sb.storage.from("cvs").upload(path, file, { upsert: true });
-                    if (up.error) throw up.error;
-                    var pub = sb.storage.from("cvs").getPublicUrl(path);
-                    cvUrl = pub.data ? pub.data.publicUrl : null;
-                }
-
                 var payload = {
                     id:             user.id,
                     email:          user.email,
@@ -513,19 +489,11 @@
                     specialization: specEl     ? specEl.value.trim()     : null,
                     skills:         skillsEl   ? skillsEl.value.trim()   : null
                 };
-                if (cvUrl) payload.cv_url = cvUrl;
 
                 var res = await sb.from("profiles").upsert(payload, { onConflict: "id" });
                 if (res.error) throw res.error;
 
-                if (cvUrl && cvContainer && cvLink) {
-                    cvLink.href = cvUrl; cvContainer.style.display = "flex";
-                }
-
-                // Refresh completion bar after save
-                var fields2 = [payload.full_name, payload.phone, payload.specialization, payload.skills, cvUrl || (cvLink && cvLink.href !== "#" ? cvLink.href : null)];
-                var filled2 = fields2.filter(function (v) { return v && v.toString().trim(); }).length;
-                var pct2 = Math.round((filled2 / fields2.length) * 100);
+                var pct2 = profileCompletionPct(payload);
                 var pctEl2  = document.getElementById("prfCompletionPct");
                 var fillEl2 = document.getElementById("prfProgressFill");
                 if (pctEl2)  pctEl2.textContent = pct2 + "%";
