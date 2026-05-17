@@ -304,7 +304,7 @@ img {
 
 /* ── Site header (modern glass bar) ───────────────────────────── */
 .main-header {
-    --header-h: 72px;
+    --header-h: 80px;
     position: sticky;
     top: 0;
     z-index: 100;
@@ -354,8 +354,8 @@ img {
 
 .logo-img {
     width: auto;
-    height: 42px;
-    max-height: 44px;
+    height: 56px;
+    max-height: 60px;
     display: block;
     object-fit: contain;
     filter: brightness(0) invert(1) drop-shadow(0 2px 8px rgba(0, 0, 0, 0.25));
@@ -1363,7 +1363,7 @@ html.lang-en button[data-i18n] {
 
 /* ── قبل تسجيل الدخول: هيدر ونص وبحث أوضح وأكبر ── */
 body:not(.role-job-seeker):not(.role-company):not(.role-super-admin) .main-header {
-    --header-h: 84px;
+    --header-h: 94px;
 }
 
 body:not(.role-job-seeker):not(.role-company):not(.role-super-admin) .header-inner {
@@ -1372,8 +1372,8 @@ body:not(.role-job-seeker):not(.role-company):not(.role-super-admin) .header-inn
 }
 
 body:not(.role-job-seeker):not(.role-company):not(.role-super-admin) .logo-img {
-    height: 48px;
-    max-height: 52px;
+    height: 64px;
+    max-height: 68px;
 }
 
 body:not(.role-job-seeker):not(.role-company):not(.role-super-admin) .nav-link {
@@ -3429,7 +3429,7 @@ html.lang-en .aa-nav-item:hover {
 }
 
 .footer-logo-img {
-    width: 140px;
+    width: 175px;
     height: auto;
     object-fit: contain;
     margin-bottom: 0.6rem;
@@ -5425,8 +5425,10 @@ body.role-super-admin .role-home-hero-admin {
     }
 
     .logo-img {
-        width: 95px;
-        max-width: 95px;
+        width: auto;
+        height: 50px;
+        max-height: 54px;
+        max-width: 120px;
     }
 
     .lang-switch {
@@ -5855,10 +5857,11 @@ body.role-super-admin .role-home-hero-admin {
     }
     .lang-switch::before { display: none; }
 
-    /* --- Logo أصغر على الجوال ------------------------------- */
+    /* --- Logo على الجوال الصغير ----------------------------- */
     .logo-img {
-        width: 82px;
-        max-width: 82px;
+        height: 46px;
+        max-height: 50px;
+        max-width: 108px;
     }
 
     /* --- Stats ------------------------------------------------ */
