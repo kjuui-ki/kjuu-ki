@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html class="maher-loading" lang="ar" dir="rtl" data-i18n-doc-title="checkout.docTitle">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>سلة المشتريات | أكاديمية ماهر</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="https://cdn.moyasar.com/mpf/1.14.0/moyasar.css" />
+</head>
+<body>
+    <header class="main-header">
+        <div class="container header-inner">
+            <div class="header-main-group">
+                <a href="index.html" class="logo">
+                    <img src="assets/images/sh.png" alt="أكاديمية ماهر" class="logo-img">
+                </a>
+                <nav class="main-nav" id="mainNav">
+                    <a href="index.html" class="nav-link" data-i18n="nav.home"></a>
+                    <a href="courses.html" class="nav-link" data-i18n="nav.catalog"></a>
+                    <a href="training-paths.html" class="nav-link" data-i18n="nav.trainingPaths"></a>
+                    <a href="about-academy.html" class="nav-link" data-i18n="nav.aboutAcademy"></a>
+                    <a href="login.html" class="nav-link" data-i18n="nav.login"></a>
+                </nav>
+            </div>
+            <div class="lang-switch">
+                <button class="lang-btn" data-lang="ar" data-i18n="header.langAr">العربية</button>
+                <button class="lang-btn" data-lang="en" data-i18n="header.langEn">English</button>
+            </div>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <main class="checkout-page">
+        <div class="container checkout-wrap">
+            <div class="checkout-header">
+                <h1 class="checkout-title" data-i18n="checkout.title">سلة المشتريات</h1>
+                <p class="checkout-sub" data-i18n="checkout.sub">راجع دوراتك ثم أكمل الدفع بأمان</p>
+            </div>
+
+            <div id="checkoutAuthMsg" class="checkout-alert" style="display:none;"></div>
+            <div id="checkoutEmptyMsg" class="checkout-empty" style="display:none;">
+                <p data-i18n="checkout.empty">سلتك فارغة حالياً.</p>
+                <a href="courses.html" class="btn btn-primary" data-i18n="checkout.browse">تصفح الدورات</a>
+            </div>
+
+            <div id="checkoutMain" class="checkout-grid" style="display:none;">
+                <section class="checkout-card checkout-cart-card" aria-labelledby="checkoutCartHeading">
+                    <h2 id="checkoutCartHeading" class="checkout-card-title" data-i18n="checkout.items">الدورات المختارة</h2>
+                    <ul id="checkoutCartList" class="checkout-cart-list"></ul>
+                    <div class="checkout-total-row">
+                        <span data-i18n="checkout.total">الإجمالي</span>
+                        <strong id="checkoutTotal">0 ر.س</strong>
+                    </div>
+                </section>
+
+                <section class="checkout-card checkout-pay-card" aria-labelledby="checkoutPayHeading">
+                    <h2 id="checkoutPayHeading" class="checkout-card-title" data-i18n="checkout.payment">طريقة الدفع</h2>
+                    <div class="checkout-pay-methods" aria-hidden="true">
+                        <div class="pay-method-chip pay-method-chip--mada">mada</div>
+                        <div class="pay-method-chip pay-method-chip--visa">VISA</div>
+                        <div class="pay-method-chip pay-method-chip--mc">Mastercard</div>
+                        <div class="pay-method-chip pay-method-chip--apple">Apple Pay</div>
+                    </div>
+                    <p class="checkout-pay-note" data-i18n="checkout.payNote">ادفع بأمان عبر بوابة Moyasar المعتمدة في المملكة.</p>
+                    <div id="checkoutConfigMsg" class="checkout-alert checkout-alert--warn" style="display:none;"></div>
+                    <div class="mysr-form" id="moyasarForm"></div>
+                    <p class="checkout-secure">
+                        <span aria-hidden="true">🔒</span>
+                        <span data-i18n="checkout.secure">اتصال مشفّر ومعالجة دفع آمنة</span>
+                    </p>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <span data-i18n="footer.copy">© <span id="year"></span> أكاديمية ماهر. جميع الحقوق محفوظة.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="assets/js/supabaseClient.js" defer></script>
+    <script src="assets/js/auth.js" defer></script>
+    <script src="assets/js/main.js" defer></script>
+    <script src="assets/js/maher-cart.js" defer></script>
+    <script src="assets/js/payment-config.js" defer></script>
+    <script src="https://cdn.moyasar.com/mpf/1.14.0/moyasar.js" defer></script>
+    <script src="assets/js/checkout-page.js" defer></script>
+</body>
+</html>

@@ -373,8 +373,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         "overview":        "نظرة عامة",
         "users":           "إدارة المتدربين والمستخدمين",
         "training-paths":  "المسارات التدريبية",
-        "courses":         "الدورات والدبلومات",
-        "promo-requests":  "طلبات الترقية"
+        "courses":           "الدورات والدبلومات",
+        "course-interests":  "الذين لديهم اهتمام في دورات",
+        "promo-requests":    "طلبات الترقية"
     };
 
     tabs.forEach(function (tab) {
@@ -385,8 +386,9 @@ document.addEventListener("DOMContentLoaded", async function () {
             var panel = document.getElementById("tab-" + tab.dataset.tab);
             if (panel) panel.style.display = "block";
             if (tab.dataset.tab === "training-paths") loadTrainingPathsAdmin();
-            if (tab.dataset.tab === "courses")         void loadCourses(false);
-            if (tab.dataset.tab === "promo-requests")  loadPromoRequests();
+            if (tab.dataset.tab === "courses")           void loadCourses(false);
+            if (tab.dataset.tab === "course-interests")  void loadCourseInterests();
+            if (tab.dataset.tab === "promo-requests")    loadPromoRequests();
             /* update topbar title */
             var ttEl = document.getElementById("admPageTitle");
             if (ttEl && _tabTitles[tab.dataset.tab]) ttEl.textContent = _tabTitles[tab.dataset.tab];
@@ -424,6 +426,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         allCourseRows.forEach(function (c) { courseMapDash[c.id] = c; });
         jobMap = {};
         renderStats();
+        void refreshInterestBadge();
         renderUsers(allProfiles);
         if (document.getElementById("jobsTableBody")) renderJobs(allJobs);
         if (document.getElementById("appJobFilter")) populateJobFilter();
@@ -1103,6 +1106,10 @@ document.addEventListener("DOMContentLoaded", async function () {
                 });
             }
 
+            if (window.maherCart && typeof window.maherCart.syncAllCoursePrices === "function") {
+                window.maherCart.syncAllCoursePrices(allCourses);
+            }
+
             coursesCacheReady = true;
             coursesAdminPage = 0;
             renderCoursesPage();
@@ -1171,7 +1178,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 '<td><div class="dashboard-actions">' +
                     '<button type="button" class="dashboard-btn dashboard-btn-edit" data-action="course-toggle-active" data-cid="' + esc(c.id) + '" data-active="' + (c.is_active ? "1" : "0") + '">' +
                     (c.is_active ? "إخفاء عن الموقع" : "إظهار في الموقع") + "</button>" +
-                    '<button class="dashboard-btn dashboard-btn-edit" data-action="edit-course" data-cid="' + esc(c.id) + '" data-title="' + esc(c.title || "") + '" data-inst="' + esc(c.instructor || "") + '" data-cat="' + esc(c.category || "") + '" data-dur="' + esc(c.duration || "") + '">' + t("adm.dyn.edit") + '</button>' +
+                    '<button class="dashboard-btn dashboard-btn-edit" data-action="edit-course" data-cid="' + esc(c.id) + '" data-title="' + esc(c.title || "") + '" data-inst="' + esc(c.instructor || "") + '" data-cat="' + esc(c.category || "") + '" data-dur="' + esc(c.duration || "") + '" data-price-type="' + esc(c.price_type || "free") + '" data-price-amt="' + esc(String(c.price_amount != null ? c.price_amount : 0)) + '">' + t("adm.dyn.edit") + '</button>' +
                     '<button class="dashboard-btn dashboard-btn-edit" data-action="view-enrollments" data-cid="' + esc(c.id) + '" data-ctitle="' + esc(c.title || "") + '">' + t("adm.dyn.viewEnrollments") + '</button>' +
                     '<button class="dashboard-btn dashboard-btn-delete" data-action="delete-course" data-cid="' + esc(c.id) + '">' + t("adm.dyn.delete") + '</button>' +
                 '</div></td>' +
@@ -1214,8 +1221,82 @@ document.addEventListener("DOMContentLoaded", async function () {
                 if (addCourseMsg) { addCourseMsg.textContent = t("adm.course.publishError") + ": " + res.error.message; addCourseMsg.style.color="#f87171"; }
                 return;
             }
+            if (res.data && res.data[0] && window.maherCart) {
+                window.maherCart.saveCoursePrice(res.data[0].id, row.price_type, row.price_amount);
+            }
             if (addCourseMsg) { addCourseMsg.textContent = t("adm.course.publishSuccess"); addCourseMsg.style.color="#4ade80"; }
             addCourseForm.reset();
+            coursesCacheReady = false;
+            await loadCourses(true);
+            syncOverviewFromCourses();
+        });
+    }
+
+    var editCourseModal = document.getElementById("editCourseModal");
+    var editCourseForm = document.getElementById("editCourseForm");
+    var editCourseMsg = document.getElementById("editCourseMsg");
+
+    function closeEditCourseModal() {
+        if (editCourseModal) editCourseModal.style.display = "none";
+        if (editCourseMsg) editCourseMsg.textContent = "";
+    }
+
+    function openEditCourseModal(btn) {
+        if (!editCourseModal || !btn) return;
+        var cid = btn.getAttribute("data-cid");
+        var course = allCourses.find(function (x) { return x.id === cid; });
+        (document.getElementById("editCourseId") || {}).value = cid || "";
+        (document.getElementById("editCourseTitle") || {}).value = btn.getAttribute("data-title") || "";
+        (document.getElementById("editCourseInstructor") || {}).value = btn.getAttribute("data-inst") || "";
+        (document.getElementById("editCourseCategory") || {}).value = btn.getAttribute("data-cat") || "";
+        (document.getElementById("editCourseDuration") || {}).value = btn.getAttribute("data-dur") || "";
+        var pt = (course && course.price_type) || btn.getAttribute("data-price-type") || "free";
+        var pa = course && course.price_amount != null ? course.price_amount : (btn.getAttribute("data-price-amt") || "0");
+        (document.getElementById("editCoursePriceType") || {}).value = pt === "paid" ? "paid" : "free";
+        (document.getElementById("editCoursePriceAmount") || {}).value = String(pa);
+        if (editCourseMsg) editCourseMsg.textContent = "";
+        editCourseModal.style.display = "flex";
+    }
+
+    var editCourseClose = document.getElementById("editCourseModalClose");
+    var editCourseCancel = document.getElementById("editCourseCancelBtn");
+    if (editCourseClose) editCourseClose.addEventListener("click", closeEditCourseModal);
+    if (editCourseCancel) editCourseCancel.addEventListener("click", closeEditCourseModal);
+    if (editCourseModal) {
+        editCourseModal.addEventListener("click", function (e) {
+            if (e.target === editCourseModal) closeEditCourseModal();
+        });
+    }
+
+    if (editCourseForm) {
+        editCourseForm.addEventListener("submit", async function (e) {
+            e.preventDefault();
+            var cid = (document.getElementById("editCourseId") || {}).value;
+            if (!cid) return;
+            var title = ((document.getElementById("editCourseTitle") || {}).value || "").trim();
+            if (!title) {
+                if (editCourseMsg) { editCourseMsg.textContent = "العنوان مطلوب."; editCourseMsg.style.color = "#f87171"; }
+                return;
+            }
+            var priceType = (document.getElementById("editCoursePriceType") || {}).value || "free";
+            var priceAmt = parseFloat((document.getElementById("editCoursePriceAmount") || {}).value || "0");
+            var payload = {
+                title: title,
+                instructor: ((document.getElementById("editCourseInstructor") || {}).value || "").trim() || null,
+                category: ((document.getElementById("editCourseCategory") || {}).value || "").trim() || null,
+                duration: ((document.getElementById("editCourseDuration") || {}).value || "").trim() || null,
+                price_type: priceType === "paid" ? "paid" : "free",
+                price_amount: priceType === "paid" && !isNaN(priceAmt) ? priceAmt : 0
+            };
+            var res = await sb.from("courses").update(payload).eq("id", cid);
+            if (res.error) {
+                if (editCourseMsg) { editCourseMsg.textContent = "تعذّر التعديل: " + (res.error.message || ""); editCourseMsg.style.color = "#f87171"; }
+                return;
+            }
+            if (window.maherCart) {
+                window.maherCart.saveCoursePrice(cid, payload.price_type, payload.price_amount);
+            }
+            closeEditCourseModal();
             coursesCacheReady = false;
             await loadCourses(true);
             syncOverviewFromCourses();
@@ -1239,22 +1320,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             var delBtn  = e.target.closest("[data-action='delete-course']");
             var viewBtn = e.target.closest("[data-action='view-enrollments']");
             if (editBtn) {
-                var cid = editBtn.dataset.cid;
-                var nt = prompt("عنوان الدورة:", editBtn.dataset.title || "");
-                if (!nt || !nt.trim()) return;
-                var ni = prompt("المدرب (اختياري):", editBtn.dataset.inst || "");
-                var nc = prompt("الفئة (اختياري):", editBtn.dataset.cat || "");
-                var nd = prompt("المدة (اختياري):", editBtn.dataset.dur || "");
-                var res = await sb.from("courses").update({
-                    title: nt.trim(),
-                    instructor: ni ? ni.trim() : null,
-                    category: nc ? nc.trim() : null,
-                    duration: nd ? nd.trim() : null
-                }).eq("id", cid);
-                if (res.error) { alert("تعذّر التعديل."); return; }
-                coursesCacheReady = false;
-                await loadCourses(true);
-                syncOverviewFromCourses();
+                openEditCourseModal(editBtn);
             }
             if (delBtn) {
                 if (!confirm("\u0647\u0644 \u0623\u0646\u062a \u0645\u062a\u0623\u0643\u062f \u0645\u0646 \u062d\u0630\u0641 \u0647\u0630\u0647 \u0627\u0644\u062f\u0648\u0631\u0629\u061f")) return;
@@ -1373,6 +1439,193 @@ document.addEventListener("DOMContentLoaded", async function () {
         closeEnrPanel.addEventListener("click", function () {
             var panel = document.getElementById("courseEnrollmentsPanel");
             if (panel) panel.style.display = "none";
+        });
+    }
+
+    /* ── Course Interests ───────────────────────────────────────── */
+    var allCourseInterests = [];
+    var filteredCourseInterests = [];
+    var interestsBody = document.getElementById("interestsTableBody");
+
+    function updateInterestNavBadge() {
+        var badge = document.getElementById("navBadgeInterests");
+        if (!badge) return;
+        var n = allCourseInterests.length;
+        badge.textContent = String(n);
+        badge.style.display = n > 0 ? "" : "none";
+    }
+
+    async function refreshInterestBadge() {
+        var badge = document.getElementById("navBadgeInterests");
+        if (!badge) return;
+        var res = await sb.from("course_interests").select("id", { count: "exact", head: true });
+        if (res.error) return;
+        var n = res.count || 0;
+        badge.textContent = String(n);
+        badge.style.display = n > 0 ? "" : "none";
+    }
+
+    function populateInterestCourseFilter() {
+        var sel = document.getElementById("interestCourseFilter");
+        if (!sel) return;
+        var counts = {};
+        var titles = {};
+        allCourseInterests.forEach(function (r) {
+            counts[r.course_id] = (counts[r.course_id] || 0) + 1;
+            titles[r.course_id] = r.course_title;
+        });
+        var cur = sel.value;
+        var sorted = Object.keys(titles).sort(function (a, b) {
+            return (counts[b] || 0) - (counts[a] || 0);
+        });
+        sel.innerHTML = '<option value="">— جميع الدورات —</option>' + sorted.map(function (cid) {
+            return '<option value="' + esc(cid) + '">' + esc(titles[cid]) + " (" + (counts[cid] || 0) + ")</option>";
+        }).join("");
+        if (cur && titles[cur]) sel.value = cur;
+    }
+
+    function buildInterestQuickFilters() {
+        var wrap = document.getElementById("interestQuickFilters");
+        if (!wrap) return;
+        var map = {};
+        allCourseInterests.forEach(function (r) {
+            if (!map[r.course_id]) map[r.course_id] = { title: r.course_title, n: 0 };
+            map[r.course_id].n++;
+        });
+        var ids = Object.keys(map).sort(function (a, b) { return map[b].n - map[a].n; }).slice(0, 10);
+        if (!ids.length) {
+            wrap.innerHTML = "";
+            return;
+        }
+        var courseSel = document.getElementById("interestCourseFilter");
+        var activeId = courseSel ? courseSel.value : "";
+        wrap.innerHTML =
+            '<span class="adm-interest-chips-label">اختصارات سريعة:</span>' +
+            '<button type="button" class="adm-interest-chip' + (!activeId ? " active" : "") + '" data-course="">الكل</button>' +
+            ids.map(function (cid) {
+                var item = map[cid];
+                var short = item.title.length > 44 ? item.title.substring(0, 44) + "…" : item.title;
+                return '<button type="button" class="adm-interest-chip' + (activeId === cid ? " active" : "") + '" data-course="' + esc(cid) + '" title="' + esc(item.title) + '">' +
+                    esc(short) + ' <span class="adm-interest-chip-count">' + item.n + "</span></button>";
+            }).join("");
+
+        wrap.querySelectorAll(".adm-interest-chip").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+                var sel = document.getElementById("interestCourseFilter");
+                if (sel) sel.value = btn.getAttribute("data-course") || "";
+                filterAndRenderInterests();
+            });
+        });
+    }
+
+    function filterAndRenderInterests() {
+        var courseId = (document.getElementById("interestCourseFilter") || {}).value || "";
+        var term = ((document.getElementById("interestSearchInput") || {}).value || "").trim().toLowerCase();
+
+        filteredCourseInterests = allCourseInterests.filter(function (r) {
+            var matchCourse = !courseId || r.course_id === courseId;
+            var matchSearch = !term || [r.full_name, r.phone, r.course_title].some(function (f) {
+                return f && String(f).toLowerCase().indexOf(term) !== -1;
+            });
+            return matchCourse && matchSearch;
+        });
+
+        renderInterestsTable(filteredCourseInterests);
+        buildInterestQuickFilters();
+
+        var stats = document.getElementById("interestStatsLine");
+        if (stats) {
+            stats.textContent = "عرض " + filteredCourseInterests.length + " من " + allCourseInterests.length + " سجل اهتمام";
+        }
+    }
+
+    function renderInterestsTable(list) {
+        if (!interestsBody) return;
+        if (!list.length) {
+            interestsBody.innerHTML = '<tr><td colspan="6" class="no-data-msg">لا توجد سجلات مطابقة.</td></tr>';
+            return;
+        }
+        interestsBody.innerHTML = list.map(function (r, i) {
+            var phone = r.phone
+                ? '<a href="tel:' + esc(r.phone) + '" class="phone-link">' + esc(r.phone) + "</a>"
+                : "\u2014";
+            return "<tr>" +
+                "<td>" + (i + 1) + "</td>" +
+                "<td>" + esc(r.full_name || "\u2014") + "</td>" +
+                "<td>" + phone + "</td>" +
+                "<td>" + esc(r.course_title || "\u2014") + "</td>" +
+                "<td>" + fmtDate(r.created_at) + "</td>" +
+                '<td><button type="button" class="dashboard-btn dashboard-btn-delete" data-action="delete-interest" data-iid="' + esc(r.id) + '">حذف</button></td>' +
+            "</tr>";
+        }).join("");
+    }
+
+    async function loadCourseInterests() {
+        if (!interestsBody) return;
+        interestsBody.innerHTML = '<tr><td colspan="6" class="no-data-msg">جاري التحميل…</td></tr>';
+
+        var res = await sb.from("course_interests")
+            .select("id, user_id, full_name, phone, course_id, course_title, created_at")
+            .order("created_at", { ascending: false });
+
+        if (res.error) {
+            interestsBody.innerHTML =
+                '<tr><td colspan="6" class="no-data-msg">تعذّر تحميل الاهتمامات. نفّذ الملف database/course_interests.sql في Supabase.</td></tr>';
+            return;
+        }
+
+        allCourseInterests = res.data || [];
+        populateInterestCourseFilter();
+        updateInterestNavBadge();
+        filterAndRenderInterests();
+    }
+
+    async function exportInterestsExcel() {
+        var rows = filteredCourseInterests.length ? filteredCourseInterests : allCourseInterests;
+        if (!rows.length) {
+            alert("لا توجد بيانات للتصدير.");
+            return;
+        }
+
+        var courseSel = document.getElementById("interestCourseFilter");
+        var filterLabel = "جميع الدورات";
+        if (courseSel && courseSel.value) {
+            var opt = courseSel.options[courseSel.selectedIndex];
+            filterLabel = opt ? opt.textContent : filterLabel;
+        }
+
+        if (typeof window.maherExportInterestsExcel === "function") {
+            await window.maherExportInterestsExcel({
+                rows: rows,
+                filterLabel: filterLabel,
+                fmtDate: fmtDate
+            });
+            return;
+        }
+
+        alert("تعذّر تحميل أداة التصدير. حدّث الصفحة وحاول مرة أخرى.");
+    }
+
+    var interestCourseFilter = document.getElementById("interestCourseFilter");
+    var interestSearchInput = document.getElementById("interestSearchInput");
+    var exportInterestsBtn = document.getElementById("exportInterestsBtn");
+
+    if (interestCourseFilter) interestCourseFilter.addEventListener("change", filterAndRenderInterests);
+    if (interestSearchInput) interestSearchInput.addEventListener("input", filterAndRenderInterests);
+    if (exportInterestsBtn) exportInterestsBtn.addEventListener("click", exportInterestsExcel);
+
+    if (interestsBody) {
+        interestsBody.addEventListener("click", async function (e) {
+            var delBtn = e.target.closest("[data-action='delete-interest']");
+            if (!delBtn) return;
+            if (!confirm("حذف سجل الاهتمام هذا؟")) return;
+            var iid = delBtn.getAttribute("data-iid");
+            var res = await sb.from("course_interests").delete().eq("id", iid);
+            if (res.error) {
+                alert("تعذّر الحذف.");
+                return;
+            }
+            await loadCourseInterests();
         });
     }
 

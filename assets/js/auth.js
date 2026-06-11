@@ -16,22 +16,39 @@
 (function () {
     "use strict";
 
-    /* ── 1. Supabase client ───────────────────────────────────────── */
-    if (typeof window.supabase === "undefined") {
-        console.error("Supabase SDK not loaded.");
-        return;
+    var sb;
+
+    function ensureSupabaseClient() {
+        if (typeof window.supabase === "undefined") return false;
+        sb = window.supabaseClient;
+        if (!sb) {
+            sb = window.supabase.createClient(
+                "https://jgvfcievyfkyldryatlk.supabase.co",
+                "sb_publishable_ieBSqzdn_nZJk4t-n8cNlw_ZjMwsgjY"
+            );
+            window.supabaseClient = sb;
+        }
+        return true;
     }
 
-    var sb = window.supabaseClient;
-    if (!sb) {
-        sb = window.supabase.createClient(
-            "https://jgvfcievyfkyldryatlk.supabase.co",
-            "sb_publishable_ieBSqzdn_nZJk4t-n8cNlw_ZjMwsgjY"
-        );
-        window.supabaseClient = sb;
+    function formatAuthNetworkError(err) {
+        var msg = (err && err.message) ? err.message : String(err || "");
+        var low = msg.toLowerCase();
+        if (
+            low.indexOf("failed to fetch") !== -1 ||
+            low.indexOf("networkerror") !== -1 ||
+            low.indexOf("network request failed") !== -1 ||
+            low.indexOf("load failed") !== -1
+        ) {
+            if (window.location.protocol === "file:") {
+                return "لا يمكن تسجيل الدخول عند فتح الملف مباشرة. شغّل serve.bat من مجلد الموقع ثم افتح http://localhost:8080/login.html";
+            }
+            return "تعذّر الاتصال بالخادم. تحقّق من اتصال الإنترنت وحاول مجدداً.";
+        }
+        return msg || "حدث خطأ غير متوقّع";
     }
 
-    /* ── 2. Helpers ───────────────────────────────────────────────── */
+    window.maherFormatAuthError = formatAuthNetworkError;
     function page() {
         return window.location.pathname.split("/").pop() || "index.html";
     }
@@ -279,20 +296,24 @@
     }
 
     async function doLogin(emailOrPhone, password) {
-        var isPhone = _isPhoneInput(emailOrPhone);
-        var credential = isPhone
-            ? { phone: _normalizePhone(emailOrPhone), password: password }
-            : { email: emailOrPhone, password: password };
-        var res = await sb.auth.signInWithPassword(credential);
-        if (res.error) return { error: res.error };
+        try {
+            var isPhone = _isPhoneInput(emailOrPhone);
+            var credential = isPhone
+                ? { phone: _normalizePhone(emailOrPhone), password: password }
+                : { email: emailOrPhone, password: password };
+            var res = await sb.auth.signInWithPassword(credential);
+            if (res.error) return { error: res.error };
 
-        var user = res.data.user;
-        var profile = await getProfile(user);
-        if (!profile) return { error: new Error("لم يتم العثور على بيانات المستخدم") };
+            var user = res.data.user;
+            var profile = await getProfile(user);
+            if (!profile) return { error: new Error("لم يتم العثور على بيانات المستخدم") };
 
-        var nextU = getSafeNextRedirectUrl();
-        window.location.href = nextU || role2home(profile.role);
-        return { error: null };
+            var nextU = getSafeNextRedirectUrl();
+            window.location.href = nextU || role2home(profile.role);
+            return { error: null };
+        } catch (err) {
+            return { error: { message: formatAuthNetworkError(err) } };
+        }
     }
 
     /* ── 7. Wire login forms ──────────────────────────────────────── */
@@ -326,7 +347,7 @@
                 } else if (msg.includes("email not confirmed")) {
                     arabicMsg = "البريد الإلكتروني أو كلمة المرور غير صحيحة.";
                 } else {
-                    arabicMsg = res.error.message || "فشل تسجيل الدخول";
+                    arabicMsg = formatAuthNetworkError(res.error);
                 }
                 showStatus(form, "error", arabicMsg);
                 setBtnLoading(btn, false);
@@ -371,14 +392,21 @@
             setBtnLoading(btn, true, "جاري إنشاء الحساب...");
 
             // Sign up
-            var signUpRes = await sb.auth.signUp({
-                email: email,
-                password: password,
-                options: {
-                    data: { full_name: fullName, role: role },
-                    emailRedirectTo: undefined
-                }
-            });
+            var signUpRes;
+            try {
+                signUpRes = await sb.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        data: { full_name: fullName, role: role },
+                        emailRedirectTo: undefined
+                    }
+                });
+            } catch (signUpErr) {
+                showStatus(form, "error", formatAuthNetworkError(signUpErr));
+                setBtnLoading(btn, false);
+                return;
+            }
 
             /* Supabase free tier may fail to send confirmation email but the
                account is still created. Treat "Error sending confirmation email"
@@ -390,7 +418,7 @@
                                  errMsg.toLowerCase().includes("smtp") ||
                                  errMsg.toLowerCase().includes("email");
                 if (!isEmailErr) {
-                    showStatus(form, "error", errMsg || "تعذر إنشاء الحساب");
+                    showStatus(form, "error", formatAuthNetworkError(signUpRes.error));
                     setBtnLoading(btn, false);
                     return;
                 }
@@ -398,7 +426,14 @@
             }
 
             // Auto-login immediately after signup
-            var loginRes = await sb.auth.signInWithPassword({ email: email, password: password });
+            var loginRes;
+            try {
+                loginRes = await sb.auth.signInWithPassword({ email: email, password: password });
+            } catch (loginErr) {
+                showStatus(form, "error", formatAuthNetworkError(loginErr));
+                setBtnLoading(btn, false);
+                return;
+            }
 
             if (loginRes.error) {
                 // Signup succeeded but auto-login failed — send to login page
@@ -696,8 +731,55 @@
         logout: logout
     };
 
-    document.addEventListener("DOMContentLoaded", function () {
-        void bootstrap();
-    });
+    function warnIfFileProtocol() {
+        if (window.location.protocol !== "file:") return;
+        var authPages = ["login.html", "register.html", "seeker-register.html", "reset-password.html"];
+        if (authPages.indexOf(page()) === -1) return;
+        var panel = document.querySelector(".auth-split-card") || document.querySelector(".auth-card");
+        if (!panel || document.getElementById("maherFileProtocolWarn")) return;
+        var box = document.createElement("div");
+        box.id = "maherFileProtocolWarn";
+        box.className = "form-status form-status-error";
+        box.style.display = "block";
+        box.style.marginBottom = "1rem";
+        box.textContent = "تنبيه: لا يعمل تسجيل الدخول من ملف مباشر. شغّل serve.bat ثم افتح http://localhost:8080/login.html";
+        panel.insertBefore(box, panel.firstChild);
+    }
+
+    function beginBoot() {
+        function onReady() {
+            warnIfFileProtocol();
+            void bootstrap();
+        }
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", onReady);
+        } else {
+            onReady();
+        }
+    }
+
+    var bootAttempts = 0;
+    (function waitForSdk() {
+        if (ensureSupabaseClient()) {
+            beginBoot();
+            return;
+        }
+        bootAttempts++;
+        if (bootAttempts < 100) {
+            setTimeout(waitForSdk, 50);
+            return;
+        }
+        console.error("Supabase SDK not loaded.");
+        document.addEventListener("DOMContentLoaded", function () {
+            warnIfFileProtocol();
+            var form = document.getElementById("genericLoginForm") ||
+                document.getElementById("seekerLoginForm") ||
+                document.getElementById("registerSeekerForm") ||
+                document.getElementById("seekerOnlyRegisterForm");
+            if (form) {
+                showStatus(form, "error", "تعذّر تحميل مكتبة الاتصال. تحقّق من الإنترنت أو شغّل الموقع عبر serve.bat");
+            }
+        });
+    })();
 
 })();

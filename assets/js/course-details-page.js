@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ØµÙØ­Ø© ØªÙØ§ØµÙŠÙ„ Ø§Ù„Ø¯ÙˆØ±Ø© â€” job-details.html?course_id=
  */
 (function () {
@@ -32,14 +32,54 @@
 
     function setPageTitle(title) {
         var tEl = document.getElementById("courseDetailPageTitle");
-        if (tEl) tEl.textContent = (title || t("courseDetail.docTitle")) + " | ماهر";
+        if (tEl) tEl.textContent = (title || t("courseDetail.docTitle")) + " | أكاديمية ماهر";
     }
 
     function findInCatalog(courseId) {
-        return (window.maherDefaultCourses || []).find(function (x) { return x.id === courseId; }) || null;
+        var c = (window.maherDefaultCourses || []).find(function (x) { return x.id === courseId; }) || null;
+        if (c && window.maherCart) {
+            var merged = window.maherCart.applyStoredPrices([c]);
+            return merged[0] || c;
+        }
+        return c;
     }
 
-    function waitForSupabase() {
+    function isPaidCourse(c) {
+        return window.maherCart ? window.maherCart.isPaidCourse(c) : (c && c.price_type === "paid" && Number(c.price_amount) > 0);
+    }
+
+    function getCourseObjectives(courseId) {
+        var map = window.maherCourseObjectives || {};
+        return map[courseId] || null;
+    }
+
+    function renderObjectivesSection(courseId, durationText) {
+        var obj = getCourseObjectives(courseId);
+        if (!obj || (!obj.general && !(obj.detailed && obj.detailed.length))) return "";
+
+        var certBits = [t("courseDetail.certBar")];
+        if (durationText) certBits.push(durationText);
+
+        var html = '<div class="cd-cert-bar">' + esc(certBits.join(" | ")) + "</div>";
+        html += '<section class="cd-goals" aria-labelledby="cdGoalsHeading">';
+        html += '<h2 id="cdGoalsHeading" class="visually-hidden">' + esc(t("courseDetail.detailedGoals")) + "</h2>";
+        html += '<div class="cd-goal-general">';
+        html += '<h3 class="cd-goal-general-title">' + esc(t("courseDetail.generalGoal")) + "</h3>";
+        html += '<p class="cd-goal-general-text">' + esc(obj.general || "") + "</p>";
+        html += "</div>";
+        if (obj.detailed && obj.detailed.length) {
+            html += '<ul class="cd-goal-list">';
+            obj.detailed.forEach(function (item) {
+                html += "<li>" + esc(item) + "</li>";
+            });
+            html += "</ul>";
+        }
+        html += "</section>";
+        return html;
+    }
+
+    function waitForSupabase(ms) {
+        var limit = ms || 2000;
         if (window.supabaseClient) return Promise.resolve(window.supabaseClient);
         return new Promise(function (resolve) {
             var done = false;
@@ -49,26 +89,50 @@
                 resolve(window.supabaseClient || null);
             }
             document.addEventListener("maherSupabaseReady", finish, { once: true });
-            setTimeout(finish, 5000);
+            setTimeout(finish, limit);
         });
     }
 
-    async function loadCourse(courseId) {
-        var catalog = findInCatalog(courseId);
-        if (catalog && catalog.title) setPageTitle(catalog.title);
+    function withTimeout(promise, ms) {
+        return Promise.race([
+            promise,
+            new Promise(function (_, reject) {
+                setTimeout(function () { reject(new Error("timeout")); }, ms);
+            })
+        ]);
+    }
 
-        var sb = await waitForSupabase();
-        if (!sb) return { error: "no_db", catalog: catalog };
+    function resolvePathName(pathId, sb) {
+        var fp = (window.maherDefaultTrainingPaths || []).find(function (x) { return x.id === pathId; });
+        var local = fp ? fp.name_ar || "" : "";
+        if (!pathId || !sb) return Promise.resolve(local);
+        return withTimeout(
+            sb.from("training_paths").select("name_ar, is_active").eq("id", pathId).maybeSingle()
+                .then(function (tpRes) {
+                    if (tpRes.data && tpRes.data.is_active) return tpRes.data.name_ar || local;
+                    return local;
+                }),
+            2500
+        ).catch(function () { return local; });
+    }
 
-        var res = await sb
-            .from("courses")
-            .select("id, title, description, instructor, duration, category, max_seats, is_active, created_at, training_path_id, content_type, price_type, price_amount")
-            .eq("id", courseId)
-            .single();
-
-        var c = res.data;
-        if (res.error || !c) c = catalog;
-        return { course: c, sb: sb, dbError: res.error };
+    async function fetchCourseFromDb(courseId, catalog) {
+        var sb = await waitForSupabase(2500);
+        if (!sb) return { course: catalog, sb: null };
+        try {
+            var res = await withTimeout(
+                sb.from("courses")
+                    .select("id, title, description, instructor, duration, category, max_seats, is_active, created_at, training_path_id, content_type, price_type, price_amount")
+                    .eq("id", courseId)
+                    .single(),
+                3500
+            );
+            var c = res.data;
+            if (res.error || !c) c = catalog;
+            return { course: c, sb: sb };
+        } catch (e) {
+            return { course: catalog, sb: sb };
+        }
     }
 
     function renderCourse(root, c, sb, courseId) {
@@ -93,7 +157,7 @@
         }
 
         var authPromise = sb
-            ? sb.auth.getUser()
+            ? withTimeout(sb.auth.getUser(), 2500).catch(function () { return { data: { user: null } }; })
             : Promise.resolve({ data: { user: null } });
 
         return authPromise.then(function (userRes) {
@@ -103,17 +167,7 @@
             var pathPromise = Promise.resolve("");
 
             if (c.training_path_id) {
-                if (sb) {
-                pathPromise = sb.from("training_paths").select("name_ar, is_active").eq("id", c.training_path_id).maybeSingle()
-                    .then(function (tpRes) {
-                        if (tpRes.data && tpRes.data.is_active) return tpRes.data.name_ar || "";
-                        var fp = (window.maherDefaultTrainingPaths || []).find(function (x) { return x.id === c.training_path_id; });
-                        return fp ? fp.name_ar || "" : "";
-                    });
-                } else {
-                    var fpOnly = (window.maherDefaultTrainingPaths || []).find(function (x) { return x.id === c.training_path_id; });
-                    pathPromise = Promise.resolve(fpOnly ? fpOnly.name_ar || "" : "");
-                }
+                pathPromise = resolvePathName(c.training_path_id, sb);
             }
 
             var userChain = Promise.resolve();
@@ -135,32 +189,77 @@
                 var actionsHtml = "";
                 var backQs = c.training_path_id ? ("courses.html?path=" + encodeURIComponent(c.training_path_id)) : "courses.html";
 
+                var paid = isPaidCourse(c);
+                var inCart = window.maherCart && window.maherCart.isInCart(courseId);
+
                 if (!currentUser) {
+                    var nextUrl = paid ? "checkout.html" : ("job-details.html?course_id=" + courseId);
                     actionsHtml =
-                        "<a class=\"btn btn-primary\" href=\"login.html?next=" + encodeURIComponent("job-details.html?course_id=" + courseId) + "\">" +
-                        esc(t("courses.loginToEnroll")) + "</a>";
+                        "<a class=\"btn btn-primary\" href=\"login.html?next=" + encodeURIComponent(nextUrl) + "\">" +
+                        esc(paid ? t("courses.loginToBuy") : t("courses.loginToEnroll")) + "</a>";
                 } else if (currentRole !== "job_seeker") {
                     actionsHtml = "<button type=\"button\" class=\"btn btn-outline\" disabled>" + esc(t("paths.enrollSeekerOnly")) + "</button>";
                 } else if (isEnrolled) {
                     actionsHtml = "<button type=\"button\" class=\"btn btn-enrolled\" disabled>" + esc(t("courses.enrolled")) + "</button>";
+                } else if (paid) {
+                    if (inCart) {
+                        actionsHtml = "<a class=\"btn btn-primary\" href=\"checkout.html\">" + esc(t("courses.goCheckout")) + "</a>";
+                    } else {
+                        actionsHtml = "<button type=\"button\" class=\"btn btn-primary\" id=\"cdAddCartBtn\">" + esc(t("courses.addToCart")) + "</button>";
+                    }
                 } else {
                     actionsHtml = "<button type=\"button\" class=\"btn btn-primary\" id=\"cdEnrollBtn\">" + esc(t("courses.enrollBtn")) + "</button>";
                 }
 
+                var coverSrc = typeof window.maherCourseImageUrl === "function"
+                    ? window.maherCourseImageUrl(courseId, c.title)
+                    : ("assets/images/dorh/stock/stock_001.png");
+
+                var durationText = c.duration ? (t("courseDetail.durationLabel") + ": " + c.duration) : "";
+                var objectivesHtml = renderObjectivesSection(courseId, durationText);
+
                 root.innerHTML =
                     "<div class=\"cd-card\">" +
+                        "<div class=\"cd-hero\">" +
+                            "<img class=\"cd-hero-img\" src=\"" + esc(coverSrc) + "\" alt=\"\" loading=\"lazy\" decoding=\"async\" />" +
+                        "</div>" +
                         "<div class=\"cd-card-inner\">" +
                             "<p class=\"cd-kicker\">" + esc(t("courseDetail.kicker")) + "</p>" +
                             "<h1 class=\"cd-title\">" + esc(c.title) + "</h1>" +
                             "<div class=\"cd-meta-row\">" + metaBits.join(" ") + "</div>" +
+                            objectivesHtml +
                             (c.description ? "<div class=\"cd-desc\">" + esc(c.description).replace(/\n/g, "<br/>") + "</div>" : "") +
-                            "<div class=\"cd-actions\">" + actionsHtml + "</div>" +
+                            "<div class=\"cd-actions\">" + actionsHtml +
+                            (function () {
+                                var done = window.maherCourseInterest && window.maherCourseInterest.isInterested(courseId);
+                                return "<button type=\"button\" class=\"btn btn-interest interest-btn" + (done ? " btn-interest-done" : "") + "\" data-id=\"" + esc(courseId) + "\" data-title=\"" + esc(c.title) + "\"" + (done ? " disabled" : "") + ">" +
+                                    esc(done ? t("courses.interest.done") : t("courses.interest.btn")) + "</button>";
+                            })() +
+                            "</div>" +
                             "<p class=\"cd-footnote\">" + esc(t("courseDetail.footnote")) + "</p>" +
                             "<p style=\"margin-top:1rem;\"><a class=\"btn btn-outline\" href=\"" + backQs.replace(/\"/g, "") + "\">" + esc(t("courses.backToList")) + "</a></p>" +
                         "</div>" +
                     "</div>";
 
                 setPageTitle(c.title);
+
+                var interestBtn = root.querySelector(".interest-btn");
+                if (interestBtn && window.maherCourseInterest) {
+                    interestBtn.addEventListener("click", function () {
+                        if (interestBtn.disabled) return;
+                        window.maherCourseInterest.openModal({ id: courseId, title: c.title });
+                    });
+                }
+
+                var addCartBtn = document.getElementById("cdAddCartBtn");
+                if (addCartBtn && window.maherCart) {
+                    addCartBtn.addEventListener("click", function () {
+                        var res = window.maherCart.addToCart(c);
+                        if (res.ok || res.reason === "exists") {
+                            addCartBtn.outerHTML = "<a class=\"btn btn-primary\" href=\"checkout.html\">" + esc(t("courses.goCheckout")) + "</a>";
+                        }
+                    });
+                }
 
                 var enrollBtn = document.getElementById("cdEnrollBtn");
                 if (enrollBtn && currentUser) {
@@ -199,36 +298,45 @@
             return;
         }
 
-        renderLoading(root);
+        var catalog = findInCatalog(courseId);
 
-        loadCourse(courseId).then(function (result) {
-            if (result.error === "no_db") {
-                var fallback = result.catalog;
-                if (fallback) {
-                    renderCourse(root, fallback, null, courseId).catch(function () {});
-                    return;
-                }
-                root.classList.remove("cd-loading");
-                root.removeAttribute("aria-busy");
-                root.innerHTML = "<p class=\"cd-error\">" + esc(t("courseDetail.noDb")) + "</p>";
-                return;
-            }
-
-            var c = result.course;
+        function paint(c, sb) {
             if (!c) {
                 root.classList.remove("cd-loading");
                 root.removeAttribute("aria-busy");
                 root.innerHTML = "<p class=\"cd-error\">" + esc(t("courseDetail.notFound")) + "</p>";
-                return;
+                return Promise.resolve();
             }
             if (c.is_active === false) {
                 root.classList.remove("cd-loading");
                 root.removeAttribute("aria-busy");
                 root.innerHTML = "<p class=\"cd-error\">" + esc(t("courseDetail.inactive")) + "</p>";
+                return Promise.resolve();
+            }
+            if (c.title) setPageTitle(c.title);
+            return renderCourse(root, c, sb, courseId);
+        }
+
+        if (catalog) {
+            paint(catalog, null);
+            fetchCourseFromDb(courseId, catalog).then(function (result) {
+                if (result.sb && result.course) {
+                var merged = window.maherCart ? window.maherCart.applyStoredPrices([result.course]) : [result.course];
+                paint(merged[0] || result.course || catalog, result.sb);
+            }
+            });
+            return;
+        }
+
+        renderLoading(root);
+        fetchCourseFromDb(courseId, null).then(function (result) {
+            if (!result.course) {
+                root.classList.remove("cd-loading");
+                root.removeAttribute("aria-busy");
+                root.innerHTML = "<p class=\"cd-error\">" + esc(t("courseDetail.notFound")) + "</p>";
                 return;
             }
-
-            renderCourse(root, c, result.sb, courseId);
+            paint(result.course, result.sb);
         });
     });
 })();

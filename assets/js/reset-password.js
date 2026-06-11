@@ -68,9 +68,19 @@ function init(sb) {
 
             setBtnLoading("fpSendBtn", true, "إرسال رمز التحقق", "جاري الإرسال...");
 
-            var res = await sb.auth.signInWithOtp({
-                email: currentEmail
-            });
+            var res;
+            try {
+                res = await sb.auth.signInWithOtp({
+                    email: currentEmail
+                });
+            } catch (sendErr) {
+                setBtnLoading("fpSendBtn", false, "إرسال رمز التحقق", "جاري الإرسال...");
+                var sendMsg = typeof window.maherFormatAuthError === "function"
+                    ? window.maherFormatAuthError(sendErr)
+                    : "تعذّر الإرسال. حاول مجدداً.";
+                showStatus("fpSendStatus", "error", sendMsg);
+                return;
+            }
 
             setBtnLoading("fpSendBtn", false, "إرسال رمز التحقق", "جاري الإرسال...");
 
@@ -79,7 +89,10 @@ function init(sb) {
                 if (m.includes("rate") || m.includes("limit")) {
                     showStatus("fpSendStatus", "error", "تم إرسال رمز مؤخراً. انتظر قليلاً ثم حاول مجدداً.");
                 } else {
-                    showStatus("fpSendStatus", "error", res.error.message || "حدث خطأ غير معروف.");
+                    var fmt = typeof window.maherFormatAuthError === "function"
+                        ? window.maherFormatAuthError(res.error)
+                        : (res.error.message || "حدث خطأ غير معروف.");
+                    showStatus("fpSendStatus", "error", fmt);
                 }
                 return;
             }

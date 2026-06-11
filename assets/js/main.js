@@ -1,12 +1,12 @@
 const maherTranslations = {
     ar: {
         "nav.home": "الرئيسية",
-        "page.index.docTitle": "ماهر | أكاديمية ماهر للتدريب",
+        "page.index.docTitle": "أكاديمية ماهر | أكاديمية ماهر للتدريب",
         "nav.catalog": "الدورات والدبلومات",
         "nav.trainingPaths": "المسارات التدريبية",
         "nav.aboutAcademy": "عن الأكاديمية",
         "nav.contact": "تواصل معنا",
-        "page.aboutAcademy.docTitle": "عن الأكاديمية | ماهر",
+        "page.aboutAcademy.docTitle": "عن الأكاديمية | أكاديمية ماهر",
         "aboutAcademy.hero.badge": "أكاديمية ماهر العالي للتدريب",
         "aboutAcademy.hero.title": "عن <span>الأكاديمية</span>",
         "aboutAcademy.hero.sub": "رؤية وطنية · تدريب احترافي · تمكين الكوادر السعودية",
@@ -72,7 +72,7 @@ const maherTranslations = {
         "header.langAr": "العربية",
         "header.langEn": "English",
 
-        "hero.title": "تعلّم بثقة — دبلومات ودورات عملية مع <span>ماهر</span>",
+        "hero.title": "تعلّم بثقة — دبلومات ودورات عملية مع <span>أكاديمية ماهر</span>",
         "hero.subtitle": "أكاديمية ماهر العالي للتدريب أكاديمية سعودية متخصصة في التدريب والتطوير وبناء المهارات المهنية، ووجهتك نحو التميّز عبر برامج تدريبية ودبلومات نوعية بمعايير عالية",
         "hero.search.keywordLabel": "ابحث عن دورة أو دبلوم",
         "hero.search.keywordPlaceholder": "اسم الدورة، المجال، المدرب",
@@ -99,23 +99,23 @@ const maherTranslations = {
         "hero.card.subtitle": "أنشئ حسابك للوصول إلى الدورات وتتبع تسجيلاتك.",
         "hero.card.seeker.title": "متدرب",
         "hero.card.seeker.text": "سجّل في الدورات وتابع تقدمك من لوحة واحدة.",
-        "hero.card.employer.title": "مشرف المنصة",
+        "hero.card.employer.title": "مشرف الأكاديمية",
         "hero.card.employer.text": "إدارة الدورات والمتدربين من لوحة التحكم.",
 
-        "platformInfo.title": "منصة أكاديمية ماهر العالي للتدريب",
-        "platformInfo.about.title": "عن المنصة",
-        "platformInfo.about.lead": "تساعد المنصة التعليمية بشكل فعال على تبادل الخبرات بين المختصين بما يحقق مفهوم عولمة التعليم، وهذا ما جعلها تتميز بالعديد من المميزات، وأبرزها:",
-        "platformInfo.about.f1": "تتوافق المنصة مع الجوال والتابلت وأجهزة اللاب توب وتستعرض المحتوى بشكل فعال.",
+        "platformInfo.title": "أكاديمية ماهر العالي للتدريب",
+        "platformInfo.about.title": "عن الأكاديمية",
+        "platformInfo.about.lead": "تساعد الأكاديمية بشكل فعال على تبادل الخبرات بين المختصين بما يحقق مفهوم عولمة التعليم، وهذا ما جعلها تتميز بالعديد من المميزات، وأبرزها:",
+        "platformInfo.about.f1": "تتوافق الأكاديمية مع الجوال والتابلت وأجهزة اللاب توب وتستعرض المحتوى بشكل فعال.",
         "platformInfo.about.f2": "سهولة الوصول إلى المعارف.",
         "platformInfo.about.f3": "إشراك المتعلمين في المحتوى الدراسي.",
         "platformInfo.about.f4": "تنوع وإثراء المصادر.",
         "platformInfo.about.f5": "إيجاد الجو النفسي الآمن.",
-        "platformInfo.about.f6": "إمكانية العمل على المنصات التعليمية من خلال بيئات تشغيل مختلفة وأجهزة مختلفة بتوافقية عالية.",
-        "platformInfo.tools.title": "أدوات المنصة",
+        "platformInfo.about.f6": "إمكانية العمل على الأنظمة التعليمية من خلال بيئات تشغيل مختلفة وأجهزة مختلفة بتوافقية عالية.",
+        "platformInfo.tools.title": "أدوات الأكاديمية",
         "platformInfo.tools.text": "الدروس — الاختبارات — الأنشطة — البريد الإلكتروني — المنتديات — الإشعارات بكل جديد — التعليقات على الدروس — إدارة الدورات",
 
-        "section.why.title": "لماذا <span>ماهر</span>؟",
-        "section.why.subtitle": "منصة متكاملة تساعدك في كل مراحل رحلتك المهنية.",
+        "section.why.title": "لماذا <span>أكاديمية ماهر</span>؟",
+        "section.why.subtitle": "أكاديمية متكاملة تساعدك في كل مراحل رحلتك المهنية.",
         "section.why.card1.title": "دبلومات ودورات معتمدة",
         "section.why.card1.text": "محتوى عملي يغطي أهم المجالات التقنية والإدارية والمهنية.",
         "section.why.card2.title": "تجربة تعليم حديثة",
@@ -141,9 +141,9 @@ const maherTranslations = {
         "path.career.desc": "مهارات تواصل، إدارة وقت، وعرض مهني يلائم سوق العمل.",
         "path.explore": "استكشف المسار",
 
-        "section.careerBanner.title": "ابدأ مسارك التعليمي مع ماهر",
-        "section.careerBanner.text": "انضم إلى منصة ماهر لاستكشاف الدبلومات والدورات التي تناسب طموحاتك، وتعلّم بالوتيرة التي تناسبك. للاستفسارات والشهادات نوصي بالتواصل عبر واتساب أو قنوات المنصة الرسمية.",
-        "section.howItWorks.title": "كيف تعمل المنصة؟",
+        "section.careerBanner.title": "ابدأ مسارك التعليمي مع أكاديمية ماهر",
+        "section.careerBanner.text": "انضم إلى أكاديمية ماهر لاستكشاف الدبلومات والدورات التي تناسب طموحاتك، وتعلّم بالوتيرة التي تناسبك. للاستفسارات والشهادات نوصي بالتواصل عبر واتساب أو قنوات الأكاديمية الرسمية.",
+        "section.howItWorks.title": "كيف تعمل الأكاديمية؟",
         "section.partners.title": "شركاء التعليم والتدريب",
 
         "how.step1.title": "إنشاء حساب",
@@ -161,13 +161,13 @@ const maherTranslations = {
         "footer.courses": "الدورات",
         "footer.contact": "تواصل معنا",
         "footer.landline": "(أرضي)",
-        "footer.copy": "© <span id=\"year\"></span> ماهر. جميع الحقوق محفوظة.",
+        "footer.copy": "© <span id=\"year\"></span> أكاديمية ماهر. جميع الحقوق محفوظة.",
 
-        "page.courses.docTitle": "الدورات والدبلومات | ماهر",
+        "page.courses.docTitle": "الدورات والدبلومات | أكاديمية ماهر",
         "page.courses.title": "الدورات والدبلومات",
         "page.courses.text": "تصفّح البرامج المتاحة وفلترة حسب المجال أو البحث بالاسم.",
 
-        "page.contact.docTitle": "تواصل معنا | ماهر",
+        "page.contact.docTitle": "تواصل معنا | أكاديمية ماهر",
         "page.contact.title": "تواصل معنا",
         "page.contact.text": "سيتم إضافة نموذج تواصل وربطه بالبريد أو قاعدة البيانات لاحقًا.",
 
@@ -186,7 +186,7 @@ const maherTranslations = {
         "auth.noAccount": "ليس لديك حساب؟",
         "auth.createAccount": "إنشاء حساب",
 
-        "page.courseAccess.docTitle": "الدخول إلى الدورات | ماهر",
+        "page.courseAccess.docTitle": "الدخول إلى الدورات | أكاديمية ماهر",
         "page.courseAccess.title": "اختر نوع الدخول إلى الدورات التدريبية",
         "page.courseAccess.subtitle": "اختر نوع الحساب الذي تود استخدامه للدخول إلى الدورات.",
         "page.courseAccess.seeker.title": "باحث عن عمل",
@@ -194,7 +194,7 @@ const maherTranslations = {
         "page.courseAccess.employer.title": "شركة",
         "page.courseAccess.employer.text": "الدخول إلى الدورات كصاحب عمل أو شركة.",
 
-        "page.apply.docTitle": "التسجيل في دورة | ماهر",
+        "page.apply.docTitle": "التسجيل في دورة | أكاديمية ماهر",
         "page.apply.title": "التسجيل في دورة",
         "page.apply.text": "راجع تفاصيل الدورة ثم أكمل بياناتك لتأكيد التسجيل.",
         "page.myApplications.title": "تسجيلاتي",
@@ -208,22 +208,22 @@ const maherTranslations = {
         "apps.filter.approved": "مقبول",
         "apps.filter.reviewing": "تحت المراجعة",
         "apps.filter.rejected": "مرفوض",
-        "myApplications.docTitle": "تسجيلاتي | ماهر",
+        "myApplications.docTitle": "تسجيلاتي | أكاديمية ماهر",
         "page.dashboard.title": "لوحة تحكم المشرف",
         "page.dashboard.text": "إدارة الدورات والمتدربين والمحتوى الأكاديمي.",
-        "dashboard.docTitle": "لوحة التحكم | ماهر",
+        "dashboard.docTitle": "لوحة التحكم | أكاديمية ماهر",
         "page.jobDetails.title": "تفاصيل الدورة",
         "page.jobDetails.text": "عرض كامل لمعلومات الدورة أو الدبلوم وروابط التسجيل.",
-        "page.postJob.docTitle": "نشر محتوى تدريبي | ماهر",
+        "page.postJob.docTitle": "نشر محتوى تدريبي | أكاديمية ماهر",
         "page.postJob.title": "نشر محتوى تدريبي",
         "page.postJob.text": "تم نقل نشر الدورات إلى لوحة المشرف.",
 
-        "page.login.docTitle": "تسجيل الدخول | ماهر",
+        "page.login.docTitle": "تسجيل الدخول | أكاديمية ماهر",
         "page.generic.login.title": "تسجيل الدخول",
         "page.generic.login.text": "سيتم ربط هذه الصفحة بنظام Supabase Auth في الخطوات القادمة.",
-        "page.register.docTitle": "إنشاء حساب | ماهر",
+        "page.register.docTitle": "إنشاء حساب | أكاديمية ماهر",
         "page.register.title": "إنشاء حساب متدرب",
-        "page.register.subtitle": "أكمل بياناتك للانضمام إلى منصة ماهر التعليمية.",
+        "page.register.subtitle": "أكمل بياناتك للانضمام إلى أكاديمية ماهر التعليمية.",
         "page.register.seeker.title": "إنشاء حساب متدرب",
         "page.register.seeker.subtitle": "أنشئ حسابك للتسجيل في الدورات ومتابعة تقدمك.",
         "page.register.employer.title": "تسجيل غير متاح",
@@ -235,8 +235,8 @@ const maherTranslations = {
         "authSplit.loginLead": "سجّل دخولك للوصول إلى الدورات والدبلومات ومتابعة تسجيلاتك.",
         "authSplit.welcomeRegister": "ابدأ رحلتك التعليمية 👋",
         "authSplit.registerLead": "أنشئ حسابك كمتدرب للتسجيل في البرامج ومتابعة تقدمك من مكان واحد.",
-        "authSplit.brandTitle": "ابنِ مسارك التعليمي مع <span class=\"auth-split-brand-accent\">ماهر</span>",
-        "authSplit.brandLead": "منصة متكاملة للدبلومات والدورات التدريبية المعتمدة وتطوير مهاراتك المهنية.",
+        "authSplit.brandTitle": "ابنِ مسارك التعليمي مع <span class=\"auth-split-brand-accent\">أكاديمية ماهر</span>",
+        "authSplit.brandLead": "أكاديمية متكاملة للدبلومات والدورات التدريبية المعتمدة وتطوير مهاراتك المهنية.",
         "authSplit.f1": "كتالوج غني من الدورات والدبلومات في تخصصات متنوعة",
         "authSplit.f2": "تسجيل سريع في البرامج بخطوات بسيطة وواضحة",
         "authSplit.f3": "محتوى تدريبي منظم يدعم مسارك الأكاديمي",
@@ -247,9 +247,9 @@ const maherTranslations = {
         "authSplit.stat2l": "متدرب ومتدربة",
         "authSplit.stat3v": "25+",
         "authSplit.stat3l": "مسار تعليمي",
-        "authSplit.quote": "«ماهر سهّل علي اختيار الدبلوم المناسب ومتابعة التسجيل دون تعقيد.»",
+        "authSplit.quote": "«أكاديمية ماهر سهّل علي اختيار الدبلوم المناسب ومتابعة التسجيل دون تعقيد.»",
         "authSplit.quoteName": "عبدالكريم احمد ال عابد",
-        "authSplit.quoteRole": "متدرب في أحد برامج المنصة",
+        "authSplit.quoteRole": "متدرب في أحد برامج الأكاديمية",
 
         "register.type.seeker": "متدرب",
         "register.type.employer": "غير متاح",
@@ -311,7 +311,7 @@ const maherTranslations = {
         "profile.tips.3": "يفضّل رفع السيرة بصيغة PDF",
         "profile.tips.4": "راجع رقم الجوال ليصلك التواصل",
         "profile.linkApps.sub": "تابع حالة طلباتك وفرص التدريب",
-        "profile.docTitle": "ملفي الشخصي | ماهر",
+        "profile.docTitle": "ملفي الشخصي | أكاديمية ماهر",
         "profile.formTitle": "أكمل بياناتك",
         "profile.academyReq.title": "متطلبات الأكاديمية",
         "profile.academyReq.intro": "أكمل البيانات التالية ليتم اعتبار ملفك جاهزاً للتسجيل في الدورات والدبلومات وفق سياسات أكاديمية ماهر العالي للتدريب.",
@@ -322,7 +322,7 @@ const maherTranslations = {
         "profile.academyReq.c3.title": "متابعة التسجيلات",
         "profile.academyReq.c3.text": "متابعة حالة تسجيلاتك من صفحة «تسجيلاتي» بعد القبول في أي برنامج.",
         "profile.academyReq.c4.title": "السياسات والشهادات",
-        "profile.academyReq.c4.text": "الالتزام بسياسات المنصة والشهادات الصادرة عن أكاديمية ماهر العالي للتدريب.",
+        "profile.academyReq.c4.text": "الالتزام بسياسات الأكاديمية والشهادات الصادرة عن أكاديمية ماهر العالي للتدريب.",
         "btn.save": "حفظ",
 
         /* ── Company Profile page ─────────────────────── */
@@ -349,7 +349,7 @@ const maherTranslations = {
         "apply.note": "التسجيل مرة واحدة لكل دورة. للاستفسارات والشهادات راسلنا عبر واتساب أو صفحة التواصل.",
 
         /* ── Reset Password page ──────────────────────── */
-        "resetPwd.docTitle": "نسيت كلمة المرور | ماهر",
+        "resetPwd.docTitle": "نسيت كلمة المرور | أكاديمية ماهر",
         "resetPwd.step1.title": "نسيت كلمة المرور؟",
         "resetPwd.step1.subtitle": "أدخل بريدك الإلكتروني وسنرسل لك رمز تحقق مكوّن من 8 أرقام.",
         "resetPwd.step1.submit": "إرسال رمز التحقق",
@@ -396,7 +396,7 @@ const maherTranslations = {
 
         /* ── Courses page ─────────────────────────────── */
         "courses.page.title": "الدورات التدريبية",
-        "courses.page.subtitle": "طوّر مهاراتك مع دورات مختارة بعناية من منصة ماهر",
+        "courses.page.subtitle": "طوّر مهاراتك مع دورات مختارة بعناية من أكاديمية ماهر",
         "courses.myRequests.title": "طلباتي من الدورات",
         "courses.modal.confirm": "تأكيد التسجيل",
         "courses.modal.cancel": "إلغاء",
@@ -423,7 +423,7 @@ const maherTranslations = {
         "cd.myJobs.title": "الوظائف المنشورة",
         "cd.myJobs.addBtn": "+ نشر وظيفة جديدة",
         "cd.requestStaff.title": "طلب موظفين",
-        "cd.requestStaff.sub": "أرسل طلبك لإدارة المنصة للحصول على موظفين مناسبين — يطّلع على هذه الطلبات فريق الإدارة فقط.",
+        "cd.requestStaff.sub": "أرسل طلبك لإدارة الأكاديمية للحصول على موظفين مناسبين — يطّلع على هذه الطلبات فريق الإدارة فقط.",
         "cd.requestStaff.jobTitle.label": "المسمى الوظيفي المطلوب *",
         "cd.requestStaff.count.label": "عدد الموظفين المطلوبين *",
         "cd.requestStaff.spec.label": "التخصص المطلوب *",
@@ -435,7 +435,7 @@ const maherTranslations = {
         "cd.requestStaff.submit": "إرسال الطلب",
         "cd.requestStaff.prevTitle": "طلباتي السابقة",
         "cd.requestCourse.title": "طلب فتح دورة تدريبية",
-        "cd.requestCourse.sub": "أرسل طلبك لإدارة المنصة لفتح دورة تدريبية لموظفيك — يطّلع على هذه الطلبات فريق الإدارة فقط.",
+        "cd.requestCourse.sub": "أرسل طلبك لإدارة الأكاديمية لفتح دورة تدريبية لموظفيك — يطّلع على هذه الطلبات فريق الإدارة فقط.",
         "cd.requestCourse.name.label": "اسم الدورة المطلوبة *",
         "cd.requestCourse.category.label": "المجال / الفئة",
         "cd.requestCourse.seats.label": "عدد المقاعد المطلوبة *",
@@ -511,13 +511,60 @@ const maherTranslations = {
         "courses.loading": "جاري التحميل...",
         "courses.enrolling": "جارٍ التسجيل...",
         "courses.enrollError": "تعذّر التسجيل",
+        "courses.addToCart": "أضف إلى السلة",
+        "courses.goCheckout": "إتمام الشراء",
+        "courses.loginToBuy": "سجّل دخول للشراء",
+        "courses.inCart": "في السلة",
+        "courses.interest.btn": "سجّل اهتمامك بالدورة",
+        "courses.interest.done": "✓ تم تسجيل اهتمامك",
+        "courses.interest.modalTitle": "تسجيل الاهتمام بالدورة",
+        "courses.interest.modalSub": "أدخل اسمك ورقم جوالك وسنتواصل معك بخصوص هذه الدورة",
+        "courses.interest.fromProfile": "مُعبّأ من ملفك — يمكنك تعديله",
+        "courses.interest.name": "الاسم الكامل",
+        "courses.interest.phone": "رقم الجوال",
+        "courses.interest.submit": "تأكيد تسجيل الاهتمام",
+        "courses.interest.saving": "جارٍ الحفظ…",
+        "courses.interest.success": "تم تسجيل اهتمامك بنجاح. سنتواصل معك قريباً.",
+        "courses.interest.already": "سبق أن سجّلت اهتمامك بهذه الدورة.",
+        "courses.interest.error": "تعذّر حفظ الاهتمام",
+        "courses.interest.nameRequired": "يرجى إدخال الاسم الكامل.",
+        "courses.interest.phoneRequired": "يرجى إدخال رقم جوال صحيح.",
+
+        "checkout.docTitle": "سلة المشتريات",
+        "checkout.title": "سلة المشتريات",
+        "checkout.sub": "راجع دوراتك ثم أكمل الدفع بأمان",
+        "checkout.empty": "سلتك فارغة حالياً.",
+        "checkout.browse": "تصفح الدورات",
+        "checkout.items": "الدورات المختارة",
+        "checkout.total": "الإجمالي",
+        "checkout.payment": "طريقة الدفع",
+        "checkout.payNote": "ادفع بأمان عبر بوابة Moyasar المعتمدة في المملكة — مدى، فيزا، ماستركارد، وApple Pay.",
+        "checkout.secure": "اتصال مشفّر ومعالجة دفع آمنة",
+        "checkout.remove": "إزالة",
+        "checkout.loginRequired": "يجب تسجيل الدخول كمتدرب لإتمام الشراء.",
+        "checkout.configMissing": "بوابة الدفع غير مفعّلة بعد. أضف مفتاح Moyasar في ملف payment-config.js.",
+        "checkout.configHint": "بعد إعداد المفتاح ستظهر هنا نموذج الدفع الرسمي (مدى / فيزا / Apple Pay).",
+        "checkout.gatewayLoading": "جارٍ تحميل بوابة الدفع…",
+        "checkout.gatewayError": "تعذّر تحميل نموذج الدفع. حدّث الصفحة أو راجع إعدادات Moyasar.",
+        "checkout.successTitle": "تم الدفع",
+        "checkout.successHeading": "تم الدفع بنجاح",
+        "checkout.successBody": "تم تسجيلك في الدورات المشتراة. يمكنك البدء من صفحة الدورات.",
+        "checkout.successEnrolled": "تم تسجيلك في جميع الدورات بنجاح.",
+        "checkout.successPartial": "تم الدفع. بعض التسجيلات قد تحتاج مراجعة من الدعم.",
+        "checkout.successNoOrder": "لا توجد عملية شراء معلّقة",
+        "checkout.successNoOrderBody": "لم نجد سلة مشتريات مرتبطة بهذه الزيارة.",
+        "checkout.loginToFinish": "سجّل دخولك لإكمال تفعيل التسجيل في الدورات:",
+        "checkout.backCourses": "العودة للدورات",
+        "checkout.myDashboard": "لوحة التحكم",
 
         /* ── Courses hero & filter ───────────────────────── */
-        "courses.hero.badge": "🎓 منصة ماهر للتدريب",
+        "courses.hero.badge": "🎓 أكاديمية ماهر للتدريب",
         "courses.hero.h1": "الدورات <em class=\"ch-accent\">التدريبية</em>",
         "courses.search.placeholder": "ابحث عن دورة تدريبية...",
         "courses.filter.all": "الكل",
         "courses.results.count": "دورة متاحة",
+        "courses.loadMore": "أظهر المزيد",
+        "courses.showingOf": "عرض {shown} من {total} دورة",
         "courses.pathBannerPrefix": "تصفح مسار:",
         "courses.pathBannerClear": "عرض كل الدورات",
         "courses.pathInactive": "هذا المسار غير متاح للجمهور حالياً.",
@@ -566,14 +613,17 @@ const maherTranslations = {
         "courseDetail.footnote": "بعد التسجيل يظهر الطلب في لوحة تحكم الأدمن مع المسار والدورة. للاستفسارات استخدم صفحة «تواصل معنا».",
         "courseDetail.docTitle": "تفاصيل الدورة",
         "courseDetail.loading": "جاري تحميل تفاصيل الدورة…",
+        "courseDetail.generalGoal": "الهدف العام للدورة",
+        "courseDetail.detailedGoals": "الأهداف التفصيلية",
+        "courseDetail.certBar": "شهادة معتمدة",
 
         /* ── Jobs hero ────────────────────────────────────── */
         "jobs.hero.badge": "💼 فرص العمل",
         "jobs.hero.h1": "استكشف <span>فرص العمل</span><br>المناسبة لك",
 
         /* ── Seeker login visual panel ───────────────────────────────── */
-        "lsp.seeker.panelH2": "ابنِ مسارك المهني<br>مع <span>ماهر</span>",
-        "lsp.seeker.panelSub": "منصتك المتكاملة للوظائف والتدريب وتطوير المهارات المهنية.",
+        "lsp.seeker.panelH2": "ابنِ مسارك المهني<br>مع <span>أكاديمية ماهر</span>",
+        "lsp.seeker.panelSub": "وجهتك المتكاملة للوظائف والتدريب وتطوير المهارات المهنية.",
         "lsp.seeker.feat1": "آلاف الوظائف من شركات موثوقة",
         "lsp.seeker.feat2": "تقديم سريع بنقرة واحدة",
         "lsp.seeker.feat3": "دورات تدريبية معتمدة",
@@ -581,14 +631,14 @@ const maherTranslations = {
         "lsp.seeker.stat1Lbl": "وظيفة متاحة",
         "lsp.seeker.stat2Lbl": "شركة مسجّلة",
         "lsp.seeker.stat3Lbl": "متدرب",
-        "lsp.seeker.quoteText": "\"ماهر غيّرت مسيرتي المهنية — وجدت وظيفتي الأولى خلال أسبوعين فقط.\"",
+        "lsp.seeker.quoteText": "\"أكاديمية ماهر غيّرت مسيرتي المهنية — وجدت وظيفتي الأولى خلال أسبوعين فقط.\"",
         "lsp.seeker.quoteName": "عبدالكريم احمد ال عابد",
         "lsp.seeker.quoteRole": "مطوّر برمجيات · الرياض",
         "lsp.seeker.quoteAvatar": "ع",
 
         /* ── Employer login visual panel ─────────────────────────────── */
-        "lsp.employer.panelH2": "وظّف أفضل المواهب<br>مع <span>ماهر</span>",
-        "lsp.employer.panelSub": "منصتك الاحترافية لنشر الوظائف وإدارة التوظيف وتطوير الكوادر البشرية.",
+        "lsp.employer.panelH2": "وظّف أفضل المواهب<br>مع <span>أكاديمية ماهر</span>",
+        "lsp.employer.panelSub": "وجهتك الاحترافية لنشر الوظائف وإدارة التوظيف وتطوير الكوادر البشرية.",
         "lsp.employer.feat1": "نشر الوظائف في دقائق معدودة",
         "lsp.employer.feat2": "استعراض السير الذاتية بكفاءة عالية",
         "lsp.employer.feat3": "إدارة طلبات التوظيف بسهولة",
@@ -596,13 +646,13 @@ const maherTranslations = {
         "lsp.employer.stat1Lbl": "مرشح مؤهّل",
         "lsp.employer.stat2Lbl": "وظيفة نُشرت",
         "lsp.employer.stat3Lbl": "رضا الشركات",
-        "lsp.employer.quoteText": "\"وجدنا مرشحين متميزين خلال أيام. ماهر غيّرت طريقة توظيفنا بالكامل.\"",
+        "lsp.employer.quoteText": "\"وجدنا مرشحين متميزين خلال أيام. أكاديمية ماهر غيّرت طريقة توظيفنا بالكامل.\"",
         "lsp.employer.quoteName": "نورة العتيبي",
         "lsp.employer.quoteRole": "مديرة الموارد البشرية · الرياض",
         "lsp.employer.quoteAvatar": "ن",
 
         /* ── Shared footer copyright ─────────────────────────────────── */
-        "lsp.copyright": "© 2026 منصة ماهر · جميع الحقوق محفوظة",
+        "lsp.copyright": "© 2026 أكاديمية ماهر · جميع الحقوق محفوظة",
 
         /* ── Trending search tags ────────────────────────────────────── */
         "search.tag.developer":  "💻 مطور",
@@ -820,19 +870,19 @@ const maherTranslations = {
         "hero.card.subtitle": "Create your account to enroll and track your registrations.",
         "hero.card.seeker.title": "Trainee",
         "hero.card.seeker.text": "Enroll in courses and follow your progress in one place.",
-        "hero.card.employer.title": "Platform admin",
+        "hero.card.employer.title": "Academy admin",
         "hero.card.employer.text": "Manage courses and trainees from the admin dashboard.",
 
-        "platformInfo.title": "Maher Al-Ali Academy for Training Platform",
-        "platformInfo.about.title": "About the platform",
-        "platformInfo.about.lead": "The learning platform effectively enables specialists to share expertise in line with the globalization of education. Highlights include:",
+        "platformInfo.title": "Maher Al-Ali Academy for Training academy",
+        "platformInfo.about.title": "About the academy",
+        "platformInfo.about.lead": "The academy website effectively enables specialists to share expertise in line with the globalization of education. Highlights include:",
         "platformInfo.about.f1": "Works on mobile, tablet, and laptop with effective content display.",
         "platformInfo.about.f2": "Easy access to knowledge.",
         "platformInfo.about.f3": "Engaging learners in course content.",
         "platformInfo.about.f4": "Diverse, enriched learning resources.",
         "platformInfo.about.f5": "A safe, supportive learning environment.",
         "platformInfo.about.f6": "High compatibility across operating systems and devices.",
-        "platformInfo.tools.title": "Platform tools",
+        "platformInfo.tools.title": "Academy tools",
         "platformInfo.tools.text": "Lessons — Quizzes — Activities — Email — Forums — Notifications — Lesson comments — Course management",
 
         "section.why.title": "Why <span>Maher</span>?",
@@ -965,12 +1015,12 @@ const maherTranslations = {
         "authSplit.stat1v": "120+",
         "authSplit.stat1l": "Training programs available",
         "authSplit.stat2v": "500+",
-        "authSplit.stat2l": "Trainees on the platform",
+        "authSplit.stat2l": "Academy trainees",
         "authSplit.stat3v": "25+",
         "authSplit.stat3l": "Learning tracks",
         "authSplit.quote": "\"Maher made it easy to pick the right diploma and complete enrollment without hassle.\"",
         "authSplit.quoteName": "Abdulkarim Ahmed Al-Abed",
-        "authSplit.quoteRole": "Trainee on the platform",
+        "authSplit.quoteRole": "Academy trainee",
 
         "register.type.seeker": "Trainee",
         "register.type.employer": "Unavailable",
@@ -1043,7 +1093,7 @@ const maherTranslations = {
         "profile.academyReq.c3.title": "Track enrollments",
         "profile.academyReq.c3.text": "Follow your enrollment status on “My registrations” after acceptance into any program.",
         "profile.academyReq.c4.title": "Policies & certificates",
-        "profile.academyReq.c4.text": "Comply with platform policies and certificates issued by Maher Al-Ali Training Academy.",
+        "profile.academyReq.c4.text": "Comply with academy policies and certificates issued by Maher Al-Ali Training Academy.",
         "btn.save": "Save",
 
         /* ── Company Profile page ─────────────────────── */
@@ -1144,7 +1194,7 @@ const maherTranslations = {
         "cd.myJobs.title": "Posted Jobs",
         "cd.myJobs.addBtn": "+ Post New Job",
         "cd.requestStaff.title": "Request Staff",
-        "cd.requestStaff.sub": "Send your request to the platform admin to find suitable staff — only the admin team will see these requests.",
+        "cd.requestStaff.sub": "Send your request to the Academy admin to find suitable staff — only the admin team will see these requests.",
         "cd.requestStaff.jobTitle.label": "Required Job Title *",
         "cd.requestStaff.count.label": "Required Staff Count *",
         "cd.requestStaff.spec.label": "Required Specialization *",
@@ -1156,7 +1206,7 @@ const maherTranslations = {
         "cd.requestStaff.submit": "Send Request",
         "cd.requestStaff.prevTitle": "My Previous Requests",
         "cd.requestCourse.title": "Request Training Course",
-        "cd.requestCourse.sub": "Send your request to the platform admin to open a training course for your staff — only the admin team will see these requests.",
+        "cd.requestCourse.sub": "Send your request to the Academy admin to open a training course for your staff — only the admin team will see these requests.",
         "cd.requestCourse.name.label": "Required Course Name *",
         "cd.requestCourse.category.label": "Field / Category",
         "cd.requestCourse.seats.label": "Required Seats *",
@@ -1232,9 +1282,54 @@ const maherTranslations = {
         "courses.loading": "Loading...",
         "courses.enrolling": "Enrolling...",
         "courses.enrollError": "Enrollment failed",
+        "courses.addToCart": "Add to cart",
+        "courses.goCheckout": "Checkout",
+        "courses.loginToBuy": "Sign in to purchase",
+        "courses.inCart": "In cart",
+        "courses.interest.btn": "Register your interest",
+        "courses.interest.done": "✓ Interest registered",
+        "courses.interest.modalTitle": "Register course interest",
+        "courses.interest.modalSub": "Enter your name and mobile number and we will contact you about this course",
+        "courses.interest.fromProfile": "Filled from your profile — you can edit it",
+        "courses.interest.name": "Full name",
+        "courses.interest.phone": "Mobile number",
+        "courses.interest.submit": "Confirm interest",
+        "courses.interest.saving": "Saving…",
+        "courses.interest.success": "Your interest was saved. We will contact you soon.",
+        "courses.interest.already": "You already registered interest in this course.",
+        "courses.interest.error": "Could not save your interest",
+        "courses.interest.nameRequired": "Please enter your full name.",
+        "courses.interest.phoneRequired": "Please enter a valid mobile number.",
+
+        "checkout.docTitle": "Shopping cart",
+        "checkout.title": "Shopping cart",
+        "checkout.sub": "Review your courses and pay securely",
+        "checkout.empty": "Your cart is empty.",
+        "checkout.browse": "Browse courses",
+        "checkout.items": "Selected courses",
+        "checkout.total": "Total",
+        "checkout.payment": "Payment method",
+        "checkout.payNote": "Pay securely via Moyasar — mada, Visa, Mastercard, and Apple Pay.",
+        "checkout.secure": "Encrypted connection and secure payment processing",
+        "checkout.remove": "Remove",
+        "checkout.loginRequired": "You must sign in as a trainee to complete checkout.",
+        "checkout.configMissing": "Payment gateway is not configured yet. Add your Moyasar key in payment-config.js.",
+        "checkout.configHint": "Once configured, the official payment form (mada / Visa / Apple Pay) will appear here.",
+        "checkout.gatewayLoading": "Loading payment gateway…",
+        "checkout.gatewayError": "Could not load the payment form. Refresh or check Moyasar settings.",
+        "checkout.successTitle": "Payment complete",
+        "checkout.successHeading": "Payment successful",
+        "checkout.successBody": "You are enrolled in your purchased courses.",
+        "checkout.successEnrolled": "You have been enrolled in all courses successfully.",
+        "checkout.successPartial": "Payment received. Some enrollments may need support review.",
+        "checkout.successNoOrder": "No pending purchase",
+        "checkout.successNoOrderBody": "We could not find a cart linked to this visit.",
+        "checkout.loginToFinish": "Sign in to finish activating your course enrollments:",
+        "checkout.backCourses": "Back to courses",
+        "checkout.myDashboard": "Dashboard",
 
         /* ── Courses hero & filter ───────────────────────── */
-        "courses.hero.badge": "🎓 Maher Training Platform",
+        "courses.hero.badge": "🎓 Maher Training Academy",
         "courses.hero.h1": "Training <em class=\"ch-accent\">Courses</em>",
         "courses.search.placeholder": "Search for a training course...",
         "courses.filter.all": "All",
@@ -1245,6 +1340,8 @@ const maherTranslations = {
         "courses.pathNotFound": "Training path not found.",
         "courses.loadError": "Could not load courses",
         "courses.cardDetails": "Course details",
+        "courses.loadMore": "Show more",
+        "courses.showingOf": "Showing {shown} of {total} courses",
         "courses.openCourseEnroll": "Open course page & enroll",
         "courses.meta.instructor": "Instructor",
         "courses.meta.duration": "Duration",
@@ -1287,6 +1384,9 @@ const maherTranslations = {
         "courseDetail.footnote": "After you enroll, admins see the registration with the path and course. For questions, use Contact us.",
         "courseDetail.docTitle": "Course details",
         "courseDetail.loading": "Loading course details…",
+        "courseDetail.generalGoal": "General course objective",
+        "courseDetail.detailedGoals": "Detailed objectives",
+        "courseDetail.certBar": "Accredited certificate",
 
         /* ── Jobs hero ────────────────────────────────────── */
         "jobs.hero.badge": "💼 Job Opportunities",
@@ -1294,7 +1394,7 @@ const maherTranslations = {
 
         /* ── Seeker login visual panel ───────────────────────────────── */
         "lsp.seeker.panelH2": "Build Your Career<br>with <span>Maher</span>",
-        "lsp.seeker.panelSub": "Your all-in-one platform for jobs, training, and professional skill development.",
+        "lsp.seeker.panelSub": "Your all-in-one academy hub for jobs, training, and professional skill development.",
         "lsp.seeker.feat1": "Thousands of jobs from trusted companies",
         "lsp.seeker.feat2": "Apply in one click",
         "lsp.seeker.feat3": "Certified training courses",
@@ -1309,7 +1409,7 @@ const maherTranslations = {
 
         /* ── Employer login visual panel ─────────────────────────────── */
         "lsp.employer.panelH2": "Hire the Best Talent<br>with <span>Maher</span>",
-        "lsp.employer.panelSub": "Your professional platform for posting jobs, managing hiring, and developing your workforce.",
+        "lsp.employer.panelSub": "Your professional academy hub for posting jobs, managing hiring, and developing your workforce.",
         "lsp.employer.feat1": "Post jobs in minutes",
         "lsp.employer.feat2": "Browse CVs with high efficiency",
         "lsp.employer.feat3": "Manage hiring applications easily",
@@ -1323,7 +1423,7 @@ const maherTranslations = {
         "lsp.employer.quoteAvatar": "N",
 
         /* ── Shared footer copyright ─────────────────────────────────── */
-        "lsp.copyright": "© 2026 Maher Platform · All rights reserved",
+        "lsp.copyright": "© 2026 Maher Academy · All rights reserved",
 
         /* ── Trending search tags ────────────────────────────────────── */
         "search.tag.developer":  "💻 Developer",
@@ -1523,6 +1623,10 @@ function maherApplyLanguage(lang) {
 document.addEventListener("DOMContentLoaded", function () {
     (function loadMaherFloatingLines() {
         if (window.__maherFlScriptRequested) return;
+        var needsFloatingLines =
+            document.getElementById("authFloatingLines") ||
+            document.body.classList.contains("maher-auth-floating");
+        if (!needsFloatingLines) return;
         window.__maherFlScriptRequested = true;
         var s = document.createElement("script");
         s.src = "assets/js/auth-floating-lines.js";
@@ -1614,5 +1718,16 @@ document.addEventListener("DOMContentLoaded", function () {
         employerTypeBtn.addEventListener("click", function () {
             setRegisterType("employer");
         });
+    }
+
+    if (!document.body.classList.contains("maher-no-cart") && document.querySelector(".main-header") && !window.maherCart) {
+        var cartScript = document.createElement("script");
+        cartScript.src = "assets/js/maher-cart.js";
+        cartScript.onload = function () {
+            if (window.maherCart && typeof window.maherCart.initCartHeader === "function") {
+                window.maherCart.initCartHeader();
+            }
+        };
+        document.body.appendChild(cartScript);
     }
 });
