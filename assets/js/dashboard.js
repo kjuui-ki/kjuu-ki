@@ -1336,6 +1336,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         });
     }
     var currentEnrollmentTitle = "";
+    var currentEnrollmentRows = [];
 
     async function loadCourseEnrollments(courseId, courseTitle) {
         var panel  = document.getElementById("courseEnrollmentsPanel");
@@ -1362,8 +1363,13 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
         tbody.innerHTML = '<tr><td colspan="6" class="no-data-msg">' + t("adm.dyn.loading") + '</td></tr>';
         panel.scrollIntoView({ behavior: "smooth", block: "start" });
+        currentEnrollmentRows = [];
 
         var res = await sb.from("course_enrollments").select("user_id, status, created_at").eq("course_id", courseId).order("created_at", { ascending: false });
+        if (res.error) {
+            tbody.innerHTML = '<tr><td colspan="6" class="no-data-msg">تعذّر تحميل المسجلين. حاول مرة أخرى.</td></tr>';
+            return;
+        }
         currentEnrollmentRows = res.data || [];
         if (!currentEnrollmentRows.length) {
             tbody.innerHTML = '<tr><td colspan="6" class="no-data-msg">' + t("adm.dyn.noEnrollments") + '</td></tr>';
@@ -1393,8 +1399,14 @@ document.addEventListener("DOMContentLoaded", async function () {
     var exportEnrBtn = document.getElementById("exportEnrollmentsBtn");
     if (exportEnrBtn) {
         exportEnrBtn.addEventListener("click", function () {
-            if (!currentEnrollmentRows.length) return;
-
+            if (!currentEnrollmentRows.length) {
+                alert("لا يوجد مسجلون للتصدير. افتح «عرض المسجلين» وانتظر اكتمال التحميل.");
+                return;
+            }
+            if (typeof XLSX === "undefined") {
+                alert("تعذّر تحميل مكتبة Excel. حدّث الصفحة وحاول مرة أخرى.");
+                return;
+            }
             var statusMap = { completed: "مكتمل", cancelled: "ملغى", enrolled: "مسجّل" };
             var roleMap   = { company: "قديم", super_admin: "أدمن", job_seeker: "متدرب" };
 
