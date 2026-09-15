@@ -113,6 +113,17 @@ document.addEventListener("DOMContentLoaded", async function () {
         return '<span class="badge">' + esc(r) + '</span>';
     }
 
+    function sbTimeout(query, ms) {
+        return Promise.race([
+            Promise.resolve(query),
+            new Promise(function (resolve) {
+                setTimeout(function () {
+                    resolve({ data: null, error: { message: "timeout", code: "TIMEOUT" } });
+                }, ms || 8000);
+            })
+        ]);
+    }
+
     var allTrainingPaths = [];
     var pathMapById = {};
     var cachedTpPathCounts = {};
@@ -411,17 +422,18 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     async function loadAll() {
         var results = await Promise.all([
-            sb.from("profiles").select("id, full_name, email, role, phone, specialization, cv_url, created_at").order("created_at", { ascending: false }),
-            sb.from("courses").select("id, title, category, instructor, is_active, created_at, training_path_id").order("created_at", { ascending: false }),
-            sb.from("course_enrollments").select("id, user_id, course_id, status, created_at").order("created_at", { ascending: false }),
-            sb.from("training_paths").select("id, name_ar, is_active, sort_order").order("sort_order", { ascending: true })
+            sbTimeout(sb.from("profiles").select("id, full_name, email, role, phone, specialization, cv_url, created_at").order("created_at", { ascending: false }), 12000),
+            sbTimeout(sb.from("courses").select("id, title, category, instructor, is_active, created_at, training_path_id").order("created_at", { ascending: false }), 12000),
+            sbTimeout(sb.from("course_enrollments").select("id, user_id, course_id, status, created_at").order("created_at", { ascending: false }), 8000),
+            sbTimeout(sb.from("training_paths").select("id, name_ar, is_active, sort_order").order("sort_order", { ascending: true }), 12000)
         ]);
-        allProfiles       = results[0].data || [];
-        allCourseRows     = results[1].data || [];
-        allEnrollmentRows = results[2].data || [];
-        allTrainingPathsStats = results[3].data || [];
+        allProfiles       = (results[0] && !results[0].error && results[0].data) ? results[0].data : [];
+        allCourseRows     = (results[1] && !results[1].error && results[1].data) ? results[1].data : [];
+        allEnrollmentRows = (results[2] && !results[2].error && results[2].data) ? results[2].data : [];
+        allTrainingPathsStats = (results[3] && !results[3].error && results[3].data) ? results[3].data : [];
         allJobs           = [];
         allApps           = [];
+        profileMap = {};
         allProfiles.forEach(function (p) { profileMap[p.id] = p; });
         allCourseRows.forEach(function (c) { courseMapDash[c.id] = c; });
         jobMap = {};
@@ -1331,12 +1343,55 @@ document.addEventListener("DOMContentLoaded", async function () {
                 syncOverviewFromCourses();
             }
             if (viewBtn) {
-                await loadCourseEnrollments(viewBtn.dataset.cid, viewBtn.dataset.ctitle);
+                try {
+                    await loadCourseEnrollments(viewBtn.dataset.cid, viewBtn.dataset.ctitle);
+                } catch (err) {
+                    var tbFail = document.getElementById("enrollmentsTableBody");
+                    if (tbFail) {
+                        tbFail.innerHTML = '<tr><td colspan="6" class="no-data-msg">تعذّر تحميل المسجلين. نفّذ ملف SQL في Supabase ثم حدّث الصفحة.</td></tr>';
+                    }
+                }
             }
         });
     }
     var currentEnrollmentTitle = "";
     var currentEnrollmentRows = [];
+
+    async function ensureProfilesForUsers(ids) {
+        var missing = (ids || []).filter(function (id) { return id && !profileMap[id]; });
+        if (!missing.length) return;
+        var uniq = [];
+        missing.forEach(function (id) { if (uniq.indexOf(id) === -1) uniq.push(id); });
+        var pr = await sbTimeout(
+            sb.from("profiles").select("id, full_name, email, role, phone").in("id", uniq),
+            8000
+        );
+        ((pr && pr.data) || []).forEach(function (p) { profileMap[p.id] = p; });
+    }
+
+    function renderEnrollmentRows(tbody) {
+        tbody.innerHTML = currentEnrollmentRows.map(function (r) {
+            var p = profileMap[r.user_id] || {};
+            var name = r.full_name || p.full_name || "\u2014";
+            var email = r.email || p.email || "\u2014";
+            var phoneVal = r.phone || p.phone || "";
+            var roleVal = r.role || p.role || "";
+            var statusBadge = r.status === "completed"
+                ? '<span class="badge badge-accepted">'      + t("adm.dyn.statusCompleted") + '</span>'
+                : r.status === "cancelled"
+                ? '<span class="badge badge-rejected">'      + t("adm.dyn.statusCancelled") + '</span>'
+                : '<span class="badge badge-pending-status">' + t("adm.dyn.statusEnrolled")  + '</span>';
+            var phone = phoneVal ? '<a href="tel:' + esc(phoneVal) + '" class="phone-link">' + esc(phoneVal) + '</a>' : "\u2014";
+            return '<tr>' +
+                '<td>' + esc(name) + '</td>' +
+                '<td>' + esc(email) + '</td>' +
+                '<td>' + phone + '</td>' +
+                '<td>' + roleLabel(roleVal) + '</td>' +
+                '<td>' + fmtDate(r.created_at) + '</td>' +
+                '<td>' + statusBadge + '</td>' +
+            '</tr>';
+        }).join("");
+    }
 
     async function loadCourseEnrollments(courseId, courseTitle) {
         var panel  = document.getElementById("courseEnrollmentsPanel");
@@ -1365,34 +1420,48 @@ document.addEventListener("DOMContentLoaded", async function () {
         panel.scrollIntoView({ behavior: "smooth", block: "start" });
         currentEnrollmentRows = [];
 
-        var res = await sb.from("course_enrollments").select("user_id, status, created_at").eq("course_id", courseId).order("created_at", { ascending: false });
-        if (res.error) {
-            tbody.innerHTML = '<tr><td colspan="6" class="no-data-msg">تعذّر تحميل المسجلين. حاول مرة أخرى.</td></tr>';
-            return;
+        var rows = null;
+        var lastErr = null;
+
+        var rpc = await sbTimeout(
+            sb.rpc("admin_list_course_enrollments", { p_course_id: courseId }),
+            10000
+        );
+        if (rpc && !rpc.error && Array.isArray(rpc.data)) {
+            rows = rpc.data;
+        } else if (rpc && rpc.error) {
+            lastErr = rpc.error;
         }
-        currentEnrollmentRows = res.data || [];
+
+        if (!rows) {
+            var res = await sbTimeout(
+                sb.from("course_enrollments").select("user_id, status, created_at").eq("course_id", courseId),
+                8000
+            );
+            if (res && !res.error && Array.isArray(res.data)) {
+                rows = res.data;
+            } else if (res && res.error) {
+                lastErr = res.error;
+            }
+        }
+
+        if (!rows) {
+            rows = (allEnrollmentRows || []).filter(function (e) { return e.course_id === courseId; });
+        }
+
+        currentEnrollmentRows = rows || [];
         if (!currentEnrollmentRows.length) {
-            tbody.innerHTML = '<tr><td colspan="6" class="no-data-msg">' + t("adm.dyn.noEnrollments") + '</td></tr>';
+            var expected = (enrollCountMap && enrollCountMap[courseId]) || (cr0 && cr0._enrollCount) || 0;
+            if (expected > 0 || (lastErr && lastErr.code === "TIMEOUT")) {
+                tbody.innerHTML = '<tr><td colspan="6" class="no-data-msg">تعذّر تحميل المسجلين من قاعدة البيانات. نفّذ ملف database/fix_course_enrollments_admin.sql في Supabase ثم حدّث الصفحة.</td></tr>';
+            } else {
+                tbody.innerHTML = '<tr><td colspan="6" class="no-data-msg">' + t("adm.dyn.noEnrollments") + '</td></tr>';
+            }
             return;
         }
 
-        tbody.innerHTML = currentEnrollmentRows.map(function (r) {
-            var p = profileMap[r.user_id] || {};
-            var statusBadge = r.status === "completed"
-                ? '<span class="badge badge-accepted">'      + t("adm.dyn.statusCompleted") + '</span>'
-                : r.status === "cancelled"
-                ? '<span class="badge badge-rejected">'      + t("adm.dyn.statusCancelled") + '</span>'
-                : '<span class="badge badge-pending-status">' + t("adm.dyn.statusEnrolled")  + '</span>';
-            var phone = p.phone ? '<a href="tel:' + esc(p.phone) + '" class="phone-link">' + esc(p.phone) + '</a>' : "\u2014";
-            return '<tr>' +
-                '<td>' + esc(p.full_name || "\u2014") + '</td>' +
-                '<td>' + esc(p.email    || "\u2014") + '</td>' +
-                '<td>' + phone + '</td>' +
-                '<td>' + roleLabel(p.role || "") + '</td>' +
-                '<td>' + fmtDate(r.created_at) + '</td>' +
-                '<td>' + statusBadge + '</td>' +
-            '</tr>';
-        }).join("");
+        await ensureProfilesForUsers(currentEnrollmentRows.map(function (r) { return r.user_id; }));
+        renderEnrollmentRows(tbody);
     }
 
     /* ── Export enrollments to Excel ── */
@@ -1414,12 +1483,13 @@ document.addEventListener("DOMContentLoaded", async function () {
             var data = [["#", "الاسم الكامل", "البريد الإلكتروني", "رقم الجوال", "الدور", "تاريخ التسجيل", "الحالة"]];
             currentEnrollmentRows.forEach(function (r, i) {
                 var p = profileMap[r.user_id] || {};
+                var roleVal = r.role || p.role || "";
                 data.push([
                     i + 1,
-                    p.full_name || "—",
-                    p.email     || "—",
-                    p.phone     || "—",
-                    roleMap[p.role] || p.role || "—",
+                    r.full_name || p.full_name || "—",
+                    r.email     || p.email     || "—",
+                    r.phone     || p.phone     || "—",
+                    roleMap[roleVal] || roleVal || "—",
                     fmtDate(r.created_at),
                     statusMap[r.status] || r.status || "—"
                 ]);
@@ -1439,7 +1509,10 @@ document.addEventListener("DOMContentLoaded", async function () {
                 { wch: 12 }   // status
             ];
 
-            XLSX.utils.book_append_sheet(wb, ws, currentEnrollmentTitle || "المسجلون");
+            var sheetName = String(currentEnrollmentTitle || "المسجلون").replace(/[\\/:*?\[\]]/g, " ").trim();
+            if (sheetName.length > 31) sheetName = sheetName.slice(0, 31);
+            if (!sheetName) sheetName = "المسجلون";
+            XLSX.utils.book_append_sheet(wb, ws, sheetName);
 
             var safeName = (currentEnrollmentTitle || "المسجلون").replace(/[\\/:*?"<>|]/g, "_");
             XLSX.writeFile(wb, "مسجلو " + safeName + ".xlsx");
